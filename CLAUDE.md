@@ -40,9 +40,16 @@ New visuals should attach the existing style key image as a reference rather tha
   - Tag general audience, **not** "made for kids."
   - Mortality handled reflectively, non-graphic (portraits, not bodies).
 
-## Media production workflow
+## Writing conventions
 
-Record every job ID in the document's production record section. **Hosted asset URLs are expiring CDN links** — if a video is worth keeping, download and archive the final MP4 rather than relying on the link.
+- Script format: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as
+  blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical
+  quotations (rendered as translation, optionally with the ancient script).
+- Target runtime ~17–19 min per production episode; production notes include levers to cut
+  to 15 or stretch to 20.
+- Target runtime 1 min per trailer. Trailer in 9:16 vertical format.
+- Always include subtitles / close captions.
+- New script versions get a new file (`-v3` etc.); don't overwrite prior versions.
 
 ## Git conventions
 
