@@ -42,13 +42,6 @@ New visuals should attach the existing style key image as a reference rather tha
 
 ## Media production workflow
 
-Assets are generated with the Higgsfield MCP tools available in this environment:
-
-1. **Style key image** — a single 16:9 image of the characters, generated first and attached as the style reference to every video clip.
-2. **Clips** — 10-second, 720p video blocks (gemini_omni model), one per narration block.
-3. **Voiceover** — Seed Audio with the preset voice **Alistair**; each take must fit its 10-second block (past takes ran 6.8–9.3s; `speech_rate 15` was used on re-takes to fit).
-4. **Assembly** — the `explainer_video` tool combines clips and voiceover into fixed 10-second blocks, include subtitles.
-
 Record every job ID in the document's production record section. **Hosted asset URLs are expiring CDN links** — if a video is worth keeping, download and archive the final MP4 rather than relying on the link.
 
 ## Git conventions
