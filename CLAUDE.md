@@ -8,16 +8,35 @@ This is a **video-content-production repository**, not a software project. It ho
 
 ## Structure
 
-- `episode-XX/` — documents for each new episode gets stored in their own folder structure. Trailer or production documents, one markdown file per cut (e.g. `episode1-trailer-1min.md` or `episode1-prod-18min.md`). Each document contains:
-  - A link to the final rendered video
-  - Narration broken into timed blocks (table: block / beat / narration line)
-  - A numbered shot list matching the narration blocks
-  - A **production record** with the generation-service job IDs for every asset (style key image, video clips, voiceover takes, final assembly)
+Production documents are grouped by cut type, one markdown file per cut. The
+current tree is:
 
-When adding a new trailer or episode document, follow this same layout so production records stay reproducible.
+```
+CLAUDE.md
+trailer/
+  episode1-trailer-1min.md      # the one existing production document
+assets/
+  emperor-Fan.png               # Fan-di style key art
+  wise-Qi-2.png                 # Dr-Qi style key art
+  witty-Lei.png                 # Lei-Gong style key art
+```
 
-## Directory layout
-- `assets/` — character art: emperor-Fan.png (Fan-di), wise-Qi-2.png (Dr-Qi), witty-Lei.png (Lei-Gong).
+- `trailer/` — short-form cuts (e.g. `episode1-trailer-1min.md`). As full
+  episodes are produced, add sibling folders such as `episode-01/` for the
+  long-form production documents (`episode1-prod-18min.md`, etc.).
+- `assets/` — character style-key art referenced by every generation job.
+
+Each production document contains, in order:
+  - A link to the final rendered video (plus its resolution/duration/format).
+  - The compliance disclaimer as a blockquote.
+  - Narration broken into timed blocks (table: block / beat / narration line).
+  - A numbered **shot list** matching the narration blocks.
+  - A **production record** with the generation-service (Higgsfield) job IDs for
+    every asset — style key image, video clips, voiceover takes, final assembly.
+
+When adding a new trailer or episode document, follow this same layout so
+production records stay reproducible. See `trailer/episode1-trailer-1min.md` as
+the worked reference.
 
 ## Series canon and conventions
 
@@ -42,14 +61,34 @@ New visuals should attach the existing style key image as a reference rather tha
 
 ## Writing conventions
 
-- Script format: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as
-  blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical
-  quotations (rendered as translation, optionally with the ancient script).
-- Target runtime ~17–19 min per production episode; production notes include levers to cut
-  to 15 or stretch to 20.
-- Target runtime 1 min per trailer. Trailer in 9:16 vertical format.
-- Always include subtitles / close captions.
-- New script versions get a new file (`-v3` etc.); don't overwrite prior versions.
+- **Production-episode script format**: markdown with **SOUND / VISUAL /
+  CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act,
+  ON-SCREEN TEXT blocks for classical quotations (rendered as translation,
+  optionally with the ancient script).
+- **Trailer format**: a narration table (block / beat / narration line) broken
+  into fixed 10-second blocks, followed by a numbered shot list keyed to the same
+  blocks, then the production record. See `episode1-trailer-1min.md`.
+- Target runtime ~17–19 min per production episode; production notes include
+  levers to cut to 15 or stretch to 20.
+- Target runtime ~1 min per trailer. Trailers are intended for 9:16 vertical;
+  note that the delivered Episode 1 trailer was rendered 16:9 (1280×720, 60s) —
+  record the actual resolution/format at the top of each document.
+- Always include subtitles / closed captions on the final deliverable.
+- New script versions get a new file (`-v3` etc.); don't overwrite prior
+  versions.
+
+## Production toolchain
+
+- Assets are generated through the **Higgsfield** service (exposed here via the
+  `mcp__higgsfield__*` tools): `generate_image` for style keys, `generate_video`
+  for clips, `generate_audio` for voiceover, and `explainer_video` for final
+  assembly. Every generated asset's job ID goes into the document's production
+  record so the cut can be reproduced.
+- Attach the existing character style-key art from `assets/` (or the prior
+  style-key image job) as the reference on new generations rather than
+  establishing a fresh look.
+- Hosted asset URLs are CDN links from the generation service and may expire —
+  download and archive the final MP4 for any cut worth keeping.
 
 ## Git conventions
 
