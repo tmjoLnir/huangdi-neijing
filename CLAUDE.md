@@ -21,9 +21,7 @@ assets/
   witty-Lei.png                 # Lei-Gong style key art
 ```
 
-- `output/` — short-form cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`). As full
-  episodes are produced, add sibling folders such as `episode-<N>/` for the
-  long-form production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.).
+- `output/` — As new episodes are produced, add sibling folders such as `episode-<N>/` for short-form cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`) and for long-form production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.).
 - `assets/` — character style-key art referenced by every generation job.
 
 Each production document contains, in order:
