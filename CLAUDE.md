@@ -21,9 +21,9 @@ assets/
   witty-Lei.png                 # Lei-Gong style key art
 ```
 
-- `trailer/` — short-form cuts (e.g. `episode1-trailer-1min.md`). As full
-  episodes are produced, add sibling folders such as `episode-01/` for the
-  long-form production documents (`episode1-prod-18min.md`, etc.).
+- `output/` — short-form cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`). As full
+  episodes are produced, add sibling folders such as `episode-<N>/` for the
+  long-form production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.).
 - `assets/` — character style-key art referenced by every generation job.
 
 Each production document contains, in order:
@@ -35,10 +35,9 @@ Each production document contains, in order:
     every asset — style key image, video clips, voiceover takes, final assembly.
 
 When adding a new trailer or episode document, follow this same layout so
-production records stay reproducible. See `trailer/episode1-trailer-1min.md` as
-the worked reference.
+production records stay reproducible.
 
-## Series canon and conventions
+## Core Cast (recurring)
 
 - **Fan-di (樊帝)** — A youthful sharp-witted Chinese emperor in his late twenties: clean-shaven with sharp confident eyebrows and a clever knowing smirk, modern-leaning short black hair, trim GOLD robe with contemporary tailored cut, a pair of slim thin-framed round glasses sitting neatly on his nose, snapping open a white folding fan with one hand, other hand on his hip. Brilliant, vain, scholar-skeptic. Quick, charismatic, a young sovereign who asks dangerous questions with a smile. The fan is his tell: snapped open = performing/defensive; set down = sincerity.
 
@@ -49,15 +48,6 @@ the worked reference.
 New visuals should attach the existing style key image as a reference rather than establishing a new look.
 
 - **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension.
-
-- **Compliance constraints** (from a prior compliance audit — preserve these in any new material):
-  - Always keep the disclaimer: *"A dramatized adaptation of a classical philosophical text. Not medical advice."* Teaching content is philosophy/history, never medical instruction.
-  - Keep indulgence/feast content cautionary and atmospheric — no close-ups of
-    drinking/pouring (alcohol classifier). Do not depict drinking.
-  - Supernatural hooks must be explicitly debunked in the payoff; titles/thumbnails
-    must honor the educational payoff, not pure occult clickbait.
-  - Tag general audience, **not** "made for kids."
-  - Mortality handled reflectively, non-graphic (portraits, not bodies).
 
 ## Writing conventions
 
@@ -76,6 +66,18 @@ New visuals should attach the existing style key image as a reference rather tha
 - Always include subtitles / closed captions on the final deliverable.
 - New script versions get a new file (`-v3` etc.); don't overwrite prior
   versions.
+
+## YouTube compliance (apply to every episode)
+
+- Always keep the disclaimer: *"A dramatized adaptation of a classical philosophical text. Not medical advice."* Teaching content is philosophy/history, never medical instruction.
+- Keep mortality/aging reflective, non-graphic (portraits, not bodies).
+- Indulgence/alcohol: cautionary framing only, never glorified; keep feast
+  B-roll atmospheric — no close-ups of bottles, pouring, or drinking.
+- Supernatural hooks must be explicitly debunked by the payoff; titles and
+  thumbnails must honor the educational payoff, not pure mystery clickbait.
+- Health content stays philosophical narrative, never medical instruction;
+  keep the not-medical-advice disclaimer in the description.
+- Self-certify/tag as general audience, **not** "made for kids."
 
 ## Production toolchain
 
