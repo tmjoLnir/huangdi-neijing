@@ -58,8 +58,8 @@ New visuals should attach the existing style key image as a reference rather tha
   blocks, then the production record. See `episode1-trailer-1min.md`.
 - Target runtime ~17–19 min per production episode; production notes include
   levers to cut to 15 or stretch to 20.
-- Target runtime ~1 min per trailer. Trailers are intended for 9:16 vertical; record the actual resolution/format at the top of each document.
-- Always include subtitles / closed captions on the final deliverable.
+- Target runtime ~1 min per trailer. Render trailers in 9:16 vertical format; record the actual resolution/format at the top of each document.
+- Always include subtitles / closed captions on the final deliverable. Make sure all subtitles fit on screen and are readable across the entire video.
 - New script versions get a new file; don't overwrite prior versions.
 
 ## YouTube compliance (apply to every episode)
