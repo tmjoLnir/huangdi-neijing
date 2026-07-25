@@ -45,7 +45,7 @@ production records stay reproducible.
 
 New visuals should attach the existing style key image as a reference rather than establishing a new look.
 
-- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension.
+- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. use seed Audio preset **Julian**.
 
 ## Writing conventions
 
