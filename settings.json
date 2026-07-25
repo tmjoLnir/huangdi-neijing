@@ -25,7 +25,8 @@
       "Bash(rm *)",
       "Bash(rm -rf *)",
       "Bash(rmdir *)",
-
+    ],
+    "ask": [
       // anything that touches the internet
       "Bash(curl *)",
       "Bash(wget *)",
