@@ -14,7 +14,7 @@ current tree is:
 ```
 CLAUDE.md
 trailer/
-  episode1-trailer-1min.md      # the one existing production document
+  episode1-trailer-vertical-continuous.md      # the one existing production document
 assets/
   emperor-Fan.png               # Fan-di style key art
   wise-Qi-2.png                 # Dr-Qi style key art
