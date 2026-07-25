@@ -12,7 +12,7 @@
 
       // read files and folders
       "Bash(cat:*)",
-      "Bash(ls:*)",
+      "Bash(ls:*)"
     ],
     "deny": [
       // installing packages
@@ -24,7 +24,7 @@
       // deleting files or folders
       "Bash(rm *)",
       "Bash(rm -rf *)",
-      "Bash(rmdir *)",
+      "Bash(rmdir *)"
     ],
     "ask": [
       // anything that touches the internet
