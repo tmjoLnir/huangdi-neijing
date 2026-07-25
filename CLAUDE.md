@@ -16,8 +16,8 @@ CLAUDE.md
 trailer/
   episode1-trailer-1min.md      # the one existing production document
 assets/
-  emperor-Fan-3.png               # Fan-di style key art
-  wise-Qi-3a.png                 # Dr-Qi style key art
+  emperor-Fan.png               # Fan-di style key art
+  wise-Qi-2.png                 # Dr-Qi style key art
   witty-Lei.png                 # Lei-Gong style key art
 ```
 
