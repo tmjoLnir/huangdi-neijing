@@ -13,8 +13,8 @@ current tree is:
 
 ```
 CLAUDE.md
-trailer/
-  episode1-trailer-vertical-continuous.md      # the one existing production document
+output/episode-2/
+  inner-canon-ch2-trailer-v1.md          # chapter 2 trailer sample
 assets/
   emperor-Fan.png               # Fan-di style key art
   wise-Qi-2.png                 # Dr-Qi style key art
