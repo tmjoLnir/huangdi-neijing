@@ -21,7 +21,7 @@ assets/
   witty-Lei.png                 # Lei-Gong style key art
 ```
 
-- `output/` — As new episodes are produced, store file here. For each new chapter, add child folders such as `episode-<N>/` for trailers 30-90 sec cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`) and for long-form 15-20 min production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.). Render trailers in 9:16 vertical format; long form in landscape 16:9 format; record the actual resolution/format at the top of each document.
+- `output/` — As new episodes are produced, store file here. For each new chapter, add child folders such as `episode-<N>/` for trailers 30-90 sec cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`) and for long-form 15-20 min production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.). Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
 
 Each production document contains, in order:
