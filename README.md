@@ -1,0 +1,1 @@
+This is a video-content-production repository, not a software project. It holds production documents for The Emperor's Inner Canon, a dramatized documentary series adapting the Huangdi Neijing (The Emperor's Inner Canon, the foundational classical text of Chinese medicine).
