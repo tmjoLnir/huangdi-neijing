@@ -1,6 +1,6 @@
 ---
 name: higgsfield-production
-description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfield — style key, per-block clips, narrator voiceover, subtitled assembly, and the production record. Use whenever generating or re-rendering a 1-min vertical trailer or a 15-20 min longform episode for this repo, adding a new chapter under output/, or debugging a Higgsfield job (wrong aspect ratio, preset swap prompts, expired CDN links, blocked uploads).
+description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfield — style key, per-block clips, narrator voiceover, subtitled assembly, and the production record. Use whenever generating or re-rendering a 30-90 sec vertical trailer or a 15-20 min longform episode for this repo, adding a new chapter under output/, or debugging a Higgsfield job (wrong aspect ratio, preset swap prompts, expired CDN links, blocked uploads).
 ---
 
 # Higgsfield production pipeline
@@ -9,7 +9,7 @@ The house pipeline for this repo. Chapters 2 and 3 were both cut this way; the
 failure modes below are ones that already cost a full re-render, so read them
 before generating anything.
 
-**Two cut types.** Steps 1–5 below are written for the **1-minute vertical
+**Two cut types.** Steps 1–5 below are written for the **30-90 sec vertical
 trailer** — the only form produced so far, and the one whose numbers are
 battle-tested. For a **15–20 minute longform episode**, read those steps for the
 mechanics, then read [Longform episodes](#longform-episodes-1520-min), which
@@ -144,7 +144,7 @@ notes. Where this section contradicts steps 1–5, this section wins.
 
 | | Trailer | Longform |
 |---|---|---|
-| Runtime | 60s | 17–19 min target (15 floor, 20 ceiling) |
+| Runtime | 30-60 sec | 17–19 min target (15 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
