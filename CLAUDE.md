@@ -21,7 +21,7 @@ assets/
   witty-Lei.png                 # Lei-Gong style key art
 ```
 
-- `output/` — As new episodes are produced, store file here. For each new chapter, add child folders such as `episode-<N>/` for short-form 1 min cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`) and for long-form 15-20 min production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.).
+- `output/` — As new episodes are produced, store file here. For each new chapter, add child folders such as `episode-<N>/` for trailers 30-90 sec cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`) and for long-form 15-20 min production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.). Render trailers in 9:16 vertical format; long form in landscape 16:9 format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
 
 Each production document contains, in order:
@@ -58,7 +58,7 @@ New visuals should attach the existing style key image as a reference rather tha
   blocks, then the production record. See `episode1-trailer-1min.md`.
 - Target runtime ~17–19 min per production episode; production notes include
   levers to cut to 15 or stretch to 20.
-- Target runtime ~1 min per trailer. Render trailers in 9:16 vertical format; record the actual resolution/format at the top of each document.
+- Target runtime 30-90 sec per trailer.
 - Always include subtitles / closed captions on the final deliverable. Make sure all subtitles fit on screen and are readable across the entire video. Subtitles with anton font.
 - New script versions get a new file; don't overwrite prior versions.
 
