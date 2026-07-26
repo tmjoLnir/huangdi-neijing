@@ -85,7 +85,7 @@ New visuals should attach the existing style key image as a reference rather tha
   style-key image job) as the reference on new generations rather than
   establishing a fresh look.
 - Hosted asset URLs are CDN links from the generation service and may expire —
-  manually download and archive the final MP4 for any cut worth keeping.
+  user to manually download and archive the final MP4 for any cut worth keeping.
 
 ## Git conventions
 
