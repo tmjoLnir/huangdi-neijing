@@ -8,8 +8,7 @@ This is a **video-content-production repository**, not a software project. It ho
 
 ## Structure
 
-Production documents are grouped by cut type, one markdown file per cut. The
-current tree is:
+Production documents are grouped by cut type, one markdown file per cut. The current tree is:
 
 ```
 CLAUDE.md
@@ -56,10 +55,9 @@ New visuals should attach the existing style key image as a reference rather tha
 - **Trailer format**: a narration table (block / beat / narration line) broken
   into fixed 10-second blocks, followed by a numbered shot list keyed to the same
   blocks, then the production record. See `episode1-trailer-1min.md`.
-- Target runtime ~17–19 min per production episode; production notes include
-  levers to cut to 15 or stretch to 20.
+- Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
 - Target runtime 30-90 sec per trailer.
-- Always include subtitles / closed captions on the final deliverable. Make sure all subtitles fit on screen and are readable across the entire video. Subtitles with anton font.
+- Always include subtitles / closed captions on the final deliverable. Make sure all subtitles wrap on screen and are readable across the entire video. Subtitles with anton font.
 - New script versions get a new file; don't overwrite prior versions.
 
 ## YouTube compliance (apply to every episode)
