@@ -1,0 +1,65 @@
+# .gitignore — The Emperor's Inner Canon
+#
+# This is a video-content-production repository. What belongs in git:
+# production documents (markdown), character style-key art (assets/*.png),
+# the chapter deck, and the build script. What does not: the rendered
+# video/audio those documents describe, and anything machine-local.
+
+# ── Generated / downloaded media ─────────────────────────────
+# Final MP4s from Higgsfield are CDN downloads archived locally, never
+# committed — a single longform episode can run to hundreds of megabytes
+# and would live in the history forever.
+# Convention: download renders into output/episode-<N>/renders/
+renders/
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.wav
+*.mp3
+*.m4a
+*.aac
+# Subtitle sidecars (.srt/.vtt) are small text and are required
+# deliverables — intentionally NOT ignored.
+# To commit a media file anyway: git add -f <path>
+
+# ── Secrets ──────────────────────────────────────────────────
+# Higgsfield / generation-service tokens must never be committed.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Node (scripts/) ──────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.npm/
+
+# ── Office lock & temp files (decks/) ────────────────────────
+# PowerPoint drops ~$name.pptx beside an open deck.
+~$*
+*.tmp
+
+# ── Claude Code local overrides ──────────────────────────────
+# .claude/settings.json is tracked; per-machine overrides are not.
+.claude/settings.local.json
+.claude/*.local.json
+
+# ── Scratch / work-in-progress ───────────────────────────────
+scratch/
+_wip/
+*.bak
+
+# ── OS & editor cruft ────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
