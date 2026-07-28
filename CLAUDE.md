@@ -6,9 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **video-content-production repository**, not a software project. It holds production documents for *The Emperor's Inner Canon*, a dramatized documentary series adapting the Huangdi Neijing (The Emperor's Inner Canon, the foundational classical text of Chinese medicine).
 
-The one exception to "not a software project" is `scripts/build_chapter_deck.js`,
-a pptxgenjs build script that regenerates the chapter-planning deck.
-
 ## Structure
 
 One folder per chapter, one markdown file per cut. The current tree is:
@@ -36,40 +33,24 @@ scripts/
   build_chapter_deck.js                     # node scripts/build_chapter_deck.js
 ```
 
-- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter
-  number, not a sequential episode index** — the folders run 2, 3, 5, 8 because
-  those are the chapters chosen off the shortlist in `docs/`; there is no
-  episode-1. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform
-  production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Render
-  trailers in 9:16 vertical format; long form in 16:9 landscape format; record the
-  actual resolution/format at the top of each document.
+- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders run 2, 3, 5, 8 because those are the chapters chosen off the shortlist in `docs/`; Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
-- `docs/` — the plain-English guide and the ranked chapter shortlist that decides
-  which chapter is produced next.
-- `decks/`, `scripts/` — the planning deck and its build script. `.claude/settings.json`
-  denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
+- `docs/` — the plain-English guide and the ranked chapter shortlist that decides which chapter is produced next.
+- `decks/`, `scripts/` — the planning deck and its build script. `.claude/settings.json` denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
 
 Each production document contains, in order:
   - The cut's title, the chapter's Chinese title, and the cut's short name.
   - A link to the final rendered video (plus its resolution/duration/format).
   - The compliance disclaimer as a blockquote.
-  - Narration broken into timed blocks (table: block / beat / narration line),
-    naming the narrator preset and speech rate used.
-  - Where a cut was re-timed off a source script, a **source-script mapping** table
-    (source beat → blocks) plus any naming reconciliations made against this file.
+  - Narration broken into timed blocks (table: block / beat / narration line), naming the narrator preset and speech rate used.
+  - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
-  - A **production record** with the generation-service (Higgsfield) job IDs for
-    every asset — style key image, video clips, voiceover takes, final assembly —
-    then **reproduction notes** on anything that went wrong and how it was resolved.
-    Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text, credits and
-    music that have to be added by hand at edit time.
+  - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
+  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
-  - **Runtime levers** — which blocks to drop to cut shorter, which beats to add
-    to stretch longer.
+  - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
-When adding a new trailer or episode document, follow this same layout so
-production records stay reproducible.
+When adding a new trailer or episode document, follow this same layout so production records stay reproducible.
 `output/episode-8/inner-canon-ch8-trailer-v1.md` is the current reference.
 
 ## Core Cast (recurring)
@@ -84,26 +65,15 @@ New visuals should attach the existing style key image as a reference rather tha
 
 - **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Julian** (`95429266-c0ac-4137-a209-63b8812b0f23`) at `speech_rate` 55. Julian is the series voice as of chapter 3; chapter 2 used Alistair and is superseded — don't recast per chapter.
 
-Fan-di, Dr-Qi and Lei-Gong appear in trailers but never speak, so no character
-voices are cast yet. Longform needs them; whichever voices are chosen become
-series-recurring and get recorded in the production skill's voice table.
+Fan-di, Dr-Qi and Lei-Gong appear in trailers but never speak, so no character voices are cast yet. Longform needs them; whichever voices are chosen become series-recurring and get recorded in the production skill's voice table.
 
 ## Writing conventions
 
-- **Production-episode script format**: markdown with **SOUND / VISUAL /
-  CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act,
-  ON-SCREEN TEXT blocks for classical quotations (rendered as translation,
-  optionally with the ancient script).
-- **Trailer format**: a narration table (block / beat / narration line) broken
-  into fixed 10-second blocks, followed by a numbered shot list keyed to the same
-  blocks, then the production record. See
-  `output/episode-8/inner-canon-ch8-trailer-v1.md`.
+- **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
+- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-8/inner-canon-ch8-trailer-v1.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
-- Target runtime 30-90 sec per trailer. Every trailer cut so far is 60s — six
-  fixed 10-second blocks — and the pipeline assembles fixed 10s windows, so write
-  to whole blocks rather than to arbitrary timings.
+- Target runtime 30-90 sec per trailer.
 - Always include subtitles / closed captions on the final deliverable. Make sure all subtitles wrap on screen and are readable across the entire video. Subtitles with anton font.
-- New script versions get a new file; don't overwrite prior versions.
 
 ## YouTube compliance (apply to every episode)
 
