@@ -71,6 +71,7 @@ New visuals should attach the existing style key image as a reference rather tha
 - Health content stays philosophical narrative, never medical instruction;
   keep the not-medical-advice disclaimer in the description.
 - Self-certify/tag as general audience, **not** "made for kids."
+- Always audit and validate any storyboard, script, voice, video output to ensure that they comply with youtube's regulations.  provide a summary of issues and recommendations.
 
 ## Production toolchain
 
