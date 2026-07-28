@@ -5,9 +5,13 @@ description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfie
 
 # Higgsfield production pipeline
 
-The house pipeline for this repo. Chapters 2 and 3 were both cut this way; the
-failure modes below are ones that already cost a full re-render, so read them
+The house pipeline for this repo. Chapters 2, 3, 5 and 8 were all cut this way;
+the failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
+
+`output/episode-8/inner-canon-ch8-trailer-v1.md` is the reference document —
+match its section order on any new cut. Note that `episode-<N>` is the **Suwen
+chapter number**, not a sequential index, which is why the folders run 2, 3, 5, 8.
 
 **Two cut types.** Steps 1–5 below are written for the **30-90 sec vertical
 trailer** — the only form produced so far, and the one whose numbers are
@@ -24,11 +28,14 @@ Never reorder these — each step consumes the previous step's **job ID**.
 2. **Clips** (`generate_video`) — one per narration block, style key attached to each.
 3. **Voiceover** (`generate_audio`) — one take per block, narrator preset.
 4. **Assembly** (`explainer_video`) — clips + takes, subtitles burned in.
-5. **Production record** — every job ID above written into the chapter document.
+5. **The document** — every job ID above, plus the shot list, compliance audit,
+   manual deliverables and runtime levers.
 
 Check `balance` before a full run (a 6-block trailer is not cheap), and pass
 `get_cost: true` on any generation whose model or params you haven't used here
-before.
+before. **Record the run's actual credit spend in the production record** — four
+trailers have been cut and none logged what it cost, so there is still no
+measured per-trailer figure to estimate a longform run against.
 
 ## 1. Style key
 
@@ -39,6 +46,8 @@ lineage so far:
 95d91291-0b74-4490-9818-b0bfe697e8e3   group shot, from assets/*.png
   └─ 0862b590-30ca-4a28-a904-b4d5a056c6b0   ch2 (four-season motif)
        └─ f73bdd8b-3ab4-4217-8e6d-786e2c1c66e4   ch3 (sun motif)
+            └─ b6adbb81-7746-40c5-b60f-2cbc2c9d2ed0   ch5 (taiji-as-weather + five-direction compass)
+                 └─ 2cfd7596-2d93-4d14-aae4-448b3b9b9f51   ch8 (storehouses / rivers / wrist)  ← current head
 ```
 
 Pass the prior key's **job ID** as the reference and swap only the chapter
@@ -49,14 +58,16 @@ generate_image({ params: {
   model: "nano_banana_pro",
   aspect_ratio: "9:16",
   prompt: "<three-character series key, new chapter motif>",
-  medias: [{ role: "image", value: "f73bdd8b-4a08-..." }]  // job ID, never a URL
+  medias: [{ role: "image", value: "2cfd7596-2d93-4d14-aae4-448b3b9b9f51" }]  // ch8 key: job ID, never a URL
 }})
 ```
 
 `medias[].value` takes a `media_id` or a prior `job_id` **only**. A `https://`
 URL there fails. If you do need a local `assets/*.png`, upload via `media_upload`
 first — but see the network-policy note at the bottom, that path is often
-blocked from this host.
+blocked from this host. The current art is `emperor-Fan.png`, `wise-Qi-2.png`,
+`witty-Lei.png`; the `-3` / `-3a` filenames in the ch2 record are from an older
+naming and no longer resolve.
 
 ## 2. Clips
 
@@ -69,13 +80,31 @@ Do both of these, every time:
 - pass `aspect_ratio: "9:16"` explicitly, and
 - write "vertical 9:16 portrait framing" into the prompt text itself.
 
-**Decline preset swaps.** The service will offer to replace your prompt with a
-stock preset ("3D RENDER", "IN THE DARK") when it keys on words in the NEGATIVE
-line. Accepting breaks the flat-2D house style. Retry with
-`declined_preset_id: "<the offered id>"`.
+The double declaration has held on every chapter since: 3 re-rendered without it,
+then 5 and 8 both came back 720×1280 on the first pass with it. Don't drop it.
+
+**Decline preset swaps.** The service offers to replace your prompt with a stock
+preset, and accepting breaks the flat-2D house style. Retry with
+`declined_preset_id: "<the offered id>"` — it takes **one id per call**, so
+budget a retry for each newly-triggered preset.
+
+| Preset | ID | Triggered by |
+|---|---|---|
+| IN THE DARK | `24bae836-2c4a-48e0-89b6-49fcc0b21612` | any dim/night-lit scene — 5 of 6 ch5 prompts |
+| DROWN IN MUSIC | `f1821f84-945b-4cd1-9085-1f479db0028e` | "rhythm" / "rhythmic" (ch8 block 3) |
+| 3D RENDER | *not recorded* | ch3, off the NEGATIVE line |
+
+The trigger is **prompt vocabulary anywhere in the request, not just the NEGATIVE
+line and not just darkness** — that was the ch3 reading and ch8 disproved it.
+Pre-decline `IN THE DARK` on every clip (ch5 did this and saved a full round of
+retries); handle the rest as they fire.
+
+`gemini_omni` echoes the media role back as `image` while the backend coerces it
+to `image_references`. Expected, harmless, seen on every chapter — not a failure.
 
 Keep the clips **text-free** — no titles, no captions in-frame. Captions are
-burned server-side at assembly.
+burned server-side at assembly. (Longform quotation cards are the one exception;
+see below.)
 
 ## 3. Voiceover
 
@@ -84,8 +113,8 @@ what fits a line inside a fixed 10s block. Known preset IDs:
 
 | Voice | ID | Used in |
 |---|---|---|
-| **Julian** (current series narrator, per CLAUDE.md) | `95429266-c0ac-4137-a209-63b8812b0f23` | ch3 |
-| Alistair | `d9d5c263-f84e-4752-97b5-3750fcc6fd2f` | ch2 |
+| **Julian** (current series narrator, per CLAUDE.md) | `95429266-c0ac-4137-a209-63b8812b0f23` | ch3, ch5, ch8 |
+| Alistair (superseded after ch2 — do not recast) | `d9d5c263-f84e-4752-97b5-3750fcc6fd2f` | ch2 |
 | Fan-di | *not yet cast* | — |
 | Dr-Qi | *not yet cast* | — |
 | Lei-Gong | *not yet cast* | — |
@@ -94,10 +123,38 @@ The three character voices are only needed for longform (the trailer's
 characters never speak). Once cast, fill them in here — they're series-recurring
 and must not be re-picked per chapter.
 
-One take per block. Record each take's **duration** alongside its job ID —
-takes land ~5.5–10s and the record is how you know a block was comfortable or
-tight. Only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but never
-have lines. That is deliberate — the narrator carries every compliance hedge.
+One take per block. Record each take's **duration** alongside its job ID — the
+record is how you know a block was comfortable or tight.
+
+### Write to 6–8 seconds. This is the most expensive thing to get wrong.
+
+Both re-render events on chapters 5 and 8 were narration length, in opposite
+directions, so treat the window as two-sided:
+
+- **Too long** — ch5's first pass ran ~28–30 words per line and came back
+  9.5–11.6s against a fixed 10s block. Four of six overshot outright. The
+  assembler would have pitch-safely sped them up, breaking the narrator's
+  measured register. **All six were re-cut.**
+- **Too short** — ch8 over-corrected to a hard ~22-word ceiling and got 4.7s and
+  3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
+  stall, not as breathing room. **Two were re-cut, longer.**
+
+The settled target for **Julian at `speech_rate` 55**:
+
+| | |
+|---|---|
+| Take duration per 10s block | **6–8s** |
+| Line length | ~21–24 words |
+| Delivery rate | ~2.4–3.0 words/sec |
+
+Hard stops (full stops, semicolons) cost more than the word count suggests —
+budget for the pauses, not just the words. More internal commas and fewer full
+stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
+content. These figures are Julian-specific; Alistair (ch2) ran longer at the same
+rate, so re-measure on one block if the voice ever changes.
+
+Only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but never have lines.
+That is deliberate — the narrator carries every compliance hedge.
 
 ## 4. Assembly
 
@@ -118,20 +175,49 @@ Blocks are fixed windows: a short take is centered, a slightly long one is sped
 up pitch-safely, and the video is never stretched — so a 6-block trailer is
 exactly 60s.
 
-## 5. Production record
+## 5. The document
 
-The record is the point of the whole document — it's what makes a cut
-reproducible after the CDN links die. In the chapter file, under
-`## Production record (Higgsfield)`, list:
+New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
+`inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
+overwrite a prior version; its production record is the reproduction evidence for
+the next cut.
 
-- **Style key** — job ID, model, dimensions, and what it was derived from.
+Sections in order, per CLAUDE.md and the ch8 reference — the generation work is
+only half the deliverable, and the three sections after the record are the ones
+most likely to get skipped:
+
+1. Title, Chinese chapter title, cut short name.
+2. Final video link + resolution / duration / format.
+3. The disclaimer blockquote.
+4. **Narration** table (block / beat / line), naming preset and speech rate.
+5. **Source-script mapping** — source beat → blocks, plus any naming
+   reconciliations, where the cut was re-timed off a longer script. CLAUDE.md is
+   the primary instruction in a conflict: ch8 resolved "Chronicle of Balance" →
+   *The Emperor's Inner Canon*, "Xiao-Lei" → **Lei-Gong**, and jade → **blue**
+   cheongsam that way.
+6. **Shot list**, numbered to match the blocks.
+7. **Production record (Higgsfield)** — see below.
+8. **Deliverables the assembler cannot produce** — history lower-third, human
+   editorial credit, licensed guqin music. Always all three; `explainer_video`
+   has no text-overlay parameter and generates no music.
+9. **Compliance notes (YouTube)** — one bullet per repo rule.
+10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
+    reach 1:30.
+
+### Production record (Higgsfield)
+
+The record is what makes a cut reproducible after the CDN links die:
+
+- **Style key** — job ID, model, dimensions, and the full derivation chain.
 - **Clips** — model, duration, resolution, and every block's job ID.
 - **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID *and* duration.
 - **Assembly** — block count, output dimensions, subtitle font, job ID.
+- **Credit spend** for the run.
 - **Reproduction notes** — anything that went wrong and how it was resolved.
 
-Keep superseded job IDs (like ch3's six landscape clips) in the notes, marked as
-superseded. They're evidence for the next chapter, not clutter.
+Keep superseded job IDs (ch3's six landscape clips, ch5's six overlong takes,
+ch8's two short takes and one `nsfw` clip) in the notes, marked as superseded.
+They're evidence for the next chapter, not clutter.
 
 ## Longform episodes (15–20 min)
 
@@ -144,7 +230,7 @@ notes. Where this section contradicts steps 1–5, this section wins.
 
 | | Trailer | Longform |
 |---|---|---|
-| Runtime | 30-60 sec | 17–19 min target (15 floor, 20 ceiling) |
+| Runtime | 30-90 sec (all four cuts so far are 60s) | 17–19 min target (15 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
@@ -252,9 +338,26 @@ expand to reach 120.
   repo host in the chapter 3 session, so `assets/` PNGs couldn't be re-uploaded.
   Fall back to referencing the prior style-key job ID — CLAUDE.md explicitly
   allows this, and it's the better default anyway.
-- **The CDN may be blocked too.** If the final MP4 can't be fetched, don't
-  commit a broken binary — record the CDN URL in the document and note that the
-  user must download and archive it manually. Those links expire.
+- **The CDN may be blocked too.** It has been blocked on every chapter since 3
+  (`CONNECT tunnel failed, 403`), so assume the final MP4 cannot be fetched back
+  for visual QA. When that happens, **say so explicitly in the document** and
+  verify at the job-metadata level instead — all clips at the expected
+  dimensions, every take inside its window, assembly completed — then record the
+  CDN URL for manual download. Those links expire.
+
+### What lands in git
+
+Set by `.gitignore`, which postdates most of this pipeline's runs:
+
+- **Renders are gitignored** (`renders/`, `*.mp4`, audio). Download them to
+  `output/episode-<N>/renders/`; never commit the binary, never `git add -f` it.
+- **Subtitle sidecars (`.srt`/`.vtt`) are tracked and are required
+  deliverables** per CLAUDE.md. They are *not* satisfied by the burned-in
+  captions from `explainer_video`, and no chapter has shipped one yet — all four
+  `output/episode-<N>/` folders are sidecar-less. Resolve where the sidecar comes
+  from (an `explainer_video` return field, or built by hand from the per-block
+  narration table and take durations, which the record already holds) on the next
+  cut, and write the answer here.
 
 ## Compliance gate before generating
 
@@ -264,6 +367,13 @@ non-compliant clip is a paid re-render:
 - Mortality and collapse stay atmospheric — "portraits, not bodies." Chapter 3's
   two collapse passages became a guttering lamp flame and an ink-wash city wall
   under floodwater. No falling bodies, no injury.
+- **Restraint and bound-figure imagery trips the safety filter, even when the
+  subject matter is fine.** Chapter 8's manifesto beat ("bound to ghosts")
+  rendered as an ink figure "wrapped in smoke-cords that hold it still" came back
+  `nsfw` — the restraint, not the theme. Re-cut with no human figures at all (a
+  smoke-covered scroll that cannot be opened, a shut door light cannot pass) and
+  it cleared on the first retry. **Carry that kind of meaning with objects and
+  brush strokes, never with a person.**
 - No feast close-ups: no bottles, no pouring, no drinking.
 - Any supernatural hook must be debunked inside the same cut, not left dangling.
 - The disclaimer blockquote — *"A dramatized adaptation of a classical
@@ -271,6 +381,7 @@ non-compliant clip is a paid re-render:
   description.
 - Self-certify general audience, **not** "made for kids."
 
-New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
-`inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
-overwrite a prior version.
+Run this gate on **prompts before generating**, not just on output — a
+non-compliant clip is a paid re-render. Then write the per-cut audit into the
+document's `## Compliance notes (YouTube)` section, one bullet per rule, so the
+reasoning survives with the cut.
