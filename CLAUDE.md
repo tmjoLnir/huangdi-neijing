@@ -6,33 +6,71 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **video-content-production repository**, not a software project. It holds production documents for *The Emperor's Inner Canon*, a dramatized documentary series adapting the Huangdi Neijing (The Emperor's Inner Canon, the foundational classical text of Chinese medicine).
 
+The one exception to "not a software project" is `scripts/build_chapter_deck.js`,
+a pptxgenjs build script that regenerates the chapter-planning deck.
+
 ## Structure
 
-Production documents are grouped by cut type, one markdown file per cut. The current tree is:
+One folder per chapter, one markdown file per cut. The current tree is:
 
 ```
 CLAUDE.md
-output/episode-2/
-  inner-canon-ch2-trailer-v1.md          # chapter 2 trailer sample
+README.md
+.claude/
+  settings.json                             # Bash permission allow/deny/ask lists
+  skills/higgsfield-production/SKILL.md     # the house generation pipeline
+output/
+  episode-2/inner-canon-ch2-trailer-v1.md
+  episode-3/inner-canon-ch3-trailer-v1.md
+  episode-5/inner-canon-ch5-trailer-v1.md
+  episode-8/inner-canon-ch8-trailer-v1.md   # current reference layout
 assets/
-  emperor-Fan.png               # Fan-di style key art
-  wise-Qi-2.png                 # Dr-Qi style key art
-  witty-Lei.png                 # Lei-Gong style key art
+  emperor-Fan.png                           # Fan-di style key art
+  wise-Qi-2.png                             # Dr-Qi style key art
+  witty-Lei.png                             # Lei-Gong style key art
+docs/
+  huangdi-neijing-layman-guide.md           # plain-English guide + top-20 chapter shortlist
+decks/
+  huangdi-neijing-top20-video-chapters.pptx # built by the script below
+scripts/
+  build_chapter_deck.js                     # node scripts/build_chapter_deck.js
 ```
 
-- `output/` — As new episodes are produced, store file here. For each new chapter, add child folders such as `episode-<N>/` for trailers 30-90 sec cuts (e.g. `inner-canon-ch<N>-trailer-v<M>.md`) and for long-form 15-20 min production documents (`inner-canon-ch<N>-longform-v<M>.md`, etc.). Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
+- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter
+  number, not a sequential episode index** — the folders run 2, 3, 5, 8 because
+  those are the chapters chosen off the shortlist in `docs/`; there is no
+  episode-1. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform
+  production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Render
+  trailers in 9:16 vertical format; long form in 16:9 landscape format; record the
+  actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
+- `docs/` — the plain-English guide and the ranked chapter shortlist that decides
+  which chapter is produced next.
+- `decks/`, `scripts/` — the planning deck and its build script. `.claude/settings.json`
+  denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
 
 Each production document contains, in order:
+  - The cut's title, the chapter's Chinese title, and the cut's short name.
   - A link to the final rendered video (plus its resolution/duration/format).
   - The compliance disclaimer as a blockquote.
-  - Narration broken into timed blocks (table: block / beat / narration line).
+  - Narration broken into timed blocks (table: block / beat / narration line),
+    naming the narrator preset and speech rate used.
+  - Where a cut was re-timed off a source script, a **source-script mapping** table
+    (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for
-    every asset — style key image, video clips, voiceover takes, final assembly.
+    every asset — style key image, video clips, voiceover takes, final assembly —
+    then **reproduction notes** on anything that went wrong and how it was resolved.
+    Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
+  - **Deliverables the assembler cannot produce** — on-screen text, credits and
+    music that have to be added by hand at edit time.
+  - **Compliance notes (YouTube)** — the per-cut audit required below.
+  - **Runtime levers** — which blocks to drop to cut shorter, which beats to add
+    to stretch longer.
 
 When adding a new trailer or episode document, follow this same layout so
 production records stay reproducible.
+`output/episode-8/inner-canon-ch8-trailer-v1.md` is the current reference.
 
 ## Core Cast (recurring)
 
@@ -44,7 +82,11 @@ production records stay reproducible.
 
 New visuals should attach the existing style key image as a reference rather than establishing a new look.
 
-- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. use seed Audio preset **Julian**.
+- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Julian** (`95429266-c0ac-4137-a209-63b8812b0f23`) at `speech_rate` 55. Julian is the series voice as of chapter 3; chapter 2 used Alistair and is superseded — don't recast per chapter.
+
+Fan-di, Dr-Qi and Lei-Gong appear in trailers but never speak, so no character
+voices are cast yet. Longform needs them; whichever voices are chosen become
+series-recurring and get recorded in the production skill's voice table.
 
 ## Writing conventions
 
@@ -54,9 +96,12 @@ New visuals should attach the existing style key image as a reference rather tha
   optionally with the ancient script).
 - **Trailer format**: a narration table (block / beat / narration line) broken
   into fixed 10-second blocks, followed by a numbered shot list keyed to the same
-  blocks, then the production record. See `episode1-trailer-1min.md`.
+  blocks, then the production record. See
+  `output/episode-8/inner-canon-ch8-trailer-v1.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
-- Target runtime 30-90 sec per trailer.
+- Target runtime 30-90 sec per trailer. Every trailer cut so far is 60s — six
+  fixed 10-second blocks — and the pipeline assembles fixed 10s windows, so write
+  to whole blocks rather than to arbitrary timings.
 - Always include subtitles / closed captions on the final deliverable. Make sure all subtitles wrap on screen and are readable across the entire video. Subtitles with anton font.
 - New script versions get a new file; don't overwrite prior versions.
 
@@ -71,10 +116,26 @@ New visuals should attach the existing style key image as a reference rather tha
 - Health content stays philosophical narrative, never medical instruction;
   keep the not-medical-advice disclaimer in the description.
 - Self-certify/tag as general audience, **not** "made for kids."
-- Always audit and validate any storyboard, script, voice, video output to ensure that they comply with youtube's regulations.  provide a summary of issues and recommendations.
+- Always audit and validate any storyboard, script, voice, video output to ensure that they comply with youtube's regulations.  provide a summary of issues and recommendations. Record that audit as a `## Compliance notes (YouTube)` section in the cut's own document, one bullet per rule, so the reasoning survives with the cut.
+- Run the audit on prompts *before* generating, not just on output — a
+  non-compliant clip is a paid re-render. Restraint and bound-figure imagery has
+  tripped the safety filter even where the subject matter was fine; carry the
+  meaning with objects and brush strokes instead of people.
+
+Three requirements the assembler cannot produce, so they are manual steps at
+edit/upload time on every cut:
+
+- **History lower-third** — *"Presented as history & philosophy"*, small, on screen within the first 10 seconds.
+- **Human editorial credit** — *"Written & edited by [HUMAN NAME]"* on the end card and in the description, per the AI-persona policy.
+- **Music** — licensed guqin only; nothing generated by this pipeline. Trailers earn disproportionate plays and carry the higher Content-ID exposure.
 
 ## Production toolchain
 
+- **Read `.claude/skills/higgsfield-production/SKILL.md` before generating
+  anything.** It is the operative pipeline doc — order of operations, model names
+  and parameters, cost preflight, the longform path, and the failure modes that
+  have already cost full re-renders. This section is the summary; the skill is the
+  procedure.
 - Assets are generated through the **Higgsfield** service (exposed here via the
   `mcp__higgsfield__*` tools): `generate_image` for style keys, `generate_video`
   for clips, `generate_audio` for voiceover, and `explainer_video` for final
@@ -82,11 +143,26 @@ New visuals should attach the existing style key image as a reference rather tha
   record so the cut can be reproduced.
 - Attach the existing character style-key art from `assets/` (or the prior
   style-key image job) as the reference on new generations rather than
-  establishing a fresh look.
+  establishing a fresh look. In practice each chapter key chains off the previous
+  one, swapping only the chapter motif — the lineage so far is group shot →
+  ch2 → ch3 → ch5 → ch8. `medias[].value` takes a media ID or a prior job ID only,
+  never a URL.
 - Hosted asset URLs are CDN links from the generation service and may expire —
   user to manually download and archive the final MP4 for any cut worth keeping.
+  Rendered media is gitignored (`renders/`, `*.mp4`, audio); download renders into
+  `output/episode-<N>/renders/`. Subtitle sidecars (`.srt`/`.vtt`) are small text,
+  are required deliverables, and *are* tracked.
+- The generation CDN and `upload.higgsfield.ai` are frequently blocked from the
+  repo host, so a cut often cannot be fetched back for visual QA. When that
+  happens, verify at the job-metadata level (dimensions, per-take durations,
+  assembly completion), say so explicitly in the document, and record the CDN link
+  for manual download rather than committing a broken binary.
 
 ## Git conventions
 
-- Work happens on `claude/<description>-<id>` branches pushed to origin; there is no long-lived main branch in this repo yet.
-- Commit messages describe the content deliverable (e.g. "Add 1-minute Episode 1 trailer: narration, shot list, and final video link").
+- **`claude/main` is the long-lived default branch.** Work happens on
+  `claude/<description>-<id>` branches cut from it, pushed to origin, and merged
+  back via pull request; feature branches are deleted after merge.
+- Commit messages describe the content deliverable (e.g. "Add 1-minute Chapter 8 trailer: narration, shot list, and production record").
+- New script versions get a new file; never overwrite or rewrite a prior version's
+  document, since its production record is the reproduction evidence for the next cut.
