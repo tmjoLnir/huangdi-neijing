@@ -1,0 +1,26 @@
+# .gitattributes — The Emperor's Inner Canon
+
+# Normalize line endings for all text; check out LF everywhere.
+* text=auto eol=lf
+
+# Production documents and scripts are text.
+*.md   text diff=markdown
+*.js   text
+*.json text
+*.srt  text
+*.vtt  text
+
+# Binary deliverables and art — never diff or attempt to merge these.
+# A three-way merge on a .pptx produces a corrupt deck.
+*.pptx binary
+*.potx binary
+*.docx binary
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.mp4  binary
+*.mov  binary
+*.wav  binary
+*.mp3  binary
