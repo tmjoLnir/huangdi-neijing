@@ -136,3 +136,7 @@ edit/upload time on every cut:
 - Commit messages describe the content deliverable (e.g. "Add 1-minute Chapter 8 trailer: narration, shot list, and production record").
 - New script versions get a new file; never overwrite or rewrite a prior version's
   document, since its production record is the reproduction evidence for the next cut.
+
+## Prompt cleaner
+
+- Always prompt the user to clean up the initial prompt. Suggest the best prompt in order to achieve a consistent output required from this document and from the SKILL.md document.
