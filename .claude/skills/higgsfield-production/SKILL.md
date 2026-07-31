@@ -41,22 +41,37 @@ Never reorder these — each step consumes the previous step's **job ID**.
 were cut without logging cost, so there is no historical figure to check an
 estimate against — start the series now.
 
-## 0. Model + tier gate — ask before spending
+## 0. Model + tier gate — cost it, then confirm
 
-**There is no default clip model, by explicit instruction.** Chapters 2–8 all
-used `gemini_omni`, which makes it the *incumbent*, not the house standard — it
-is mid-priced and capped at 720p, and cheaper and sharper options both exist. The
-user was offered a standing default on 2026-07-31 and chose not to set one, so
-**the model is a live question on every cut**. Do not quietly carry the previous
-chapter's model forward; put the shortlist in front of them.
+**Default: `seedance_2_0_mini` at 480p** — set by the user 2026-07-31. 10
+credits/clip, ~66 for a 6-block trailer, and it takes the style key as a true
+`image_references` input, which is the one thing the house look requires.
+
+This replaces `gemini_omni`, which chapters 2–8 used. `gemini_omni` is the
+*incumbent*, not the standard, and at 30 credits/clip it costs 3× the default for
+a 720p ceiling. Do not carry it forward out of habit.
+
+**480p is a step down from the 720×1280 that chapters 2–8 shipped.** For a draft
+pass that is the point. Before publishing a 480p cut as a final Shorts/Reels
+deliverable, say so and get an explicit yes — the same model at 720p is 25/clip
+(~156/cut) and keeps the draft's look, so it is the natural full-render tier.
+Whichever ships, record the actual resolution at the top of the document.
 
 Before generating anything on a new cut, do all four:
 
 1. Call **`balance`** and state the current credit figure.
-2. Call **`get_cost: true`** on one representative clip in each candidate
+2. Call **`get_cost: true`** on one representative clip in the chosen
    configuration. Prices move; never quote this file's numbers as live.
-3. Present the shortlist with **cost per clip and cost for the whole cut**.
-4. Ask the user for **model** and **Draft pass vs Full render**, and wait.
+3. State the **cost per clip and cost for the whole cut**, and name the default.
+4. Confirm **model** and **Draft/Full** with the user, and wait. The default
+   makes this a confirmation, not an open question — but it is still a gate, and
+   a chapter that wants a different model gets the shortlist below.
+
+**`seedance_2_0_mini` is unproven on this series.** Every failure mode recorded
+in this skill was learned on `gemini_omni`. On the first cut that uses it:
+generate **one** clip, check the returned dimensions and the house look against
+the style key, and only then generate the rest. Write what actually happened into
+that cut's reproduction notes.
 
 ### Draft pass vs Full render
 
@@ -69,10 +84,13 @@ They are different jobs, not quality settings:
 | | Draft pass | Full render |
 |---|---|---|
 | Purpose | Prove blocking, pacing, narration-against-picture, and the compliance read | The deliverable |
-| Resolution | 480p | 720p+ |
-| Model | budget tier | chosen house model |
+| Model | `seedance_2_0_mini` (default) | `seedance_2_0_mini` — same model, so the draft predicts the render |
+| Resolution | **480p** — 10/clip, ~66/cut | **720p** — 25/clip, ~156/cut |
 | Subtitles | skip (`subtitles` omitted) | `anton`, always |
 | Output | never published, never linked as the final video | the cut |
+
+Staying on one model across both tiers is deliberate: a draft in a different
+model tells you about that model's blocking, not the one you ship.
 
 A draft is worth it when the cut is doing something new — an untried model, a new
 motif, a beat that might trip the safety filter, a shot list nobody has seen
@@ -97,9 +115,9 @@ The binding constraint is not price. It is the **reference role**:
 
 | Model | Ref role | Res | Credits/clip | 6-block cut | Notes |
 |---|---|---|---|---|---|
-| `seedance_2_0_mini` | `image_references` | 480p | **10** | ~66 | **Draft tier of choice** |
+| **`seedance_2_0_mini`** | `image_references` | **480p** | **10** | **~66** | **← house default / draft tier** |
 | `seedance_2_0` | `image_references` | 480p fast | 15 | ~96 | draft, better motion |
-| `seedance_2_0_mini` | `image_references` | 720p | 25 | ~156 | cheapest delivery-grade |
+| **`seedance_2_0_mini`** | `image_references` | **720p** | **25** | **~156** | **← full-render tier** |
 | `wan2_6` | `image_references` | 720p | 25 | ~156 | stylized/experimental |
 | `gemini_omni` | `image_references` | 720p | **30** | **~186** | incumbent, ch2–8; 720p ceiling |
 | `seedance_2_0` | `image_references` | 720p fast | 35 | ~216 | |
@@ -158,11 +176,14 @@ naming and no longer resolve.
 
 ## 2. Clips
 
-The model comes from the step-0 gate. 10s per block, one clip per block, style
-key attached to every clip. Everything below is model-independent unless it says
-otherwise; **record which model and tier the cut used** in the production record,
-because the notes here were learned on `gemini_omni` and a new model invalidates
-them until re-verified.
+The model comes from the step-0 gate — `seedance_2_0_mini` by default, 480p for a
+draft and 720p for the render. 10s per block, one clip per block, style key
+attached to every clip, `generate_audio: false`.
+
+Everything below is model-independent unless it says otherwise. **Record which
+model and tier the cut used** in the production record: the notes here were
+learned on `gemini_omni`, and the default has moved off it, so treat each one as
+unconfirmed on `seedance_2_0_mini` until a cut proves it either way.
 
 **Declare the aspect ratio twice.** `gemini_omni` does not inherit vertical
 framing from a 9:16 style key — in chapter 3 all six clips came back 1280×720
@@ -354,8 +375,8 @@ can afford and one you cannot:
 
 | Clip model / tier | Credits/clip | ~114 blocks | vs 1,037 balance |
 |---|---|---|---|
-| `seedance_2_0_mini` 480p (draft) | 10 | **~1,145** | over budget |
-| `seedance_2_0_mini` 720p | 25 | ~2,855 | ~3× balance |
+| `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,145** | over budget |
+| `seedance_2_0_mini` 720p (default, full) | 25 | ~2,855 | ~3× balance |
 | `gemini_omni` 720p | 30 | ~3,425 | ~3.3× balance |
 | `seedance_2_0` 1080p | 90 | ~10,265 | ~10× balance |
 
@@ -445,11 +466,14 @@ again at the end would double-burn.
 
 ### Finishing
 
-720p reads softer over 19 minutes than it does over 60 seconds, and it is
-`gemini_omni`'s ceiling. Two ways up, and the cheap one usually wins: generate at
-720p and run `upscale_video` on the **final assembly** (one job), or pay
-`seedance_2_0` 1080p per clip (~2× the per-clip price across ~110 clips). Never
-upscale ~110 individual clips.
+720p reads softer over 19 minutes than it does over 60 seconds, and it is both
+`seedance_2_0_mini`'s and `gemini_omni`'s ceiling. Two ways up, and the cheap one
+usually wins: generate at 720p and run `upscale_video` on the **final assembly**
+(one job), or move to `seedance_2_0` at 1080p and pay ~3.6× the default's
+per-clip price across ~110 clips. Never upscale ~110 individual clips.
+
+The same applies to a 480p trailer that turns out worth keeping — upscale the
+finished 60s cut rather than re-rendering six clips.
 
 ### Runtime levers
 
