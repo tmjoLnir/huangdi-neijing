@@ -20,9 +20,9 @@ mechanics, then read [Longform episodes](#longform-episodes-1520-min), which
 overrides the aspect ratio, block count, voice handling, and assembly strategy.
 Everything from *Environment caveats* onward applies to both.
 
-**Step 0 is a hard gate on both.** No clip model is assumed, and nothing
-generates until the user has seen the balance, the costed options, and chosen
-Draft or Full.
+**Step 0 is a hard gate on both.** There is a default clip model and tier, but it
+is a starting point to confirm, not a licence to spend — nothing generates until
+the user has seen the balance, the costed estimate, and confirmed Draft or Full.
 
 ## Order of operations
 
