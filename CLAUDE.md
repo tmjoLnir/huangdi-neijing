@@ -139,4 +139,4 @@ edit/upload time on every cut:
 
 ## Prompt cleaner
 
-- Always prompt the user to clean up the initial prompt. Strip out words that does not tell the model what to do. Re-write and suggest a new prompt with specific words that the model need to achieve a consistent output required from this document and from the SKILL.md document. get a confirmation from the user before proceeding with generating the output.
+- Always prompt the user to clean up the initial prompt. Strip out words that does not tell the model what to do. Re-write and suggest a new prompt with specific words that the model need to achieve a consistent output required from this document and from the SKILL.md document. Get a confirmation from the user before proceeding with the next steps.
