@@ -13,17 +13,23 @@ before generating anything.
 match its section order on any new cut. Note that `episode-<N>` is the **Suwen
 chapter number**, not a sequential index, which is why the folders run 2, 3, 5, 8.
 
-**Two cut types.** Steps 1–5 below are written for the **30-90 sec vertical
+**Two cut types.** Steps 0–5 below are written for the **30-90 sec vertical
 trailer** — the only form produced so far, and the one whose numbers are
 battle-tested. For a **15–20 minute longform episode**, read those steps for the
 mechanics, then read [Longform episodes](#longform-episodes-1520-min), which
 overrides the aspect ratio, block count, voice handling, and assembly strategy.
 Everything from *Environment caveats* onward applies to both.
 
+**Step 0 is a hard gate on both.** No clip model is assumed, and nothing
+generates until the user has seen the balance, the costed options, and chosen
+Draft or Full.
+
 ## Order of operations
 
 Never reorder these — each step consumes the previous step's **job ID**.
 
+0. **Model + tier gate** — call `balance`, cost the options, and get the user's
+   choice of clip model and Draft/Full. Nothing generates before this.
 1. **Style key** (`generate_image`) — one vertical key image per chapter.
 2. **Clips** (`generate_video`) — one per narration block, style key attached to each.
 3. **Voiceover** (`generate_audio`) — one take per block, narrator preset.
@@ -31,11 +37,92 @@ Never reorder these — each step consumes the previous step's **job ID**.
 5. **The document** — every job ID above, plus the shot list, compliance audit,
    manual deliverables and runtime levers.
 
-Check `balance` before a full run (a 6-block trailer is not cheap), and pass
-`get_cost: true` on any generation whose model or params you haven't used here
-before. **Record the run's actual credit spend in the production record** — four
-trailers have been cut and none logged what it cost, so there is still no
-measured per-trailer figure to estimate a longform run against.
+**Record the run's actual credit spend in the production record.** Chapters 2–8
+were cut without logging cost, so there is no historical figure to check an
+estimate against — start the series now.
+
+## 0. Model + tier gate — ask before spending
+
+**There is no default clip model, by explicit instruction.** Chapters 2–8 all
+used `gemini_omni`, which makes it the *incumbent*, not the house standard — it
+is mid-priced and capped at 720p, and cheaper and sharper options both exist. The
+user was offered a standing default on 2026-07-31 and chose not to set one, so
+**the model is a live question on every cut**. Do not quietly carry the previous
+chapter's model forward; put the shortlist in front of them.
+
+Before generating anything on a new cut, do all four:
+
+1. Call **`balance`** and state the current credit figure.
+2. Call **`get_cost: true`** on one representative clip in each candidate
+   configuration. Prices move; never quote this file's numbers as live.
+3. Present the shortlist with **cost per clip and cost for the whole cut**.
+4. Ask the user for **model** and **Draft pass vs Full render**, and wait.
+
+### Draft pass vs Full render
+
+**House default: Draft then Full.** Confirmed by the user 2026-07-31. Still ask —
+a routine chapter in a proven configuration can waive the draft — but draft is
+the assumption to argue *out of*, not into.
+
+They are different jobs, not quality settings:
+
+| | Draft pass | Full render |
+|---|---|---|
+| Purpose | Prove blocking, pacing, narration-against-picture, and the compliance read | The deliverable |
+| Resolution | 480p | 720p+ |
+| Model | budget tier | chosen house model |
+| Subtitles | skip (`subtitles` omitted) | `anton`, always |
+| Output | never published, never linked as the final video | the cut |
+
+A draft is worth it when the cut is doing something new — an untried model, a new
+motif, a beat that might trip the safety filter, a shot list nobody has seen
+moving. It is waste on a routine chapter in a proven configuration.
+
+**Voice takes survive the upgrade.** They are ~0.6 credits each and resolution-
+independent, so generate them once and reuse them in the full render. A
+draft → full upgrade only re-pays for clips.
+
+### Clip model shortlist
+
+Measured 2026-07-31 at 10s / 9:16 / native audio off. **Re-preflight before
+quoting these to anyone** — this is a snapshot, not an API.
+
+The binding constraint is not price. It is the **reference role**:
+
+- **`image_references`** — the model treats the style key as a *character and
+  style reference*. This is what the house look depends on.
+- **`start_image`** — the model treats it as literal frame 1 and animates away
+  from it. A cheap model in this column is not a cheap substitute; it is a
+  different pipeline.
+
+| Model | Ref role | Res | Credits/clip | 6-block cut | Notes |
+|---|---|---|---|---|---|
+| `seedance_2_0_mini` | `image_references` | 480p | **10** | ~66 | **Draft tier of choice** |
+| `seedance_2_0` | `image_references` | 480p fast | 15 | ~96 | draft, better motion |
+| `seedance_2_0_mini` | `image_references` | 720p | 25 | ~156 | cheapest delivery-grade |
+| `wan2_6` | `image_references` | 720p | 25 | ~156 | stylized/experimental |
+| `gemini_omni` | `image_references` | 720p | **30** | **~186** | incumbent, ch2–8; 720p ceiling |
+| `seedance_2_0` | `image_references` | 720p fast | 35 | ~216 | |
+| `seedance_2_0` | `image_references` | 720p std | 45 | ~276 | |
+| `wan2_6` | `image_references` | 1080p | 40 | ~246 | breaks the 720p house res |
+| `seedance_2_0` | `image_references` | 1080p std | 90 | ~546 | |
+| `cinematic_studio_3_0` | `image` | 480p / 720p | 35 / 50 | ~216 / ~306 | role is `image`, not verified as true reference |
+
+Costed but **not viable here** — they take `start_image` only, so the style key
+would become frame 1 rather than a style reference: `kling3_0` (15), `kling3_0_turbo`
+(15), `minimax_hailuo` (11), `happy_horse_video` (25), `veo3_1` (22), `grok_video_v15`.
+Also duration-incompatible with the fixed 10s block: `veo3_1_lite` (8 credits, but
+4/6/8s only), `seedance1_5` (4/8/12s), `veo3` (no duration control).
+
+Fixed costs per 6-block trailer, independent of clip model: style key **2**
+(`nano_banana_pro`, 1k), voiceover **0.6/take** = 3.6, subtitles **0.05/voiced
+block** = 0.3, assembly free. **≈5.9 credits.**
+
+**Turn native audio off.** `seedance_*` default `generate_audio: true`, `kling*`
+and `cinematic_studio_video*` default `sound: on`, and `wan`/`grok`/`gemini_omni`
+generate audio natively. `explainer_video` replaces per-block audio with the
+narrator take anyway, so generated audio is discarded — you would be paying for a
+soundtrack that gets thrown away, and on some models it raises the per-clip price.
 
 ## 1. Style key
 
@@ -71,17 +158,23 @@ naming and no longer resolve.
 
 ## 2. Clips
 
-Model `gemini_omni`, 10s, one per block, style key attached to every clip.
+The model comes from the step-0 gate. 10s per block, one clip per block, style
+key attached to every clip. Everything below is model-independent unless it says
+otherwise; **record which model and tier the cut used** in the production record,
+because the notes here were learned on `gemini_omni` and a new model invalidates
+them until re-verified.
 
-**`gemini_omni` does not inherit vertical framing from a 9:16 style key.** In
-chapter 3 all six clips came back 1280×720 landscape and had to be regenerated.
-Do both of these, every time:
+**Declare the aspect ratio twice.** `gemini_omni` does not inherit vertical
+framing from a 9:16 style key — in chapter 3 all six clips came back 1280×720
+landscape and had to be regenerated. Every time:
 
 - pass `aspect_ratio: "9:16"` explicitly, and
 - write "vertical 9:16 portrait framing" into the prompt text itself.
 
 The double declaration has held on every chapter since: 3 re-rendered without it,
 then 5 and 8 both came back 720×1280 on the first pass with it. Don't drop it.
+**Check the first clip's returned dimensions before generating the other five**,
+on any model — one wasted clip beats six.
 
 **Decline preset swaps.** The service offers to replace your prompt with a stock
 preset, and accepting breaks the flat-2D house style. Retry with
@@ -99,8 +192,13 @@ line and not just darkness** — that was the ch3 reading and ch8 disproved it.
 Pre-decline `IN THE DARK` on every clip (ch5 did this and saved a full round of
 retries); handle the rest as they fire.
 
+Preset offers are a Higgsfield-service behaviour, not a `gemini_omni` one, so
+expect them on any model.
+
 `gemini_omni` echoes the media role back as `image` while the backend coerces it
 to `image_references`. Expected, harmless, seen on every chapter — not a failure.
+Other models declare their roles differently; check `models_explore` rather than
+assuming this coercion happens everywhere.
 
 Keep the clips **text-free** — no titles, no captions in-frame. Captions are
 burned server-side at assembly. (Longform quotation cards are the one exception;
@@ -166,10 +264,15 @@ explainer_video({ params: {
 }})
 ```
 
-`width`/`height` must match the source clips (720×1280 for a vertical trailer),
-blocks go in final play order, and `subtitles.font` is always `anton` — the repo
-rule is that every deliverable ships captioned. Assembly itself is free;
-subtitles cost 0.05 credit per voiced block.
+`width`/`height` must match **the source clips as actually returned** — 720×1280
+for a full-tier vertical trailer, but a 480p draft comes back smaller, so read
+the dimensions off the clip jobs rather than pasting 720×1280. Blocks go in final
+play order.
+
+`subtitles.font` is always `anton` on a **full render** — the repo rule is that
+every deliverable ships captioned. **Omit `subtitles` entirely on a draft pass**:
+they cost 0.05/voiced block, and a draft is judged on blocking and pacing, not
+captions. Assembly itself is free.
 
 Blocks are fixed windows: a short take is centered, a slightly long one is sped
 up pitch-safely, and the video is never stretched — so a 6-block trailer is
@@ -209,7 +312,9 @@ most likely to get skipped:
 The record is what makes a cut reproducible after the CDN links die:
 
 - **Style key** — job ID, model, dimensions, and the full derivation chain.
-- **Clips** — model, duration, resolution, and every block's job ID.
+- **Clips** — model **and tier (Draft/Full)**, duration, resolution, and every
+  block's job ID. Name the model explicitly; it is a per-cut choice now, and a
+  future chapter cannot reproduce the look without it.
 - **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID *and* duration.
 - **Assembly** — block count, output dimensions, subtitle font, job ID.
 - **Credit spend** for the run.
@@ -243,10 +348,27 @@ before a full run**, because it's ~110 clips to get wrong.
 
 ### Preflight — this is ~19× a trailer
 
-Check `balance` first, and `get_cost: true` on one representative clip, then
-multiply. Assembly stays free; subtitles run 0.05 credit per voiced block, so
-~114 blocks ≈ 5.7 credits on captions alone. Never launch a full episode
-without a costed estimate in hand.
+Run the step-0 gate and multiply by ~114 blocks before anything else. At the
+2026-07-31 snapshot prices, the model choice is the difference between a cut you
+can afford and one you cannot:
+
+| Clip model / tier | Credits/clip | ~114 blocks | vs 1,037 balance |
+|---|---|---|---|
+| `seedance_2_0_mini` 480p (draft) | 10 | **~1,145** | over budget |
+| `seedance_2_0_mini` 720p | 25 | ~2,855 | ~3× balance |
+| `gemini_omni` 720p | 30 | ~3,425 | ~3.3× balance |
+| `seedance_2_0` 1080p | 90 | ~10,265 | ~10× balance |
+
+**A full-length episode does not currently fit in the credit balance at any
+tier** — even an all-draft pass overruns it. Say so plainly and get a decision
+before starting: top up, cut the runtime, or produce act by act across billing
+periods. Assembly stays free; subtitles run 0.05/voiced block (~5.7 credits over
+an episode) and voice takes ~0.6 each (~68), so clips are essentially the entire
+bill and the model choice *is* the budget.
+
+A **Draft pass matters far more here than on a trailer** — 114 blocks of wrong
+pacing is unrecoverable. Draft the whole episode at 480p, watch it end to end,
+then re-render only the clips at full tier, reusing every voice take.
 
 `explainer_video` caps at **180 blocks** (30 min), so a 20-minute episode at
 120 blocks has headroom — the cap is not the binding constraint. Cost and
@@ -261,9 +383,11 @@ lineage entry — don't overwrite the vertical key, the trailer still needs it.
 
 ### Script → blocks
 
-`gemini_omni` maxes at **10s per clip and 720p** (verified via
-`models_explore`), so an episode is ~110 fixed 10s windows regardless of how the
-script is written. Break each act into 10s beats and number them continuously
+10s is the working block length, so an episode is ~110 fixed windows regardless
+of how the script is written. `gemini_omni` caps at 10s/720p; `seedance_2_0`,
+`wan2_6` and `kling3_0` go to 15s, which would cut the block count by a third and
+change the whole document's numbering — treat a longer block as a deliberate
+format decision for the user, not a quiet optimisation. Number blocks continuously
 across the whole episode (`block 47`), not per-act — the assembly `items` array
 is flat and act-local numbering makes off-by-one errors that are expensive to
 find in a 19-minute render.
@@ -321,9 +445,11 @@ again at the end would double-burn.
 
 ### Finishing
 
-720p is `gemini_omni`'s ceiling and reads softer over 19 minutes than it does
-over 60 seconds. If it needs to be sharper, run `upscale_video` on the **final
-assembly**, not on ~110 individual clips — one job instead of a hundred.
+720p reads softer over 19 minutes than it does over 60 seconds, and it is
+`gemini_omni`'s ceiling. Two ways up, and the cheap one usually wins: generate at
+720p and run `upscale_video` on the **final assembly** (one job), or pay
+`seedance_2_0` 1080p per clip (~2× the per-clip price across ~110 clips). Never
+upscale ~110 individual clips.
 
 ### Runtime levers
 
