@@ -86,8 +86,14 @@ They are different jobs, not quality settings:
 | Purpose | Prove blocking, pacing, narration-against-picture, and the compliance read | The deliverable |
 | Model | `seedance_2_0_mini` (default) | `seedance_2_0_mini` — same model, so the draft predicts the render |
 | Resolution | **480p** — 10/clip, ~66/cut | **720p** — 25/clip, ~156/cut |
-| Subtitles | skip (`subtitles` omitted) | `anton`, always |
+| Subtitles | **`anton`, always** — the draft is the caption check | **`anton`, always** |
 | Output | never published, never linked as the final video | the cut |
+
+**Subtitles run on the draft too.** They cost 0.05/voiced block — 0.3 credits on
+a 6-block trailer, i.e. nothing — and the draft is the only chance to catch
+caption overflow before paying full price for the render. A draft without
+captions cannot verify the repo's readability rule, which makes it a worse draft
+for no meaningful saving.
 
 Staying on one model across both tiers is deliberate: a draft in a different
 model tells you about that model's blocking, not the one you ship.
@@ -272,6 +278,11 @@ stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
 content. These figures are Julian-specific; Alistair (ch2) ran longer at the same
 rate, so re-measure on one block if the voice ever changes.
 
+**This line is also the subtitle.** Captions are Whisper-transcribed from the
+take and broken at the clauses you wrote, so narration phrasing decides whether
+captions fit the frame — see [Caption wrapping](#caption-wrapping--there-is-no-parameter-for-it).
+Short clauses serve both the 10s window and the caption width at once.
+
 Only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but never have lines.
 That is deliberate — the narrator carries every compliance hedge.
 
@@ -290,10 +301,91 @@ for a full-tier vertical trailer, but a 480p draft comes back smaller, so read
 the dimensions off the clip jobs rather than pasting 720×1280. Blocks go in final
 play order.
 
-`subtitles.font` is always `anton` on a **full render** — the repo rule is that
-every deliverable ships captioned. **Omit `subtitles` entirely on a draft pass**:
-they cost 0.05/voiced block, and a draft is judged on blocking and pacing, not
-captions. Assembly itself is free.
+`subtitles: { font: "anton" }` goes on **every assembly, draft and full alike**.
+CLAUDE.md requires every deliverable to ship captioned, and running them on the
+draft is what makes the draft able to catch a caption problem. Assembly is free;
+subtitles cost 0.05/voiced block (0.3 on a 6-block trailer).
+
+### Caption wrapping — there is no parameter for it
+
+**The API exposes exactly one subtitle option: `font`** (`patrick`, `caveat`,
+`marker`, `anton`). The `subtitles` object is `additionalProperties: false`, so
+there is **no** line-width, max-characters-per-line, wrap, position, or
+font-size control, and inventing one gets the call rejected. Do not promise the
+user a wrap setting — there isn't one.
+
+What actually governs caption width: the backend transcribes the **voiceover**
+with Whisper word timestamps and chunks it into short phrases timed to speech.
+So the caption line breaks follow **the narration you wrote**. That makes
+phrasing the only real lever:
+
+- **Write in short clauses.** Commas, full stops and semicolons are where the
+  chunker breaks. A 24-word line of three clauses captions cleanly; the same 24
+  words as one unbroken clause is the one at risk of a long line.
+- This lines up with the 6–8s / ~21–24 word rule in step 3 — narration written
+  to fit the block also captions to fit the frame. A line that reads long is
+  usually a line that wraps badly.
+- **9:16 is the hard case.** A 720-wide vertical frame gives captions roughly
+  half the horizontal room of the 1280-wide longform frame, so a phrase that is
+  fine in 16:9 can overflow in 9:16. Judge wrapping on the vertical cut.
+- `anton` is heavy but condensed, which fits more characters per line than the
+  other three. It is the house font and also the safest of the four here; do not
+  switch fonts to fix a wrapping problem, shorten the clause instead.
+
+**Verification is visual, and this host usually cannot do it.** The CDN has been
+blocked since chapter 3, so the rendered MP4 generally cannot be fetched back —
+meaning burned-in caption overflow *cannot* be confirmed from the repo host.
+So: whoever reviews the draft checks captions on the actual video, and the
+production record states whether captions were **visually verified** or only
+assembled. Never write that captions wrap correctly if nobody watched the file.
+
+If a burned-in caption does overflow, fix it by **re-recording that block's
+voice take with shorter clauses** and re-assembling — a re-take is ~0.6 credits
+and the clips are untouched. Do not re-render video for a caption problem.
+
+### The guaranteed path — sidecar + libass burn
+
+Everything above is best-effort: the assembler's captions cannot be constrained,
+only influenced. When the fit has to be a **guarantee**, don't use them.
+
+```
+node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md
+node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
+```
+
+The script reads the cut's **own production document** — the narration table for
+text, the production record's voiceover line for each take's duration — and
+writes `.srt` and `.vtt` beside it. No new data to maintain, and no dependencies
+(`npm install` is denied in `.claude/settings.json`).
+
+Two mechanisms make the fit real, and the second is the one that guarantees it:
+
+1. **Pre-wrap.** Cues are split at clause boundaries and wrapped to a character
+   budget computed from frame width, margins and Anton's advance widths —
+   ~22 chars/line at 9:16 720×1280, max 2 lines. The script prints the widest
+   line in pixels against the usable width, so overflow is visible as a number
+   before anything is rendered.
+2. **libass margins.** The printed `ffmpeg` command burns with
+   `force_style='…MarginL=58,MarginR=58,WrapStyle=0…'`. libass measures the real
+   Anton glyphs and wraps inside those margins — it *cannot* draw outside them.
+   That is the guarantee; step 1 only keeps the result from looking mechanical.
+
+Timing follows the assembler's own rule — fixed 10s windows with a short take
+centered — so the sidecar lines up with an `explainer_video` cut without manual
+nudging. The script warns and assumes a full 10s for any block whose take
+duration is missing from the record.
+
+**Which to use.** Burned-in `anton` captions are fine for the draft and for a
+routine cut. Use the sidecar path when the fit must be guaranteed, when a cut is
+going out on a platform whose chrome crowds the lower third, or when a reviewer
+has flagged overflow. The two are alternatives: burning a sidecar over a cut that
+already has burned-in captions double-layers them — assemble **without**
+`subtitles` when you intend to burn the sidecar.
+
+`.srt`/`.vtt` are **tracked deliverables** per CLAUDE.md and are exempted in
+`.gitignore` — commit them with the cut. Chapters 2, 3, 5 and 8 all have theirs
+generated and committed; regenerate after any narration or take change so the
+sidecar never drifts from the document.
 
 Blocks are fixed windows: a short take is centered, a slightly long one is sped
 up pitch-safely, and the video is never stretched — so a 6-block trailer is
@@ -324,6 +416,8 @@ most likely to get skipped:
 8. **Deliverables the assembler cannot produce** — history lower-third, human
    editorial credit, licensed guqin music. Always all three; `explainer_video`
    has no text-overlay parameter and generates no music.
+   Ship the `.srt`/`.vtt` sidecar alongside the document (step 4 of the
+   assembly section builds it).
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
     reach 1:30.
@@ -337,7 +431,9 @@ The record is what makes a cut reproducible after the CDN links die:
   block's job ID. Name the model explicitly; it is a per-cut choice now, and a
   future chapter cannot reproduce the look without it.
 - **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID *and* duration.
-- **Assembly** — block count, output dimensions, subtitle font, job ID.
+- **Assembly** — block count, output dimensions, subtitle font, job ID, and
+  whether captions were **visually verified** or only assembled (the CDN is
+  usually blocked here, so say which).
 - **Credit spend** for the run.
 - **Reproduction notes** — anything that went wrong and how it was resolved.
 
@@ -383,9 +479,10 @@ can afford and one you cannot:
 **A full-length episode does not currently fit in the credit balance at any
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision
 before starting: top up, cut the runtime, or produce act by act across billing
-periods. Assembly stays free; subtitles run 0.05/voiced block (~5.7 credits over
-an episode) and voice takes ~0.6 each (~68), so clips are essentially the entire
-bill and the model choice *is* the budget.
+periods. Assembly stays free; subtitles run 0.05/voiced block (~5.7 credits per
+captioned pass, so ~11.4 if you draft then render) and voice takes ~0.6 each
+(~68, paid once and reused), so clips are essentially the entire bill and the
+model choice *is* the budget.
 
 A **Draft pass matters far more here than on a trailer** — 114 blocks of wrong
 pacing is unrecoverable. Draft the whole episode at 480p, watch it end to end,
@@ -460,9 +557,22 @@ Do not attempt ~110 clips in one unbroken pass. Per act:
 3. Assemble the act as its own `explainer_video` job to check pacing early.
 
 Then join the act assemblies into the final cut with a last `explainer_video`
-pass (it accepts video job IDs, so act outputs are valid inputs), applying
-`subtitles: { font: "anton" }` at that final stage only — captioning per act and
-again at the end would double-burn.
+pass — it accepts video job IDs, so act outputs are valid inputs.
+
+**The one exception to captioning every assembly.** Burned-in captions are
+pixels, so an act assembly that gets captioned and then re-captioned at the join
+carries two overlapping caption layers. Therefore:
+
+- **Act assemblies that feed the join: no `subtitles`.** They are intermediate
+  video, not deliverables.
+- **The final join: `subtitles: { font: "anton" }`.** Once, at the end.
+- **Caption checking happens on the 480p draft**, which is a separate whole-
+  episode pass and *is* captioned. That is why the draft matters more on longform
+  than on a trailer — it is the only captioned artifact you see before the render.
+
+If you need to check captions on a single act without a full draft, assemble that
+act a second time *with* subtitles as a throwaway QA job (0.05/block) and do not
+feed that captioned version into the join.
 
 ### Finishing
 
@@ -502,12 +612,11 @@ Set by `.gitignore`, which postdates most of this pipeline's runs:
 - **Renders are gitignored** (`renders/`, `*.mp4`, audio). Download them to
   `output/episode-<N>/renders/`; never commit the binary, never `git add -f` it.
 - **Subtitle sidecars (`.srt`/`.vtt`) are tracked and are required
-  deliverables** per CLAUDE.md. They are *not* satisfied by the burned-in
-  captions from `explainer_video`, and no chapter has shipped one yet — all four
-  `output/episode-<N>/` folders are sidecar-less. Resolve where the sidecar comes
-  from (an `explainer_video` return field, or built by hand from the per-block
-  narration table and take durations, which the record already holds) on the next
-  cut, and write the answer here.
+  deliverables** per CLAUDE.md, and are deliberately exempted from `.gitignore`.
+  They are *not* satisfied by the burned-in captions from `explainer_video`.
+  Build them with `node scripts/build_subtitles.js <cut-document>.md` — see
+  [The guaranteed path](#the-guaranteed-path--sidecar--libass-burn). Chapters 2,
+  3, 5 and 8 have theirs committed; every new cut ships one.
 
 ## Compliance gate before generating
 
