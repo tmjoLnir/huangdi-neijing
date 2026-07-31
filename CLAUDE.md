@@ -31,12 +31,13 @@ decks/
   huangdi-neijing-top20-video-chapters.pptx # built by the script below
 scripts/
   build_chapter_deck.js                     # node scripts/build_chapter_deck.js
+  build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
 ```
 
 - `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders run 2, 3, 5, 8 because those are the chapters chosen off the shortlist in `docs/`; Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
 - `docs/` — the plain-English guide and the ranked chapter shortlist that decides which chapter is produced next.
-- `decks/`, `scripts/` — the planning deck and its build script. `.claude/settings.json` denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
+- `decks/`, `scripts/` — the planning deck and its build script, plus `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document (dependency-free). `.claude/settings.json` denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
 
 Each production document contains, in order:
   - The cut's title, the chapter's Chinese title, and the cut's short name.

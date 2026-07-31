@@ -334,19 +334,58 @@ phrasing the only real lever:
 
 **Verification is visual, and this host usually cannot do it.** The CDN has been
 blocked since chapter 3, so the rendered MP4 generally cannot be fetched back —
-meaning caption overflow *cannot* be confirmed from the repo host. Two
-consequences, both mandatory:
+meaning burned-in caption overflow *cannot* be confirmed from the repo host.
+So: whoever reviews the draft checks captions on the actual video, and the
+production record states whether captions were **visually verified** or only
+assembled. Never write that captions wrap correctly if nobody watched the file.
 
-1. Whoever reviews the draft checks captions on the actual video: every word on
-   screen, no line running past the safe area, nothing colliding with the
-   history lower-third in the first 10 seconds.
-2. Record in the document whether captions were **visually verified** or only
-   assembled — the same honesty the record already applies to clip dimensions.
-   Never write that captions wrap correctly if nobody watched the file.
+If a burned-in caption does overflow, fix it by **re-recording that block's
+voice take with shorter clauses** and re-assembling — a re-take is ~0.6 credits
+and the clips are untouched. Do not re-render video for a caption problem.
 
-If a caption does overflow, fix it by **re-recording that block's voice take
-with shorter clauses** and re-assembling — a re-take is ~0.6 credits and the
-clips are untouched. Do not re-render video for a caption problem.
+### The guaranteed path — sidecar + libass burn
+
+Everything above is best-effort: the assembler's captions cannot be constrained,
+only influenced. When the fit has to be a **guarantee**, don't use them.
+
+```
+node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md
+node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
+```
+
+The script reads the cut's **own production document** — the narration table for
+text, the production record's voiceover line for each take's duration — and
+writes `.srt` and `.vtt` beside it. No new data to maintain, and no dependencies
+(`npm install` is denied in `.claude/settings.json`).
+
+Two mechanisms make the fit real, and the second is the one that guarantees it:
+
+1. **Pre-wrap.** Cues are split at clause boundaries and wrapped to a character
+   budget computed from frame width, margins and Anton's advance widths —
+   ~22 chars/line at 9:16 720×1280, max 2 lines. The script prints the widest
+   line in pixels against the usable width, so overflow is visible as a number
+   before anything is rendered.
+2. **libass margins.** The printed `ffmpeg` command burns with
+   `force_style='…MarginL=58,MarginR=58,WrapStyle=0…'`. libass measures the real
+   Anton glyphs and wraps inside those margins — it *cannot* draw outside them.
+   That is the guarantee; step 1 only keeps the result from looking mechanical.
+
+Timing follows the assembler's own rule — fixed 10s windows with a short take
+centered — so the sidecar lines up with an `explainer_video` cut without manual
+nudging. The script warns and assumes a full 10s for any block whose take
+duration is missing from the record.
+
+**Which to use.** Burned-in `anton` captions are fine for the draft and for a
+routine cut. Use the sidecar path when the fit must be guaranteed, when a cut is
+going out on a platform whose chrome crowds the lower third, or when a reviewer
+has flagged overflow. The two are alternatives: burning a sidecar over a cut that
+already has burned-in captions double-layers them — assemble **without**
+`subtitles` when you intend to burn the sidecar.
+
+`.srt`/`.vtt` are **tracked deliverables** per CLAUDE.md and are exempted in
+`.gitignore` — commit them with the cut. Chapters 2, 3, 5 and 8 all have theirs
+generated and committed; regenerate after any narration or take change so the
+sidecar never drifts from the document.
 
 Blocks are fixed windows: a short take is centered, a slightly long one is sped
 up pitch-safely, and the video is never stretched — so a 6-block trailer is
@@ -377,6 +416,8 @@ most likely to get skipped:
 8. **Deliverables the assembler cannot produce** — history lower-third, human
    editorial credit, licensed guqin music. Always all three; `explainer_video`
    has no text-overlay parameter and generates no music.
+   Ship the `.srt`/`.vtt` sidecar alongside the document (step 4 of the
+   assembly section builds it).
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
     reach 1:30.
@@ -571,12 +612,11 @@ Set by `.gitignore`, which postdates most of this pipeline's runs:
 - **Renders are gitignored** (`renders/`, `*.mp4`, audio). Download them to
   `output/episode-<N>/renders/`; never commit the binary, never `git add -f` it.
 - **Subtitle sidecars (`.srt`/`.vtt`) are tracked and are required
-  deliverables** per CLAUDE.md. They are *not* satisfied by the burned-in
-  captions from `explainer_video`, and no chapter has shipped one yet — all four
-  `output/episode-<N>/` folders are sidecar-less. Resolve where the sidecar comes
-  from (an `explainer_video` return field, or built by hand from the per-block
-  narration table and take durations, which the record already holds) on the next
-  cut, and write the answer here.
+  deliverables** per CLAUDE.md, and are deliberately exempted from `.gitignore`.
+  They are *not* satisfied by the burned-in captions from `explainer_video`.
+  Build them with `node scripts/build_subtitles.js <cut-document>.md` — see
+  [The guaranteed path](#the-guaranteed-path--sidecar--libass-burn). Chapters 2,
+  3, 5 and 8 have theirs committed; every new cut ships one.
 
 ## Compliance gate before generating
 
