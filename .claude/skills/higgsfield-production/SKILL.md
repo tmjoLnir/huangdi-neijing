@@ -303,10 +303,47 @@ budget for the pauses, not just the words. More internal commas and fewer full
 stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
 content. That lever is voice-independent and worth reaching for before rewriting.
 
-**This line is also the subtitle.** Captions are Whisper-transcribed from the
-take and broken at the clauses you wrote, so narration phrasing decides whether
-captions fit the frame — see [Caption wrapping](#caption-wrapping--there-is-no-parameter-for-it).
-Short clauses serve both the 10s window and the caption width at once.
+### This rule is not the caption rule — they are two constraints on one line
+
+The narration line is also the subtitle, so it is governed twice. The two rules
+point the same way often enough to look like one rule, and they are not:
+
+| | **Take length** (this section) | **Caption fit** ([§4](#caption-wrapping--there-is-no-parameter-for-it)) |
+|---|---|---|
+| Constrains | total **seconds** of the take | pixel **width** of the longest clause |
+| Set by | the voice + `speech_rate` against a fixed 10s block | frame width, margins, Anton glyph widths |
+| Voice-dependent | **yes** | **no** — pure geometry |
+| Budget | **6–8s** per block | **~22 chars/line, max 2 lines** at 9:16 720×1280 |
+| Lever | how much content, and how many hard stops | where the clause breaks fall |
+| Failure | pitch-shifted speed-up, or dead air | the line renders past the frame edge |
+
+**Why they get conflated.** This section shipped first, off the ch5/ch8
+re-renders — a take-duration problem, nothing to do with captions. The caption
+section came later and borrowed *this* section's word count as a convenient
+proxy. That proxy only ever held because one voice was narrating the whole
+series, so a single number happened to track both. It does not survive a cast
+change: the words-per-second moved and the caption budget did not shift a pixel.
+**Never size captions off a word count.**
+
+**Where they really do interact — through duration, not words.**
+`build_subtitles.js` times cues *from the take duration recorded in the
+production record*: the take is centred in its 10s window and the cues divide it
+proportionally. So a 3.5s take does not overflow — it makes the captions flash.
+And an overshooting take gets pitch-safely sped up at assembly, which drags the
+Whisper-timed burned-in captions along with it. **Take length governs caption
+timing; clause length governs caption width.** Neither substitutes for the other.
+
+**When they conflict.** A line already at 8s with one wide clause needs a break
+for the caption — but commas and full stops add pause time and push it past the
+window (that is exactly how ch8 stretched 4.7s to 6.3s). Punctuating your way out
+of a width problem is free only while the take is short. Once it isn't, **cut
+content instead**; do not buy caption width with duration you don't have.
+
+**Which rule binds depends on the caption path.** With burned-in
+`explainer_video` captions, both bind and clause length is the only width lever —
+there is no wrap parameter. With the sidecar + libass burn, width is a
+*guarantee* (libass cannot draw outside its margins), so clause length only
+decides whether the wrap reads naturally; duration still governs timing.
 
 In chapters 2–8 only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but
 never have lines. That was deliberate — the narrator carries every compliance
@@ -351,9 +388,17 @@ phrasing the only real lever:
 - **Write in short clauses.** Commas, full stops and semicolons are where the
   chunker breaks. A 24-word line of three clauses captions cleanly; the same 24
   words as one unbroken clause is the one at risk of a long line.
-- This lines up with the 6–8s / ~21–24 word rule in step 3 — narration written
-  to fit the block also captions to fit the frame. A line that reads long is
-  usually a line that wraps badly.
+- **The budget is a clause width, not a word count** — **~22 characters per line
+  at 9:16 720×1280**, ~50 at 16:9 1280×720, two lines max either way. (Both are
+  what `build_subtitles.js` computes from frame width, margins and Anton's
+  advance widths; it prints the figure on every run.) It is pure geometry, so it
+  is **the same for every voice** and does not move when the cast changes. Do not size it off step 3's word figure, which is voice-specific and
+  measures something else; see
+  [the two-constraint table](#this-rule-is-not-the-caption-rule--they-are-two-constraints-on-one-line).
+- The two rules usually agree — a line written in short clauses tends to fit both
+  the block and the frame — but they can conflict. Adding a break to fix a wide
+  clause costs pause time, so on a take already near 8s, cut content rather than
+  punctuating past the window.
 - **9:16 is the hard case.** A 720-wide vertical frame gives captions roughly
   half the horizontal room of the 1280-wide longform frame, so a phrase that is
   fine in 16:9 can overflow in 9:16. Judge wrapping on the vertical cut.
