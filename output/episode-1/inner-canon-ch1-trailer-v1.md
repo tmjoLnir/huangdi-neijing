@@ -279,6 +279,29 @@ re-paid.
   10s window, assembly reporting 8 blocks complete at 480×854. **Whether the
   animation actually looks right is unverified and needs a human to watch the
   draft.**
+- **The burned-in captions overflow. Six clauses, measured.** Run
+  `node scripts/check_caption_fit.js` on this document to reproduce:
+
+  | Block | Clause | Needs |
+  |---|---|---|
+  | 1 | *"the founding text of Chinese medicine opens on a boast —"* | 3 lines |
+  | 2 | *"I have heard that the people of high antiquity all lived past a hundred years."* | 3 lines |
+  | 4 | *"The people who wrote that sentence died younger than the ancestors they were praising."* | **4 lines** |
+  | 4 | *"The golden age was already a memory that never happened."* | 3 lines |
+  | 7 | *"So why did an entire civilisation copy that one sentence,"* | 3 lines |
+  | 8 | *"A dramatized adaptation of a classical philosophical text."* | 3 lines |
+
+  The frame allows **two**. This is not a contradiction of the
+  `build_subtitles.js` run above, which reported the sidecar fits — the two
+  caption paths fail differently. The sidecar pre-splits a long clause across
+  several cues and burns through libass margins, so it always fits;
+  `explainer_video` chunks the voiceover on Whisper pauses, which fall at
+  punctuation, so a clause with no internal comma has nowhere to break.
+  **A document can pass `build_subtitles.js` and still overflow on the assembled
+  video.** Fix by adding internal commas and re-recording those blocks (~0.6
+  credits each, clips untouched), or by assembling without `subtitles` and
+  burning the sidecar. Do not change font — `anton` is the most condensed of the
+  four available and is already the best fit.
 
 ## Deliverables the assembler cannot produce
 

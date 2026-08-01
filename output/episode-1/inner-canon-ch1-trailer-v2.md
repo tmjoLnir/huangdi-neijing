@@ -164,6 +164,14 @@ same 720p blocks for 0.3 each.
 - **Visual QA not possible** — CDN blocked from this host. Verified at
   job-metadata level only: 6 blocks assembled at 480×854 from clips of confirmed
   dimensions and takes of confirmed duration. **The render has not been seen.**
+- **The burned-in captions overflow — the same six clauses as v1**, renumbered:
+  v2 blocks 1, 2, 4 (×2), 5 and 6. Worst is block 4's *"The people who wrote that
+  sentence died younger than the ancestors they were praising"* at 86 characters,
+  which needs four lines in a two-line frame. Reproduce with
+  `node scripts/check_caption_fit.js output/episode-1/inner-canon-ch1-trailer-v2.md`.
+  Because v2 shares v1's takes, **fixing this in v1 fixes it here too** — re-record
+  the offending blocks with internal commas and re-assemble both cuts off the same
+  takes. Full reasoning in v1's reproduction notes.
 
 ## Deliverables the assembler cannot produce
 

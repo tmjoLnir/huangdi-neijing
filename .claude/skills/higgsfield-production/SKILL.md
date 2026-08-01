@@ -455,6 +455,27 @@ phrasing the only real lever:
   other three. It is the house font and also the safest of the four here; do not
   switch fonts to fix a wrapping problem, shorten the clause instead.
 
+**Check it before you generate anything — `scripts/check_caption_fit.js`.**
+
+```
+node scripts/check_caption_fit.js <doc>.md            # 9:16, the hard case
+node scripts/check_caption_fit.js <doc>.md --format 16:9
+node scripts/check_caption_fit.js output/episode-*/*-v*.md   # sweep every cut
+```
+
+It measures **every clause** in the narration table against the two-line budget
+and exits non-zero on any that overflow. Run it on the narration table *before*
+recording takes: a fix is free at that point, and ~0.6 credits per block after.
+
+**It is not redundant with `build_subtitles.js`, and its verdict can disagree.**
+The two caption paths fail differently — the sidecar pre-splits a long clause
+across several cues and burns through libass margins, so it always fits, while
+`explainer_video` chunks on Whisper pauses that fall at punctuation, so a clause
+with no internal comma has nowhere to break. **A document can pass
+`build_subtitles.js` and still overflow on the assembled video**; chapter 1 did,
+on six clauses. Chapter 5 also fails the check on two clauses, discovered
+retroactively — it shipped that way.
+
 **Verification is visual, and this host usually cannot do it.** The CDN has been
 blocked since chapter 3, so the rendered MP4 generally cannot be fetched back —
 meaning burned-in caption overflow *cannot* be confirmed from the repo host.
