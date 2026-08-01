@@ -198,31 +198,45 @@ own 0:45 alternate does with it.
 
 ## Production record (Higgsfield)
 
-**Status: pre-render.** Nothing has been generated. The step-0 gate is open — no
-`balance` call, no live `get_cost`, no Draft/Full confirmation. **Nothing below
-the cost preflight may be run until the user confirms model and tier.**
+**Status: pre-render.** Nothing has been generated. The step-0 gate has been
+**priced** (below) but **not confirmed** — no model/tier decision, so no clip,
+take or assembly job has been submitted.
 
-### Cost preflight — snapshot figures, must be re-priced live
+### Cost preflight — priced live 2026-08-01, step-0 gate
 
-`seedance_2_0_mini`, 8 blocks, 10s, 9:16, `generate_audio: false`. Snapshot
-prices from 2026-07-31; `SKILL.md` requires a live `get_cost` on one
-representative clip before quoting these to anyone.
+**Balance at gate: 942.4 credits** (ultra plan) — unchanged since the chapter 1
+run closed at 942.4, so nothing has been spent in between.
 
-| Item | Draft (480p) | Full (720p) |
-|---|---|---|
-| Style key (`nano_banana_pro`, 1k) | 2 | 2 |
-| 8 clips | 80 | 200 |
-| 8 voice takes @ ~0.6 | ~4.8 | *reused, not re-paid* |
-| Subtitles @ 0.05/voiced block | 0.4 | 0.4 |
-| Assembly | free | free |
-| **Total** | **~87** | **~200 additional** |
+Every figure below is a live `get_cost` preflight, not a quote from `SKILL.md`.
+`seedance_2_0_mini`, 10s, 9:16, `resolution` as shown, `generate_audio: false`
+(the model defaults it to **true**, which would bill for audio the assembler
+discards):
 
-Voice takes are resolution-independent, so a draft → full upgrade re-pays for
-clips only. Budget one or two re-takes (~0.6 each) for blocks 3 and 7 per the
-line-length note above. **Draft then Full is the house default and this cut
-should keep it** — a continuous camera move (block 1), a two-current diagram
-(block 2) and a windows-going-dark wave (block 6) are three things nobody has
-seen this model attempt.
+| Item | Priced by | Draft (480p) | Full (720p) |
+|---|---|---|---|
+| Style key (`nano_banana_pro`, 1k, 9:16) | `generate_image` `get_cost` | 2 | *reused* |
+| 8 clips | `generate_video` `get_cost` | **80** (10/clip) | **200** (25/clip) |
+| 8 voice takes | `generate_audio` `get_cost` | 8 | *reused, resolution-independent* |
+| Subtitles, 0.05/voiced block | `explainer_video` tool contract | 0.4 | 0.4 |
+| Assembly | free | 0 | 0 |
+| **Total** | | **90.4** | **200.4 additional** |
+
+Draft alone leaves **852.0**. Draft then Full costs **290.8** and leaves
+**651.6**. The 8-block cut is not budget-constrained at either tier.
+
+**One live figure disagrees with the record: a voice take preflights at 1 credit,
+not the ~0.6 that `SKILL.md` and the ch1 document both carry.** Chapter 1's
+measured balance delta implies ~0.78/take averaged over 16 takes, which matches
+neither, so the preflight may round up to a 1-credit floor while billing
+fractionally. Budgeted at **1** here because that is what the API returned;
+reconcile against the actual balance delta after the run and correct the skill's
+figure with whichever number the balance proves.
+
+Budget one or two re-takes for blocks 3 and 7 per the line-length note above.
+**Draft then Full is the house default and this cut should keep it** — a
+continuous camera move (block 1), a two-current diagram (block 2) and a
+windows-going-dark wave (block 6) are three things nobody has seen this model
+attempt.
 
 ### Style key
 
