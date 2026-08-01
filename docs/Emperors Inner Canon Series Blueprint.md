@@ -143,10 +143,11 @@ Each pick had to clear five filters:
 ### Su Wen
 
 **Ch 01 · 上古天真论 · Shàng Gǔ Tiān Zhēn Lùn — "Natural Purity of High Antiquity"**
-Hook: *The 2,000-Year-Old Secret to Living Past 100* · **RPM $9–14 · Low risk**
-The canon opens with a mystery: why did the ancients stay vigorous past 100 while people now age by 50? Qi Bo's answer — they lived in rhythm with nature, ate simply, worked without exhaustion, kept desire in check — plus the famous life-map of women in 7-year and men in 8-year stages.
-*Why:* Universal longevity hook with a built-in whodunit and a clean, shareable list payoff. The strongest possible episode 1.
-*Production note:* Ep 1 anchor. Lead with the age gap; reveal the 5 habits; end on the 7s-and-8s life map.
+Hook: *The First Sentence of Chinese Medicine's Founding Text Is False* · **RPM $9–14 · Low risk**
+The canon opens on a boast — the emperor has *heard* that the ancients passed a hundred years without weakening — and flags it as hearsay in the same breath (余聞). Qi Bo's reply is conditional: 其知道者, *those among them who knew the Way*, not everyone. They did not in fact live to a hundred. The chapter's real content is what follows: living in rhythm with the seasons, eating simply, working without exhaustion, keeping desire in check — plus the life-map of women in 7-year and men in 8-year stages.
+*Why:* The series' clearest positioning piece. It contradicts its own source material on page one, which is the differentiator against uncritical ancient-wisdom content and the strongest signal to both viewers and classifiers that this is history of science. Built-in whodunit — why was it copied faithfully for two thousand years? — with a clean, shareable list payoff.
+*Production note:* Ep 1 anchor. Lead with the false first sentence; reveal the habits; end on the 7s-and-8s life map. Trailers shipped — see `output/episode-1/`.
+**Title/thumbnail compliance:** the previous hook here read *"The 2,000-Year-Old Secret to Living Past 100"*, which tripped the banned-terms rule twice (*ancient secret*, *live to 100*) and, separately, asserted as fact the very claim the episode debunks. Any title or thumbnail for this chapter must avoid *longevity*, *live to 100*, *ancient secret* and *anti-aging*, and must read as **objection**, not as ancient secret.
 
 **Ch 02 · 四气调神大论 · Sì Qì Tiáo Shén Dà Lùn — "Attuning the Spirit to the Four Seasons"**
 Hook: *How the Ancients Synced Their Bodies to the Seasons* · **RPM $7–11 · Low risk**

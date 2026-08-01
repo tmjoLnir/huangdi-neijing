@@ -2,8 +2,12 @@
 
 **上古天真论篇第一 · The First Sentence**
 
-**Draft render (480×854, 9:16 vertical, 60s, MP4):**
-https://d8j0ntlcm91z4.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/hf_20260801_123255_e4c28af8-3e7d-44bc-8fdd-17a478bae378.mp4
+**Draft render (480×854, 9:16 vertical, 60s, MP4) — no burned captions:**
+https://d8j0ntlcm91z4.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/hf_20260801_222017_4cb8b0ec-2588-4ce5-88bf-63ac04a1ed66.mp4
+
+**This file has no captions on it by design** — they come from the tracked `.srt`
+sidecar, burned with the `ffmpeg` command `build_subtitles.js` prints. Same
+reasoning as v1; do not upload it uncaptioned.
 
 **Final render (720×1280):** *not run — draft only.*
 
@@ -26,11 +30,11 @@ re-assembly and a fresh subtitle sidecar. See the production record.
 
 | Block | Beat | Narration |
 |---|---|---|
-| 1 | Arthur (V.O.) — the opening | Two thousand years ago, the founding text of Chinese medicine opens on a boast — and the emperor himself is the one who makes it. |
-| 2 | Fan-di (Xavier) — the claim | I have heard that the people of high antiquity all lived past a hundred years. Their movements never weakened. The years did not wear them down as they wear us. |
+| 1 | Arthur (V.O.) — the opening | Two thousand years ago, Chinese medicine got its founding text. It opens on a boast, and the emperor himself is the one who makes it. |
+| 2 | Fan-di (Xavier) — the claim | I have heard that the people of high antiquity, every one of them, lived past a hundred years. Their movements never weakened. The years did not wear them down. |
 | 3 | Lei-Gong (Zane) — the interruption | It's false. Not exaggerated — false. |
-| 4 | Arthur (V.O.) — the correction | They did not. The people who wrote that sentence died younger than the ancestors they were praising. The golden age was already a memory that never happened. |
-| 5 | Arthur (V.O.) — the withhold / title | So why did an entire civilisation copy that one sentence, faithfully, for two thousand years? The Emperor's Inner Canon. Chapter One — The First Sentence. |
+| 4 | Arthur (V.O.) — the correction | They did not. Those who wrote it down died young, younger than the ancestors they praised. The golden age was a memory. It never happened. |
+| 5 | Arthur (V.O.) — the withhold / title | So why did everyone copy it, faithfully, for two thousand years? The Emperor's Inner Canon. Chapter One — The First Sentence. |
 | 6 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. |
 
 Voices as cast (`CLAUDE.md`): Arthur, Xavier, Zane, all `seed_audio` presets at
@@ -130,23 +134,32 @@ Identical to v1 for the blocks retained; renumbered here.
   `ad8740f3-7cb8-4686-afea-66a9349f9bdc`, block 5
   `4ced7480-9d72-4cc7-89b8-74f56049ddab` *(v1 block 7)*, block 6
   `babfdc44-bc86-47bd-8578-6e7b22f3f65b` *(v1 block 8)*.
-- **Voiceover** (`seed_audio`, presets **Arthur** `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, **Xavier** `43173c95-3ec8-446a-a162-6504332c578b`, **Zane** `9ddbff06-a984-4c0d-b641-4d8ca846bf60`, speech_rate 55): block 1 `60a57c8c-ec25-4ec8-a5c1-aec0d051f398` (5.9s), block 2 `abcd7348-c138-4ae3-a3c3-5832ef34efca` (6.9s), block 3 `6df0e397-090d-4ab7-9710-3d19227af5d8` (2.6s), block 4 `110cc52d-277f-46a6-b932-2d66f4a5d679` (6.6s), block 5 `a6c936be-b135-40c9-bfaf-54d4b996ea8f` (8.0s), block 6 `bc989704-7e47-46e6-bcff-fa22fa69c1ae` (5.0s).
+- **Voiceover** (`seed_audio`, presets **Arthur** `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, **Xavier** `43173c95-3ec8-446a-a162-6504332c578b`, **Zane** `9ddbff06-a984-4c0d-b641-4d8ca846bf60`, speech_rate 55): block 1 `5bbc4da7-98fa-4230-af3e-dbf632892366` (6.5s), block 2 `89a58a73-2399-4606-9575-9624bb42fb85` (6.6s), block 3 `6df0e397-090d-4ab7-9710-3d19227af5d8` (2.6s), block 4 `b6e5cb15-bc4c-472e-833a-a725fc28d6da` (7.2s), block 5 `e866337a-393c-4aa3-b01f-e6c1a65b77ef` (7.1s), block 6 `bc989704-7e47-46e6-bcff-fa22fa69c1ae` (5.0s).
 - **Unused in this cut** (generated and paid for on v1, retained): clips
   `d5766bde-28bc-4599-b407-7d24838fe0b2` and `13098368-0946-4274-aa85-82c8cece77a5`;
   takes `d03b2e34-6f09-42f2-892b-aa18bf7ba9ba` (Xavier) and
   `0f6e1dae-c491-49c1-abed-2fdb82c0c451` (Vesper). They cost nothing to keep and
   are what a re-expansion to the 80s cut would need.
-- **Assembly**: `explainer_video`, 6 × 10s fixed blocks, 480×854, subtitles font
-  `anton`. Job ID: `e4c28af8-3e7d-44bc-8fdd-17a478bae378`.
+- **Assembly**: `explainer_video`, 6 × 10s fixed blocks, 480×854, **no
+  `subtitles` parameter — captions deliberately not burned server-side.** Job ID:
+  `4cb8b0ec-2588-4ce5-88bf-63ac04a1ed66`.
+
+**Superseded:** `e4c28af8-3e7d-44bc-8fdd-17a478bae378` — the first assembly, with
+`anton` captions burned by the service. Replaced for the same two reasons as v1:
+those captions overflow, and four of its takes are superseded.
 
 ### Credit spend
 
 | Item | Credits |
 |---|---|
 | Style key, clips, voice takes | **0** — reused from v1 |
-| Subtitles (0.05 × 6 voiced blocks) | 0.3 |
-| Assembly | free |
+| Subtitles on the superseded assembly | 0.3 |
+| Final assembly — no subtitles | free |
 | **Total** | **~0.3** |
+
+The caption-fix re-takes are billed to v1, where they were generated; this cut
+inherits them at no cost. Dropping the burned captions also removes the 0.3
+subtitle line from any future re-assembly of this cut.
 
 A full-tier 720p upgrade of this cut would be 6 × 25 = **150**, but the sensible
 path is to upgrade v1's eight clips once (200) and re-assemble both cuts off the
@@ -164,6 +177,19 @@ same 720p blocks for 0.3 each.
 - **Visual QA not possible** — CDN blocked from this host. Verified at
   job-metadata level only: 6 blocks assembled at 480×854 from clips of confirmed
   dimensions and takes of confirmed duration. **The render has not been seen.**
+- **Captions — resolved, the same way as v1 and by the same work.** The first
+  assembly's burned captions overflowed on six clauses (worst: 86 characters
+  needing four lines in a two-line frame). Because v2 shares v1's takes, fixing v1
+  fixed this cut too: blocks 1, 2, 4 and 5 carry the rewritten, re-recorded takes,
+  and **this cut is assembled with no burned captions**, so fit is a libass
+  guarantee rather than best-effort. Block 6's clause is the verbatim mandated
+  disclaimer and was deliberately not reworded — dropping the server captions is
+  what resolves it. Full reasoning in v1's *Captions* note. Verify with
+  `node scripts/check_caption_fit.js output/episode-1/inner-canon-ch1-trailer-v2.md`.
+- **To finish this cut:** download the MP4, run
+  `node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v2.md`,
+  then the printed `ffmpeg` command against the downloaded file. The v2 sidecar is
+  keyed to v2's block numbers — do not burn v1's `.srt` onto this cut.
 
 ## Deliverables the assembler cannot produce
 
@@ -180,6 +206,66 @@ Unchanged from v1 — four manual steps at edit/upload time.
   scoring is not used; see v1 for the reasoning. Note that this cut keeps **both**
   of the script's "silence is the instrument" beats — its shot 5 (block 3) and its
   shot 12 (the tail of block 5) — and on this grid the silence is free.
+
+### Finishing steps — run these on the downloaded MP4
+
+The render carries **no captions and no on-screen text**. It is not uploadable as
+delivered. Same procedure as v1, with this cut's timings and cue numbers.
+
+**1. Burn the captions.**
+
+```
+node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v2.md
+```
+
+**Use this cut's own `.srt`.** v2's block numbering differs from v1's — v1 block 7
+is v2 block 5 — so burning v1's sidecar onto this cut puts every cue 20 seconds
+out.
+
+Then, on a **copy** of the `.srt`, **delete cues 18 and 19** — the two from
+`00:00:52,500`. They caption the end-card block, so leaving them shows the
+disclaimer twice, once as a bottom-third caption breaking mid-phrase and again on
+the card in step 3.
+
+Burn with the command `build_subtitles.js` prints, **adding a scale filter for the
+draft**. The sidecar is computed for 720×1280 while the draft is 480×854, and
+libass takes its resolution from the video, so burning as-printed renders the 54px
+font and 58px margins against a 480-wide frame — about 50% oversized, and it
+overflows.
+
+```
+ffmpeg -i <downloaded-draft>.mp4 \
+  -vf "scale=720:1280,subtitles=<edited>.srt:force_style='FontName=Anton,Fontsize=54,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,Alignment=2,MarginL=58,MarginR=58,MarginV=150,WrapStyle=0'" \
+  -c:a copy <cut>-subtitled.mp4
+```
+
+Drop `scale=720:1280,` on a real 720p render. **Anton must be installed locally**
+(`fc-list | grep -i anton`) or libass substitutes another face and the measured fit
+stops holding.
+
+**2. History lower-third.** *"Presented as history & philosophy"*, small, ~0:01 to
+~0:08. Anchor **above the caption band** — around y≈880 at 720×1280, or top-left —
+so it clears the bottom-centre captions.
+
+**3. End card — 50:00 to 60:00** (block 6, the black plate). The narrator reads the
+disclaimer at **52.5–57.5s**; bring the text up at the block start and hold to the
+end. Centred:
+
+> A dramatized adaptation of a classical philosophical text. Not medical advice.
+>
+> Written & edited by Joshua Chin
+
+Disclaimer **verbatim**. Both lines also go in the video description.
+
+**4. Music.** Licensed guqin, ducked ~12–15 dB under the voiceover. This cut keeps
+both of the source script's silence beats, so they matter more here than in v1:
+
+- **Block 3, 20:00–30:00 — music out entirely.** The 2.6s take leaves ~3.7s of
+  silence either side; that silence is the interruption.
+- **End of block 5, at 50:00** — the hard cut to black. Let it land clean.
+- **Under the end card** — fade to nothing before the cut ends.
+
+Keep the licence receipt with the cut.
 
 ## Compliance notes (YouTube)
 
