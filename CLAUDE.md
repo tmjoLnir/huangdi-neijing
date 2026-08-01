@@ -14,7 +14,7 @@ One folder per chapter, one markdown file per cut. The current tree is:
 CLAUDE.md
 README.md
 .claude/
-  settings.json                             # Bash permission allow/deny/ask lists
+  settings.json                             # Bash + Higgsfield MCP permission lists
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
 output/
   episode-1/inner-canon-ch1-trailer-v1.md   # current reference layout
