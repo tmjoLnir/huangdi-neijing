@@ -2,7 +2,16 @@
 
 **上古天真论篇第一 · The First Sentence**
 
-**Final video (720×1280, 9:16 vertical, 80s, MP4):** *pending — draft render not yet run*
+**Draft render (480×854, 9:16 vertical, 80s, MP4):**
+https://d8j0ntlcm91z4.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/hf_20260801_070316_39f1a90b-c4e0-4eeb-a787-14250584ec92.mp4
+
+**Final render (720×1280):** *not run — draft only, pending review of the draft.*
+
+> **CDN link, download it.** The generation CDN is blocked from the repo host
+> (verified this run: `curl` → `CONNECT tunnel failed, response 403`), so this
+> MP4 could not be fetched back for visual QA and cannot be archived from here.
+> Download it manually into `output/episode-1/renders/` if this cut is worth
+> keeping — the link expires.
 
 An eighty-second vertical trailer for *Chapter 1 — "The First Sentence"*
 (上古天真论 · Natural Purity of High Antiquity), re-cut from the Episode 01 source
@@ -28,7 +37,7 @@ table as exactly three columns and a fourth would leak into the caption text.
 | Block | Beat | Narration |
 |---|---|---|
 | 1 | Arthur (V.O.) — the opening | Two thousand years ago, the founding text of Chinese medicine opens on a boast — and the emperor himself is the one who makes it. |
-| 2 | Fan-di (Xavier) — the claim | I have heard that the people of high antiquity all lived past a hundred years, and their movements never weakened — that the years did not wear them down as they wear us. |
+| 2 | Fan-di (Xavier) — the claim | I have heard that the people of high antiquity all lived past a hundred years. Their movements never weakened. The years did not wear them down as they wear us. |
 | 3 | Lei-Gong (Zane) — the interruption | It's false. Not exaggerated — false. |
 | 4 | Arthur (V.O.) — the correction | They did not. The people who wrote that sentence died younger than the ancestors they were praising. The golden age was already a memory that never happened. |
 | 5 | Fan-di (Xavier) — the deflation | Then I have opened my own canon with a rumour. The first line of the book my physicians swear by, and it is only something that somebody once heard. |
@@ -46,29 +55,44 @@ Every line above is sized from a take measured on this cut (see *Voice
 measurement* in the production record). The ~21–24 word budget in the skill
 belongs to the retired narrator and does **not** transfer:
 
-| Voice | Measured | 6–8s window | Written to |
+| Voice | Measured | Written to | Delivered |
 |---|---|---|---|
-| Arthur | 3.73 words/sec | 22–30 words | 24, 27, 24, 11 |
-| Xavier | 4.55 words/sec | 27–36 words | 32, 29 |
-| Vesper | 4.42 words/sec | 27–35 words | 30 |
-| Zane | short-line only | — | 5 (deliberate) |
+| Arthur | 3.73 words/sec | 24, 27, 24, 11 words | 5.9s, 6.6s, 8.0s, 5.0s |
+| Xavier | 4.55 words/sec | 30, 29 words | 6.9s, 5.9s |
+| Vesper | 4.42 words/sec | 30 words | 6.4s |
+| Zane | short-line only | 5 words | 2.6s (deliberate) |
 
 Arthur is **~21% faster than the retired narrator at the same `speech_rate`**
 (23 words → 6.17s, against 23 words → 7.46s). Writing Chapter 1 to ch8's word
 counts would have undershot every block by more than a second.
+
+**Word count alone did not predict take length — sentence structure did.** Block
+2's first pass was 32 words as a single sentence hinged on an em-dash, and came
+back at **10.78s**, overshooting the fixed 10s window outright. Rewritten to 30
+words as three short sentences, the same content delivered **6.91s**. Two words
+cannot account for 3.9 seconds; the punctuation did. Compare block 5 — 29 words
+across two sentences, 5.87s — against that first pass, and the pattern is clear:
+
+> **A long single sentence carrying a subordinate clause after an em-dash makes
+> `seed_audio` slow down and add dramatic pauses.** Break lines into short
+> sentences. This is a stronger lever on duration than the word count is, and it
+> is the only reliable way to pull a take back inside the window.
 
 ### Two blocks run deliberately short
 
 Blocks 3 and 8 sit below the 6s floor on purpose, and the production record must
 not read them as the ch8 dead-air mistake repeating:
 
-- **Block 3 (2.6s)** — the interruption. A fixed 10s window centres a short take,
-  which puts ~3.7s of silence on either side of *"It's false."* The source script
-  asks for exactly that (*"Record-scratch. Then total silence."*), and here the
-  block geometry produces it for free. Padding the line to 30 words to fill the
-  window would destroy the beat it exists for.
-- **Block 8 (2.9s)** — the end disclaimer card. Trailing silence on a final card
-  is a fade-out, not a stall.
+- **Block 3 (2.56s delivered)** — the interruption. A fixed 10s window centres a
+  short take, which puts ~3.7s of silence on either side of *"It's false."* The
+  source script asks for exactly that (*"Record-scratch. Then total silence."*),
+  and here the block geometry produces it for free. Padding the line to 30 words
+  to fill the window would destroy the beat it exists for.
+- **Block 8 (4.95s delivered)** — the end disclaimer card. Trailing silence on a
+  final card is a fade-out, not a stall. This landed much closer to the floor than
+  the 2.9s predicted from Arthur's measured rate: 11 words across two sentences
+  read far slower than a linear rate suggests, which is the same
+  sentence-structure effect that blew up block 2 in the other direction.
 
 Everywhere else the 6–8s rule is enforced normally.
 
@@ -169,42 +193,70 @@ are the only controls on take duration.** All four voices are therefore set to
 
 ### Style key
 
-**Pending.** Chains off the ch8 head `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`,
-swapping ch8's storehouses / rivers / wrist motif for the Chapter 1 motif — the
-bamboo scroll splitting into scrolls of different ages, seven-and-eight arcs
-beneath. Next entry in the lineage: group shot → ch2 → ch3 → ch5 → ch8 → **ch1**.
+- **Style key** (`nano_banana_pro` → served by `nano_banana_2`, 9:16 768×1376):
+  job `4b6f7106-67da-4d1a-a553-c58ba90ac43f` — the vertical three-character series
+  trio under a brushed-ink motif of one bamboo scroll splitting into a dozen
+  scrolls of visibly different ages fanning back into depth, two faint concentric
+  arcs marking cycles of seven and eight beneath them. Built from the Chapter 8
+  key `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`, swapping ch8's storehouses / rivers
+  / wrist motif for the Chapter 1 motif. Attached as the image reference on every
+  clip. Lineage: group shot → ch2 → ch3 → ch5 → ch8 → **ch1**.
 
 ### Clips
 
-**Pending.** `seedance_2_0_mini`, **Draft tier (480p)**, 10s per block, 9:16, one
-clip per block, style key attached to each.
+- **Clips** (`seedance_2_0_mini`, **Draft tier 480p**, 10s, 9:16 480×854,
+  `generate_audio: false`, style key on each): block 1
+  `91cb182e-f1a0-4f6b-ae47-a30497ced28b`, block 2
+  `2297a411-da14-4555-b38e-90236633e06b`, block 3
+  `6d43df60-6c3d-4d41-a809-d72a83e845fd`, block 4
+  `ad8740f3-7cb8-4686-afea-66a9349f9bdc`, block 5
+  `d5766bde-28bc-4599-b407-7d24838fe0b2`, block 6
+  `13098368-0946-4274-aa85-82c8cece77a5`, block 7
+  `4ced7480-9d72-4cc7-89b8-74f56049ddab`, block 8
+  `babfdc44-bc86-47bd-8578-6e7b22f3f65b`.
+
+All eight returned **480×854 vertical on the first pass** — the double
+declaration (`aspect_ratio: "9:16"` plus "vertical 9:16 portrait framing" in the
+prompt text) held on `seedance_2_0_mini`, which had not previously been confirmed
+on this model. Block 1 was generated alone and its dimensions checked before the
+other seven were committed. `IN THE DARK` was pre-declined on every clip; **no
+preset swap was offered on any of the eight**, including the two dark-field
+prompts (blocks 3 and 8) that were expected to trigger it.
 
 ### Voiceover
 
-**Pending** — per-block takes not yet generated. (Format for
-`build_subtitles.js`: `- **Voiceover** (seed_audio): block 1 \`uuid\` (6.2s), …`)
+- **Voiceover** (`seed_audio`, presets **Arthur** `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, **Xavier** `43173c95-3ec8-446a-a162-6504332c578b`, **Vesper** `c3204739-4084-41a3-9dc5-c805b307ec18`, **Zane** `9ddbff06-a984-4c0d-b641-4d8ca846bf60`, speech_rate 55): block 1 `60a57c8c-ec25-4ec8-a5c1-aec0d051f398` (5.9s), block 2 `abcd7348-c138-4ae3-a3c3-5832ef34efca` (6.9s), block 3 `6df0e397-090d-4ab7-9710-3d19227af5d8` (2.6s), block 4 `110cc52d-277f-46a6-b932-2d66f4a5d679` (6.6s), block 5 `d03b2e34-6f09-42f2-892b-aa18bf7ba9ba` (5.9s), block 6 `0f6e1dae-c491-49c1-abed-2fdb82c0c451` (6.4s), block 7 `a6c936be-b135-40c9-bfaf-54d4b996ea8f` (8.0s), block 8 `bc989704-7e47-46e6-bcff-fa22fa69c1ae` (5.0s).
+
+**Superseded:** block 2 first pass `534c7c8e-238a-424a-8f2d-7fc76bd9a212`
+(10.78s) — overshot the fixed 10s window and would have been pitch-shifted by the
+assembler, breaking Xavier's register. Re-cut as three short sentences; see the
+sentence-structure finding above. This is the ch5 failure mode reappearing on a
+new voice, caught before assembly rather than after.
 
 ### Assembly
 
-**Pending.** `explainer_video`, 8 blocks, 720×1280, Anton subtitles.
+- **Assembly**: `explainer_video`, 8 × 10s fixed blocks, 480×854, subtitles font
+  `anton`. Job ID: `39f1a90b-c4e0-4eeb-a787-14250584ec92`.
 
 ### Credit spend
 
+Measured against the balance, not estimated: **1,037.3 → 942.4 = 94.9 credits**
+for the whole run.
+
 | Item | Credits |
 |---|---|
-| Voice measurement (7 takes, spent) | ~4.2 |
+| Voice measurement (7 takes) | ~4.2 |
 | Style key | 2 |
 | 8 clips — Draft 480p | 80 |
-| 8 voice takes | ~4.8 |
+| 9 voice takes (8 + block 2 re-cut) | ~5.4 |
 | Subtitles (0.05/voiced block) | 0.4 |
 | Assembly | free |
-| **Draft total** | **~91** |
+| **Draft total (actual)** | **94.9** |
 
-Full-tier 720p upgrade, if taken later, is 8 × 25 = **200** additional; voice
-takes survive the upgrade and are not re-paid. Balance at preflight:
-**1,037.3 credits** (ultra plan). Live `get_cost` on `seedance_2_0_mini` at
-10s / 9:16 returned **25 credits/clip** for the full tier, matching the skill's
-table.
+Live `get_cost` confirmed both tiers on `seedance_2_0_mini` at 10s / 9:16:
+**480p = 10 credits/clip**, **720p = 25**. A full-tier upgrade is 8 × 25 =
+**200** additional; the nine voice takes are resolution-independent and are not
+re-paid.
 
 ### Reproduction notes
 
@@ -216,12 +268,17 @@ table.
   column would be captured into the caption text.
 - No Chapter 1 longform exists in `output/` yet, so nothing in this trailer can be
   cut from an episode. Every clip is generated fresh from the style key.
-- **The committed `.srt` / `.vtt` are provisional — do not burn them.** They were
-  built before the voiceover existed, so `build_subtitles.js` assumed a full 10s
-  for all eight blocks (it warns which blocks were estimated). Every cue start is
-  therefore wrong: real takes centre inside their window, and blocks 3 and 8 are
-  only 2.6s and 2.9s. **Re-run `node scripts/build_subtitles.js` once the
-  per-block durations are in the voiceover line above**, and use that output.
+- **The `.srt` / `.vtt` are built from the real take durations** recorded in the
+  voiceover line above, at the 9:16 720×1280 shipping geometry — not at the draft's
+  480×854. Caption wrapping is pure frame geometry and independent of the render
+  tier, so the sidecar does not need rebuilding after a full-tier upgrade; only a
+  narration edit would require it.
+- **Visual QA was not possible.** The CDN is blocked from this host, so nothing
+  about the draft has been seen — the verification below is entirely at the
+  job-metadata level: eight clips at 480×854, per-take durations all inside the
+  10s window, assembly reporting 8 blocks complete at 480×854. **Whether the
+  animation actually looks right is unverified and needs a human to watch the
+  draft.**
 
 ## Deliverables the assembler cannot produce
 

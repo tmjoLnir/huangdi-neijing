@@ -323,10 +323,34 @@ Take the line length from the voice table above, not from another cut's document
 Chapters 2–8's ~21–24 words belong to a retired voice and undershoot Arthur by
 over a second per block.
 
-Hard stops (full stops, semicolons) cost more than the word count suggests —
-budget for the pauses, not just the words. More internal commas and fewer full
-stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
-content. That lever is voice-independent and worth reaching for before rewriting.
+### Sentence structure beats word count — the ch1 lesson
+
+Chapter 1 sized every line off a measured words/second figure and **still** put a
+take at 10.78s, over the window. The cause was not the word count:
+
+| Block | Words | Structure | Delivered |
+|---|---|---|---|
+| 2, first pass | 32 | **one sentence**, subordinate clause after an em-dash | **10.78s** |
+| 2, re-cut | 30 | **three short sentences**, same content | **6.91s** |
+| 5 | 29 | two sentences | 5.87s |
+
+Two words cannot account for 3.9 seconds. **A long single sentence — especially
+one carrying a subordinate clause after an em-dash — makes `seed_audio` slow down
+and add dramatic pauses**, and a linear words/second extrapolation from a short
+measurement line will not predict it. Block 8 showed the same effect inverted: 11
+words across two sentences came back at 4.95s against a 2.9s linear prediction.
+
+So the measured words/second in the voice table sizes a *first draft*. What
+actually lands the take in the window is structure:
+
+- **Take is long** → break the sentence up. Full stops in place of em-dashes and
+  subordinate clauses is the fastest way to pull seconds off without losing
+  content. This is what re-cut ch1 block 2.
+- **Take is short** → more internal commas, fewer full stops. This is how ch8
+  stretched a 22-word line from 4.7s to 6.3s.
+
+Both levers are voice-independent and cost one 0.6-credit re-take. Reach for them
+before rewriting the line's content, and **never** reach for `speech_rate`.
 
 ### This rule is not the caption rule — they are two constraints on one line
 
