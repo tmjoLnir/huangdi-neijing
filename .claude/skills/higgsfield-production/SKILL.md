@@ -13,16 +13,23 @@ before generating anything.
 match its section order on any new cut. Note that `episode-<N>` is the **Suwen
 chapter number**, not a sequential index, which is why the folders run 2, 3, 5, 8.
 
-**Two cut types.** Steps 0–5 below are written for the **30-90 sec vertical
-trailer** — the only form produced so far, and the one whose numbers are
-battle-tested. For a **15–20 minute longform episode**, read those steps for the
-mechanics, then read [Longform episodes](#longform-episodes-1520-min), which
-overrides the aspect ratio, block count, voice handling, and assembly strategy.
-Everything from *Environment caveats* onward applies to both.
+**Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
+the only form produced so far, and the one whose numbers are battle-tested. For a
+**15–20 minute longform episode**, read those steps for the mechanics, then read
+[Longform episodes](#longform-episodes-1520-min), which overrides the aspect
+ratio, block count, voice handling and assembly strategy. **Step 0 is a hard gate
+on both**: nothing generates until the user has seen the balance, the costed
+estimate, and confirmed model and tier.
 
-**Step 0 is a hard gate on both.** There is a default clip model and tier, but it
-is a starting point to confirm, not a licence to spend — nothing generates until
-the user has seen the balance, the costed estimate, and confirmed Draft or Full.
+| | |
+|---|---|
+| Steps 0–5 | the trailer pipeline, in order |
+| [Subtitles](#subtitles) | caption constraints and the guaranteed-fit sidecar |
+| [Longform episodes](#longform-episodes-1520-min) | what changes for a 15–20 min cut |
+| [Environment caveats](#environment-caveats) | blocked uploads/CDN, what lands in git |
+| [Compliance gate](#compliance-gate-before-generating) | run on prompts, before generating |
+
+The last four apply to both cut types.
 
 ## Order of operations
 
@@ -37,9 +44,9 @@ Never reorder these — each step consumes the previous step's **job ID**.
 5. **The document** — every job ID above, plus the shot list, compliance audit,
    manual deliverables and runtime levers.
 
-**Record the run's actual credit spend in the production record.** Chapters 2–8
-were cut without logging cost, so there is no historical figure to check an
-estimate against — start the series now.
+Log the run's actual credit spend in the production record as you go. Chapters
+2–8 were cut without it, so there is still no historical figure to check an
+estimate against.
 
 ## 0. Model + tier gate — cost it, then confirm
 
@@ -89,22 +96,19 @@ They are different jobs, not quality settings:
 | Subtitles | **`anton`, always** — the draft is the caption check | **`anton`, always** |
 | Output | never published, never linked as the final video | the cut |
 
-**Subtitles run on the draft too.** They cost 0.05/voiced block — 0.3 credits on
-a 6-block trailer, i.e. nothing — and the draft is the only chance to catch
-caption overflow before paying full price for the render. A draft without
-captions cannot verify the repo's readability rule, which makes it a worse draft
-for no meaningful saving.
+Three things make this cheap rather than wasteful:
 
-Staying on one model across both tiers is deliberate: a draft in a different
-model tells you about that model's blocking, not the one you ship.
+- **Same model both tiers.** A draft in a different model tells you about that
+  model's blocking, not the one you ship.
+- **Voice takes survive the upgrade.** ~0.6 credits each and resolution-
+  independent, so generate once and reuse — a draft → full upgrade only re-pays
+  for clips.
+- **Captions run on the draft.** 0.3 credits on a 6-block trailer, and an
+  uncaptioned draft cannot check the repo's readability rule.
 
-A draft is worth it when the cut is doing something new — an untried model, a new
-motif, a beat that might trip the safety filter, a shot list nobody has seen
-moving. It is waste on a routine chapter in a proven configuration.
-
-**Voice takes survive the upgrade.** They are ~0.6 credits each and resolution-
-independent, so generate them once and reuse them in the full render. A
-draft → full upgrade only re-pays for clips.
+Waive the draft on a routine chapter in a proven configuration. Keep it when the
+cut is doing something new — an untried model, a new motif, a beat that might
+trip the safety filter, a shot list nobody has seen moving.
 
 ### Clip model shortlist
 
@@ -228,8 +232,9 @@ Other models declare their roles differently; check `models_explore` rather than
 assuming this coercion happens everywhere.
 
 Keep the clips **text-free** — no titles, no captions in-frame. Captions are
-burned server-side at assembly. (Longform quotation cards are the one exception;
-see below.)
+burned server-side at assembly. Longform quotation cards are the sole exception,
+for a reason specific to them — see
+[ON-SCREEN TEXT](#on-screen-text--the-one-exception-to-text-free-clips).
 
 ## 3. Voiceover
 
@@ -280,8 +285,8 @@ rate, so re-measure on one block if the voice ever changes.
 
 **This line is also the subtitle.** Captions are Whisper-transcribed from the
 take and broken at the clauses you wrote, so narration phrasing decides whether
-captions fit the frame — see [Caption wrapping](#caption-wrapping--there-is-no-parameter-for-it).
-Short clauses serve both the 10s window and the caption width at once.
+captions fit the frame — see [Subtitles](#subtitles). Short clauses serve both
+the 10s window and the caption width at once.
 
 Only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but never have lines.
 That is deliberate — the narrator carries every compliance hedge.
@@ -302,11 +307,81 @@ the dimensions off the clip jobs rather than pasting 720×1280. Blocks go in fin
 play order.
 
 `subtitles: { font: "anton" }` goes on **every assembly, draft and full alike**.
-CLAUDE.md requires every deliverable to ship captioned, and running them on the
-draft is what makes the draft able to catch a caption problem. Assembly is free;
-subtitles cost 0.05/voiced block (0.3 on a 6-block trailer).
+CLAUDE.md requires every deliverable to ship captioned, and captioning the draft
+is what lets the draft catch a caption problem. Assembly is free; subtitles cost
+0.05/voiced block (0.3 on a 6-block trailer).
 
-### Caption wrapping — there is no parameter for it
+Blocks are fixed windows: a short take is centered, a slightly long one is sped
+up pitch-safely, and the video is never stretched — so a 6-block trailer is
+exactly 60s.
+
+Captions carry constraints worth knowing before you write narration, and an
+escape hatch when the fit has to be guaranteed — see [Subtitles](#subtitles).
+
+## 5. The document
+
+New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
+`inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
+overwrite a prior version; its production record is the reproduction evidence for
+the next cut.
+
+Sections in order, per CLAUDE.md and the ch8 reference — the generation work is
+only half the deliverable, and the three sections after the record are the ones
+most likely to get skipped:
+
+1. Title, Chinese chapter title, cut short name.
+2. Final video link + resolution / duration / format.
+3. The disclaimer blockquote.
+4. **Narration** table (block / beat / line), naming preset and speech rate.
+5. **Source-script mapping** — source beat → blocks, plus any naming
+   reconciliations, where the cut was re-timed off a longer script. CLAUDE.md is
+   the primary instruction in a conflict: ch8 resolved "Chronicle of Balance" →
+   *The Emperor's Inner Canon*, "Xiao-Lei" → **Lei-Gong**, and jade → **blue**
+   cheongsam that way.
+6. **Shot list**, numbered to match the blocks.
+7. **Production record (Higgsfield)** — see below.
+8. **Deliverables the assembler cannot produce** — history lower-third, human
+   editorial credit, licensed guqin music. Always all three; `explainer_video`
+   has no text-overlay parameter and generates no music. Ship the `.srt`/`.vtt`
+   sidecar alongside the document — see [Subtitles](#subtitles).
+9. **Compliance notes (YouTube)** — one bullet per repo rule.
+10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
+    reach 1:30.
+
+### Production record (Higgsfield)
+
+The record is what makes a cut reproducible after the CDN links die:
+
+- **Style key** — job ID, model, dimensions, and the full derivation chain.
+- **Clips** — model **and tier (Draft/Full)**, duration, resolution, and every
+  block's job ID. Name the model explicitly; it is a per-cut choice now, and a
+  future chapter cannot reproduce the look without it.
+- **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID *and* duration.
+- **Assembly** — block count, output dimensions, subtitle font, job ID, and
+  whether captions were **visually verified** or only assembled (the CDN is
+  usually blocked here, so say which).
+- **Credit spend** for the run.
+- **Reproduction notes** — anything that went wrong and how it was resolved.
+
+Keep superseded job IDs (ch3's six landscape clips, ch5's six overlong takes,
+ch8's two short takes and one `nsfw` clip) in the notes, marked as superseded.
+They're evidence for the next chapter, not clutter.
+
+## Subtitles
+
+Every deliverable ships captioned (CLAUDE.md), and captions must wrap on screen
+with every word visible. There are two ways to get them, and they are
+**alternatives, not layers** — burning a sidecar over a cut that already carries
+burned-in captions double-layers them:
+
+| | Burned in at assembly | Sidecar + libass burn |
+|---|---|---|
+| How | `subtitles: { font: "anton" }` on `explainer_video` | `scripts/build_subtitles.js`, then `ffmpeg` |
+| Wrapping | best-effort — influenced, never constrained | **guaranteed** by libass margins |
+| Cost | 0.05/voiced block | free |
+| Use for | drafts and routine cuts | when the fit must be guaranteed |
+
+### Wrapping the burned-in captions — there is no parameter for it
 
 **The API exposes exactly one subtitle option: `font`** (`patrick`, `caveat`,
 `marker`, `anton`). The `subtitles` object is `additionalProperties: false`, so
@@ -345,9 +420,6 @@ and the clips are untouched. Do not re-render video for a caption problem.
 
 ### The guaranteed path — sidecar + libass burn
 
-Everything above is best-effort: the assembler's captions cannot be constrained,
-only influenced. When the fit has to be a **guarantee**, don't use them.
-
 ```
 node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
@@ -375,78 +447,21 @@ centered — so the sidecar lines up with an `explainer_video` cut without manua
 nudging. The script warns and assumes a full 10s for any block whose take
 duration is missing from the record.
 
-**Which to use.** Burned-in `anton` captions are fine for the draft and for a
-routine cut. Use the sidecar path when the fit must be guaranteed, when a cut is
-going out on a platform whose chrome crowds the lower third, or when a reviewer
-has flagged overflow. The two are alternatives: burning a sidecar over a cut that
-already has burned-in captions double-layers them — assemble **without**
-`subtitles` when you intend to burn the sidecar.
+Reach for this path when the fit must be guaranteed, when a cut goes out on a
+platform whose chrome crowds the lower third, or when a reviewer has flagged
+overflow. Assemble **without** `subtitles` when you intend to burn the sidecar.
 
 `.srt`/`.vtt` are **tracked deliverables** per CLAUDE.md and are exempted in
 `.gitignore` — commit them with the cut. Chapters 2, 3, 5 and 8 all have theirs
-generated and committed; regenerate after any narration or take change so the
-sidecar never drifts from the document.
-
-Blocks are fixed windows: a short take is centered, a slightly long one is sped
-up pitch-safely, and the video is never stretched — so a 6-block trailer is
-exactly 60s.
-
-## 5. The document
-
-New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
-`inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
-overwrite a prior version; its production record is the reproduction evidence for
-the next cut.
-
-Sections in order, per CLAUDE.md and the ch8 reference — the generation work is
-only half the deliverable, and the three sections after the record are the ones
-most likely to get skipped:
-
-1. Title, Chinese chapter title, cut short name.
-2. Final video link + resolution / duration / format.
-3. The disclaimer blockquote.
-4. **Narration** table (block / beat / line), naming preset and speech rate.
-5. **Source-script mapping** — source beat → blocks, plus any naming
-   reconciliations, where the cut was re-timed off a longer script. CLAUDE.md is
-   the primary instruction in a conflict: ch8 resolved "Chronicle of Balance" →
-   *The Emperor's Inner Canon*, "Xiao-Lei" → **Lei-Gong**, and jade → **blue**
-   cheongsam that way.
-6. **Shot list**, numbered to match the blocks.
-7. **Production record (Higgsfield)** — see below.
-8. **Deliverables the assembler cannot produce** — history lower-third, human
-   editorial credit, licensed guqin music. Always all three; `explainer_video`
-   has no text-overlay parameter and generates no music.
-   Ship the `.srt`/`.vtt` sidecar alongside the document (step 4 of the
-   assembly section builds it).
-9. **Compliance notes (YouTube)** — one bullet per repo rule.
-10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
-    reach 1:30.
-
-### Production record (Higgsfield)
-
-The record is what makes a cut reproducible after the CDN links die:
-
-- **Style key** — job ID, model, dimensions, and the full derivation chain.
-- **Clips** — model **and tier (Draft/Full)**, duration, resolution, and every
-  block's job ID. Name the model explicitly; it is a per-cut choice now, and a
-  future chapter cannot reproduce the look without it.
-- **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID *and* duration.
-- **Assembly** — block count, output dimensions, subtitle font, job ID, and
-  whether captions were **visually verified** or only assembled (the CDN is
-  usually blocked here, so say which).
-- **Credit spend** for the run.
-- **Reproduction notes** — anything that went wrong and how it was resolved.
-
-Keep superseded job IDs (ch3's six landscape clips, ch5's six overlong takes,
-ch8's two short takes and one `nsfw` clip) in the notes, marked as superseded.
-They're evidence for the next chapter, not clutter.
+committed; regenerate after any narration or take change so the sidecar never
+drifts from the document.
 
 ## Longform episodes (15–20 min)
 
 Untested — no longform cut exists in `output/` yet. The mechanics below are
 derived from the tool constraints and the trailer runs, so treat the first
 episode as a pilot and write what actually happened into its reproduction
-notes. Where this section contradicts steps 1–5, this section wins.
+notes. Where this section contradicts steps 0–5, this section wins.
 
 ### What changes
 
@@ -620,7 +635,7 @@ Set by `.gitignore`, which postdates most of this pipeline's runs:
 
 ## Compliance gate before generating
 
-Every prompt goes through the repo's YouTube rules *before* it's sent, because a
+Run this gate on **prompts, before generating** — not just on output. A
 non-compliant clip is a paid re-render:
 
 - Mortality and collapse stay atmospheric — "portraits, not bodies." Chapter 3's
@@ -640,7 +655,5 @@ non-compliant clip is a paid re-render:
   description.
 - Self-certify general audience, **not** "made for kids."
 
-Run this gate on **prompts before generating**, not just on output — a
-non-compliant clip is a paid re-render. Then write the per-cut audit into the
-document's `## Compliance notes (YouTube)` section, one bullet per rule, so the
-reasoning survives with the cut.
+Then write the per-cut audit into the document's `## Compliance notes (YouTube)`
+section, one bullet per rule, so the reasoning survives with the cut.
