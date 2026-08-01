@@ -492,6 +492,17 @@ and the clips are untouched. Do not re-render video for a caption problem.
 Everything above is best-effort: the assembler's captions cannot be constrained,
 only influenced. When the fit has to be a **guarantee**, don't use them.
 
+**On trailers this is now the default, not the fallback.** Every cut must carry
+the end disclaimer card (`CLAUDE.md`), and its mandated string —
+*"A dramatized adaptation of a classical philosophical text."* — is 58 characters,
+which is three lines in a 9:16 frame. It cannot be reworded, because it is a
+compliance string, and it cannot be made to fit. So **any cut with the end card
+overflows the server-burned captions by construction.** Assemble with the
+`subtitles` parameter omitted and burn the sidecar instead; `check_caption_fit.js`
+reports that clause as a known exception rather than a failure. Chapter 1's v1 and
+v2 both ship this way. Dropping the parameter also saves the 0.05/block subtitle
+charge.
+
 ```
 node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
