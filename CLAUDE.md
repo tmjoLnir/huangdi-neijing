@@ -64,9 +64,22 @@ When adding a new trailer or episode document, follow this same layout so produc
 
 New visuals should attach the existing style key image as a reference rather than establishing a new look.
 
-- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Julian** (`95429266-c0ac-4137-a209-63b8812b0f23`) at `speech_rate` 55. Julian is the series voice as of chapter 3; chapter 2 used Alistair and is superseded — don't recast per chapter.
+- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Arthur** (`30fc8796-ceb6-4a66-b3a7-4a145ef7f346`) at `speech_rate` 55.
 
-Fan-di, Dr-Qi and Lei-Gong appear in trailers but never speak, so no character voices are cast yet. Longform needs them; whichever voices are chosen become series-recurring and get recorded in the production skill's voice table.
+**The full cast is voiced.** All four are `seed_audio` **preset** voices, cast permanently as of chapter 1 — series-recurring, never re-picked per chapter:
+
+| Role | Preset | `voice_id` | |
+|---|---|---|---|
+| Narrator (V.O.) | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | male |
+| Fan-di | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | male |
+| Dr-Qi | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | female |
+| Lei-Gong | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | male |
+
+Superseded narrators, kept for the record: **Julian** (`95429266-c0ac-4137-a209-63b8812b0f23`) voiced chapters 3, 5 and 8; **Alistair** (`d9d5c263-f84e-4752-97b5-3750fcc6fd2f`) voiced chapter 2. Those cuts keep their shipped takes unless they are deliberately re-voiced; every new cut is Arthur.
+
+Trailers through chapter 8 are narrator-only — the three characters appear but never speak. Now that they are cast, a trailer *may* give them lines, and longform requires them. `explainer_video` takes exactly one audio per 10s block, so **no block may contain two speakers**: a line exchange becomes consecutive blocks.
+
+The 6–8s take / ~21–24 word budget in the production skill was measured on Julian and is voice-specific. **Re-measure on Arthur before writing a cut's narration to it**, and measure each character voice once before committing a script to a rate; record the figures in the skill's voice table.
 
 ## Writing conventions
 

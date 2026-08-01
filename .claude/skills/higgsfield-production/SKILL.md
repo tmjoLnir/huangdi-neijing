@@ -234,19 +234,34 @@ see below.)
 ## 3. Voiceover
 
 Model `seed_audio`, `voice_type: "preset"`, `speech_rate: 55` — that rate is
-what fits a line inside a fixed 10s block. Known preset IDs:
+what fits a line inside a fixed 10s block. **The full cast is cast permanently**
+(CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
+re-picked per chapter:
 
-| Voice | ID | Used in |
-|---|---|---|
-| **Julian** (current series narrator, per CLAUDE.md) | `95429266-c0ac-4137-a209-63b8812b0f23` | ch3, ch5, ch8 |
-| Alistair (superseded after ch2 — do not recast) | `d9d5c263-f84e-4752-97b5-3750fcc6fd2f` | ch2 |
-| Fan-di | *not yet cast* | — |
-| Dr-Qi | *not yet cast* | — |
-| Lei-Gong | *not yet cast* | — |
+| Role | Voice | `voice_id` | Measured rate | Used in |
+|---|---|---|---|---|
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | *unmeasured — see below* | ch1 onward |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | *unmeasured* | — |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | *unmeasured* | — |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *unmeasured* | — |
+| Julian *(superseded narrator)* | | `95429266-c0ac-4137-a209-63b8812b0f23` | 2.4–3.0 w/s @ 55 | ch3, ch5, ch8 |
+| Alistair *(superseded narrator)* | | `d9d5c263-f84e-4752-97b5-3750fcc6fd2f` | runs long @ 55 | ch2 |
 
-The three character voices are only needed for longform (the trailer's
-characters never speak). Once cast, fill them in here — they're series-recurring
-and must not be re-picked per chapter.
+**Every voice in the table above is unmeasured on this pipeline.** The 6–8s /
+~21–24 word budget below was learned on Julian, and Alistair ran longer at the
+same rate — so it does not transfer. On the first cut using a new voice,
+**generate one take, read its duration, and write the measured words/second back
+into this table** before committing the rest of the script to it. One take is
+~0.6 credits; a mis-sized script is six.
+
+Character dialogue is shorter per block than narration, so a more natural
+`speech_rate` 60–65 may suit Xavier, Vesper and Zane — test on one block before
+committing to a rate across a script. Whatever is chosen becomes the recorded
+rate for that character.
+
+Chapters 2–8 keep their shipped Julian/Alistair takes; they are not re-voiced
+retroactively unless someone decides to, in which case only the voiceover and
+assembly are re-paid — the clips are untouched.
 
 One take per block. Record each take's **duration** alongside its job ID — the
 record is how you know a block was comfortable or tight.
@@ -264,7 +279,8 @@ directions, so treat the window as two-sided:
   3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
   stall, not as breathing room. **Two were re-cut, longer.**
 
-The settled target for **Julian at `speech_rate` 55**:
+The settled target for **Julian at `speech_rate` 55** — the baseline to
+re-measure Arthur against, not a figure to write Arthur's lines to:
 
 | | |
 |---|---|
@@ -276,15 +292,20 @@ Hard stops (full stops, semicolons) cost more than the word count suggests —
 budget for the pauses, not just the words. More internal commas and fewer full
 stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
 content. These figures are Julian-specific; Alistair (ch2) ran longer at the same
-rate, so re-measure on one block if the voice ever changes.
+rate. **The narrator is now Arthur, so they are unconfirmed** — measure one block
+and write the result into the voice table before scripting to them.
 
 **This line is also the subtitle.** Captions are Whisper-transcribed from the
 take and broken at the clauses you wrote, so narration phrasing decides whether
 captions fit the frame — see [Caption wrapping](#caption-wrapping--there-is-no-parameter-for-it).
 Short clauses serve both the 10s window and the caption width at once.
 
-Only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but never have lines.
-That is deliberate — the narrator carries every compliance hedge.
+In chapters 2–8 only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but
+never have lines. That was deliberate — the narrator carries every compliance
+hedge — and it stays the **default** for a trailer even now that the characters
+are cast. Giving a character a line is a per-cut decision that costs a block
+boundary (one speaker per block) and moves a hedge off the narrator, so if a cut
+does it, the compliance notes must say which hedge moved and who now carries it.
 
 ## 4. Assembly
 
@@ -524,15 +545,17 @@ takes **exactly one `audio` per block**. So:
 - Anything genuinely simultaneous has to be mixed outside the tool and uploaded
   via `media_upload` as a single take.
 
-Only Julian (`95429266-c0ac-4137-a209-63b8812b0f23`) is established. Fan-di,
-Dr-Qi and Lei-Gong need voices chosen once and reused for every future chapter —
-call `list_voices`, audition via `preview_url`, and **record the chosen
-voice_id + voice_type in the table in step 3** so chapter 5 doesn't recast the
-cast. Match the CLAUDE.md voice rules: Dr-Qi gets stiller as Fan-di performs.
+All four voices are cast and permanent — **Arthur** (narrator), **Xavier**
+(Fan-di), **Vesper** (Dr-Qi), **Zane** (Lei-Gong); IDs in the step-3 table. Do
+not audition alternatives per chapter. Match the CLAUDE.md voice rules when
+directing them: Dr-Qi never sounds like she's winning — the more Fan-di
+performs, the stiller she gets.
 
-`speech_rate: 55` is tuned to fit a narration line in 10s; character dialogue is
-shorter per block, so a more natural 60–65 may fit. Test on one block before
-committing to a rate across ~110 takes.
+`speech_rate: 55` is tuned to fit a *narration* line in 10s; character dialogue
+is shorter per block, so a more natural 60–65 may fit Xavier, Vesper and Zane.
+**Measure all four on one block each before committing to ~110 takes** — none of
+them has a measured rate on this pipeline yet, and four unmeasured voices across
+a 19-minute episode is the most expensive version of the ch5/ch8 mistake.
 
 ### ON-SCREEN TEXT — the one exception to text-free clips
 
