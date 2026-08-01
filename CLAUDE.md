@@ -48,7 +48,7 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time.
+  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 

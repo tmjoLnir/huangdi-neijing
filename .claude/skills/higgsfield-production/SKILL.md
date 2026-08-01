@@ -577,6 +577,18 @@ most likely to get skipped:
    disclaimer to fill the block's one audio slot.
    Ship the `.srt`/`.vtt` sidecar alongside the document (step 4 of the
    assembly section builds it).
+
+   Close the section with a **Finishing steps** subsection — the ordered
+   procedure that turns the delivered render into an uploadable file, since a
+   cut assembled without server-side subtitles carries neither captions nor
+   on-screen text. Cover, with **this cut's own numbers**: the `.srt` to burn and
+   which cues to strip first, the `ffmpeg` line (plus `scale=` if burning a
+   480p draft with a 720p sidecar), where the lower-third sits relative to the
+   caption band, the end card's exact in/out timecodes and text, and where the
+   music drops out. Never write it as a generic recipe — block numbering and
+   timecodes differ between versions of the same chapter, and that is where the
+   mistakes land. `output/episode-1/inner-canon-ch1-trailer-v1.md` is the
+   reference; its v2 shows the same procedure re-derived for a different cut.
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
     reach 1:30.
