@@ -371,17 +371,22 @@ Genuinely: three of these belong in `CLAUDE.md` / `SKILL.md`, not in one cut.
 
 ## 7. Priority order
 
-| | Item | Why |
+All P0–P2 items are resolved in the production document
+`output/episode-1/inner-canon-ch1-trailer-v1.md` (2026-08-01), an 8 × 10s / 80s
+9:16 cut **with character lines** — the trio speaks for the first time in the
+series.
+
+| | Item | Status |
 |---|---|---|
-| **P0** | Fix the misquotation — line to Fan-di, restore *I have heard*, restore 其知道者 (§1.1) | Credibility; the whole premise rests on it |
-| ~~P0~~ | ~~Decide narrator-only vs. casting three permanent voices~~ — **done**, cast Arthur / Xavier / Vesper / Zane (§1.2) | Resolved 2026-08-01 |
-| **P0** | Measure Arthur on one take before scripting to the 6–8s budget (§1.2, §5) | The word count belongs to a retired voice; a mis-sized script is six re-takes |
-| **P0** | Re-cut to the 10s block grid + source-script mapping (§1.3) | The cut is unbuildable otherwise |
-| **P1** | 9:16 master; 16:9 by `reframe` if wanted (§1.4) | House rule + doubles the clip bill if got wrong |
-| **P1** | Series title, Lei-Gong, blue cheongsam (§1.5) | Four shipped cuts already say otherwise |
-| **P1** | Add history lower-third; credit on the end card; repo disclaimer string (§3) | Hard `CLAUDE.md` requirements |
-| **P2** | Rewrite as the full 10-section production document (§2) | Reproducibility; `build_subtitles.js` depends on it |
-| **P2** | Run the step-0 cost gate before generating (§2) | `SKILL.md` hard gate |
-| **P2** | Resolve the guqin/bell licensing argument (§4) | Deviates from a standing series rule |
-| **P3** | Update the Blueprint's Ch 1 hook to clear the banned-terms list (§3) | Internal contradiction |
-| **P3** | Port strategy / thumbnail / banned-terms sections upstream (§6) | Improves every future cut |
+| ~~P0~~ | ~~Fix the misquotation — line to Fan-di, restore *I have heard*, restore 其知道者~~ (§1.1) | **Done** — all three corrections applied; the superlative is re-sourced to the house line |
+| ~~P0~~ | ~~Decide narrator-only vs. casting three permanent voices~~ (§1.2) | **Done** — cast Arthur / Xavier / Vesper / Zane; Ep 1 uses character lines |
+| ~~P0~~ | ~~Measure Arthur before scripting to the 6–8s budget~~ (§1.2, §5) | **Done** — all four measured. Arthur 3.73 w/s, ~21% faster than the retired narrator. Separately: **`speech_rate` is not a duration lever** (−8% to +12% across rate 40 vs 60) |
+| ~~P0~~ | ~~Re-cut to the 10s block grid + source-script mapping~~ (§1.3) | **Done** — 8 blocks, mapping table included |
+| ~~P1~~ | ~~9:16 master; 16:9 by `reframe` if wanted~~ (§1.4) | **Done** — 9:16 only |
+| ~~P1~~ | ~~Series title, Lei-Gong, blue cheongsam~~ (§1.5) | **Done** — recorded as reconciliations |
+| ~~P1~~ | ~~History lower-third; credit on the end card; repo disclaimer string~~ (§3) | **Done** — and the **end disclaimer card is now a standing `CLAUDE.md` rule** on every cut, credited to **Joshua Chin**. It costs a block; Ep 1's is block 8 |
+| ~~P2~~ | ~~Rewrite as the full 10-section production document~~ (§2) | **Done** — `build_subtitles.js` parses it: 8 blocks, 28 cues, widest line fits |
+| ~~P2~~ | ~~Run the step-0 cost gate before generating~~ (§2) | **Done** — balance 1,037.3; **Draft tier confirmed**; ~91 credits |
+| ~~P2~~ | ~~Resolve the guqin/bell licensing argument~~ (§4) | **Done** — guqin stands; the silence instinct survives in blocks 3 and 8 |
+| **P3** | Update the Blueprint's Ch 1 hook to clear the banned-terms list (§3) | **Open** — *"The 2,000-Year-Old Secret to Living Past 100"* still trips the list twice |
+| **P3** | Port strategy / thumbnail / banned-terms sections upstream (§6) | **Open** |
