@@ -7,7 +7,15 @@
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(cat:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "mcp__higgsfield",
+      "mcp__higgsfield__balance",
+      "mcp__higgsfield__models_explore",
+      "mcp__higgsfield__generate_image",
+      "mcp__higgsfield__generate_video",
+      "mcp__higgsfield__generate_audio",
+      "mcp__higgsfield__explainer_video",
+      "mcp__higgsfield__job_display"
     ],
     "deny": [
       "Bash(npm install *)",
