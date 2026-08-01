@@ -207,6 +207,66 @@ Unchanged from v1 — four manual steps at edit/upload time.
   of the script's "silence is the instrument" beats — its shot 5 (block 3) and its
   shot 12 (the tail of block 5) — and on this grid the silence is free.
 
+### Finishing steps — run these on the downloaded MP4
+
+The render carries **no captions and no on-screen text**. It is not uploadable as
+delivered. Same procedure as v1, with this cut's timings and cue numbers.
+
+**1. Burn the captions.**
+
+```
+node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v2.md
+```
+
+**Use this cut's own `.srt`.** v2's block numbering differs from v1's — v1 block 7
+is v2 block 5 — so burning v1's sidecar onto this cut puts every cue 20 seconds
+out.
+
+Then, on a **copy** of the `.srt`, **delete cues 18 and 19** — the two from
+`00:00:52,500`. They caption the end-card block, so leaving them shows the
+disclaimer twice, once as a bottom-third caption breaking mid-phrase and again on
+the card in step 3.
+
+Burn with the command `build_subtitles.js` prints, **adding a scale filter for the
+draft**. The sidecar is computed for 720×1280 while the draft is 480×854, and
+libass takes its resolution from the video, so burning as-printed renders the 54px
+font and 58px margins against a 480-wide frame — about 50% oversized, and it
+overflows.
+
+```
+ffmpeg -i <downloaded-draft>.mp4 \
+  -vf "scale=720:1280,subtitles=<edited>.srt:force_style='FontName=Anton,Fontsize=54,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,Alignment=2,MarginL=58,MarginR=58,MarginV=150,WrapStyle=0'" \
+  -c:a copy <cut>-subtitled.mp4
+```
+
+Drop `scale=720:1280,` on a real 720p render. **Anton must be installed locally**
+(`fc-list | grep -i anton`) or libass substitutes another face and the measured fit
+stops holding.
+
+**2. History lower-third.** *"Presented as history & philosophy"*, small, ~0:01 to
+~0:08. Anchor **above the caption band** — around y≈880 at 720×1280, or top-left —
+so it clears the bottom-centre captions.
+
+**3. End card — 50:00 to 60:00** (block 6, the black plate). The narrator reads the
+disclaimer at **52.5–57.5s**; bring the text up at the block start and hold to the
+end. Centred:
+
+> A dramatized adaptation of a classical philosophical text. Not medical advice.
+>
+> Written & edited by Joshua Chin
+
+Disclaimer **verbatim**. Both lines also go in the video description.
+
+**4. Music.** Licensed guqin, ducked ~12–15 dB under the voiceover. This cut keeps
+both of the source script's silence beats, so they matter more here than in v1:
+
+- **Block 3, 20:00–30:00 — music out entirely.** The 2.6s take leaves ~3.7s of
+  silence either side; that silence is the interruption.
+- **End of block 5, at 50:00** — the hard cut to black. Let it land clean.
+- **Under the end card** — fade to nothing before the cut ends.
+
+Keep the licence receipt with the cut.
+
 ## Compliance notes (YouTube)
 
 Carried from v1; only the items the cut changes are re-argued.

@@ -362,6 +362,69 @@ text-overlay parameter and generates no music.
   choice. The script's *"silence is the instrument"* instinct survives in blocks 3
   and 8, where the block geometry supplies the silence for free.
 
+### Finishing steps — run these on the downloaded MP4
+
+The render carries **no captions and no on-screen text**. It is not uploadable as
+delivered. Four steps, in order.
+
+**1. Burn the captions.**
+
+```
+node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v1.md
+```
+
+Then, on a **copy** of the `.srt` (re-running the builder regenerates it), **delete
+cues 25 and 26** — the two from `00:01:12,500`. They caption the end-card block, so
+leaving them puts the disclaimer on screen twice, once as a bottom-third caption
+breaking mid-phrase (*"a classical philosophical / text."*) and again on the card
+in step 3. Let the card carry that text as typography.
+
+Burn with the command `build_subtitles.js` prints — **but the draft needs a scale
+filter first.** The sidecar is computed for the 720×1280 shipping frame while the
+draft is 480×854, and libass takes its resolution from the video, so burning
+as-printed renders `Fontsize=54` and the 58px margins against a 480-wide frame:
+roughly 50% oversized, and it overflows.
+
+```
+ffmpeg -i <downloaded-draft>.mp4 \
+  -vf "scale=720:1280,subtitles=<edited>.srt:force_style='FontName=Anton,Fontsize=54,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,Alignment=2,MarginL=58,MarginR=58,MarginV=150,WrapStyle=0'" \
+  -c:a copy <cut>-subtitled.mp4
+```
+
+Drop `scale=720:1280,` when burning onto a real 720p render — the printed command
+is correct as-is there. **Anton must be installed locally** (`fc-list | grep -i
+anton`); libass silently substitutes another face if it is missing, and the
+measured fit stops holding.
+
+**2. History lower-third.** *"Presented as history & philosophy"*, small, faded in
+~0:01 and held to ~0:08 — `CLAUDE.md` requires it within the first 10 seconds.
+Place it **above the caption band**: captions are bottom-centre with a 150px bottom
+margin and can run two lines, occupying roughly y=1000–1130 at 720×1280, so anchor
+around **y≈880** or top-left. It is a compliance marker, not a title.
+
+**3. End card — 70:00 to 80:00** (block 8, the black plate). The narrator reads the
+disclaimer at **72.5–77.5s**, so bring the text up at the block start and hold to
+the end. Centred:
+
+> A dramatized adaptation of a classical philosophical text. Not medical advice.
+>
+> Written & edited by Joshua Chin
+
+Disclaimer **verbatim** — it is the mandated string. Both lines also go in the
+video description.
+
+**4. Music.** Licensed guqin, bedded under the whole cut, ducked ~12–15 dB beneath
+the voiceover. Three placements carry the edit:
+
+- **Block 3, 20:00–30:00 — drop the music out entirely.** The 2.6s take centred in
+  a 10s window leaves ~3.7s of silence either side, and that silence *is* the
+  interruption. Scoring over it kills the only thing the block exists for.
+- **End of block 7, at 70:00** — the hard cut to black. Let it land clean.
+- **Under the end card** — fade to nothing before the cut ends.
+
+Keep the licence receipt with the cut; trailers carry the higher Content-ID
+exposure.
+
 ## Compliance notes (YouTube)
 
 - **Disclaimer** — repo string used verbatim, in the blockquote above, spoken in
