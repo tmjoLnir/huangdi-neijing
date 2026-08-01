@@ -464,6 +464,18 @@ most likely to get skipped:
    disclaimer to fill the block's one audio slot.
    Ship the `.srt`/`.vtt` sidecar alongside the document — see
    [Subtitles](#subtitles).
+
+   Close the section with a **Finishing steps** subsection — the ordered
+   procedure that turns the delivered render into an uploadable file, since a
+   cut assembled without server-side subtitles carries neither captions nor
+   on-screen text. Cover, with **this cut's own numbers**: the `.srt` to burn and
+   which cues to strip first, the `ffmpeg` line (plus `scale=` if burning a
+   480p draft with a 720p sidecar), where the lower-third sits relative to the
+   caption band, the end card's exact in/out timecodes and text, and where the
+   music drops out. Never write it as a generic recipe — block numbering and
+   timecodes differ between versions of the same chapter, and that is where the
+   mistakes land. `output/episode-1/inner-canon-ch1-trailer-v1.md` is the
+   reference; its v2 shows the same procedure re-derived for a different cut.
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
     reach 1:30.
@@ -540,6 +552,27 @@ phrasing the only real lever:
   other three. It is the house font and also the safest of the four here; do not
   switch fonts to fix a wrapping problem, shorten the clause instead.
 
+**Check it before you generate anything — `scripts/check_caption_fit.js`.**
+
+```
+node scripts/check_caption_fit.js <doc>.md            # 9:16, the hard case
+node scripts/check_caption_fit.js <doc>.md --format 16:9
+node scripts/check_caption_fit.js output/episode-*/*-v*.md   # sweep every cut
+```
+
+It measures **every clause** in the narration table against the two-line budget
+and exits non-zero on any that overflow. Run it on the narration table *before*
+recording takes: a fix is free at that point, and ~0.6 credits per block after.
+
+**It is not redundant with `build_subtitles.js`, and its verdict can disagree.**
+The two caption paths fail differently — the sidecar pre-splits a long clause
+across several cues and burns through libass margins, so it always fits, while
+`explainer_video` chunks on Whisper pauses that fall at punctuation, so a clause
+with no internal comma has nowhere to break. **A document can pass
+`build_subtitles.js` and still overflow on the assembled video**; chapter 1 did,
+on six clauses. Chapter 5 also fails the check on two clauses, discovered
+retroactively — it shipped that way.
+
 **Verification is visual, and this host usually cannot do it.** The CDN has been
 blocked since chapter 3, so the rendered MP4 generally cannot be fetched back —
 meaning burned-in caption overflow *cannot* be confirmed from the repo host.
@@ -555,6 +588,17 @@ and the clips are untouched. Do not re-render video for a caption problem.
 
 Everything above is best-effort: the assembler's captions cannot be constrained,
 only influenced. When the fit has to be a **guarantee**, don't use them.
+
+**On trailers this is now the default, not the fallback.** Every cut must carry
+the end disclaimer card (`CLAUDE.md`), and its mandated string —
+*"A dramatized adaptation of a classical philosophical text."* — is 58 characters,
+which is three lines in a 9:16 frame. It cannot be reworded, because it is a
+compliance string, and it cannot be made to fit. So **any cut with the end card
+overflows the server-burned captions by construction.** Assemble with the
+`subtitles` parameter omitted and burn the sidecar instead; `check_caption_fit.js`
+reports that clause as a known exception rather than a failure. Chapter 1's v1 and
+v2 both ship this way. Dropping the parameter also saves the 0.05/block subtitle
+charge.
 
 ```
 node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md

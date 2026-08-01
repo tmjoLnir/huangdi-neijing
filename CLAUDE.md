@@ -36,12 +36,13 @@ decks/
 scripts/
   build_chapter_deck.js                     # node scripts/build_chapter_deck.js
   build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
+  check_caption_fit.js                      # node scripts/check_caption_fit.js <cut-document>.md
 ```
 
 - `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders run 1, 2, 3, 5, 8 because those are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
 - `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
-- `decks/`, `scripts/` — the planning deck and its build script, plus `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document (dependency-free). `.claude/settings.json` denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
+- `decks/`, `scripts/` — the planning deck and its build script, plus `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which flags narration clauses that will overflow `explainer_video`'s burned-in captions (both dependency-free). **Run `check_caption_fit.js` before generating voice takes** — it checks a different failure than `build_subtitles.js` does, and a document can pass the sidecar build and still overflow on the assembled video. `.claude/settings.json` denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
 
 Each production document contains, in order:
   - The cut's title, the chapter's Chinese title, and the cut's short name.
@@ -51,7 +52,7 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time.
+  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
