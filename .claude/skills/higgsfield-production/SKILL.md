@@ -238,29 +238,54 @@ what fits a line inside a fixed 10s block. **The full cast is cast permanently**
 (CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
-| Role | Voice | `voice_id` | Measured rate |
-|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | *unmeasured — see below* |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | *unmeasured* |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | *unmeasured* |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *unmeasured* |
+| Role | Voice | `voice_id` | Measured rate | 6–8s window |
+|---|---|---|---|---|
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.73 words/sec** | **22–30 words** |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.55 words/sec** | **27–36 words** |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.42 words/sec** | **27–35 words** |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | *re-measure at length* |
+
+Measured 2026-08-01 on chapter 1, one take per voice, `seed_audio` presets; job
+IDs and durations are in `output/episode-1/inner-canon-ch1-trailer-v1.md`. Zane
+has only been measured on a 5-word line (2.3–2.6s), where pause overhead
+dominates and no reliable words/sec can be derived — **measure him on a
+full-length line before writing him one.**
+
+**Arthur is ~21% faster than the retired narrator at the same `speech_rate`** —
+23 words gave 6.17s against the retired voice's 7.46s for the same count. Writing
+a new cut to chapters 2–8's ~21–24 word budget undershoots every block by over a
+second. This is the concrete proof that word counts do not transfer.
 
 These four are the only voices this series uses. Do not audition alternatives,
 and do not carry a voice forward out of an older cut's production record — the
 narrators used before chapter 1 are retired.
 
-**Every voice in the table is unmeasured on this pipeline.** The 6–8s /
-~21–24 word budget below was measured on a different, now-retired narrator, and
-word budgets do not transfer between voices — the one previous narrator change
-moved the same `speech_rate` by enough to matter. On the first cut using a voice,
-**generate one take, read its duration, and write the measured words/second back
-into this table** before committing the rest of the script to it. One take is
-~0.6 credits; a mis-sized script is six.
+For any voice still marked unmeasured, **generate one take, read its duration,
+and write the measured words/second back into this table** before committing a
+script to it. One take is ~0.6 credits; a mis-sized script is six.
 
-Character dialogue is shorter per block than narration, so a more natural
-`speech_rate` 60–65 may suit Xavier, Vesper and Zane — test on one block before
-committing to a rate across a script. Whatever is chosen becomes the recorded
-rate for that character.
+### `speech_rate` is not a duration lever — do not reach for it
+
+Measured 2026-08-01 across rate 40 vs rate 60 on identical text: Xavier **+3%**,
+Zane **+12%**, Vesper **−8%**. Vesper coming back *shorter* at the slower rate
+shows the spread is take-to-take variance, not a rate response. Between 40 and 60
+`speech_rate` does not meaningfully move take duration on these presets.
+
+This kills the obvious fix. **Word count and punctuation are the only controls on
+take length** — if a take lands short, rewrite the line longer or trade full stops
+for commas; do not re-render it at a different rate expecting a different
+duration. All four voices run at `speech_rate` 55.
+
+**Character lines are structurally short, and a block is structurally 10s.** At
+4.4–4.6 words/sec, Xavier and Vesper need ~30 words to fill a block — which is a
+speech, not an interjection. Two ways out, and the choice is per line:
+
+- **Write the character a real paragraph.** Fine for a reframe or a monologue.
+- **Let the take run short and centred.** A 2.6s line leaves ~3.7s of silence
+  either side. For an interruption or a hard beat that silence *is* the effect,
+  and chapter 1 uses it deliberately in block 3. Record it in the production
+  record as a chosen exception, or the next cut will read it as the ch8 dead-air
+  mistake and "fix" it.
 
 Chapters 2–8 shipped under the previous narrators and keep their takes; their
 production records hold those voice IDs as reproduction evidence. Nothing is
@@ -291,17 +316,41 @@ around inside it — so it holds for every voice. The word count that *produces*
 | | |
 |---|---|
 | Take duration per 10s block | **6–8s — fixed, applies to every voice** |
-| Line length | measure it; ~21–24 words on chapters 2–8's narrator |
-| Delivery rate | measure it; ~2.4–3.0 words/sec on chapters 2–8's narrator |
+| Line length | per voice — **22–30 words Arthur, 27–36 Xavier, 27–35 Vesper** |
+| Delivery rate | per voice — **3.73 / 4.55 / 4.42 words/sec**; ~2.4–3.0 on the retired narrator |
 
-Treat the second and third rows as a starting guess for the *first* take only,
-then replace them with the measured figure in the voice table. Arthur, Xavier,
-Vesper and Zane have no measured figure yet.
+Take the line length from the voice table above, not from another cut's document.
+Chapters 2–8's ~21–24 words belong to a retired voice and undershoot Arthur by
+over a second per block.
 
-Hard stops (full stops, semicolons) cost more than the word count suggests —
-budget for the pauses, not just the words. More internal commas and fewer full
-stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
-content. That lever is voice-independent and worth reaching for before rewriting.
+### Sentence structure beats word count — the ch1 lesson
+
+Chapter 1 sized every line off a measured words/second figure and **still** put a
+take at 10.78s, over the window. The cause was not the word count:
+
+| Block | Words | Structure | Delivered |
+|---|---|---|---|
+| 2, first pass | 32 | **one sentence**, subordinate clause after an em-dash | **10.78s** |
+| 2, re-cut | 30 | **three short sentences**, same content | **6.91s** |
+| 5 | 29 | two sentences | 5.87s |
+
+Two words cannot account for 3.9 seconds. **A long single sentence — especially
+one carrying a subordinate clause after an em-dash — makes `seed_audio` slow down
+and add dramatic pauses**, and a linear words/second extrapolation from a short
+measurement line will not predict it. Block 8 showed the same effect inverted: 11
+words across two sentences came back at 4.95s against a 2.9s linear prediction.
+
+So the measured words/second in the voice table sizes a *first draft*. What
+actually lands the take in the window is structure:
+
+- **Take is long** → break the sentence up. Full stops in place of em-dashes and
+  subordinate clauses is the fastest way to pull seconds off without losing
+  content. This is what re-cut ch1 block 2.
+- **Take is short** → more internal commas, fewer full stops. This is how ch8
+  stretched a 22-word line from 4.7s to 6.3s.
+
+Both levers are voice-independent and cost one 0.6-credit re-take. Reach for them
+before rewriting the line's content, and **never** reach for `speech_rate`.
 
 ### This rule is not the caption rule — they are two constraints on one line
 
@@ -487,9 +536,13 @@ most likely to get skipped:
    cheongsam that way.
 6. **Shot list**, numbered to match the blocks.
 7. **Production record (Higgsfield)** — see below.
-8. **Deliverables the assembler cannot produce** — history lower-third, human
-   editorial credit, licensed guqin music. Always all three; `explainer_video`
-   has no text-overlay parameter and generates no music.
+8. **Deliverables the assembler cannot produce** — history lower-third, end
+   disclaimer card, human editorial credit (*Written & edited by Joshua Chin*),
+   licensed guqin music. Always all four; `explainer_video` has no text-overlay
+   parameter and generates no music. The end disclaimer card is the one that
+   costs credits: it needs its own final 10s block in the block plan and the
+   cost preflight, rendered as a plain plate with the narrator reading the
+   disclaimer to fill the block's one audio slot.
    Ship the `.srt`/`.vtt` sidecar alongside the document (step 4 of the
    assembly section builds it).
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
