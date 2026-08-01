@@ -17,16 +17,20 @@ README.md
   settings.json                             # Bash permission allow/deny/ask lists
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
 output/
+  episode-1/inner-canon-ch1-trailer-v1.md   # current reference layout
+  episode-1/inner-canon-ch1-trailer-script-review.md
   episode-2/inner-canon-ch2-trailer-v1.md
   episode-3/inner-canon-ch3-trailer-v1.md
   episode-5/inner-canon-ch5-trailer-v1.md
-  episode-8/inner-canon-ch8-trailer-v1.md   # current reference layout
+  episode-8/inner-canon-ch8-trailer-v1.md
+  # every cut also carries <cut>.srt and <cut>.vtt sidecars, tracked
 assets/
   emperor-Fan.png                           # Fan-di style key art
   wise-Qi-2.png                             # Dr-Qi style key art
   witty-Lei.png                             # Lei-Gong style key art
 docs/
-  huangdi-neijing-layman-guide.md           # plain-English guide + top-20 chapter shortlist
+  Emperors Inner Canon Series Blueprint.md  # 80-chapter index, Top-20 slate, compliance audit
+  Emperors_Inner_Canon_Publish_Sequence.md  # what order to publish in (≠ chapter order)
 decks/
   huangdi-neijing-top20-video-chapters.pptx # built by the script below
 scripts/
@@ -34,9 +38,9 @@ scripts/
   build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
 ```
 
-- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders run 2, 3, 5, 8 because those are the chapters chosen off the shortlist in `docs/`; Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
+- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders run 1, 2, 3, 5, 8 because those are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
-- `docs/` — the plain-English guide and the ranked chapter shortlist that decides which chapter is produced next.
+- `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
 - `decks/`, `scripts/` — the planning deck and its build script, plus `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document (dependency-free). `.claude/settings.json` denies `npm install`, so a run needing `pptxgenjs` installed has to be cleared first.
 
 Each production document contains, in order:
@@ -52,7 +56,12 @@ Each production document contains, in order:
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
 When adding a new trailer or episode document, follow this same layout so production records stay reproducible.
-`output/episode-8/inner-canon-ch8-trailer-v1.md` is the current reference.
+`output/episode-1/inner-canon-ch1-trailer-v1.md` is the current reference — it is
+the first cut on the permanent voice cast and on `seedance_2_0_mini`, and it adds
+two sections worth carrying forward: a **voice measurement** table where a voice
+is newly measured, and a **credit spend** breakdown reconciled against the
+preflight estimate. `output/episode-8/inner-canon-ch8-trailer-v1.md` remains the
+reference for the older six-block narrator-only shape.
 
 ## Core Cast (recurring)
 
@@ -86,10 +95,10 @@ In the production skill, the **6–8s take per 10s block is fixed** — it is pi
 ## Writing conventions
 
 - **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
-- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-8/inner-canon-ch8-trailer-v1.md`.
+- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-1/inner-canon-ch1-trailer-v1.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
-- Target runtime 30-90 sec per trailer.
-- Always include subtitles / closed captions on the final deliverable. Make sure all subtitles wrap on screen and are readable across the entire video. Subtitles with anton font.
+- Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — chapters 2–8 are six blocks (60s), chapter 1 is eight (80s).
+- Always include subtitles / closed captions on the final deliverable. Make sure all subtitles wrap on screen and are readable across the entire video. Subtitles with anton font. `explainer_video`'s burned-in captions expose only `font` — no wrap, width or position control — so a long line can render past the frame. The wrap guarantee comes from the sidecar path: `node scripts/build_subtitles.js <cut-document>.md` builds pre-wrapped `.srt`/`.vtt` from the cut's own narration table and take durations, and prints the `ffmpeg`/libass burn command. Sidecars are tracked deliverables; see the skill's "Caption wrapping".
 
 ## YouTube compliance (apply to every episode)
 
@@ -138,12 +147,18 @@ edit/upload time on every cut:
   for clips, `generate_audio` for voiceover, and `explainer_video` for final
   assembly. Every generated asset's job ID goes into the document's production
   record so the cut can be reproduced.
+- **Clips default to `seedance_2_0_mini` at 480p (draft tier), Draft then Full.**
+  This replaced `gemini_omni`, which chapters 2–8 used at 3× the cost; ch1 is the
+  only cut on the new default so far. Generating costs real credits, so the skill's
+  step-0 gate applies: price the whole cut, name the model and tier, and **confirm
+  with the user before spending**. Record actual spend against the estimate in the
+  document.
 - Attach the existing character style-key art from `assets/` (or the prior
   style-key image job) as the reference on new generations rather than
   establishing a fresh look. In practice each chapter key chains off the previous
   one, swapping only the chapter motif — the lineage so far is group shot →
-  ch2 → ch3 → ch5 → ch8. `medias[].value` takes a media ID or a prior job ID only,
-  never a URL.
+  ch2 → ch3 → ch5 → ch8 → ch1. `medias[].value` takes a media ID or a prior job ID
+  only, never a URL.
 - Hosted asset URLs are CDN links from the generation service and may expire —
   user to manually download and archive the final MP4 for any cut worth keeping.
   Rendered media is gitignored (`renders/`, `*.mp4`, audio); download renders into
