@@ -72,14 +72,15 @@ Two secondary accuracy notes:
 > `43173c95-3ec8-446a-a162-6504332c578b`, Dr-Qi **Vesper**
 > `c3204739-4084-41a3-9dc5-c805b307ec18`, Lei-Gong **Zane**
 > `9ddbff06-a984-4c0d-b641-4d8ca846bf60` — all `seed_audio` presets, recorded in
-> `CLAUDE.md` and the skill's step-3 table. Arthur also **supersedes Julian** as
-> the narrator, so chapter 1 is the first cut in a new narrator voice.
+> `CLAUDE.md` and the skill's step-3 table. Arthur also **replaces the retired
+> narrator** used on chapters 2–8, so chapter 1 is the first cut in a new voice.
 >
 > The casting blocker below is cleared: Ep 1 *may* keep its character lines. Two
 > constraints in it survive and still bind — **one speaker per 10s block**
 > (`explainer_video` takes exactly one `audio` per item), and **no voice has a
-> measured rate yet**, so the 6–8s / 21–24 word budget in §5 is Julian's and must
-> be re-measured on Arthur before any script is written to it. The narrator-only
+> measured rate yet**. The 6–8s window in §5 is fixed pipeline geometry, but the
+> ~21–24 word count that produces it belongs to the retired narrator and must be
+> re-measured on Arthur before any script is written to it. The narrator-only
 > draft in §5 remains the lower-risk option for the launch cut, but it is now a
 > preference, not a constraint.
 
@@ -105,7 +106,7 @@ There is also a hard tool constraint: `explainer_video` takes **exactly one
 window. Every speaker change forces its own block.
 
 **Recommendation: re-cut narrator-only** (see §5 for a working draft). The house
-pattern already proves it — ch2/3/5/8 all carry their whole argument on Julian,
+pattern already proves it — ch2/3/5/8 all carry their whole argument on one voice,
 and `SKILL.md` notes that is deliberate, because *the narrator carries every
 compliance hedge*. If the character-voice version is wanted anyway, it must be
 its own decision: `list_voices` → audition → record three `voice_id`s in the
@@ -285,8 +286,9 @@ take. It comes free; it just can't be placed to the frame.
 
 Offered as a starting point, not a finished narration. Written to the settled
 house metric (**6–8s per block, ~21–24 words**, short clauses so the captions
-break where the speech breaks) — but that metric was measured on **Julian**, and
-the narrator is now **Arthur**. Generate block 1 first, read its duration, and
+break where the speech breaks) — but the word count in that metric was measured
+on the **retired** narrator, and the narrator is now **Arthur**; only the 6–8s
+window carries over. Generate block 1 first, read its duration, and
 re-scale the remaining five to Arthur's actual words/second before committing.
 Structure preserves the
 script's own **claim → contradiction → escalation → withhold**, and restores the
@@ -373,7 +375,7 @@ Genuinely: three of these belong in `CLAUDE.md` / `SKILL.md`, not in one cut.
 |---|---|---|
 | **P0** | Fix the misquotation — line to Fan-di, restore *I have heard*, restore 其知道者 (§1.1) | Credibility; the whole premise rests on it |
 | ~~P0~~ | ~~Decide narrator-only vs. casting three permanent voices~~ — **done**, cast Arthur / Xavier / Vesper / Zane (§1.2) | Resolved 2026-08-01 |
-| **P0** | Measure Arthur on one take before scripting to the 6–8s budget (§1.2, §5) | The budget is Julian's; a mis-sized script is six re-takes |
+| **P0** | Measure Arthur on one take before scripting to the 6–8s budget (§1.2, §5) | The word count belongs to a retired voice; a mis-sized script is six re-takes |
 | **P0** | Re-cut to the 10s block grid + source-script mapping (§1.3) | The cut is unbuildable otherwise |
 | **P1** | 9:16 master; 16:9 by `reframe` if wanted (§1.4) | House rule + doubles the clip bill if got wrong |
 | **P1** | Series title, Lei-Gong, blue cheongsam (§1.5) | Four shipped cuts already say otherwise |

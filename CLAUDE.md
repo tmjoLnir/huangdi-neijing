@@ -75,11 +75,11 @@ New visuals should attach the existing style key image as a reference rather tha
 | Dr-Qi | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | female |
 | Lei-Gong | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | male |
 
-Superseded narrators, kept for the record: **Julian** (`95429266-c0ac-4137-a209-63b8812b0f23`) voiced chapters 3, 5 and 8; **Alistair** (`d9d5c263-f84e-4752-97b5-3750fcc6fd2f`) voiced chapter 2. Those cuts keep their shipped takes unless they are deliberately re-voiced; every new cut is Arthur.
+These four are the only voices the series uses. The narrators used on chapters 2–8 are **retired** — their IDs survive only in those cuts' production records, as reproduction evidence, and must not be carried into a new cut. Those cuts keep their shipped takes unless they are deliberately re-voiced; every new cut is Arthur.
 
 Trailers through chapter 8 are narrator-only — the three characters appear but never speak. Now that they are cast, a trailer *may* give them lines, and longform requires them. `explainer_video` takes exactly one audio per 10s block, so **no block may contain two speakers**: a line exchange becomes consecutive blocks.
 
-The 6–8s take / ~21–24 word budget in the production skill was measured on Julian and is voice-specific. **Re-measure on Arthur before writing a cut's narration to it**, and measure each character voice once before committing a script to a rate; record the figures in the skill's voice table.
+In the production skill, the **6–8s take per 10s block is fixed** — it is pipeline geometry and holds for every voice. The word count that produces it is voice-specific and was measured on a retired narrator, so it does not transfer. **Measure Arthur on one take before writing a cut's narration**, measure each character voice once before committing a script to a rate, and record the figures in the skill's voice table.
 
 ## Writing conventions
 

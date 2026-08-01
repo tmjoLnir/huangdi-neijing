@@ -238,18 +238,21 @@ what fits a line inside a fixed 10s block. **The full cast is cast permanently**
 (CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
-| Role | Voice | `voice_id` | Measured rate | Used in |
-|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | *unmeasured — see below* | ch1 onward |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | *unmeasured* | — |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | *unmeasured* | — |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *unmeasured* | — |
-| Julian *(superseded narrator)* | | `95429266-c0ac-4137-a209-63b8812b0f23` | 2.4–3.0 w/s @ 55 | ch3, ch5, ch8 |
-| Alistair *(superseded narrator)* | | `d9d5c263-f84e-4752-97b5-3750fcc6fd2f` | runs long @ 55 | ch2 |
+| Role | Voice | `voice_id` | Measured rate |
+|---|---|---|---|
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | *unmeasured — see below* |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | *unmeasured* |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | *unmeasured* |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *unmeasured* |
 
-**Every voice in the table above is unmeasured on this pipeline.** The 6–8s /
-~21–24 word budget below was learned on Julian, and Alistair ran longer at the
-same rate — so it does not transfer. On the first cut using a new voice,
+These four are the only voices this series uses. Do not audition alternatives,
+and do not carry a voice forward out of an older cut's production record — the
+narrators used before chapter 1 are retired.
+
+**Every voice in the table is unmeasured on this pipeline.** The 6–8s /
+~21–24 word budget below was measured on a different, now-retired narrator, and
+word budgets do not transfer between voices — the one previous narrator change
+moved the same `speech_rate` by enough to matter. On the first cut using a voice,
 **generate one take, read its duration, and write the measured words/second back
 into this table** before committing the rest of the script to it. One take is
 ~0.6 credits; a mis-sized script is six.
@@ -259,9 +262,10 @@ Character dialogue is shorter per block than narration, so a more natural
 committing to a rate across a script. Whatever is chosen becomes the recorded
 rate for that character.
 
-Chapters 2–8 keep their shipped Julian/Alistair takes; they are not re-voiced
-retroactively unless someone decides to, in which case only the voiceover and
-assembly are re-paid — the clips are untouched.
+Chapters 2–8 shipped under the previous narrators and keep their takes; their
+production records hold those voice IDs as reproduction evidence. Nothing is
+re-voiced retroactively unless someone decides to, in which case only the
+voiceover and assembly are re-paid — the clips are untouched.
 
 One take per block. Record each take's **duration** alongside its job ID — the
 record is how you know a block was comfortable or tight.
@@ -279,21 +283,25 @@ directions, so treat the window as two-sided:
   3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
   stall, not as breathing room. **Two were re-cut, longer.**
 
-The settled target for **Julian at `speech_rate` 55** — the baseline to
-re-measure Arthur against, not a figure to write Arthur's lines to:
+**The 6–8s window is the rule; the word count is not.** The window is a property
+of the pipeline — a fixed 10s block, a take that must not overshoot it or rattle
+around inside it — so it holds for every voice. The word count that *produces*
+6–8s is a property of the voice, and it moves:
 
 | | |
 |---|---|
-| Take duration per 10s block | **6–8s** |
-| Line length | ~21–24 words |
-| Delivery rate | ~2.4–3.0 words/sec |
+| Take duration per 10s block | **6–8s — fixed, applies to every voice** |
+| Line length | measure it; ~21–24 words on chapters 2–8's narrator |
+| Delivery rate | measure it; ~2.4–3.0 words/sec on chapters 2–8's narrator |
+
+Treat the second and third rows as a starting guess for the *first* take only,
+then replace them with the measured figure in the voice table. Arthur, Xavier,
+Vesper and Zane have no measured figure yet.
 
 Hard stops (full stops, semicolons) cost more than the word count suggests —
 budget for the pauses, not just the words. More internal commas and fewer full
 stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
-content. These figures are Julian-specific; Alistair (ch2) ran longer at the same
-rate. **The narrator is now Arthur, so they are unconfirmed** — measure one block
-and write the result into the voice table before scripting to them.
+content. That lever is voice-independent and worth reaching for before rewriting.
 
 **This line is also the subtitle.** Captions are Whisper-transcribed from the
 take and broken at the clauses you wrote, so narration phrasing decides whether
