@@ -216,6 +216,12 @@ table.
   column would be captured into the caption text.
 - No Chapter 1 longform exists in `output/` yet, so nothing in this trailer can be
   cut from an episode. Every clip is generated fresh from the style key.
+- **The committed `.srt` / `.vtt` are provisional — do not burn them.** They were
+  built before the voiceover existed, so `build_subtitles.js` assumed a full 10s
+  for all eight blocks (it warns which blocks were estimated). Every cue start is
+  therefore wrong: real takes centre inside their window, and blocks 3 and 8 are
+  only 2.6s and 2.9s. **Re-run `node scripts/build_subtitles.js` once the
+  per-block durations are in the voiceover line above**, and use that output.
 
 ## Deliverables the assembler cannot produce
 
