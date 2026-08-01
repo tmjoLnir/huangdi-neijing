@@ -64,9 +64,22 @@ When adding a new trailer or episode document, follow this same layout so produc
 
 New visuals should attach the existing style key image as a reference rather than establishing a new look.
 
-- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Julian** (`95429266-c0ac-4137-a209-63b8812b0f23`) at `speech_rate` 55. Julian is the series voice as of chapter 3; chapter 2 used Alistair and is superseded — don't recast per chapter.
+- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Arthur** (`30fc8796-ceb6-4a66-b3a7-4a145ef7f346`) at `speech_rate` 55.
 
-Fan-di, Dr-Qi and Lei-Gong appear in trailers but never speak, so no character voices are cast yet. Longform needs them; whichever voices are chosen become series-recurring and get recorded in the production skill's voice table.
+**The full cast is voiced.** All four are `seed_audio` **preset** voices, cast permanently as of chapter 1 — series-recurring, never re-picked per chapter:
+
+| Role | Preset | `voice_id` | |
+|---|---|---|---|
+| Narrator (V.O.) | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | male |
+| Fan-di | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | male |
+| Dr-Qi | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | female |
+| Lei-Gong | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | male |
+
+These four are the only voices the series uses. The narrators used on chapters 2–8 are **retired** — their IDs survive only in those cuts' production records, as reproduction evidence, and must not be carried into a new cut. Those cuts keep their shipped takes unless they are deliberately re-voiced; every new cut is Arthur.
+
+Trailers through chapter 8 are narrator-only — the three characters appear but never speak. Now that they are cast, a trailer *may* give them lines, and longform requires them. `explainer_video` takes exactly one audio per 10s block, so **no block may contain two speakers**: a line exchange becomes consecutive blocks.
+
+In the production skill, the **6–8s take per 10s block is fixed** — it is pipeline geometry and holds for every voice. The word count that produces it is voice-specific and was measured on a retired narrator, so it does not transfer. **Measure Arthur on one take before writing a cut's narration**, measure each character voice once before committing a script to a rate, and record the figures in the skill's voice table.
 
 ## Writing conventions
 

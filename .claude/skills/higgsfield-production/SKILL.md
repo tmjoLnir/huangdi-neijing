@@ -234,19 +234,38 @@ see below.)
 ## 3. Voiceover
 
 Model `seed_audio`, `voice_type: "preset"`, `speech_rate: 55` — that rate is
-what fits a line inside a fixed 10s block. Known preset IDs:
+what fits a line inside a fixed 10s block. **The full cast is cast permanently**
+(CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
+re-picked per chapter:
 
-| Voice | ID | Used in |
-|---|---|---|
-| **Julian** (current series narrator, per CLAUDE.md) | `95429266-c0ac-4137-a209-63b8812b0f23` | ch3, ch5, ch8 |
-| Alistair (superseded after ch2 — do not recast) | `d9d5c263-f84e-4752-97b5-3750fcc6fd2f` | ch2 |
-| Fan-di | *not yet cast* | — |
-| Dr-Qi | *not yet cast* | — |
-| Lei-Gong | *not yet cast* | — |
+| Role | Voice | `voice_id` | Measured rate |
+|---|---|---|---|
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | *unmeasured — see below* |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | *unmeasured* |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | *unmeasured* |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *unmeasured* |
 
-The three character voices are only needed for longform (the trailer's
-characters never speak). Once cast, fill them in here — they're series-recurring
-and must not be re-picked per chapter.
+These four are the only voices this series uses. Do not audition alternatives,
+and do not carry a voice forward out of an older cut's production record — the
+narrators used before chapter 1 are retired.
+
+**Every voice in the table is unmeasured on this pipeline.** The 6–8s /
+~21–24 word budget below was measured on a different, now-retired narrator, and
+word budgets do not transfer between voices — the one previous narrator change
+moved the same `speech_rate` by enough to matter. On the first cut using a voice,
+**generate one take, read its duration, and write the measured words/second back
+into this table** before committing the rest of the script to it. One take is
+~0.6 credits; a mis-sized script is six.
+
+Character dialogue is shorter per block than narration, so a more natural
+`speech_rate` 60–65 may suit Xavier, Vesper and Zane — test on one block before
+committing to a rate across a script. Whatever is chosen becomes the recorded
+rate for that character.
+
+Chapters 2–8 shipped under the previous narrators and keep their takes; their
+production records hold those voice IDs as reproduction evidence. Nothing is
+re-voiced retroactively unless someone decides to, in which case only the
+voiceover and assembly are re-paid — the clips are untouched.
 
 One take per block. Record each take's **duration** alongside its job ID — the
 record is how you know a block was comfortable or tight.
@@ -264,27 +283,74 @@ directions, so treat the window as two-sided:
   3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
   stall, not as breathing room. **Two were re-cut, longer.**
 
-The settled target for **Julian at `speech_rate` 55**:
+**The 6–8s window is the rule; the word count is not.** The window is a property
+of the pipeline — a fixed 10s block, a take that must not overshoot it or rattle
+around inside it — so it holds for every voice. The word count that *produces*
+6–8s is a property of the voice, and it moves:
 
 | | |
 |---|---|
-| Take duration per 10s block | **6–8s** |
-| Line length | ~21–24 words |
-| Delivery rate | ~2.4–3.0 words/sec |
+| Take duration per 10s block | **6–8s — fixed, applies to every voice** |
+| Line length | measure it; ~21–24 words on chapters 2–8's narrator |
+| Delivery rate | measure it; ~2.4–3.0 words/sec on chapters 2–8's narrator |
+
+Treat the second and third rows as a starting guess for the *first* take only,
+then replace them with the measured figure in the voice table. Arthur, Xavier,
+Vesper and Zane have no measured figure yet.
 
 Hard stops (full stops, semicolons) cost more than the word count suggests —
 budget for the pauses, not just the words. More internal commas and fewer full
 stops is how ch8 stretched a 22-word line from 4.7s to 6.3s without adding
-content. These figures are Julian-specific; Alistair (ch2) ran longer at the same
-rate, so re-measure on one block if the voice ever changes.
+content. That lever is voice-independent and worth reaching for before rewriting.
 
-**This line is also the subtitle.** Captions are Whisper-transcribed from the
-take and broken at the clauses you wrote, so narration phrasing decides whether
-captions fit the frame — see [Caption wrapping](#caption-wrapping--there-is-no-parameter-for-it).
-Short clauses serve both the 10s window and the caption width at once.
+### This rule is not the caption rule — they are two constraints on one line
 
-Only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but never have lines.
-That is deliberate — the narrator carries every compliance hedge.
+The narration line is also the subtitle, so it is governed twice. The two rules
+point the same way often enough to look like one rule, and they are not:
+
+| | **Take length** (this section) | **Caption fit** ([§4](#caption-wrapping--there-is-no-parameter-for-it)) |
+|---|---|---|
+| Constrains | total **seconds** of the take | pixel **width** of the longest clause |
+| Set by | the voice + `speech_rate` against a fixed 10s block | frame width, margins, Anton glyph widths |
+| Voice-dependent | **yes** | **no** — pure geometry |
+| Budget | **6–8s** per block | **~22 chars/line, max 2 lines** at 9:16 720×1280 |
+| Lever | how much content, and how many hard stops | where the clause breaks fall |
+| Failure | pitch-shifted speed-up, or dead air | the line renders past the frame edge |
+
+**Why they get conflated.** This section shipped first, off the ch5/ch8
+re-renders — a take-duration problem, nothing to do with captions. The caption
+section came later and borrowed *this* section's word count as a convenient
+proxy. That proxy only ever held because one voice was narrating the whole
+series, so a single number happened to track both. It does not survive a cast
+change: the words-per-second moved and the caption budget did not shift a pixel.
+**Never size captions off a word count.**
+
+**Where they really do interact — through duration, not words.**
+`build_subtitles.js` times cues *from the take duration recorded in the
+production record*: the take is centred in its 10s window and the cues divide it
+proportionally. So a 3.5s take does not overflow — it makes the captions flash.
+And an overshooting take gets pitch-safely sped up at assembly, which drags the
+Whisper-timed burned-in captions along with it. **Take length governs caption
+timing; clause length governs caption width.** Neither substitutes for the other.
+
+**When they conflict.** A line already at 8s with one wide clause needs a break
+for the caption — but commas and full stops add pause time and push it past the
+window (that is exactly how ch8 stretched 4.7s to 6.3s). Punctuating your way out
+of a width problem is free only while the take is short. Once it isn't, **cut
+content instead**; do not buy caption width with duration you don't have.
+
+**Which rule binds depends on the caption path.** With burned-in
+`explainer_video` captions, both bind and clause length is the only width lever —
+there is no wrap parameter. With the sidecar + libass burn, width is a
+*guarantee* (libass cannot draw outside its margins), so clause length only
+decides whether the wrap reads naturally; duration still governs timing.
+
+In chapters 2–8 only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but
+never have lines. That was deliberate — the narrator carries every compliance
+hedge — and it stays the **default** for a trailer even now that the characters
+are cast. Giving a character a line is a per-cut decision that costs a block
+boundary (one speaker per block) and moves a hedge off the narrator, so if a cut
+does it, the compliance notes must say which hedge moved and who now carries it.
 
 ## 4. Assembly
 
@@ -322,9 +388,17 @@ phrasing the only real lever:
 - **Write in short clauses.** Commas, full stops and semicolons are where the
   chunker breaks. A 24-word line of three clauses captions cleanly; the same 24
   words as one unbroken clause is the one at risk of a long line.
-- This lines up with the 6–8s / ~21–24 word rule in step 3 — narration written
-  to fit the block also captions to fit the frame. A line that reads long is
-  usually a line that wraps badly.
+- **The budget is a clause width, not a word count** — **~22 characters per line
+  at 9:16 720×1280**, ~50 at 16:9 1280×720, two lines max either way. (Both are
+  what `build_subtitles.js` computes from frame width, margins and Anton's
+  advance widths; it prints the figure on every run.) It is pure geometry, so it
+  is **the same for every voice** and does not move when the cast changes. Do not size it off step 3's word figure, which is voice-specific and
+  measures something else; see
+  [the two-constraint table](#this-rule-is-not-the-caption-rule--they-are-two-constraints-on-one-line).
+- The two rules usually agree — a line written in short clauses tends to fit both
+  the block and the frame — but they can conflict. Adding a break to fix a wide
+  clause costs pause time, so on a take already near 8s, cut content rather than
+  punctuating past the window.
 - **9:16 is the hard case.** A 720-wide vertical frame gives captions roughly
   half the horizontal room of the 1280-wide longform frame, so a phrase that is
   fine in 16:9 can overflow in 9:16. Judge wrapping on the vertical cut.
@@ -524,15 +598,17 @@ takes **exactly one `audio` per block**. So:
 - Anything genuinely simultaneous has to be mixed outside the tool and uploaded
   via `media_upload` as a single take.
 
-Only Julian (`95429266-c0ac-4137-a209-63b8812b0f23`) is established. Fan-di,
-Dr-Qi and Lei-Gong need voices chosen once and reused for every future chapter —
-call `list_voices`, audition via `preview_url`, and **record the chosen
-voice_id + voice_type in the table in step 3** so chapter 5 doesn't recast the
-cast. Match the CLAUDE.md voice rules: Dr-Qi gets stiller as Fan-di performs.
+All four voices are cast and permanent — **Arthur** (narrator), **Xavier**
+(Fan-di), **Vesper** (Dr-Qi), **Zane** (Lei-Gong); IDs in the step-3 table. Do
+not audition alternatives per chapter. Match the CLAUDE.md voice rules when
+directing them: Dr-Qi never sounds like she's winning — the more Fan-di
+performs, the stiller she gets.
 
-`speech_rate: 55` is tuned to fit a narration line in 10s; character dialogue is
-shorter per block, so a more natural 60–65 may fit. Test on one block before
-committing to a rate across ~110 takes.
+`speech_rate: 55` is tuned to fit a *narration* line in 10s; character dialogue
+is shorter per block, so a more natural 60–65 may fit Xavier, Vesper and Zane.
+**Measure all four on one block each before committing to ~110 takes** — none of
+them has a measured rate on this pipeline yet, and four unmeasured voices across
+a 19-minute episode is the most expensive version of the ch5/ch8 mistake.
 
 ### ON-SCREEN TEXT — the one exception to text-free clips
 
