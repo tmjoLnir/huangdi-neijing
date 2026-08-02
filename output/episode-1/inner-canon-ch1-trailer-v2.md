@@ -126,7 +126,7 @@ Identical to v1 for the blocks retained; renumbered here.
 `inner-canon-ch1-trailer-v1.md`. Nothing was regenerated for this cut.
 
 - **Style key** — `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (`nano_banana_pro`,
-  768×1376), chained off the ch8 head `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`.
+  768×1376), chained off the preceding series key `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`.
 - **Clips** (`seedance_2_0_mini`, **Draft tier 480p**, 10s, 9:16 480×854,
   `generate_audio: false`): block 1 `91cb182e-f1a0-4f6b-ae47-a30497ced28b`,
   block 2 `2297a411-da14-4555-b38e-90236633e06b`, block 3

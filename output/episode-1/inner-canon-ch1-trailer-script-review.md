@@ -1,8 +1,8 @@
 # Script review — `Ep01_Trailer_Script.md` ("CHRONICLE OF BALANCE — The First Sentence")
 
 Review of the submitted Episode 01 trailer script against `CLAUDE.md`,
-`.claude/skills/higgsfield-production/SKILL.md`, `docs/`, and the four shipped
-trailers (ch2, ch3, ch5, ch8). Chapter 1 is 上古天真论 · *Natural Purity of High
+`.claude/skills/higgsfield-production/SKILL.md`, `docs/`, and the trailers
+shipped at the time of review. Chapter 1 is 上古天真论 · *Natural Purity of High
 Antiquity* — the publish-sequence Ep 1 anchor.
 
 **Verdict:** the writing is the strongest thing this repo has received. The
@@ -73,7 +73,7 @@ Two secondary accuracy notes:
 > `c3204739-4084-41a3-9dc5-c805b307ec18`, Lei-Gong **Zane**
 > `9ddbff06-a984-4c0d-b641-4d8ca846bf60` — all `seed_audio` presets, recorded in
 > `CLAUDE.md` and the skill's step-3 table. Arthur also **replaces the retired
-> narrator** used on chapters 2–8, so chapter 1 is the first cut in a new voice.
+> narrator** used before it, so chapter 1 is the first cut in a new voice.
 >
 > The casting blocker below is cleared: Ep 1 *may* keep its character lines. Two
 > constraints in it survive and still bind — **one speaker per 10s block**
@@ -91,7 +91,7 @@ Of the ~135 spoken words, most are **Dr. Qi, Fan-Di and Xiao-Lei dialogue**.
 - `CLAUDE.md`: *"Fan-di, Dr-Qi and Lei-Gong appear in trailers but never speak, so
   no character voices are cast yet."*
 - `SKILL.md` voice table: all three are ***not yet cast***.
-- The ch8 document already flagged this exact trap in its own runtime levers: a
+- A prior cut's document already flagged this exact trap in its runtime levers: a
   reaction beat "means a character speaks, which this series has not yet cast a
   voice for — Fan-di's voice would have to be chosen and recorded into the cast
   sheet first."
@@ -106,7 +106,7 @@ There is also a hard tool constraint: `explainer_video` takes **exactly one
 window. Every speaker change forces its own block.
 
 **Recommendation: re-cut narrator-only** (see §5 for a working draft). The house
-pattern already proves it — ch2/3/5/8 all carry their whole argument on one voice,
+pattern already proves it — the earlier trailers carry their whole argument on one voice,
 and `SKILL.md` notes that is deliberate, because *the narrator carries every
 compliance hedge*. If the character-voice version is wanted anyway, it must be
 its own decision: `list_voices` → audition → record three `voice_id`s in the
@@ -130,8 +130,8 @@ sub-second timing that the pipeline cannot express:
 | 0:38 vertical cut | → 40s |
 
 Both runtimes are inside `CLAUDE.md`'s 30–90s window, so this is purely a
-re-timing job — but it is not optional, and it is exactly what ch8 did when it
-re-cut a five-beat 0:60 master into six even blocks. **A `## Source-script
+re-timing job — but it is not optional, and it is exactly what an earlier cut did
+when it re-cut a five-beat 0:60 master into six even blocks. **A `## Source-script
 mapping` table is required** (`CLAUDE.md`, `SKILL.md` §5.5) — §5 below drafts it.
 
 If the frame-accurate rhythm is genuinely non-negotiable, that is a different
@@ -141,7 +141,7 @@ an NLE. Say so explicitly; don't discover it at assembly.
 ### 1.4 Aspect ratio is inverted
 
 The script leads with **"16:9 master + 9:16 vertical cut."** `CLAUDE.md`: *"Render
-trailers in 9:16 vertical format; long form in 16:9 landscape."* All four shipped
+trailers in 9:16 vertical format; long form in 16:9 landscape."* Every shipped
 trailers are 9:16 720×1280, the whole style-key lineage is 9:16 768×1376, and
 `build_subtitles.js` labels its `16:9` profile "longform episode."
 
@@ -153,10 +153,10 @@ differs (720-wide vertical gives captions roughly half the horizontal room).
 **Recommendation:** 9:16 is the master (house rule, and it is where the Ep 1
 audience is), 16:9 derived by `reframe` if a landscape master is wanted.
 
-### 1.5 The series is named wrong — three drifts ch8 already resolved
+### 1.5 The series is named wrong — three drifts already resolved once
 
-The submitted script carries the identical three naming conflicts the Chapter 8
-source script had, resolved there in favour of `CLAUDE.md`:
+The submitted script carries the identical three naming conflicts an earlier
+source script had, resolved then in favour of `CLAUDE.md`:
 
 | Script says | Repo says | Where |
 |---|---|---|
@@ -165,14 +165,14 @@ source script had, resolved there in favour of `CLAUDE.md`:
 | **DR. QI (jade)** | **Dr-Qi**, **BLUE** cheongsam | `CLAUDE.md` core cast |
 
 `FAN-DI (gold)` is correct. All reconciliations go in the source-script mapping
-section, as ch8 did.
+section, as the earlier cut did.
 
 ---
 
 ## 2. Missing required sections
 
 The repo's production-document layout (`CLAUDE.md`; `SKILL.md` §5; reference
-`output/episode-8/inner-canon-ch8-trailer-v1.md`) is ten sections in order. The
+the reference cut document) is ten sections in order. The
 script has the equivalent of three.
 
 | # | Required section | Status |
@@ -225,7 +225,7 @@ things are missing or wrong, and one is a hard `CLAUDE.md` requirement.
    The script uses *"A series on the history and philosophy of classical texts.
    Not medical or health advice."* The script's version is arguably better English
    for a series-level card — but it is a **series-wide change**, and changing it in
-   one cut's script silently desynchronises Ep 1 from four shipped cuts. Either
+   one cut's script silently desynchronises Ep 1 from the rest of the series. Either
    use the repo string, or propose the change to `CLAUDE.md` as its own edit.
 
 **Bullets the audit is missing** (the repo wants one per rule, so the reasoning
@@ -243,7 +243,7 @@ survives with the cut):
   on screen, and the withheld item is a historiographic question, not a mystery
   box. Make that argument explicitly or a future reviewer will re-litigate it.
 - **Prompt-stage gate.** `CLAUDE.md` and `SKILL.md` both require the audit to run
-  on prompts *before* generating. Reading the shot list against ch8's `nsfw`
+  on prompts *before* generating. Reading the shot list against the recorded `nsfw`
   incident: nothing here trips the restraint/bound-figure filter. Shot 5's hand
   slammed flat on a scroll is an object-and-gesture beat, and shot 7 is a graph.
   Low risk — worth recording as checked.
@@ -311,9 +311,9 @@ source.
 | 5 | The physician's hedge | The physician's answer is quieter, and conditional. Those among them who knew the way. Not everyone. Never everyone. |
 | 6 | The withhold / title | So why did anyone keep copying it, faithfully, for two thousand years? The Emperor's Inner Canon. Chapter One — The First Sentence. |
 
-Word counts run 18–24. Block 5 is short but hard-stop heavy, which is how ch8
-stretched a 22-word line from 4.7s to 6.3s — **measure the first take before
-committing the other five**, per the two-sided ch5/ch8 lesson.
+Word counts run 18–24. Block 5 is short but hard-stop heavy, which is how a
+22-word line has been stretched from 4.7s to 6.3s — **measure the first take
+before committing the other five**, per the two-sided take-length lesson.
 
 ### Source-script mapping (draft)
 
@@ -336,8 +336,8 @@ Naming reconciliations, resolved in favour of `CLAUDE.md`: *Chronicle of Balance
 
 ### Other production notes for the re-cut
 
-- **Style key** chains off the ch8 head `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`,
-  swapping ch8's storehouses/rivers/wrist motif for a Ch 1 motif — the bamboo
+- **Style key** chains off the then-current head `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`,
+  swapping that key's motif for a Ch 1 motif — the bamboo
   scroll splitting into scrolls of different ages, with the seven-and-eight arcs
   beneath it. Record it as the next lineage entry.
 - **Shot 10's montage assets don't exist.** "The well graphic," "the dual

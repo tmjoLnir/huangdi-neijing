@@ -84,7 +84,7 @@ three short sentences delivered **6.91s**. So:
 
 ### Two blocks run deliberately short
 
-Neither is the ch8 dead-air mistake repeating. Both are the ch1 pattern, where a
+Neither is the dead-air mistake repeating. Both are the ch1 pattern, where a
 fixed 10s window centres a short take and supplies silence for free:
 
 - **Block 6 (~5s expected)** — the source script's shot 9 asks for **seven
@@ -140,7 +140,7 @@ shot). Re-cut to eight even 10s blocks:
 **Naming reconciliations**, resolved in favour of `CLAUDE.md`: *Chronicle of
 Balance* → **The Emperor's Inner Canon**; *Xiao-Lei* → **Lei-Gong**; *Dr. Qi* /
 *Fan-Di* → **Dr-Qi** / **Fan-di**; traditional 營衛生會 / 合陰 → simplified
-**营卫生会** / **合阴**, matching the Blueprint and all five shipped documents.
+**营卫生会** / **合阴**, matching the Blueprint and the shipped documents.
 **"The archivist"** is not a cast member and is not made one: the vigil figure
 stays an anonymous ink-wash silhouette in a lit window — never named, never
 given a face.
@@ -249,10 +249,8 @@ low in the frame.** Model `nano_banana_pro` (served by `nano_banana_2`), 9:16
 768×1376, prior key passed as `medias[{ role: "image", value: "<job id>" }]` —
 job ID, never a URL. Attach to every clip.
 
-Lineage: group shot → ch2 → ch3 → ch5 → ch8 → ch1 → **ch46**.
-
-*(`SKILL.md`'s lineage diagram still marks ch8 as the head; it has been ch1 since
-2026-08-01. Logged as P3 in the review.)*
+Lineage: this key derives from the ch1 head; ch46 becomes the new head once
+generated.
 
 ### Clips
 
@@ -297,7 +295,7 @@ did — that reconciliation is the only historical figure this repo has.
   `declined_preset_id` takes one id per call, so budget one retry per newly
   triggered preset. Keep audio vocabulary — *drum*, *drone*, *music*, *rhythm* —
   out of every clip prompt: those are edit-time directions, and "rhythm" is what
-  fired `DROWN IN MUSIC` on ch8.
+  fired `DROWN IN MUSIC` on an earlier cut.
 - **Block 1 is the riskiest prompt in the cut.** It asks for a single continuous
   lateral camera move that resolves from one subject to another, which is more
   camera direction than any shipped clip has used. If the model returns a static
@@ -400,7 +398,7 @@ and generates no music.
   title (block 7) and the disclaimer (block 8).
 - **General audience, not made for kids** — self-certify at upload.
 - **Prompt-stage audit — run before generating, per `CLAUDE.md`.** Every shot
-  prompt above was read against ch8's `nsfw` incident, where restraint and
+  prompt above was read against the recorded `nsfw` incident, where restraint and
   bound-figure imagery tripped the safety filter on otherwise fine subject
   matter. Nothing here goes near it: shot 1's sleeping boy is comic and posed
   (face-down on a bench, arm hanging), not unconscious or injured; the vigil

@@ -24,10 +24,9 @@ script *"Chronicle of Balance — The First Sentence"* (see the review at
 animation matching the Fan-di / Dr-Qi / Lei-Gong character art. Vertical 9:16 for
 Shorts / Reels / TikTok.
 
-**This is the first cut in which the characters speak.** Chapters 2–8 are
-narrator-only; the cast was made permanent on 2026-08-01 and Chapter 1 is the
-first cut to use it. It is also the first cut on **Arthur**, who replaces the
-retired narrator used on chapters 2–8.
+**This is the first cut in which the characters speak.** The cast was made
+permanent on 2026-08-01 and Chapter 1 is the first cut to use it. It is also the
+first cut on **Arthur**, who replaces the narrator used before it.
 
 > A dramatized adaptation of a classical philosophical text. Not medical advice.
 
@@ -53,11 +52,11 @@ Voices are the permanent series cast (`CLAUDE.md`): Narrator **Arthur** at
 `speech_rate` 55; Fan-di **Xavier**, Dr-Qi **Vesper** and Lei-Gong **Zane** at
 `speech_rate` 55. All four `seed_audio` presets.
 
-### Line lengths are written to measured rates, not to the ch2–8 word budget
+### Line lengths are written to measured rates, not to an inherited word budget
 
 Every line above is sized from a take measured on this cut (see *Voice
-measurement* in the production record). The ~21–24 word budget in the skill
-belongs to the retired narrator and does **not** transfer:
+measurement* in the production record). The ~21–24 word budget used before the
+cast change belongs to a retired narrator and does **not** transfer:
 
 | Voice | Measured | Blocks | Delivered |
 |---|---|---|---|
@@ -67,7 +66,7 @@ belongs to the retired narrator and does **not** transfer:
 | Zane | short-line only | 3 | 2.6s (deliberate) |
 
 Arthur is **~21% faster than the retired narrator at the same `speech_rate`**
-(23 words → 6.17s, against 23 words → 7.46s). Writing Chapter 1 to ch8's word
+(23 words → 6.17s, against 23 words → 7.46s). Writing Chapter 1 to the older word
 counts would have undershot every block by more than a second.
 
 **Word count alone did not predict take length — sentence structure did.** Block
@@ -85,7 +84,7 @@ across two sentences, 5.87s — against that first pass, and the pattern is clea
 ### Two blocks run deliberately short
 
 Blocks 3 and 8 sit below the 6s floor on purpose, and the production record must
-not read them as the ch8 dead-air mistake repeating:
+not read them as the dead-air mistake repeating:
 
 - **Block 3 (2.56s delivered)** — the interruption. A fixed 10s window centres a
   short take, which puts ~3.7s of silence on either side of *"It's false."* The
@@ -201,10 +200,11 @@ are the only controls on take duration.** All four voices are therefore set to
   job `4b6f7106-67da-4d1a-a553-c58ba90ac43f` — the vertical three-character series
   trio under a brushed-ink motif of one bamboo scroll splitting into a dozen
   scrolls of visibly different ages fanning back into depth, two faint concentric
-  arcs marking cycles of seven and eight beneath them. Built from the Chapter 8
-  key `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`, swapping ch8's storehouses / rivers
-  / wrist motif for the Chapter 1 motif. Attached as the image reference on every
-  clip. Lineage: group shot → ch2 → ch3 → ch5 → ch8 → **ch1**.
+  arcs marking cycles of seven and eight beneath them. Built from the preceding
+  series key, job `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`, swapping that key's
+  motif for the Chapter 1 motif. Attached as the image reference on every clip.
+  **This key is the current head of the style-key chain**; a new chapter derives
+  from its job ID, not from anything upstream of it.
 
 ### Clips
 
@@ -235,7 +235,7 @@ prompts (blocks 3 and 8) that were expected to trigger it.
 
 | Block | Job ID | Duration | Why |
 |---|---|---|---|
-| 2 | `534c7c8e-238a-424a-8f2d-7fc76bd9a212` | 10.78s | **Overshot the 10s window.** One sentence hinged on an em-dash; the assembler would have pitch-shifted it, breaking Xavier's register. This is the ch5 failure mode on a new voice, caught before assembly. |
+| 2 | `534c7c8e-238a-424a-8f2d-7fc76bd9a212` | 10.78s | **Overshot the 10s window.** One sentence hinged on an em-dash; the assembler would have pitch-shifted it, breaking Xavier's register. This is the known overshoot failure mode on a new voice, caught before assembly. |
 | 2 | `abcd7348-c138-4ae3-a3c3-5832ef34efca` | 6.91s | In-window, but its opening clause was 78 characters — a 3-line caption. |
 | 1 | `60a57c8c-ec25-4ec8-a5c1-aec0d051f398` | 5.93s | 56-character clause, 3 lines. |
 | 4 | `110cc52d-277f-46a6-b932-2d66f4a5d679` | 6.60s | 86-character clause, **4 lines**; second clause 56 characters. |
@@ -430,7 +430,7 @@ exposure.
 - **Disclaimer** — repo string used verbatim, in the blockquote above, spoken in
   block 8, on screen as the end card, and in the description. The source script's
   alternative wording was not adopted: changing it in one cut silently
-  desynchronises Ep 1 from four shipped cuts.
+  desynchronises Ep 1 from the rest of the series.
 - **Mortality / aging** — the subject is people dying younger than advertised, and
   it is carried entirely by **objects and brush strokes**. Shot 4, the one death
   beat, is an ink arc on paper with no figures at all. Portraits, not bodies;
@@ -450,7 +450,7 @@ exposure.
   paleodemography and is stated as history, not as health guidance.
 - **General audience, not made for kids** — self-certify at upload.
 - **Prompt-stage audit — run before generating, per `CLAUDE.md`.** Every shot
-  prompt above was read against ch8's `nsfw` incident, where restraint and
+  prompt above was read against the recorded `nsfw` incident, where restraint and
   bound-figure imagery tripped the safety filter on otherwise fine subject matter.
   Nothing here goes near it: shot 3 is a figure mid-hop, shot 4 is brush strokes,
   shots 2/5/6 are seated figures at a table. **Assessed low risk; recorded as

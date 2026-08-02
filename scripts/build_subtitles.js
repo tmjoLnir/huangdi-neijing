@@ -1,6 +1,6 @@
 // Builds guaranteed-wrapping subtitle sidecars for a cut of The Emperor's Inner Canon.
 //
-//   node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md
+//   node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v1.md
 //   node scripts/build_subtitles.js <doc.md> --format 16:9
 //
 // Reads the cut's own production document — the narration table for the text and
