@@ -109,10 +109,9 @@ Three things make this cheap rather than wasteful:
 
 - **Same model both tiers.** A draft in a different model tells you about that
   model's blocking, not the one you ship.
-- **Voice takes survive the upgrade.** ~0.6 credits each and resolution-
-  independent, so generate once and reuse — a draft → full upgrade only re-pays
-  for clips.
-- **Captions run on the draft.** 0.3 credits on a 6-block trailer, and an
+- **Voice takes survive the upgrade.** They are cheap and resolution-independent,
+  so generate once and reuse — a draft → full upgrade only re-pays for clips.
+- **Captions run on the draft.** Negligible against the clip bill, and an
   uncaptioned draft cannot check the repo's readability rule.
 
 Waive the draft on a routine chapter in a proven configuration. Keep it when the
@@ -278,6 +277,12 @@ block. Size every line from the measured figure for *that* voice, above.
 These four are the only voices this series uses. Do not audition alternatives,
 and do not carry a voice forward out of an older cut's production record.
 
+**Narrator-only is the default for a trailer**, even now that the characters are
+cast: the narration carries every compliance hedge. Giving a character a line
+costs a block boundary (one speaker per block) and moves a hedge off the
+narrator, so if a cut does it, its compliance notes must say which hedge moved
+and who now carries it.
+
 For any voice still marked unmeasured, **generate one take, read its duration,
 and write the measured words/second back into this table** before committing a
 script to it. One take is ~0.6 credits; a mis-sized script is six.
@@ -365,55 +370,35 @@ actually lands the take in the window is structure:
 - **Take is short** → more internal commas, fewer full stops. This has lifted a
   22-word line from 4.7s to 6.3s without changing a word of its content.
 
-Both levers are voice-independent and cost one 0.6-credit re-take. Reach for them
+Both levers are voice-independent and cost a single re-take. Reach for them
 before rewriting the line's content, and **never** reach for `speech_rate`.
 
-### This rule is not the caption rule — they are two constraints on one line
+### Take length is not caption fit — two constraints on one line
 
 The narration line is also the subtitle, so it is governed twice. The two rules
-point the same way often enough to look like one rule, and they are not:
+point the same way often enough to look like one, and they are not:
 
-| | **Take length** (this section) | **Caption fit** ([Subtitles](#caption-wrapping--there-is-no-parameter-for-it)) |
+| | **Take length** (this section) | **Caption fit** ([Subtitles](#subtitles)) |
 |---|---|---|
 | Constrains | total **seconds** of the take | pixel **width** of the longest clause |
-| Set by | the voice + `speech_rate` against a fixed 10s block | frame width, margins, Anton glyph widths |
+| Set by | the voice against a fixed 10s block | frame width, margins, Anton glyph widths |
 | Voice-dependent | **yes** | **no** — pure geometry |
-| Budget | **6–8s** per block | **~22 chars/line, max 2 lines** at 9:16 720×1280 |
 | Lever | how much content, and how many hard stops | where the clause breaks fall |
 | Failure | pitch-shifted speed-up, or dead air | the line renders past the frame edge |
 
-**Why they get conflated.** This section shipped first, off the two length
-re-renders — a take-duration problem, nothing to do with captions. The caption
-section came later and borrowed *this* section's word count as a convenient
-proxy. That proxy only ever held because one voice was narrating the whole
-series, so a single number happened to track both. It does not survive a cast
-change: the words-per-second moved and the caption budget did not shift a pixel.
-**Never size captions off a word count.**
+**Never size captions off a word count.** The caption budget is a clause width and
+does not move when the cast changes; the word count is voice-specific. The two
+only ever looked like one rule because a single narrator carried the whole series.
 
-**Where they really do interact — through duration, not words.**
-`build_subtitles.js` times cues *from the take duration recorded in the
-production record*: the take is centred in its 10s window and the cues divide it
-proportionally. So a 3.5s take does not overflow — it makes the captions flash.
-And an overshooting take gets pitch-safely sped up at assembly, which drags the
-Whisper-timed burned-in captions along with it. **Take length governs caption
-timing; clause length governs caption width.** Neither substitutes for the other.
+**They interact through duration, not words.** `build_subtitles.js` times cues from
+the take duration in the production record, so a *short* take makes captions flash
+rather than overflow; an *overshooting* take is sped up at assembly, which drags
+the Whisper-timed burned-in captions along with it. **Take length governs caption
+timing; clause length governs caption width.**
 
-**When they conflict.** A line already at 8s with one wide clause needs a break
-for the caption — but commas and full stops add pause time and push it past the
-window (that is exactly how a 4.7s take became 6.3s). Punctuating your way out
-of a width problem is free only while the take is short. Once it isn't, **cut
-content instead**; do not buy caption width with duration you don't have.
-
-**Which rule binds depends on the caption path.** With burned-in
-`explainer_video` captions, both bind and clause length is the only width lever —
-there is no wrap parameter. With the sidecar + libass burn, width is a
-*guarantee* (libass cannot draw outside its margins), so clause length only
-decides whether the wrap reads naturally; duration still governs timing.
-
-**Narrator-only is the default for a trailer**, even now that the characters are
-cast: the narrator carries every compliance hedge. Giving a character a line is a per-cut decision that costs a block
-boundary (one speaker per block) and moves a hedge off the narrator, so if a cut
-does it, the compliance notes must say which hedge moved and who now carries it.
+**When they conflict** — a line already near 8s with one wide clause — cut content
+rather than adding punctuation. Punctuation buys caption width with duration you
+do not have.
 
 ## 4. Assembly
 
@@ -430,14 +415,15 @@ for a full-tier vertical trailer, but a 480p draft comes back smaller, so read
 the dimensions off the clip jobs rather than pasting 720×1280. Blocks go in final
 play order.
 
-`subtitles: { font: "anton" }` goes on **every assembly, draft and full alike**.
-CLAUDE.md requires every deliverable to ship captioned, and running them on the
-draft is what makes the draft able to catch a caption problem. Assembly is free;
-subtitles cost 0.05/voiced block (0.3 on a 6-block trailer).
+Assembly itself is free. Whether to pass `subtitles` at all is a per-cut
+decision, and on a trailer the answer is usually **no** — see
+[Subtitles](#subtitles), which owns the caption path and its cost.
 
-Blocks are fixed windows: a short take is centered, a slightly long one is sped
-up pitch-safely, and the video is never stretched — so a 6-block trailer is
-exactly 60s.
+**Blocks are fixed windows** — a short take is centred, a slightly long one is
+sped up pitch-safely, and the video is never stretched, so a 6-block trailer is
+exactly 60s. This is the rule the whole pipeline is written around: it is why the
+take window is 6–8s, why a short take buys usable silence, and why the sidecar's
+cue timing lines up without nudging.
 
 Captions carry constraints worth knowing before you write narration, and an
 escape hatch when the fit has to be guaranteed — see [Subtitles](#subtitles).
@@ -509,143 +495,116 @@ next chapter, not clutter.
 
 ## Subtitles
 
-Every deliverable ships captioned (CLAUDE.md), and captions must wrap on screen
-with every word visible. There are two ways to get them, and they are
-**alternatives, not layers** — burning a sidecar over a cut that already carries
-burned-in captions double-layers them:
+Every deliverable ships captioned (`CLAUDE.md`). Two paths produce them, and they
+are **alternatives, not layers**: burning a sidecar over a cut that already has
+server-burned captions double-layers them, so assemble **without** `subtitles`
+whenever you intend to burn the sidecar.
 
 | | Burned in at assembly | Sidecar + libass burn |
 |---|---|---|
 | How | `subtitles: { font: "anton" }` on `explainer_video` | `scripts/build_subtitles.js`, then `ffmpeg` |
 | Wrapping | best-effort — influenced, never constrained | **guaranteed** by libass margins |
 | Cost | 0.05/voiced block | free |
-| Use for | drafts and routine cuts | when the fit must be guaranteed |
+| Use for | drafts, and cuts with no end card | every trailer — see below |
 
-Caption *width* is geometry and is the same for every voice; caption *timing*
-comes from take duration, which is not. See
-[the two-constraint table](#this-rule-is-not-the-caption-rule--they-are-two-constraints-on-one-line)
+**On trailers the sidecar is the default, not the fallback.** Every cut carries the
+end disclaimer card, and its mandated string — *"A dramatized adaptation of a
+classical philosophical text."* — is 58 characters, three lines in a 9:16 frame.
+It is a compliance string, so it cannot be reworded, and it cannot be made to fit.
+**Any cut with the end card overflows the server-burned captions by
+construction.** Omit the `subtitles` parameter and burn the sidecar;
+`check_caption_fit.js` reports that one clause as a known exception rather than a
+failure, and dropping the parameter also saves the per-block subtitle charge.
+
+Caption *width* is geometry and is identical for every voice; caption *timing*
+comes from take duration, which is not — see
+[the two-constraint table](#take-length-is-not-caption-fit--two-constraints-on-one-line)
 in step 3.
 
-### Caption wrapping — there is no parameter for it
+### There is no wrap parameter
 
 **The API exposes exactly one subtitle option: `font`** (`patrick`, `caveat`,
 `marker`, `anton`). The `subtitles` object is `additionalProperties: false`, so
-there is **no** line-width, max-characters-per-line, wrap, position, or
-font-size control, and inventing one gets the call rejected. Do not promise the
-user a wrap setting — there isn't one.
+there is **no** line-width, max-characters, wrap, position or font-size control,
+and inventing one gets the call rejected. Do not promise the user a wrap setting.
 
-What actually governs caption width: the backend transcribes the **voiceover**
-with Whisper word timestamps and chunks it into short phrases timed to speech.
-So the caption line breaks follow **the narration you wrote**. That makes
-phrasing the only real lever:
+What actually governs width: the backend transcribes the **voiceover** with
+Whisper word timestamps and chunks it into short phrases timed to speech, so the
+line breaks follow **the narration you wrote**. Phrasing is the only real lever:
 
 - **Write in short clauses.** Commas, full stops and semicolons are where the
   chunker breaks. A 24-word line of three clauses captions cleanly; the same 24
-  words as one unbroken clause is the one at risk of a long line.
+  words as one unbroken clause is the one at risk.
 - **The budget is a clause width, not a word count** — **~22 characters per line
-  at 9:16 720×1280**, ~50 at 16:9 1280×720, two lines max either way. (Both are
-  what `build_subtitles.js` computes from frame width, margins and Anton's
-  advance widths; it prints the figure on every run.) It is pure geometry, so it
-  is **the same for every voice** and does not move when the cast changes. Do not size it off step 3's word figure, which is voice-specific and
-  measures something else; see
-  [the two-constraint table](#this-rule-is-not-the-caption-rule--they-are-two-constraints-on-one-line).
-- The two rules usually agree — a line written in short clauses tends to fit both
-  the block and the frame — but they can conflict. Adding a break to fix a wide
-  clause costs pause time, so on a take already near 8s, cut content rather than
-  punctuating past the window.
-- **9:16 is the hard case.** A 720-wide vertical frame gives captions roughly
-  half the horizontal room of the 1280-wide longform frame, so a phrase that is
-  fine in 16:9 can overflow in 9:16. Judge wrapping on the vertical cut.
-- `anton` is heavy but condensed, which fits more characters per line than the
-  other three. It is the house font and also the safest of the four here; do not
-  switch fonts to fix a wrapping problem, shorten the clause instead.
+  at 9:16 720×1280**, ~50 at 16:9 1280×720, two lines max either way. Both scripts
+  compute it from frame width, margins and Anton's advance widths, and print it
+  on every run.
+- **9:16 is the hard case.** A 720-wide vertical frame gives captions roughly half
+  the room of the 1280-wide longform frame, so a phrase that is fine in 16:9 can
+  overflow in 9:16. Judge wrapping on the vertical cut.
+- **Do not switch fonts to fix wrapping.** `anton` is the most condensed of the
+  four on offer and is already the best fit; anything else makes it worse.
+  Shorten the clause instead.
 
-**Check it before you generate anything — `scripts/check_caption_fit.js`.**
+If a burned-in caption does overflow, **re-record that block's take with shorter
+clauses** and re-assemble. A re-take is one voice take and the clips are
+untouched — never re-render video for a caption problem.
+
+### Check before you generate — `check_caption_fit.js`
 
 ```
-node scripts/check_caption_fit.js <doc>.md            # 9:16, the hard case
+node scripts/check_caption_fit.js <doc>.md                   # 9:16, the hard case
 node scripts/check_caption_fit.js <doc>.md --format 16:9
 node scripts/check_caption_fit.js output/episode-*/*-v*.md   # sweep every cut
 ```
 
 It measures **every clause** in the narration table against the two-line budget
-and exits non-zero on any that overflow. Run it on the narration table *before*
-recording takes: a fix is free at that point, and ~0.6 credits per block after.
+and exits non-zero on any that overflow. Run it *before* recording takes: a fix is
+free at that point and costs a re-take afterwards.
 
-**It is not redundant with `build_subtitles.js`, and its verdict can disagree.**
-The two caption paths fail differently — the sidecar pre-splits a long clause
-across several cues and burns through libass margins, so it always fits, while
-`explainer_video` chunks on Whisper pauses that fall at punctuation, so a clause
-with no internal comma has nowhere to break. **A document can pass
-`build_subtitles.js` and still overflow on the assembled video**; chapter 1 did,
-on six clauses, and an earlier cut shipped with two overflowing clauses that were
-only caught retroactively.
+**It is not redundant with `build_subtitles.js`, and the two can disagree.** The
+sidecar pre-splits a long clause across several cues and burns through libass
+margins, so it always fits; `explainer_video` chunks on Whisper pauses, which fall
+at punctuation, so a clause with no internal comma has nowhere to break. **A
+document can pass `build_subtitles.js` and still overflow on the assembled
+video** — chapter 1 did, on six clauses.
 
-**Verification is visual, and this host usually cannot do it.** The CDN has been
-blocked on every cut for some time, so the rendered MP4 generally cannot be
-fetched back —
-meaning burned-in caption overflow *cannot* be confirmed from the repo host.
-So: whoever reviews the draft checks captions on the actual video, and the
-production record states whether captions were **visually verified** or only
-assembled. Never write that captions wrap correctly if nobody watched the file.
-
-If a burned-in caption does overflow, fix it by **re-recording that block's
-voice take with shorter clauses** and re-assembling — a re-take is ~0.6 credits
-and the clips are untouched. Do not re-render video for a caption problem.
-
-### The guaranteed path — sidecar + libass burn
-
-Everything above is best-effort: the assembler's captions cannot be constrained,
-only influenced. When the fit has to be a **guarantee**, don't use them.
-
-**On trailers this is now the default, not the fallback.** Every cut must carry
-the end disclaimer card (`CLAUDE.md`), and its mandated string —
-*"A dramatized adaptation of a classical philosophical text."* — is 58 characters,
-which is three lines in a 9:16 frame. It cannot be reworded, because it is a
-compliance string, and it cannot be made to fit. So **any cut with the end card
-overflows the server-burned captions by construction.** Assemble with the
-`subtitles` parameter omitted and burn the sidecar instead; `check_caption_fit.js`
-reports that clause as a known exception rather than a failure. Chapter 1's v1 and
-v2 both ship this way. Dropping the parameter also saves the 0.05/block subtitle
-charge.
+### Build the sidecar — `build_subtitles.js`
 
 ```
 node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v1.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
 ```
 
-The script reads the cut's **own production document** — the narration table for
-text, the production record's voiceover line for each take's duration — and
-writes `.srt` and `.vtt` beside it. No new data to maintain, and no dependencies
-(`npm install` is denied in `.claude/settings.json`).
+It reads the cut's **own production document** — the narration table for text, the
+production record's voiceover line for each take's duration — and writes `.srt`
+and `.vtt` beside it. No new data to maintain. It warns and assumes a full block
+for any take whose duration is missing from the record.
 
 Two mechanisms make the fit real, and the second is the one that guarantees it:
 
-1. **Pre-wrap.** Cues are split at clause boundaries and wrapped to a character
-   budget computed from frame width, margins and Anton's advance widths —
-   ~22 chars/line at 9:16 720×1280, max 2 lines. The script prints the widest
-   line in pixels against the usable width, so overflow is visible as a number
-   before anything is rendered.
+1. **Pre-wrap.** Cues are split at clause boundaries and wrapped to the measured
+   character budget. The script prints the widest line in pixels against the
+   usable width, so overflow is a number you see before anything is rendered.
 2. **libass margins.** The printed `ffmpeg` command burns with
    `force_style='…MarginL=58,MarginR=58,WrapStyle=0…'`. libass measures the real
    Anton glyphs and wraps inside those margins — it *cannot* draw outside them.
    That is the guarantee; step 1 only keeps the result from looking mechanical.
 
-Timing follows the assembler's own rule — fixed 10s windows with a short take
-centered — so the sidecar lines up with an `explainer_video` cut without manual
-nudging. The script warns and assumes a full 10s for any block whose take
-duration is missing from the record.
+Cue timing follows the assembler's own rule, so the sidecar lines up with an
+`explainer_video` cut without manual nudging.
 
-**Which to use.** Burned-in `anton` captions are fine for the draft and for a
-routine cut. Use the sidecar path when the fit must be guaranteed, when a cut is
-going out on a platform whose chrome crowds the lower third, or when a reviewer
-has flagged overflow. The two are alternatives: burning a sidecar over a cut that
-already has burned-in captions double-layers them — assemble **without**
-`subtitles` when you intend to burn the sidecar.
+`.srt`/`.vtt` are tracked, required deliverables (`CLAUDE.md`), exempted in
+`.gitignore`. Commit them with the cut and **regenerate after any narration or
+take change**, so the sidecar never drifts from the document.
 
-`.srt`/`.vtt` are tracked, required deliverables (`CLAUDE.md`) and are exempted in
-`.gitignore` — commit them with the cut, and **regenerate after any narration or
-take change** so the sidecar never drifts from the document.
+**Whether captions actually wrap can only be confirmed by watching the file**, and
+this host usually cannot — see [Environment caveats](#environment-caveats). The
+production record must say whether captions were *visually verified* or only
+assembled.
+
+Both scripts share their geometry, Anton metrics and narration-table parser via
+`scripts/lib/caption_metrics.js`, so the two can never disagree about what fits.
 
 ## Longform episodes (15–20 min)
 
@@ -737,11 +696,10 @@ directing them: Dr-Qi never sounds like she's winning — the more Fan-di
 performs, the stiller she gets.
 
 **All four run at `speech_rate` 55, and rate is not a lever here either** — see
-[§3](#speech_rate-is-not-a-duration-lever--do-not-reach-for-it). An earlier
-version of this section suggested 60–65 for character dialogue; chapter 1
-measured rate 40 against rate 60 on identical text and got −8% to +12%, which is
-take-to-take variance, not a rate response. Word count and sentence structure are
-the only controls, on dialogue as on narration.
+[§3](#speech_rate-is-not-a-duration-lever--do-not-reach-for-it), which holds the
+measurement. Word count and sentence structure are the only controls, on dialogue
+as on narration. (An earlier version of this section suggested 60–65 for
+character dialogue. It was wrong.)
 
 Arthur, Xavier and Vesper are measured (§3 table). **Zane is measured only on a
 short line and must be re-measured at length before ~110 takes are committed to
@@ -815,7 +773,7 @@ expand to reach 120.
   repo host in an earlier session, so `assets/` PNGs couldn't be re-uploaded.
   Fall back to referencing the prior style-key job ID — CLAUDE.md explicitly
   allows this, and it's the better default anyway.
-- **The CDN may be blocked too.** It has been blocked on every chapter since 3
+- **The CDN may be blocked too.** It has been blocked on every cut for a long time
   (`CONNECT tunnel failed, 403`), so assume the final MP4 cannot be fetched back
   for visual QA. When that happens, **say so explicitly in the document** and
   verify at the job-metadata level instead — all clips at the expected
