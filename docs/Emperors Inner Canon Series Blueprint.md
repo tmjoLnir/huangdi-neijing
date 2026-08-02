@@ -236,7 +236,7 @@ The canon's psychology. It splits consciousness into five "spirits" housed in fi
 *Production note:* Mental-health crossover. Compare/contrast with modern psychology for depth.
 
 **Ch 46 (Ling Shu 11) · 营卫生会 · Yíng Wèi Shēng Huì — "Meeting of Nutritive & Defensive Qi"**
-Hook: *The Ancient Science of Sleep — and Why the Old Sleep Badly* · **RPM $9–15 · Low risk**
+Hook: *What the Oldest Chinese Medical Text Got Right About Sleep — and Wrong* · **RPM $9–15 · Low risk**
 Explains the day–night energy cycle: a "nutritive" and a "defensive" qi circulating on a schedule, why we grow drowsy at night and sharp by day, and why the elderly wake before dawn as their circulation thins.
 *Why:* Sleep is one of YouTube's most monetizable wellness verticals — and this is a genuinely elegant ancient circadian model with a poignant aging twist.
 *Production note:* Top RPM pick. Heavy sleep-app / supplement advertiser overlap.
