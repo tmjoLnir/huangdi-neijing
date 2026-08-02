@@ -256,6 +256,14 @@ has to give. Side with the script; that means
 `docs/Emperors Inner Canon Series Blueprint.md` line 146 needs updating so the
 title/thumbnail rule and the slate don't contradict each other.
 
+> **RESOLVED — the Blueprint's Ch 1 hook now reads *"The First Sentence of
+> Chinese Medicine's Founding Text Is False."*** It also carries a standing
+> **Title/thumbnail compliance** note recording the banned terms (*longevity*,
+> *live to 100*, *ancient secret*, *anti-aging*) and the requirement that any
+> title read as **objection**, not as ancient secret. The finding above is kept
+> as the reasoning behind the change. The equivalent conflict on **Ch 46**
+> (*"The Ancient Science of Sleep"*) is still open — see the ch46 review §3.
+
 ---
 
 ## 4. Audio — the guqin argument doesn't hold
@@ -388,5 +396,5 @@ series.
 | ~~P2~~ | ~~Rewrite as the full 10-section production document~~ (§2) | **Done** — `build_subtitles.js` parses it: 8 blocks, 28 cues, widest line fits |
 | ~~P2~~ | ~~Run the step-0 cost gate before generating~~ (§2) | **Done** — balance 1,037.3; **Draft tier confirmed**; ~91 credits |
 | ~~P2~~ | ~~Resolve the guqin/bell licensing argument~~ (§4) | **Done** — guqin stands; the silence instinct survives in blocks 3 and 8 |
-| **P3** | Update the Blueprint's Ch 1 hook to clear the banned-terms list (§3) | **Open** — *"The 2,000-Year-Old Secret to Living Past 100"* still trips the list twice |
+| ~~P3~~ | ~~Update the Blueprint's Ch 1 hook to clear the banned-terms list~~ (§3) | **Done** — the hook is now *"The First Sentence of Chinese Medicine's Founding Text Is False"*, and the Blueprint carries a standing **Title/thumbnail compliance** note. Ch 46's equivalent conflict remains open |
 | **P3** | Port strategy / thumbnail / banned-terms sections upstream (§6) | **Open** |

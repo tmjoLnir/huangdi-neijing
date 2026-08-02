@@ -1,6 +1,6 @@
 # The Emperor's Inner Canon — Publish Sequence
 
-*Roll-out strategy for the 20-episode slate. Tier-1 (US/UK/CA/AU) audience. Companion to the sequence deck.*
+*Roll-out strategy for the 20-episode slate. Tier-1 (US/UK/CA/AU) audience.*
 
 ---
 

@@ -300,9 +300,11 @@ Carried from v1; only the items the cut changes are re-argued.
   repo): Lei-Gong's hand flat on the bamboo scroll, cinnabar against gold. *It
   reads as objection, not as ancient secret.* No aged face, no hundred-year claim,
   no herb.
-- **Open conflict, unchanged from v1** — the Blueprint's Ch 1 hook, *"The
-  2,000-Year-Old Secret to Living Past 100"*, trips the banned-terms list twice.
-  `docs/Emperors Inner Canon Series Blueprint.md` still needs updating.
+- **Resolved since v1** — the Blueprint's Ch 1 hook then read *"The
+  2,000-Year-Old Secret to Living Past 100"* and tripped the banned-terms list
+  twice. It now reads *"The First Sentence of Chinese Medicine's Founding Text Is
+  False"*, and the Blueprint carries a standing **Title/thumbnail compliance**
+  note. The thumbnail direction above is unaffected.
 
 ## Runtime levers
 

@@ -1,6 +1,6 @@
 # The Emperor's Inner Canon — YouTube Series Blueprint
 
-*Plain-English companion to the slide deck. Source: 黄帝内经 (huangdineijing) full text index, 太极书馆 (8bei8.com).*
+*Source: 黄帝内经 (huangdineijing) full text index, 太极书馆 (8bei8.com).*
 
 Note on the standing translation convention: **黄帝内经** is rendered here as *The Emperor's Inner Canon*. (The English title in this document is a widely-used editorial rendering, "The Yellow Emperor's Inner Canon / Classic of Internal Medicine," shortened for the series.)
 
@@ -269,6 +269,11 @@ Sorts everyone into five elemental types — Wood, Fire, Earth, Metal, Water —
 
 ## 5. YouTube compliance audit
 
+*This section is the **series-level monetization rationale**. The operative
+per-cut rules — the mandated disclaimer string, the imagery limits, and the audit
+every cut has to record — live in `CLAUDE.md` § YouTube compliance, which is
+normative in any conflict.*
+
 TCM/health content is monetizable but genuinely policy-sensitive. Concerns and the framing that neutralizes each:
 
 | Concern | Risk | Fix |
@@ -276,7 +281,7 @@ TCM/health content is monetizable but genuinely policy-sensitive. Concerns and t
 | **Medical-misinformation policy** | Presenting the canon as treatment/cure for specific conditions, or as an alternative to proven care, can be removed under YouTube's health-misinfo rules. | Frame every episode as history, culture and philosophy. Never "cures/treats/prevents [disease]." Never discourage professional care. |
 | **Harmful or dangerous acts** | Ch 28 ("deadly points") and any needling/self-treatment content sit near the dangerous-acts line if they read as instructions. | Strictly historical, no how-to detail, explicit "do not attempt." Keep needling on-screen illustrative, never a tutorial. |
 | **Advertiser-friendly (the yellow $)** | Disease, death, epidemics and "shocking" framing draw limited ads even when the video stays up — the main driver of the lower RPMs here. | Balanced, non-sensational titles & thumbnails. Reserve harder topics for a mature channel; lead the catalogue with wellness episodes. |
-| **Disclaimers & sourcing** | Reviewers expect a clear scope and honest sourcing on medical-adjacent content. | On-screen + description disclaimer: "educational/historical, not medical advice — consult a licensed professional." Cite the classical text; don't dress claims as proven modern science. |
+| **Disclaimers & sourcing** | Reviewers expect a clear scope and honest sourcing on medical-adjacent content. | On-screen + description disclaimer, **verbatim** per `CLAUDE.md`: *"A dramatized adaptation of a classical philosophical text. Not medical advice."* Cite the classical text; don't dress claims as proven modern science. |
 
 **Net verdict:** With historical framing plus standing disclaimers, the slate is monetizable. **Chapters 15, 25 and 28** carry the most limited-ad risk — hence their lower RPM bands.
 
