@@ -5,13 +5,14 @@ description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfie
 
 # Higgsfield production pipeline
 
-The house pipeline for this repo. Chapters 2, 3, 5 and 8 were all cut this way;
+The house pipeline for this repo. Chapters 1, 2, 3, 5 and 8 were all cut this way;
 the failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
 
-`output/episode-8/inner-canon-ch8-trailer-v1.md` is the reference document —
+`output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference document —
 match its section order on any new cut. Note that `episode-<N>` is the **Suwen
-chapter number**, not a sequential index, which is why the folders run 2, 3, 5, 8.
+chapter number**, not a sequential index, which is why the folders run 1, 2, 3, 5,
+8 and 46.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
 the only form produced so far, and the one whose numbers are battle-tested. For a
@@ -29,7 +30,7 @@ estimate, and confirmed model and tier.
 | [Environment caveats](#environment-caveats) | blocked uploads/CDN, what lands in git |
 | [Compliance gate](#compliance-gate-before-generating) | run on prompts, before generating |
 
-The last four apply to both cut types.
+Subtitles, Environment caveats and the Compliance gate apply to both cut types.
 
 ## Order of operations
 
@@ -45,8 +46,9 @@ Never reorder these — each step consumes the previous step's **job ID**.
    manual deliverables and runtime levers.
 
 Log the run's actual credit spend in the production record as you go. Chapters
-2–8 were cut without it, so there is still no historical figure to check an
-estimate against.
+2–8 were cut without it; **chapter 1 is the only run with a measured balance
+delta**, so it is the single historical figure available to check an estimate
+against — see its *Credit spend* section.
 
 ## 0. Model + tier gate — cost it, then confirm
 
@@ -162,7 +164,8 @@ lineage so far:
   └─ 0862b590-30ca-4a28-a904-b4d5a056c6b0   ch2 (four-season motif)
        └─ f73bdd8b-3ab4-4217-8e6d-786e2c1c66e4   ch3 (sun motif)
             └─ b6adbb81-7746-40c5-b60f-2cbc2c9d2ed0   ch5 (taiji-as-weather + five-direction compass)
-                 └─ 2cfd7596-2d93-4d14-aae4-448b3b9b9f51   ch8 (storehouses / rivers / wrist)  ← current head
+                 └─ 2cfd7596-2d93-4d14-aae4-448b3b9b9f51   ch8 (storehouses / rivers / wrist)
+                      └─ 4b6f7106-67da-4d1a-a553-c58ba90ac43f   ch1 (splitting scroll + seven-and-eight arcs)  ← current head
 ```
 
 Pass the prior key's **job ID** as the reference and swap only the chapter
@@ -173,7 +176,7 @@ generate_image({ params: {
   model: "nano_banana_pro",
   aspect_ratio: "9:16",
   prompt: "<three-character series key, new chapter motif>",
-  medias: [{ role: "image", value: "2cfd7596-2d93-4d14-aae4-448b3b9b9f51" }]  // ch8 key: job ID, never a URL
+  medias: [{ role: "image", value: "4b6f7106-67da-4d1a-a553-c58ba90ac43f" }]  // ch1 key (current head): job ID, never a URL
 }})
 ```
 
@@ -440,7 +443,7 @@ New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
 overwrite a prior version; its production record is the reproduction evidence for
 the next cut.
 
-Sections in order, per CLAUDE.md and the ch8 reference — the generation work is
+Sections in order, per CLAUDE.md and the ch1 reference — the generation work is
 only half the deliverable, and the three sections after the record are the ones
 most likely to get skipped:
 
@@ -667,12 +670,12 @@ Run the step-0 gate and multiply by ~114 blocks before anything else. At the
 2026-07-31 snapshot prices, the model choice is the difference between a cut you
 can afford and one you cannot:
 
-| Clip model / tier | Credits/clip | ~114 blocks | vs 1,037 balance |
+| Clip model / tier | Credits/clip | ~114 blocks | vs 942 balance |
 |---|---|---|---|
 | `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,145** | over budget |
 | `seedance_2_0_mini` 720p (default, full) | 25 | ~2,855 | ~3× balance |
-| `gemini_omni` 720p | 30 | ~3,425 | ~3.3× balance |
-| `seedance_2_0` 1080p | 90 | ~10,265 | ~10× balance |
+| `gemini_omni` 720p | 30 | ~3,425 | ~3.6× balance |
+| `seedance_2_0` 1080p | 90 | ~10,265 | ~11× balance |
 
 **A full-length episode does not currently fit in the credit balance at any
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision
@@ -728,11 +731,20 @@ not audition alternatives per chapter. Match the CLAUDE.md voice rules when
 directing them: Dr-Qi never sounds like she's winning — the more Fan-di
 performs, the stiller she gets.
 
-`speech_rate: 55` is tuned to fit a *narration* line in 10s; character dialogue
-is shorter per block, so a more natural 60–65 may fit Xavier, Vesper and Zane.
-**Measure all four on one block each before committing to ~110 takes** — none of
-them has a measured rate on this pipeline yet, and four unmeasured voices across
-a 19-minute episode is the most expensive version of the ch5/ch8 mistake.
+**All four run at `speech_rate` 55, and rate is not a lever here either** — see
+[§3](#speech_rate-is-not-a-duration-lever--do-not-reach-for-it). An earlier
+version of this section suggested 60–65 for character dialogue; chapter 1
+measured rate 40 against rate 60 on identical text and got −8% to +12%, which is
+take-to-take variance, not a rate response. Word count and sentence structure are
+the only controls, on dialogue as on narration.
+
+Arthur, Xavier and Vesper are measured (§3 table). **Zane is measured only on a
+short line and must be re-measured at length before ~110 takes are committed to
+him** — one unmeasured voice across a 19-minute episode is the most expensive
+version of the ch5/ch8 mistake. Character lines are also structurally short
+against a 10s block, so apply §3's two outs — write the character a real
+paragraph, or let the take run short and centred deliberately — **per line**, and
+record each deliberate short take in the production record.
 
 ### ON-SCREEN TEXT — the one exception to text-free clips
 
@@ -820,11 +832,16 @@ Set by `.gitignore`, which postdates most of this pipeline's runs:
 
 ## Compliance gate before generating
 
-Run this gate on **prompts, before generating** — not just on output. A
-non-compliant clip is a paid re-render:
+**`CLAUDE.md` § YouTube compliance holds the rule list and is normative in any
+conflict. This section is the procedure for applying it to prompts**, plus the two
+failure modes that have already cost a paid re-render.
 
-- Mortality and collapse stay atmospheric — "portraits, not bodies." Chapter 3's
-  two collapse passages became a guttering lamp flame and an ink-wash city wall
+Run the gate on **prompts, before generating** — not just on output. A
+non-compliant clip is a paid re-render.
+
+- **Mortality and collapse have to be carried by objects.** "Portraits, not
+  bodies" is the rule; substitution is the working method. Chapter 3's two
+  collapse passages became a guttering lamp flame and an ink-wash city wall
   under floodwater. No falling bodies, no injury.
 - **Restraint and bound-figure imagery trips the safety filter, even when the
   subject matter is fine.** Chapter 8's manifesto beat ("bound to ghosts")
@@ -833,13 +850,6 @@ non-compliant clip is a paid re-render:
   smoke-covered scroll that cannot be opened, a shut door light cannot pass) and
   it cleared on the first retry. **Carry that kind of meaning with objects and
   brush strokes, never with a person.**
-- No feast close-ups: no bottles, no pouring, no drinking.
-- Any supernatural hook must be debunked inside the same cut, not left dangling.
-- The disclaimer blockquote — *"A dramatized adaptation of a classical
-  philosophical text. Not medical advice."* — goes in the document and the video
-  description.
-- Self-certify general audience, **not** "made for kids."
 
-Run this gate on **prompts before generating**, not just on output — a
 Then write the per-cut audit into the document's `## Compliance notes (YouTube)`
-section, one bullet per rule, so the reasoning survives with the cut.
+section, one bullet per `CLAUDE.md` rule, so the reasoning survives with the cut.

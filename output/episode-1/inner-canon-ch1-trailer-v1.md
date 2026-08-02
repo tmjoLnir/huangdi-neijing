@@ -462,10 +462,13 @@ exposure.
   the educational payoff and title (block 7). Dr-Qi's block 6 narrows rather than
   widens the claim. No compliance hedge is carried by a character voice.
 - **Banned terms** — no *longevity*, *live to 100*, *ancient secret* or
-  *anti-aging* in narration, title or thumbnail. **Open conflict:** the Blueprint's
-  own Ch 1 hook is *"The 2,000-Year-Old Secret to Living Past 100"*, which trips
-  the list twice. `docs/Emperors Inner Canon Series Blueprint.md` needs updating so
-  the slate stops contradicting the rule.
+  *anti-aging* in narration, title or thumbnail. This bullet originally logged an
+  **open conflict**: the Blueprint's Ch 1 hook then read *"The 2,000-Year-Old
+  Secret to Living Past 100"*, which tripped the list twice. **Resolved** — the
+  hook is now *"The First Sentence of Chinese Medicine's Founding Text Is False"*
+  and the Blueprint carries a standing **Title/thumbnail compliance** note. The
+  rule for this cut is unchanged: the title must read as **objection**, not as
+  ancient secret.
 
 ## Runtime levers
 
