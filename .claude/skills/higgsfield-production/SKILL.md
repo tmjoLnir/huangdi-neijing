@@ -5,6 +5,12 @@ description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfie
 
 # Higgsfield production pipeline
 
+**`CLAUDE.md` owns policy; this file owns procedure and measurements.** The cast,
+the compliance rules, the production-document layout, what ships as a deliverable
+and the git conventions are defined there and are normative in any conflict —
+this file points at them rather than restating them, and holds the numbers,
+parameters and failure modes instead.
+
 The house pipeline for this repo. Every cut has been produced this way, and the
 failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
@@ -440,12 +446,13 @@ escape hatch when the fit has to be guaranteed — see [Subtitles](#subtitles).
 
 New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
 `inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
-overwrite a prior version; its production record is the reproduction evidence for
-the next cut.
+overwrite a prior version (`CLAUDE.md` § Git conventions): its production record
+is the reproduction evidence for the next cut.
 
-Sections in order, per CLAUDE.md and the ch1 reference — the generation work is
-only half the deliverable, and the three sections after the record are the ones
-most likely to get skipped:
+**`CLAUDE.md` § Structure holds the canonical section list.** Reproduced here in
+order because the generation work is only half the deliverable and the three
+sections after the record are the ones most likely to get skipped — where the two
+disagree, `CLAUDE.md` is correct and this list needs updating:
 
 1. Title, Chinese chapter title, cut short name.
 2. Final video link + resolution / duration / format.
@@ -458,15 +465,13 @@ most likely to get skipped:
    Canon*, "Xiao-Lei" → **Lei-Gong**, and jade → **blue** cheongsam.
 6. **Shot list**, numbered to match the blocks.
 7. **Production record (Higgsfield)** — see below.
-8. **Deliverables the assembler cannot produce** — history lower-third, end
-   disclaimer card, human editorial credit (*Written & edited by Joshua Chin*),
-   licensed guqin music. Always all four; `explainer_video` has no text-overlay
-   parameter and generates no music. The end disclaimer card is the one that
-   costs credits: it needs its own final 10s block in the block plan and the
-   cost preflight, rendered as a plain plate with the narrator reading the
-   disclaimer to fill the block's one audio slot.
-   Ship the `.srt`/`.vtt` sidecar alongside the document — see
-   [Subtitles](#subtitles).
+8. **Deliverables the assembler cannot produce** — the four are listed in
+   `CLAUDE.md`; always all four, because `explainer_video` has no text-overlay
+   parameter and generates no music. **The one with a cost consequence is the end
+   disclaimer card**: it needs its own final 10s block in the block plan *and* in
+   the step-0 preflight, rendered as a plain plate with the narrator reading the
+   disclaimer to fill the block's one audio slot. Ship the `.srt`/`.vtt` sidecar
+   alongside the document — see [Subtitles](#subtitles).
 
    Close the section with a **Finishing steps** subsection — the ordered
    procedure that turns the delivered render into an uploadable file, since a
@@ -638,9 +643,9 @@ has flagged overflow. The two are alternatives: burning a sidecar over a cut tha
 already has burned-in captions double-layers them — assemble **without**
 `subtitles` when you intend to burn the sidecar.
 
-`.srt`/`.vtt` are **tracked deliverables** per CLAUDE.md and are exempted in
-`.gitignore` — commit them with the cut, and regenerate after any narration or
-take change so the sidecar never drifts from the document.
+`.srt`/`.vtt` are tracked, required deliverables (`CLAUDE.md`) and are exempted in
+`.gitignore` — commit them with the cut, and **regenerate after any narration or
+take change** so the sidecar never drifts from the document.
 
 ## Longform episodes (15–20 min)
 
@@ -823,12 +828,9 @@ Set by `.gitignore`, which postdates most of this pipeline's runs:
 
 - **Renders are gitignored** (`renders/`, `*.mp4`, audio). Download them to
   `output/episode-<N>/renders/`; never commit the binary, never `git add -f` it.
-- **Subtitle sidecars (`.srt`/`.vtt`) are tracked and are required
-  deliverables** per CLAUDE.md, and are deliberately exempted from `.gitignore`.
-  They are *not* satisfied by the burned-in captions from `explainer_video`.
-  Build them with `node scripts/build_subtitles.js <cut-document>.md` — see
-  [The guaranteed path](#the-guaranteed-path--sidecar--libass-burn). Every
-  rendered cut ships one.
+- **Subtitle sidecars (`.srt`/`.vtt`) are tracked** and deliberately exempted
+  from `.gitignore` — see [Subtitles](#subtitles) for how they are built and why
+  burned-in captions do not satisfy the requirement.
 
 ## Compliance gate before generating
 
