@@ -7,84 +7,20 @@
 // the production record's voiceover line for each take's duration — and writes
 // <doc>.srt and <doc>.vtt beside it.
 //
-// Why this exists: explainer_video's burned-in captions expose only `font`, with
-// no wrap, width or position control, so a long narration line can render past
-// the frame. This path produces a sidecar that is pre-wrapped to a measured
-// character budget, and prints an ffmpeg/libass burn command whose margins make
-// the wrap a hard guarantee rather than an estimate. See
-// .claude/skills/higgsfield-production/SKILL.md, "Caption wrapping".
-//
-// No dependencies — .claude/settings.json denies npm install.
+// Why this exists, and how it differs from check_caption_fit.js:
+// see .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
 
 const fs = require("fs");
 const path = require("path");
-
-// ── Frame geometry ───────────────────────────────────────────
-// MarginL/R/V and Fontsize are pixels at the video's own resolution (ffmpeg sets
-// libass PlayRes from the video). Usable width is what a caption line may occupy.
-const FORMATS = {
-  "9:16": {
-    label: "9:16 vertical trailer",
-    width: 720,
-    height: 1280,
-    fontSize: 54,
-    marginX: 58,   // ~8% a side
-    marginV: 150,  // clear of Shorts / Reels / TikTok bottom chrome
-  },
-  "16:9": {
-    label: "16:9 longform episode",
-    width: 1280,
-    height: 720,
-    fontSize: 44,
-    marginX: 96,
-    marginV: 60,
-  },
-};
-
-const BLOCK_SECONDS = 10; // fixed assembly window
-const MAX_LINES = 2;      // never more than two lines on screen
-const SAFETY = 0.92;      // shrink the computed budget; estimates run optimistic
-
-// ── Anton metrics ────────────────────────────────────────────
-// Advance width as a fraction of font size. Anton is a heavy condensed sans, so
-// these run narrower than a normal-width face. Approximate by character class —
-// close enough to pre-wrap sensibly, and libass does the authoritative wrap.
-const NARROW = "iljtfrI.,;:'\"!|()[]{}`";
-const WIDE = "MWmw@%";
-function charWidth(ch) {
-  if (ch === " ") return 0.24;
-  if (NARROW.includes(ch)) return 0.28;
-  if (WIDE.includes(ch)) return 0.62;
-  if (ch >= "A" && ch <= "Z") return 0.52;
-  if (ch >= "0" && ch <= "9") return 0.5;
-  return 0.45; // lowercase and everything else
-}
-function textWidth(str, fontSize) {
-  let w = 0;
-  for (const ch of str) w += charWidth(ch) * fontSize;
-  return w;
-}
-
-// ── Document parsing ─────────────────────────────────────────
-
-// Narration table rows: | 1 | The fear | For most of history, ... |
-function parseNarration(md) {
-  const blocks = [];
-  const re = /^\|\s*(\d+)\s*\|\s*([^|]*?)\s*\|\s*(.+?)\s*\|\s*$/gm;
-  let m;
-  while ((m = re.exec(md)) !== null) {
-    const line = m[3].trim();
-    if (/^-+$/.test(line)) continue; // table rule
-    blocks.push({ block: Number(m[1]), beat: m[2].trim(), text: line });
-  }
-  // The narration table is the first run of consecutive block numbers from 1.
-  const out = [];
-  for (const b of blocks) {
-    if (b.block === out.length + 1) out.push(b);
-    else if (out.length) break;
-  }
-  return out;
-}
+const {
+  FORMATS,
+  BLOCK_SECONDS,
+  MAX_LINES,
+  usableWidth,
+  textWidth,
+  parseNarration,
+  parseArgs,
+} = require("./lib/caption_metrics");
 
 // Production record: - **Voiceover** (...): block 1 `uuid` (8.1s), block 2 `uuid` (5.0s), ...
 function parseDurations(md) {
@@ -249,19 +185,12 @@ function burnCommand(srtPath, fmt) {
 
 // ── CLI ──────────────────────────────────────────────────────
 function main() {
-  const args = process.argv.slice(2);
-  const fmtIdx = args.indexOf("--format");
-  // Skip the value that follows --format, so `--format 16:9 doc.md` does not
-  // pick up "16:9" as the document path.
-  const docPath = args.find(
-    (a, i) => !a.startsWith("--") && !(fmtIdx !== -1 && i === fmtIdx + 1)
-  );
+  const { fmtKey, fmt, docs } = parseArgs(process.argv.slice(2));
+  const docPath = docs[0];
   if (!docPath) {
     console.error("usage: node scripts/build_subtitles.js <cut-document.md> [--format 9:16|16:9]");
     process.exit(1);
   }
-  const fmtKey = fmtIdx !== -1 ? args[fmtIdx + 1] : "9:16";
-  const fmt = FORMATS[fmtKey];
   if (!fmt) {
     console.error(`unknown --format ${fmtKey} (expected 9:16 or 16:9)`);
     process.exit(1);
@@ -275,7 +204,7 @@ function main() {
   }
   const durations = parseDurations(md);
 
-  const usable = (fmt.width - 2 * fmt.marginX) * SAFETY;
+  const usable = usableWidth(fmt);
   const cues = timeCues(blocks, durations, usable, fmt.fontSize);
 
   const base = docPath.replace(/\.md$/, "");

@@ -54,6 +54,7 @@ docs/
 scripts/
   build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
   check_caption_fit.js                      # node scripts/check_caption_fit.js <cut-document>.md
+  lib/caption_metrics.js                    # frame geometry + Anton metrics, shared by both
 ```
 
 - `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.

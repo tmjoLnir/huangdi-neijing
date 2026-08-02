@@ -5,7 +5,9 @@ Backlog from the repo-wide review of duplicate and redundant instructions across
 after chapters 2, 3, 5 and 8 were deleted from `output/` — items that only existed
 because of those cuts are gone, and the sections below are what still applies.
 
-**This file is the single tracker.** When an item is closed, close it here. The
+**This file is the single tracker.** When an item is closed, close it here — in
+the same change that closes it. Struck-through headings marked **DONE** are kept
+rather than deleted, so the reasoning survives alongside the outcome. The
 `## 7. Priority order` tables in the two script reviews are frozen historical
 records of those reviews, not a live to-do list — the review of 2026-08-02 found
 three separate cases where the same item was tracked in two places and went stale
@@ -28,7 +30,10 @@ in both, and there is no stated precedence. This is not untidiness: a duplicated
 fact has gone stale in one copy on four separate occasions, and one duplicated
 paragraph was left truncated mid-sentence in `SKILL.md`'s compliance gate.
 
-### 1.1 Declare precedence once, then stop restating
+### ~~1.1 Declare precedence once, then stop restating~~ — **DONE**
+
+*Both files now open with the split below, and the twelve rules were collapsed to
+one normative copy each. Retained as the record of what was decided.*
 
 Add a precedence note to the top of both files:
 
@@ -57,30 +62,18 @@ Rules currently duplicated in full:
 | CDN/upload blocked → verify at job level | § Production toolchain | § Environment caveats |
 | Never overwrite a prior version | § Git conventions | § 5 |
 
-### 1.2 Collapse the caption sections
+### ~~1.2 Collapse the caption sections~~ — **DONE**
 
-Captions occupy ~22% of `SKILL.md` across four sections that cross-reference each
-other: *This rule is not the caption rule*, *Subtitles*, *Caption wrapping*, and
-*The guaranteed path*. The "burned-in vs sidecar are alternatives, not layers"
-point is made in full three times; "don't switch fonts to fix wrapping" twice,
-plus once more in ch1 v1's record. The "a document can pass `build_subtitles.js`
-and still overflow" argument appears in `SKILL.md`, `CLAUDE.md`, **and** a 20-line
-header comment in `check_caption_fit.js` — cut the script's header to a two-line
-pointer.
+The four cross-referencing caption sections are now one `## Subtitles` section
+with three subsections, and the misfiled narrator-only rule moved into §3 where it
+belongs. "Alternatives, not layers" 4 → 2, "~22 chars/line" 3 → 1, and
+`check_caption_fit.js`'s 20-line header is a two-line pointer.
 
-The content is correct throughout; this is about saying each thing once.
+### ~~1.3 Extract the shared caption geometry~~ — **DONE**
 
-### 1.3 Extract the shared caption geometry
-
-`build_subtitles.js` and `check_caption_fit.js` share seven copy-pasted
-definitions — `FORMATS`, `SAFETY`, `MAX_LINES`, `NARROW`, `WIDE`, `charWidth`,
-`parseNarration`. `check_caption_fit.js` admits it in a comment ("kept identical
-to `build_subtitles.js`") with nothing enforcing it.
-
-Extract to `scripts/lib/caption_metrics.js` and `require` it from both. Change
-Anton's metrics or the margins in one file today and the pair silently disagrees
-about whether a cut fits — the exact failure the two scripts exist to prevent.
-Must stay dependency-free; `.claude/settings.json` denies `npm install`.
+All seven shared definitions now live in `scripts/lib/caption_metrics.js` and are
+`require`d by both scripts, so the two can no longer disagree about what fits.
+Dependency-free, as required.
 
 ### 1.4 Stop re-tabulating RPM and risk
 
@@ -180,7 +173,7 @@ Per the publish sequence, **Ch 06 is next** (Ep 3), then Ch 72, then Ch 42.
 record is reproduction evidence. Everything below is an annotation or a correction
 of a demonstrably wrong figure, not a rewrite.
 
-### 4.1 The ch1 credit table has three different totals — take this first
+### ~~4.1 The ch1 credit table has three different totals — take this first~~ — **DONE**
 
 `inner-canon-ch1-trailer-v1.md` § Credit spend states the run three ways:
 
@@ -199,7 +192,7 @@ Reconstructing from the document's own job IDs, the run generated **20 takes**
 **So `SKILL.md`'s ~0.6/take figure is correct and is confirmed by the measured
 delta.** Reconcile the table to one total and record the take count.
 
-### 4.2 …and ch46's preflight draws the wrong conclusion from it
+### ~~4.2 …and ch46's preflight draws the wrong conclusion from it~~ — **DONE**
 
 `inner-canon-ch46-trailer-v1.md` § Cost preflight says a voice take "preflights at
 1 credit, not the ~0.6 that `SKILL.md` and the ch1 document both carry", and
@@ -210,7 +203,7 @@ delta lands on ~0.6 and the discrepancy disappears: the 1-credit preflight is a
 round-up floor, not the billed rate. Correct the note and the budget line; ch46
 currently over-budgets voice by ~60%.
 
-### 4.3 ch1 v2 quotes superseded take durations
+### ~~4.3 ch1 v2 quotes superseded take durations~~ — **DONE**
 
 `inner-canon-ch1-trailer-v2.md` § Narration states *"Take durations: 5.9s, 6.9s,
 2.6s, 6.6s, 8.0s, 5.0s"*. Its own production record says **6.5 / 6.6 / 2.6 / 7.2 /
@@ -220,7 +213,7 @@ currently over-budgets voice by ~60%.
 `build_subtitles.js` reads the correct figures off the record, so the sidecar is
 right and only the prose is wrong. Fix the prose.
 
-### 4.4 Two stale cross-references in the ch1 documents
+### ~~4.4 Two stale cross-references in the ch1 documents~~ — **DONE**
 
 - `inner-canon-ch1-trailer-v2.md` § intro cites `Ep01_Trailer_Script.md` **lines
   57–66**. Prepending the archive banner shifted the `VERTICAL CUT` section to
@@ -229,7 +222,7 @@ right and only the prose is wrong. Fix the prose.
   **0:60** — the script's 0:38 spec became six blocks on the 10s grid, which v2
   explains in its own source-script mapping.
 
-### 4.5 `build_subtitles.js` crashes on flag-first arguments
+### ~~4.5 `build_subtitles.js` crashes on flag-first arguments~~ — **DONE**
 
 ```
 $ node scripts/build_subtitles.js --format 16:9 <doc>.md

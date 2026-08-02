@@ -4,72 +4,20 @@
 //   node scripts/check_caption_fit.js <doc>.md --format 16:9
 //   node scripts/check_caption_fit.js output/episode-*/*-v*.md      # sweep every cut
 //
-// Why this exists, and why it is NOT build_subtitles.js:
-//
-// There are two caption paths and they fail differently.
-//
-//   1. The sidecar (build_subtitles.js) pre-splits a long clause across several
-//      cues and burns via libass with hard margins, so it always fits. Its
-//      "widest line — fits" line reports on THAT path only.
-//   2. explainer_video's server-side burn has no wrap, width or position
-//      control — `font` is the only exposed option. The backend chunks the
-//      voiceover on Whisper word timestamps, i.e. on speech pauses, which fall
-//      at punctuation. A clause with no internal punctuation has nowhere to
-//      break, so it renders as one long run and can overflow the frame.
-//
-// So a document can pass build_subtitles.js and still overflow on the assembled
-// video. This script checks path 2: every clause, against a two-line budget.
-//
-// Fix an overflow by adding internal commas to the narration line (which also
-// costs pause time — watch the 6-8s take window) and re-recording that block's
-// take, ~0.6 credits. Do NOT switch fonts: anton is the most condensed of the
-// four available and is already the best fit. See SKILL.md, "Caption wrapping".
-//
-// No dependencies — .claude/settings.json denies npm install.
+// Checks the server-burned caption path, which fails differently from the
+// sidecar path build_subtitles.js produces — a document can pass that and still
+// overflow here. Why, and which path to use when:
+// see .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
 
 const fs = require("fs");
-
-// Frame geometry and Anton metrics, kept identical to build_subtitles.js.
-const FORMATS = {
-  "9:16": { label: "9:16 vertical trailer", width: 720, fontSize: 54, marginX: 58 },
-  "16:9": { label: "16:9 longform episode", width: 1280, fontSize: 44, marginX: 96 },
-};
-const MAX_LINES = 2;
-const SAFETY = 0.92;
-
-const NARROW = "iljtfrI.,;:'\"!|()[]{}`";
-const WIDE = "MWmw@%";
-function charWidth(ch) {
-  if (ch === " ") return 0.24;
-  if (NARROW.includes(ch)) return 0.28;
-  if (WIDE.includes(ch)) return 0.62;
-  if (ch >= "A" && ch <= "Z") return 0.52;
-  if (ch >= "0" && ch <= "9") return 0.5;
-  return 0.45;
-}
-const textWidth = (s, fontSize) =>
-  [...s].reduce((w, ch) => w + charWidth(ch) * fontSize, 0);
-
-// Same narration-table parse as build_subtitles.js: | n | beat | line |
-function parseNarration(md) {
-  const re = /^\|\s*(\d+)\s*\|\s*([^|]*?)\s*\|\s*(.+?)\s*\|\s*$/gm;
-  const rows = [];
-  let m;
-  while ((m = re.exec(md)) !== null) {
-    const line = m[3].trim();
-    if (!/^-+$/.test(line)) rows.push({ block: Number(m[1]), text: line });
-  }
-  const out = [];
-  for (const r of rows) {
-    if (r.block === out.length + 1) out.push(r);
-    else if (out.length) break;
-  }
-  return out;
-}
-
-// Whisper chunks on speech pauses, which land on punctuation.
-const clauses = (text) =>
-  text.split(/(?<=[.!?;:,—])\s+/).map((s) => s.trim()).filter(Boolean);
+const {
+  MAX_LINES,
+  usableWidth,
+  textWidth,
+  parseNarration,
+  clauses,
+  parseArgs,
+} = require("./lib/caption_metrics");
 
 // The end disclaimer card's clause is mandated verbatim by CLAUDE.md and is 58
 // characters, so it can never pass this check. Rewording a compliance string to
@@ -81,10 +29,7 @@ const MANDATED_DISCLAIMER =
   "A dramatized adaptation of a classical philosophical text.";
 
 function main() {
-  const args = process.argv.slice(2);
-  const fmtKey = args.includes("--format") ? args[args.indexOf("--format") + 1] : "9:16";
-  const docs = args.filter((a) => !a.startsWith("--") && a !== fmtKey);
-  const fmt = FORMATS[fmtKey];
+  const { fmtKey, fmt, docs } = parseArgs(process.argv.slice(2));
   if (!fmt) {
     console.error(`unknown --format ${fmtKey} (expected 9:16 or 16:9)`);
     process.exit(1);
@@ -94,7 +39,7 @@ function main() {
     process.exit(1);
   }
 
-  const usable = (fmt.width - 2 * fmt.marginX) * SAFETY;
+  const usable = usableWidth(fmt);
   const cap = usable * MAX_LINES;
   let failures = 0;
 
