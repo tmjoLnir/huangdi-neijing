@@ -84,7 +84,7 @@ three short sentences delivered **6.91s**. So:
 
 ### Two blocks run deliberately short
 
-Neither is the ch8 dead-air mistake repeating. Both are the ch1 pattern, where a
+Neither is the dead-air mistake repeating. Both are the ch1 pattern, where a
 fixed 10s window centres a short take and supplies silence for free:
 
 - **Block 6 (~5s expected)** — the source script's shot 9 asks for **seven
@@ -140,7 +140,7 @@ shot). Re-cut to eight even 10s blocks:
 **Naming reconciliations**, resolved in favour of `CLAUDE.md`: *Chronicle of
 Balance* → **The Emperor's Inner Canon**; *Xiao-Lei* → **Lei-Gong**; *Dr. Qi* /
 *Fan-Di* → **Dr-Qi** / **Fan-di**; traditional 營衛生會 / 合陰 → simplified
-**营卫生会** / **合阴**, matching the Blueprint and all five shipped documents.
+**营卫生会** / **合阴**, matching the Blueprint and the shipped documents.
 **"The archivist"** is not a cast member and is not made one: the vigil figure
 stays an anonymous ink-wash silhouette in a lit window — never named, never
 given a face.
@@ -216,21 +216,25 @@ discards):
 |---|---|---|---|
 | Style key (`nano_banana_pro`, 1k, 9:16) | `generate_image` `get_cost` | 2 | *reused* |
 | 8 clips | `generate_video` `get_cost` | **80** (10/clip) | **200** (25/clip) |
-| 8 voice takes | `generate_audio` `get_cost` | 8 | *reused, resolution-independent* |
+| 8 voice takes | ch1 balance reconciliation | ~4.8 (0.6/take) | *reused, resolution-independent* |
 | Subtitles, 0.05/voiced block | `explainer_video` tool contract | 0.4 | 0.4 |
 | Assembly | free | 0 | 0 |
-| **Total** | | **90.4** | **200.4 additional** |
+| **Total** | | **~87.2** | **200.4 additional** |
 
-Draft alone leaves **852.0**. Draft then Full costs **290.8** and leaves
-**651.6**. The 8-block cut is not budget-constrained at either tier.
+Draft alone leaves **~855**. Draft then Full costs **~287.6** and leaves **~655**.
+The 8-block cut is not budget-constrained at either tier.
 
-**One live figure disagrees with the record: a voice take preflights at 1 credit,
-not the ~0.6 that `SKILL.md` and the ch1 document both carry.** Chapter 1's
-measured balance delta implies ~0.78/take averaged over 16 takes, which matches
-neither, so the preflight may round up to a 1-credit floor while billing
-fractionally. Budgeted at **1** here because that is what the API returned;
-reconcile against the actual balance delta after the run and correct the skill's
-figure with whichever number the balance proves.
+**A voice take preflights at 1 credit but bills at ~0.6 — budget 0.6.** Chapter
+1's measured balance delta settles this: that run generated **20** takes (7
+measurement, 8 final, 5 superseded) against a 94.9-credit delta, and
+`20 × 0.6 + 2 + 80 + 0.4 = 94.4` reconciles to within rounding, while 1.0/take
+would have cost 102.4. The `get_cost` figure is rounding up to a whole-credit
+floor. Voice is budgeted at 0.6 above; confirm against the balance delta after
+this run as usual.
+
+*(An earlier version of this preflight budgeted takes at 1 credit and reported the
+ch1 delta as "~0.78/take over 16 takes". The take count was wrong — there were 20,
+not 16 — which is what made the figure look irreconcilable.)*
 
 Budget one or two re-takes for blocks 3 and 7 per the line-length note above.
 **Draft then Full is the house default and this cut should keep it** — a
@@ -249,10 +253,8 @@ low in the frame.** Model `nano_banana_pro` (served by `nano_banana_2`), 9:16
 768×1376, prior key passed as `medias[{ role: "image", value: "<job id>" }]` —
 job ID, never a URL. Attach to every clip.
 
-Lineage: group shot → ch2 → ch3 → ch5 → ch8 → ch1 → **ch46**.
-
-*(`SKILL.md`'s lineage diagram still marks ch8 as the head; it has been ch1 since
-2026-08-01. Logged as P3 in the review.)*
+Lineage: this key derives from the ch1 head; ch46 becomes the new head once
+generated.
 
 ### Clips
 
@@ -297,7 +299,7 @@ did — that reconciliation is the only historical figure this repo has.
   `declined_preset_id` takes one id per call, so budget one retry per newly
   triggered preset. Keep audio vocabulary — *drum*, *drone*, *music*, *rhythm* —
   out of every clip prompt: those are edit-time directions, and "rhythm" is what
-  fired `DROWN IN MUSIC` on ch8.
+  fired `DROWN IN MUSIC` on an earlier cut.
 - **Block 1 is the riskiest prompt in the cut.** It asks for a single continuous
   lateral camera move that resolves from one subject to another, which is more
   camera direction than any shipped clip has used. If the model returns a static
@@ -400,7 +402,7 @@ and generates no music.
   title (block 7) and the disclaimer (block 8).
 - **General audience, not made for kids** — self-certify at upload.
 - **Prompt-stage audit — run before generating, per `CLAUDE.md`.** Every shot
-  prompt above was read against ch8's `nsfw` incident, where restraint and
+  prompt above was read against the recorded `nsfw` incident, where restraint and
   bound-figure imagery tripped the safety filter on otherwise fine subject
   matter. Nothing here goes near it: shot 1's sleeping boy is comic and posed
   (face-down on a bench, arm hanging), not unconscious or injured; the vigil

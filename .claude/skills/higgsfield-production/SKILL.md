@@ -5,14 +5,20 @@ description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfie
 
 # Higgsfield production pipeline
 
-The house pipeline for this repo. Chapters 1, 2, 3, 5 and 8 were all cut this way;
-the failure modes below are ones that already cost a paid re-render, so read them
+**`CLAUDE.md` owns policy; this file owns procedure and measurements.** The cast,
+the compliance rules, the production-document layout, what ships as a deliverable
+and the git conventions are defined there and are normative in any conflict —
+this file points at them rather than restating them, and holds the numbers,
+parameters and failure modes instead.
+
+The house pipeline for this repo. Every cut has been produced this way, and the
+failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
 
 `output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference document —
 match its section order on any new cut. Note that `episode-<N>` is the **Suwen
-chapter number**, not a sequential index, which is why the folders run 1, 2, 3, 5,
-8 and 46.
+chapter number**, not a sequential index, so the folders are not consecutive and
+gaps are expected.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
 the only form produced so far, and the one whose numbers are battle-tested. For a
@@ -45,10 +51,9 @@ Never reorder these — each step consumes the previous step's **job ID**.
 5. **The document** — every job ID above, plus the shot list, compliance audit,
    manual deliverables and runtime levers.
 
-Log the run's actual credit spend in the production record as you go. Chapters
-2–8 were cut without it; **chapter 1 is the only run with a measured balance
-delta**, so it is the single historical figure available to check an estimate
-against — see its *Credit spend* section.
+Log the run's actual credit spend in the production record as you go. **Chapter 1
+is the only run with a measured balance delta**, so it is the single historical
+figure available to check an estimate against — see its *Credit spend* section.
 
 ## 0. Model + tier gate — cost it, then confirm
 
@@ -56,11 +61,11 @@ against — see its *Credit spend* section.
 credits/clip, ~66 for a 6-block trailer, and it takes the style key as a true
 `image_references` input, which is the one thing the house look requires.
 
-This replaces `gemini_omni`, which chapters 2–8 used. `gemini_omni` is the
+This replaces `gemini_omni`, which earlier cuts used. `gemini_omni` is the
 *incumbent*, not the standard, and at 30 credits/clip it costs 3× the default for
 a 720p ceiling. Do not carry it forward out of habit.
 
-**480p is a step down from the 720×1280 that chapters 2–8 shipped.** For a draft
+**480p is a step down from the 720×1280 the earlier cuts shipped.** For a draft
 pass that is the point. Before publishing a 480p cut as a final Shorts/Reels
 deliverable, say so and get an explicit yes — the same model at 720p is 25/clip
 (~156/cut) and keeps the draft's look, so it is the natural full-render tier.
@@ -76,11 +81,13 @@ Before generating anything on a new cut, do all four:
    makes this a confirmation, not an open question — but it is still a gate, and
    a chapter that wants a different model gets the shortlist below.
 
-**`seedance_2_0_mini` is unproven on this series.** Every failure mode recorded
-in this skill was learned on `gemini_omni`. On the first cut that uses it:
-generate **one** clip, check the returned dimensions and the house look against
-the style key, and only then generate the rest. Write what actually happened into
-that cut's reproduction notes.
+**Most failure modes in this skill were learned on `gemini_omni`,** and only one
+cut has run on `seedance_2_0_mini` so far — the aspect-ratio double declaration
+and the preset pre-decline both held on it, but nothing else is confirmed. On any
+cut using a model this repo has little history with: generate **one** clip, check
+the returned dimensions and the house look against the style key, and only then
+generate the rest. Write what actually happened into that cut's reproduction
+notes.
 
 ### Draft pass vs Full render
 
@@ -131,7 +138,7 @@ The binding constraint is not price. It is the **reference role**:
 | `seedance_2_0` | `image_references` | 480p fast | 15 | ~96 | draft, better motion |
 | **`seedance_2_0_mini`** | `image_references` | **720p** | **25** | **~156** | **← full-render tier** |
 | `wan2_6` | `image_references` | 720p | 25 | ~156 | stylized/experimental |
-| `gemini_omni` | `image_references` | 720p | **30** | **~186** | incumbent, ch2–8; 720p ceiling |
+| `gemini_omni` | `image_references` | 720p | **30** | **~186** | incumbent; 720p ceiling |
 | `seedance_2_0` | `image_references` | 720p fast | 35 | ~216 | |
 | `seedance_2_0` | `image_references` | 720p std | 45 | ~276 | |
 | `wan2_6` | `image_references` | 1080p | 40 | ~246 | breaks the 720p house res |
@@ -156,19 +163,20 @@ soundtrack that gets thrown away, and on some models it raises the per-clip pric
 
 ## 1. Style key
 
-Chain from the previous chapter's key rather than starting a new look. The
-lineage so far:
+Chain from the current head rather than starting a new look:
 
 ```
-95d91291-0b74-4490-9818-b0bfe697e8e3   group shot, from assets/*.png
-  └─ 0862b590-30ca-4a28-a904-b4d5a056c6b0   ch2 (four-season motif)
-       └─ f73bdd8b-3ab4-4217-8e6d-786e2c1c66e4   ch3 (sun motif)
-            └─ b6adbb81-7746-40c5-b60f-2cbc2c9d2ed0   ch5 (taiji-as-weather + five-direction compass)
-                 └─ 2cfd7596-2d93-4d14-aae4-448b3b9b9f51   ch8 (storehouses / rivers / wrist)
-                      └─ 4b6f7106-67da-4d1a-a553-c58ba90ac43f   ch1 (splitting scroll + seven-and-eight arcs)  ← current head
+4b6f7106-67da-4d1a-a553-c58ba90ac43f   ch1 (splitting scroll + seven-and-eight arcs)  ← current head
 ```
 
-Pass the prior key's **job ID** as the reference and swap only the chapter
+The head is itself the end of a chain reaching back to a group shot built from
+`assets/*.png`; those upstream keys are not recorded here, and they do not need
+to be. **The head's job ID is the only input a new key takes** — Higgsfield holds
+the image, so a new chapter derives from the ID above without re-deriving
+anything before it. When a new key is generated, record it here as the new head
+and add its own job ID and motif to that cut's production record.
+
+Pass the head's **job ID** as the reference and swap only the chapter
 motif. Model `nano_banana_pro` (served by `nano_banana_2`), 9:16 768×1376.
 
 ```jsonc
@@ -184,8 +192,8 @@ generate_image({ params: {
 URL there fails. If you do need a local `assets/*.png`, upload via `media_upload`
 first — but see the network-policy note at the bottom, that path is often
 blocked from this host. The current art is `emperor-Fan.png`, `wise-Qi-2.png`,
-`witty-Lei.png`; the `-3` / `-3a` filenames in the ch2 record are from an older
-naming and no longer resolve.
+`witty-Lei.png` — any other `assets/` filename in an older record is from a
+superseded naming and no longer resolves.
 
 ## 2. Clips
 
@@ -198,17 +206,17 @@ model and tier the cut used** in the production record: the notes here were
 learned on `gemini_omni`, and the default has moved off it, so treat each one as
 unconfirmed on `seedance_2_0_mini` until a cut proves it either way.
 
-**Declare the aspect ratio twice.** `gemini_omni` does not inherit vertical
-framing from a 9:16 style key — in chapter 3 all six clips came back 1280×720
-landscape and had to be regenerated. Every time:
+**Declare the aspect ratio twice.** `gemini_omni` does not reliably inherit
+vertical framing from a 9:16 style key — a full set of clips has come back
+1280×720 landscape and had to be regenerated at full cost. Every time:
 
 - pass `aspect_ratio: "9:16"` explicitly, and
 - write "vertical 9:16 portrait framing" into the prompt text itself.
 
-The double declaration has held on every chapter since: 3 re-rendered without it,
-then 5 and 8 both came back 720×1280 on the first pass with it. Don't drop it.
-**Check the first clip's returned dimensions before generating the other five**,
-on any model — one wasted clip beats six.
+The double declaration has held on every cut that used it, including the first
+cut on `seedance_2_0_mini`. Don't drop it. **Check the first clip's returned
+dimensions before generating the rest**, on any model — one wasted clip beats
+a whole set.
 
 **Decline preset swaps.** The service offers to replace your prompt with a stock
 preset, and accepting breaks the flat-2D house style. Retry with
@@ -217,14 +225,16 @@ budget a retry for each newly-triggered preset.
 
 | Preset | ID | Triggered by |
 |---|---|---|
-| IN THE DARK | `24bae836-2c4a-48e0-89b6-49fcc0b21612` | any dim/night-lit scene — 5 of 6 ch5 prompts |
-| DROWN IN MUSIC | `f1821f84-945b-4cd1-9085-1f479db0028e` | "rhythm" / "rhythmic" (ch8 block 3) |
-| 3D RENDER | *not recorded* | ch3, off the NEGATIVE line |
+| IN THE DARK | `24bae836-2c4a-48e0-89b6-49fcc0b21612` | any dim or night-lit scene; the most frequent trigger by far |
+| DROWN IN MUSIC | `f1821f84-945b-4cd1-9085-1f479db0028e` | "rhythm" / "rhythmic" |
+| 3D RENDER | *not recorded* | vocabulary on the NEGATIVE line |
 
 The trigger is **prompt vocabulary anywhere in the request, not just the NEGATIVE
-line and not just darkness** — that was the ch3 reading and ch8 disproved it.
-Pre-decline `IN THE DARK` on every clip (ch5 did this and saved a full round of
-retries); handle the rest as they fire.
+line and not just darkness** — that was the early reading and a later cut
+disproved it. Pre-decline `IN THE DARK` on every clip; doing so has saved a full
+round of retries on a dark-heavy cut. Handle the rest as they fire, and keep
+audio vocabulary — *drum*, *drone*, *music*, *rhythm* — out of clip prompts
+entirely, since those are edit-time directions anyway.
 
 Preset offers are a Higgsfield-service behaviour, not a `gemini_omni` one, so
 expect them on any model.
@@ -259,14 +269,14 @@ has only been measured on a 5-word line (2.3–2.6s), where pause overhead
 dominates and no reliable words/sec can be derived — **measure him on a
 full-length line before writing him one.**
 
-**Arthur is ~21% faster than the retired narrator at the same `speech_rate`** —
-23 words gave 6.17s against the retired voice's 7.46s for the same count. Writing
-a new cut to chapters 2–8's ~21–24 word budget undershoots every block by over a
-second. This is the concrete proof that word counts do not transfer.
+**Word counts do not transfer between voices**, and the gap is large enough to
+break a cut: at the same `speech_rate`, 23 words measured 6.17s on Arthur against
+7.46s on the narrator he replaced — ~21% faster for identical text. A budget
+carried over from a different voice misses the window by more than a second per
+block. Size every line from the measured figure for *that* voice, above.
 
 These four are the only voices this series uses. Do not audition alternatives,
-and do not carry a voice forward out of an older cut's production record — the
-narrators used before chapter 1 are retired.
+and do not carry a voice forward out of an older cut's production record.
 
 For any voice still marked unmeasured, **generate one take, read its duration,
 and write the measured words/second back into this table** before committing a
@@ -291,30 +301,28 @@ speech, not an interjection. Two ways out, and the choice is per line:
 - **Write the character a real paragraph.** Fine for a reframe or a monologue.
 - **Let the take run short and centred.** A 2.6s line leaves ~3.7s of silence
   either side. For an interruption or a hard beat that silence *is* the effect,
-  and chapter 1 uses it deliberately in block 3. Record it in the production
-  record as a chosen exception, or the next cut will read it as the ch8 dead-air
-  mistake and "fix" it.
+  and chapter 1 uses it deliberately in block 3. **Record it in the production
+  record as a chosen exception**, or the next cut will read it as the dead-air
+  mistake below and "fix" it.
 
-Chapters 2–8 shipped under the previous narrators and keep their takes; their
-production records hold those voice IDs as reproduction evidence. Nothing is
-re-voiced retroactively unless someone decides to, in which case only the
-voiceover and assembly are re-paid — the clips are untouched.
+A cut is never re-voiced retroactively unless someone decides to, in which case
+only the voiceover and assembly are re-paid — the clips are untouched.
 
 One take per block. Record each take's **duration** alongside its job ID — the
 record is how you know a block was comfortable or tight.
 
 ### Write to 6–8 seconds. This is the most expensive thing to get wrong.
 
-Both re-render events on chapters 5 and 8 were narration length, in opposite
+Two separate re-render events have been caused by narration length, in opposite
 directions, so treat the window as two-sided:
 
-- **Too long** — ch5's first pass ran ~28–30 words per line and came back
-  9.5–11.6s against a fixed 10s block. Four of six overshot outright. The
-  assembler would have pitch-safely sped them up, breaking the narrator's
-  measured register. **All six were re-cut.**
-- **Too short** — ch8 over-corrected to a hard ~22-word ceiling and got 4.7s and
-  3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
-  stall, not as breathing room. **Two were re-cut, longer.**
+- **Too long** — a pass written at ~28–30 words per line came back 9.5–11.6s
+  against a fixed 10s block, with most of the cut overshooting outright. The
+  assembler would have pitch-safely sped those takes up, breaking the narrator's
+  measured register. **Every block had to be re-cut.**
+- **Too short** — the over-correction to a hard ~22-word ceiling produced 4.7s
+  and 3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
+  stall, not as breathing room. **Those blocks were re-cut longer.**
 
 **The 6–8s window is the rule; the word count is not.** The window is a property
 of the pipeline — a fixed 10s block, a take that must not overshoot it or rattle
@@ -325,11 +333,11 @@ around inside it — so it holds for every voice. The word count that *produces*
 |---|---|
 | Take duration per 10s block | **6–8s — fixed, applies to every voice** |
 | Line length | per voice — **22–30 words Arthur, 27–36 Xavier, 27–35 Vesper** |
-| Delivery rate | per voice — **3.73 / 4.55 / 4.42 words/sec**; ~2.4–3.0 on the retired narrator |
+| Delivery rate | per voice — **3.73 / 4.55 / 4.42 words/sec** for Arthur / Xavier / Vesper |
 
-Take the line length from the voice table above, not from another cut's document.
-Chapters 2–8's ~21–24 words belong to a retired voice and undershoot Arthur by
-over a second per block.
+**Take the line length from the voice table above, never from another cut's
+document.** A word budget written for one voice undershoots or overshoots another
+by more than a second per block.
 
 ### Sentence structure beats word count — the ch1 lesson
 
@@ -354,8 +362,8 @@ actually lands the take in the window is structure:
 - **Take is long** → break the sentence up. Full stops in place of em-dashes and
   subordinate clauses is the fastest way to pull seconds off without losing
   content. This is what re-cut ch1 block 2.
-- **Take is short** → more internal commas, fewer full stops. This is how ch8
-  stretched a 22-word line from 4.7s to 6.3s.
+- **Take is short** → more internal commas, fewer full stops. This has lifted a
+  22-word line from 4.7s to 6.3s without changing a word of its content.
 
 Both levers are voice-independent and cost one 0.6-credit re-take. Reach for them
 before rewriting the line's content, and **never** reach for `speech_rate`.
@@ -374,7 +382,7 @@ point the same way often enough to look like one rule, and they are not:
 | Lever | how much content, and how many hard stops | where the clause breaks fall |
 | Failure | pitch-shifted speed-up, or dead air | the line renders past the frame edge |
 
-**Why they get conflated.** This section shipped first, off the ch5/ch8
+**Why they get conflated.** This section shipped first, off the two length
 re-renders — a take-duration problem, nothing to do with captions. The caption
 section came later and borrowed *this* section's word count as a convenient
 proxy. That proxy only ever held because one voice was narrating the whole
@@ -392,7 +400,7 @@ timing; clause length governs caption width.** Neither substitutes for the other
 
 **When they conflict.** A line already at 8s with one wide clause needs a break
 for the caption — but commas and full stops add pause time and push it past the
-window (that is exactly how ch8 stretched 4.7s to 6.3s). Punctuating your way out
+window (that is exactly how a 4.7s take became 6.3s). Punctuating your way out
 of a width problem is free only while the take is short. Once it isn't, **cut
 content instead**; do not buy caption width with duration you don't have.
 
@@ -402,10 +410,8 @@ there is no wrap parameter. With the sidecar + libass burn, width is a
 *guarantee* (libass cannot draw outside its margins), so clause length only
 decides whether the wrap reads naturally; duration still governs timing.
 
-In chapters 2–8 only the narrator speaks; Fan-di, Dr-Qi and Lei-Gong appear but
-never have lines. That was deliberate — the narrator carries every compliance
-hedge — and it stays the **default** for a trailer even now that the characters
-are cast. Giving a character a line is a per-cut decision that costs a block
+**Narrator-only is the default for a trailer**, even now that the characters are
+cast: the narrator carries every compliance hedge. Giving a character a line is a per-cut decision that costs a block
 boundary (one speaker per block) and moves a hedge off the narrator, so if a cut
 does it, the compliance notes must say which hedge moved and who now carries it.
 
@@ -440,12 +446,13 @@ escape hatch when the fit has to be guaranteed — see [Subtitles](#subtitles).
 
 New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
 `inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
-overwrite a prior version; its production record is the reproduction evidence for
-the next cut.
+overwrite a prior version (`CLAUDE.md` § Git conventions): its production record
+is the reproduction evidence for the next cut.
 
-Sections in order, per CLAUDE.md and the ch1 reference — the generation work is
-only half the deliverable, and the three sections after the record are the ones
-most likely to get skipped:
+**`CLAUDE.md` § Structure holds the canonical section list.** Reproduced here in
+order because the generation work is only half the deliverable and the three
+sections after the record are the ones most likely to get skipped — where the two
+disagree, `CLAUDE.md` is correct and this list needs updating:
 
 1. Title, Chinese chapter title, cut short name.
 2. Final video link + resolution / duration / format.
@@ -453,20 +460,18 @@ most likely to get skipped:
 4. **Narration** table (block / beat / line), naming preset and speech rate.
 5. **Source-script mapping** — source beat → blocks, plus any naming
    reconciliations, where the cut was re-timed off a longer script. CLAUDE.md is
-   the primary instruction in a conflict: ch8 resolved "Chronicle of Balance" →
-   *The Emperor's Inner Canon*, "Xiao-Lei" → **Lei-Gong**, and jade → **blue**
-   cheongsam that way.
+   the primary instruction in a conflict. Incoming scripts have repeatedly needed
+   the same three resolved this way: "Chronicle of Balance" → *The Emperor's Inner
+   Canon*, "Xiao-Lei" → **Lei-Gong**, and jade → **blue** cheongsam.
 6. **Shot list**, numbered to match the blocks.
 7. **Production record (Higgsfield)** — see below.
-8. **Deliverables the assembler cannot produce** — history lower-third, end
-   disclaimer card, human editorial credit (*Written & edited by Joshua Chin*),
-   licensed guqin music. Always all four; `explainer_video` has no text-overlay
-   parameter and generates no music. The end disclaimer card is the one that
-   costs credits: it needs its own final 10s block in the block plan and the
-   cost preflight, rendered as a plain plate with the narrator reading the
-   disclaimer to fill the block's one audio slot.
-   Ship the `.srt`/`.vtt` sidecar alongside the document — see
-   [Subtitles](#subtitles).
+8. **Deliverables the assembler cannot produce** — the four are listed in
+   `CLAUDE.md`; always all four, because `explainer_video` has no text-overlay
+   parameter and generates no music. **The one with a cost consequence is the end
+   disclaimer card**: it needs its own final 10s block in the block plan *and* in
+   the step-0 preflight, rendered as a plain plate with the narrator reading the
+   disclaimer to fill the block's one audio slot. Ship the `.srt`/`.vtt` sidecar
+   alongside the document — see [Subtitles](#subtitles).
 
    Close the section with a **Finishing steps** subsection — the ordered
    procedure that turns the delivered render into an uploadable file, since a
@@ -498,9 +503,9 @@ The record is what makes a cut reproducible after the CDN links die:
 - **Credit spend** for the run.
 - **Reproduction notes** — anything that went wrong and how it was resolved.
 
-Keep superseded job IDs (ch3's six landscape clips, ch5's six overlong takes,
-ch8's two short takes and one `nsfw` clip) in the notes, marked as superseded.
-They're evidence for the next chapter, not clutter.
+Keep superseded job IDs — landscape clips, overlong or short takes, a clip
+rejected as `nsfw` — in the notes, marked as superseded. They're evidence for the
+next chapter, not clutter.
 
 ## Subtitles
 
@@ -573,11 +578,12 @@ across several cues and burns through libass margins, so it always fits, while
 `explainer_video` chunks on Whisper pauses that fall at punctuation, so a clause
 with no internal comma has nowhere to break. **A document can pass
 `build_subtitles.js` and still overflow on the assembled video**; chapter 1 did,
-on six clauses. Chapter 5 also fails the check on two clauses, discovered
-retroactively — it shipped that way.
+on six clauses, and an earlier cut shipped with two overflowing clauses that were
+only caught retroactively.
 
 **Verification is visual, and this host usually cannot do it.** The CDN has been
-blocked since chapter 3, so the rendered MP4 generally cannot be fetched back —
+blocked on every cut for some time, so the rendered MP4 generally cannot be
+fetched back —
 meaning burned-in caption overflow *cannot* be confirmed from the repo host.
 So: whoever reviews the draft checks captions on the actual video, and the
 production record states whether captions were **visually verified** or only
@@ -604,7 +610,7 @@ v2 both ship this way. Dropping the parameter also saves the 0.05/block subtitle
 charge.
 
 ```
-node scripts/build_subtitles.js output/episode-8/inner-canon-ch8-trailer-v1.md
+node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v1.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
 ```
 
@@ -637,10 +643,9 @@ has flagged overflow. The two are alternatives: burning a sidecar over a cut tha
 already has burned-in captions double-layers them — assemble **without**
 `subtitles` when you intend to burn the sidecar.
 
-`.srt`/`.vtt` are **tracked deliverables** per CLAUDE.md and are exempted in
-`.gitignore` — commit them with the cut. Chapters 2, 3, 5 and 8 all have theirs
-generated and committed; regenerate after any narration or take change so the
-sidecar never drifts from the document.
+`.srt`/`.vtt` are tracked, required deliverables (`CLAUDE.md`) and are exempted in
+`.gitignore` — commit them with the cut, and **regenerate after any narration or
+take change** so the sidecar never drifts from the document.
 
 ## Longform episodes (15–20 min)
 
@@ -653,7 +658,7 @@ notes. Where this section contradicts steps 0–5, this section wins.
 
 | | Trailer | Longform |
 |---|---|---|
-| Runtime | 30-90 sec (all four cuts so far are 60s) | 17–19 min target (15 floor, 20 ceiling) |
+| Runtime | 30-90 sec (60s and 80s cuts exist) | 17–19 min target (15 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
@@ -741,7 +746,7 @@ the only controls, on dialogue as on narration.
 Arthur, Xavier and Vesper are measured (§3 table). **Zane is measured only on a
 short line and must be re-measured at length before ~110 takes are committed to
 him** — one unmeasured voice across a 19-minute episode is the most expensive
-version of the ch5/ch8 mistake. Character lines are also structurally short
+version of the take-length mistake. Character lines are also structurally short
 against a 10s block, so apply §3's two outs — write the character a real
 paragraph, or let the take run short and centred deliberately — **per line**, and
 record each deliberate short take in the production record.
@@ -807,7 +812,7 @@ expand to reach 120.
 ## Environment caveats
 
 - **Uploads may be blocked.** `upload.higgsfield.ai` was unreachable from the
-  repo host in the chapter 3 session, so `assets/` PNGs couldn't be re-uploaded.
+  repo host in an earlier session, so `assets/` PNGs couldn't be re-uploaded.
   Fall back to referencing the prior style-key job ID — CLAUDE.md explicitly
   allows this, and it's the better default anyway.
 - **The CDN may be blocked too.** It has been blocked on every chapter since 3
@@ -823,12 +828,9 @@ Set by `.gitignore`, which postdates most of this pipeline's runs:
 
 - **Renders are gitignored** (`renders/`, `*.mp4`, audio). Download them to
   `output/episode-<N>/renders/`; never commit the binary, never `git add -f` it.
-- **Subtitle sidecars (`.srt`/`.vtt`) are tracked and are required
-  deliverables** per CLAUDE.md, and are deliberately exempted from `.gitignore`.
-  They are *not* satisfied by the burned-in captions from `explainer_video`.
-  Build them with `node scripts/build_subtitles.js <cut-document>.md` — see
-  [The guaranteed path](#the-guaranteed-path--sidecar--libass-burn). Chapters 2,
-  3, 5 and 8 have theirs committed; every new cut ships one.
+- **Subtitle sidecars (`.srt`/`.vtt`) are tracked** and deliberately exempted
+  from `.gitignore` — see [Subtitles](#subtitles) for how they are built and why
+  burned-in captions do not satisfy the requirement.
 
 ## Compliance gate before generating
 
@@ -840,13 +842,13 @@ Run the gate on **prompts, before generating** — not just on output. A
 non-compliant clip is a paid re-render.
 
 - **Mortality and collapse have to be carried by objects.** "Portraits, not
-  bodies" is the rule; substitution is the working method. Chapter 3's two
-  collapse passages became a guttering lamp flame and an ink-wash city wall
-  under floodwater. No falling bodies, no injury.
+  bodies" is the rule; substitution is the working method. Two collapse passages
+  have been carried as a guttering lamp flame and an ink-wash city wall under
+  floodwater. No falling bodies, no injury.
 - **Restraint and bound-figure imagery trips the safety filter, even when the
-  subject matter is fine.** Chapter 8's manifesto beat ("bound to ghosts")
-  rendered as an ink figure "wrapped in smoke-cords that hold it still" came back
-  `nsfw` — the restraint, not the theme. Re-cut with no human figures at all (a
+  subject matter is fine.** A manifesto beat ("bound to ghosts") rendered as an
+  ink figure "wrapped in smoke-cords that hold it still" came back `nsfw` — the
+  restraint, not the theme. Re-cut with no human figures at all (a
   smoke-covered scroll that cannot be opened, a shut door light cannot pass) and
   it cleared on the first retry. **Carry that kind of meaning with objects and
   brush strokes, never with a person.**

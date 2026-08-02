@@ -1,8 +1,8 @@
 # Script review — `ch46lingshu11trailerscript.md` ("CHRONICLE OF BALANCE — The Night Watch")
 
 Review of the submitted Chapter 46 trailer script against `CLAUDE.md`,
-`.claude/skills/higgsfield-production/SKILL.md`, `docs/`, and the five shipped
-cuts (ch1, ch2, ch3, ch5, ch8). Chapter 46 is the Blueprint's sleep chapter —
+`.claude/skills/higgsfield-production/SKILL.md`, `docs/`, and the cuts shipped at
+the time of review. Chapter 46 is the Blueprint's sleep chapter —
 营卫生会 · *Meeting of Nutritive & Defensive Qi* — and the publish sequence's
 **Ep 2**, the highest-RPM pick on the whole slate.
 
@@ -70,11 +70,9 @@ top of the funnel.
   screen, it must read *"Ling Shu 18"*, not *"Chapter 46."*
 
 **Knock-on, out of scope for this cut but recorded:** the same arithmetic breaks
-the Su Wen half of the index from #6 onward, which means the shipped
-`output/episode-8/inner-canon-ch8-trailer-v1.md` header **五脏别论篇第八** is also
-off — 五藏别论 is **Su Wen 11**. That document is shipped and `CLAUDE.md` forbids
-rewriting a prior version, so it is logged as a P3 to fix on any re-cut, along
-with the Blueprint itself.
+the Su Wen half of the index from #6 onward, so any chapter drawn from the slate
+at index 6 or higher needs its canonical number checked before a citation goes on
+screen. Logged as a P3 against the Blueprint itself.
 
 ### 1.2 Three factual errors and one overclaim in the narration
 
@@ -144,7 +142,7 @@ the emotional centre.** On this grid, silence is what a 10s window sounds like
 around a *short centred take* — Chapter 1 used that deliberately twice. The
 re-cut writes block 6 to **12 words** so the take lands near 5s and leaves ~2.5s
 of held silence either side, and records it as a chosen exception so the next
-reviewer does not "fix" it as the ch8 dead-air mistake.
+reviewer does not "fix" it as the dead-air mistake.
 
 A `## Source-script mapping` table is required (`CLAUDE.md`, `SKILL.md` §5.5) and
 is in the re-cut.
@@ -153,7 +151,7 @@ is in the re-cut.
 
 The script leads with **"16:9 master · 9:16 vertical derivative."** `CLAUDE.md`:
 *"Render trailers in 9:16 vertical format; long form in 16:9 landscape."* All
-five shipped cuts are 9:16, the whole style-key lineage is 9:16 768×1376, and
+every shipped cut is 9:16, the whole style-key lineage is 9:16 768×1376, and
 `build_subtitles.js` labels its `16:9` profile "longform episode."
 
 Cost point, identical to ch1 §1.4: **two masters is two full clip bills.**
@@ -178,7 +176,7 @@ The script puts text inside four clips:
 
 The practical argument matters as much as the rule: a video model asked for 營
 will very likely return a malformed glyph, and nobody on this host can check —
-the CDN has been blocked since chapter 3. Chinese characters that must be
+the CDN has been blocked for a long time. Chinese characters that must be
 *correct* belong in the edit, not in a paid render.
 
 ### 1.6 No end disclaimer card block
@@ -218,14 +216,14 @@ zinger.
 one voice measured on a short line only, and `SKILL.md` requires him re-measured
 at length before anything is written for him. Keeping him asleep avoids that.
 
-### 1.8 Naming and cast drift — the same three ch1 and ch8 already resolved, plus two new ones
+### 1.8 Naming and cast drift — the same three already resolved twice, plus two new ones
 
 | Script says | Repo says | Where |
 |---|---|---|
 | **CHRONICLE OF BALANCE** | ***The Emperor's Inner Canon*** | `CLAUDE.md`; Blueprint title convention |
 | **Xiao-Lei** | **Lei-Gong** | `CLAUDE.md` core cast |
 | **Dr. Qi** / **Fan-Di** | **Dr-Qi** / **Fan-di** | `CLAUDE.md` core cast |
-| **營衛生會 / 合陰** (traditional) | simplified — **营卫生会 / 合阴** | Blueprint and all five shipped documents |
+| **營衛生會 / 合陰** (traditional) | simplified — **营卫生会 / 合阴** | Blueprint and every shipped document |
 | **"the archivist"** — a recurring on-screen figure | **not in the cast** | `CLAUDE.md` lists four: Fan-di, Dr-Qi, Lei-Gong, Narrator |
 
 The last one is new and is a real decision, not a typo. The vigil figure appears
@@ -285,7 +283,7 @@ sleep"** is the right line and the re-cut holds it.
    > *A dramatized adaptation of a classical philosophical text. Not medical advice.*
 
    The script's version is tighter English, but changing it in one cut silently
-   desynchronises Ep 2 from five shipped cuts. Either use the repo string, or
+   desynchronises Ep 2 from the rest of the series. Either use the repo string, or
    propose the change to `CLAUDE.md` as its own edit. Ch1 hit this and made the
    same call.
 2. **The history lower-third is absent.** *"Presented as history & philosophy"*,
@@ -309,7 +307,7 @@ sleep"** is the right line and the re-cut holds it.
   80s cut at all** (it moves to the stretch lever), and if it is added it renders
   as **grain steeping in a covered vessel** — no wine jar silhouette, no cups.
 - **The prompt-stage gate.** `CLAUDE.md` and `SKILL.md` both require the audit to
-  run on prompts *before* generating. Read against ch8's `nsfw` incident, where
+  run on prompts *before* generating. Read against the recorded `nsfw` incident, where
   restraint and bound-figure imagery tripped the filter on otherwise fine subject
   matter: nothing here goes near it. The sleeping boy is comic, not unconscious;
   the vigil figure is a silhouette in a window. Low risk — recorded as checked.
@@ -429,8 +427,7 @@ generated and the step-0 gate is still open.
 | **P2** | Resolve the guqin / library-cue licensing argument (§4) | **Done** — guqin stands; the silence instinct survives in block 6 |
 | **P2** | Audit the fermenting vat honestly (§3) | **Done** — triptych moved to the stretch lever; covered-vessel treatment specified if added |
 | **P3** | Fix the Blueprint's Ling Shu (and Su Wen) chapter parentheticals (§1.1) | **Open** — seven Ling Shu picks are wrong by construction |
-| **P3** | `output/episode-8`'s header 五脏别论**篇第八** → **篇第十一**, on any re-cut (§1.1) | **Open** — shipped document, not rewritten |
 | **P3** | Reconcile the Blueprint's Ch 46 hook with the banned-terms rule (§3) | **Open** — *"The Ancient Science of Sleep"* asserts what block 7 denies |
 | **P3** | `CLAUDE.md` says `episode-<N>` is *"the Suwen chapter number"*; for ch46 it is the Blueprint's slate index | **Open** — wording predates the first Ling Shu cut |
-| **P3** | `SKILL.md` still names ch8 the reference document and the style-key head; both are ch1 since 2026-08-01 | **Open** |
+| ~~P3~~ | ~~`SKILL.md` names the wrong reference document and style-key head~~ | **Done** — both are ch1 in `SKILL.md` |
 | **P3** | Port the honest-line posture, `Framing:` header, alternate-cut spec, vertical note and risk verdict upstream (§6) | **Open** |

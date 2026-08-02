@@ -6,6 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **video-content-production repository**, not a software project. It holds production documents for *The Emperor's Inner Canon*, a dramatized documentary series adapting the Huangdi Neijing (The Emperor's Inner Canon, the foundational classical text of Chinese medicine).
 
+## Which file wins
+
+Two files carry standing instructions, and they divide as follows. **Where both
+touch the same subject, the owner below is normative and the other file points at
+it rather than restating it.**
+
+| | Owns |
+|---|---|
+| **`CLAUDE.md`** (this file) | **Policy** — who the cast is, the compliance rules, the production-document layout, what ships as a deliverable, git conventions |
+| **`.claude/skills/higgsfield-production/SKILL.md`** | **Procedure and measurements** — order of operations, model names and parameters, prices, per-voice words/second, block geometry, the failure modes that have cost a paid re-render |
+
+Rule of thumb: if it would still be true with a different generation service, it
+belongs here; if it is a number someone measured or a call someone makes to the
+API, it belongs in the skill. Duplicating a rule across both is how they drift —
+several instructions have already gone stale in one copy while staying correct in
+the other. Add a pointer, not a second copy.
+
 ## Structure
 
 One folder per chapter, one markdown file per cut. The current tree is:
@@ -21,10 +38,6 @@ output/
   episode-1/inner-canon-ch1-trailer-v2.md   # 60s cut, v1's assets re-assembled
   episode-1/inner-canon-ch1-trailer-script-review.md
   episode-1/Ep01_Trailer_Script.md          # archived source script, superseded naming
-  episode-2/inner-canon-ch2-trailer-v1.md
-  episode-3/inner-canon-ch3-trailer-v1.md
-  episode-5/inner-canon-ch5-trailer-v1.md
-  episode-8/inner-canon-ch8-trailer-v1.md
   episode-46/inner-canon-ch46-trailer-v1.md # pre-render; step-0 gate still open
   episode-46/inner-canon-ch46-trailer-script-review.md
   # every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
@@ -37,14 +50,15 @@ assets/
 docs/
   Emperors Inner Canon Series Blueprint.md  # 80-chapter index, Top-20 slate, compliance audit
   Emperors_Inner_Canon_Publish_Sequence.md  # what order to publish in (≠ chapter order)
+  repo-review-backlog.md                    # outstanding items from the repo review
 scripts/
   build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
   check_caption_fit.js                      # node scripts/check_caption_fit.js <cut-document>.md
 ```
 
-- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders run 1, 2, 3, 5, 8 and 46 because those are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
+- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
-- `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
+- `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next. `repo-review-backlog.md` carries the open findings from the repo-wide review — read it before editing `CLAUDE.md` or `SKILL.md`, since several entries are about those two files duplicating each other.
 - `scripts/` — `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which flags narration clauses that will overflow `explainer_video`'s burned-in captions (both dependency-free — `.claude/settings.json` denies `npm install`, so anything added here has to stay that way or be cleared first). **Run `check_caption_fit.js` before generating voice takes** — it checks a different failure than `build_subtitles.js` does, and a document can pass the sidecar build and still overflow on the assembled video.
 
 Each production document contains, in order:
@@ -64,8 +78,7 @@ When adding a new trailer or episode document, follow this same layout so produc
 the first cut on the permanent voice cast and on `seedance_2_0_mini`, and it adds
 two sections worth carrying forward: a **voice measurement** table where a voice
 is newly measured, and a **credit spend** breakdown reconciled against the
-preflight estimate. `output/episode-8/inner-canon-ch8-trailer-v1.md` remains the
-reference for the older six-block narrator-only shape.
+preflight estimate.
 
 ## Core Cast (recurring)
 
@@ -77,32 +90,37 @@ reference for the older six-block narrator-only shape.
 
 New visuals should attach the existing style key image as a reference rather than establishing a new look.
 
-- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Use `seed_audio` preset **Arthur** (`30fc8796-ceb6-4a66-b3a7-4a145ef7f346`) at `speech_rate` 55.
+- **Narrator (V.O.)** — single narrator, measured, nature-documentary hush. Carries the education; the other characters carry the tension. Voiced by the `seed_audio` preset **Arthur**.
 
 **The full cast is voiced.** All four are `seed_audio` **preset** voices, cast permanently as of chapter 1 — series-recurring, never re-picked per chapter:
 
-| Role | Preset | `voice_id` | |
-|---|---|---|---|
-| Narrator (V.O.) | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | male |
-| Fan-di | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | male |
-| Dr-Qi | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | female |
-| Lei-Gong | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | male |
+| Role | Preset |
+|---|---|
+| Narrator (V.O.) | **Arthur** |
+| Fan-di | **Xavier** |
+| Dr-Qi | **Vesper** |
+| Lei-Gong | **Zane** |
 
-These four are the only voices the series uses. The narrators used on chapters 2–8 are **retired** — their IDs survive only in those cuts' production records, as reproduction evidence, and must not be carried into a new cut. Those cuts keep their shipped takes unless they are deliberately re-voiced; every new cut is Arthur.
+These four are the only voices the series uses. Do not audition alternatives and do not introduce a voice from outside this table; every new cut is Arthur plus, where a character speaks, that character's cast voice.
 
-Trailers through chapter 8 are narrator-only — the three characters appear but never speak. Now that they are cast, a trailer *may* give them lines, and longform requires them. `explainer_video` takes exactly one audio per 10s block, so **no block may contain two speakers**: a line exchange becomes consecutive blocks.
+**The `voice_id`s, each voice's measured words/second, and its line-length window live in the skill's step-3 table** — that is the operative copy, because the numbers come from measurement and are used at generation time. Do not restate them here.
 
-In the production skill, the **6–8s take per 10s block is fixed** — it is pipeline geometry and holds for every voice. The word count that produces it is voice-specific and does not transfer between voices. All four were measured on chapter 1 (2026-08-01) and the figures are in the skill's voice table: **Arthur 22–30 words, Xavier 27–36, Vesper 27–35**; Zane is measured only on a short line and needs re-measuring at length. Arthur runs ~21% faster than the retired narrator at the same rate, so chapters 2–8's word counts undershoot him. Measure any new voice on one take before writing to it.
+A trailer *may* give the characters lines and longform requires them, but the narrator remains the default: the narration carries every compliance hedge, so moving a hedge onto a character voice is a per-cut decision the compliance notes must record. `explainer_video` takes exactly one audio per 10s block, so **no block may contain two speakers**: a line exchange becomes consecutive blocks.
 
-**`speech_rate` is not a duration lever.** Rate 40 against rate 60 on identical text moved takes by −8% to +12% — noise, not a response. Word count and punctuation are the only controls on take length. All four voices run at `speech_rate` 55.
+Two constraints bind every script written for these voices, and the skill holds the figures for both:
+
+- **A take must land in 6–8s inside its fixed 10s block.** The window is pipeline geometry and holds for every voice. The word count that produces it is voice-specific and does **not** transfer between voices — take it from the skill's table, never from another cut's document.
+- **`speech_rate` is not a duration lever.** Word count and punctuation are the only controls on take length. All four voices run at `speech_rate` 55; the measurements behind that are in the skill.
+
+Measure any new voice on one take, and write the result into the skill's table, before writing a script to it.
 
 ## Writing conventions
 
 - **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
 - **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-1/inner-canon-ch1-trailer-v1.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
-- Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — chapters 2–8 are six blocks (60s), chapter 1 is eight (80s).
-- Always include subtitles / closed captions on the final deliverable. Make sure all subtitles wrap on screen and are readable across the entire video. Subtitles with anton font. `explainer_video`'s burned-in captions expose only `font` — no wrap, width or position control — so a long line can render past the frame. The wrap guarantee comes from the sidecar path: `node scripts/build_subtitles.js <cut-document>.md` builds pre-wrapped `.srt`/`.vtt` from the cut's own narration table and take durations, and prints the `ffmpeg`/libass burn command. Sidecars are tracked deliverables; see the skill's "Caption wrapping".
+- Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — six blocks is 60s, eight is 80s.
+- **Every deliverable ships captioned**, in the **anton** font, with every subtitle wrapping on screen and readable across the whole video. The `.srt`/`.vtt` sidecars are **tracked, required deliverables** — build them with `node scripts/build_subtitles.js <cut-document>.md` and commit them with the cut. How the two caption paths differ, why the sidecar is the one that *guarantees* the wrap, and when to use each: see the skill's **Subtitles** section.
 
 ## YouTube compliance (apply to every episode)
 
@@ -115,11 +133,8 @@ In the production skill, the **6–8s take per 10s block is fixed** — it is pi
 - Health content stays philosophical narrative, never medical instruction;
   keep the not-medical-advice disclaimer in the description.
 - Self-certify/tag as general audience, **not** "made for kids."
-- Always audit and validate any storyboard, script, voice, video output to ensure that they comply with youtube's regulations.  provide a summary of issues and recommendations. Record that audit as a `## Compliance notes (YouTube)` section in the cut's own document, one bullet per rule, so the reasoning survives with the cut.
-- Run the audit on prompts *before* generating, not just on output — a
-  non-compliant clip is a paid re-render. Restraint and bound-figure imagery has
-  tripped the safety filter even where the subject matter was fine; carry the
-  meaning with objects and brush strokes instead of people.
+- **Audit every storyboard, script, voice take and rendered clip against the rules above**, and summarise the issues and recommendations. Record the audit as a `## Compliance notes (YouTube)` section in the cut's own document, one bullet per rule, so the reasoning survives with the cut.
+- **Run that audit on the prompts *before* generating, not just on the output** — a non-compliant clip is a paid re-render. The skill's *Compliance gate* holds the prompt-stage procedure and the imagery that has actually tripped the safety filter.
 
 Four requirements the assembler cannot produce, so they are manual steps at
 edit/upload time on every cut:
@@ -134,8 +149,6 @@ edit/upload time on every cut:
   a paid render. The card block still needs its one audio like any other; the
   narrator reading the disclaimer over it fills the slot and doubles the
   compliance signal, and it captions into the subtitle sidecar for free.
-  Chapters 2, 3, 5 and 8 shipped before this rule and do not carry the card —
-  add it if they are ever re-cut.
 - **Human editorial credit** — *"Written & edited by Joshua Chin"* on the end card and in the description, per the AI-persona policy.
 - **Music** — licensed guqin only; nothing generated by this pipeline. Trailers earn disproportionate plays and carry the higher Content-ID exposure.
 
@@ -152,34 +165,28 @@ edit/upload time on every cut:
   assembly. Every generated asset's job ID goes into the document's production
   record so the cut can be reproduced.
 - **Clips default to `seedance_2_0_mini` at 480p (draft tier), Draft then Full.**
-  This replaced `gemini_omni`, which chapters 2–8 used at 3× the cost; ch1 is the
-  only cut on the new default so far. Generating costs real credits, so the skill's
-  step-0 gate applies: price the whole cut, name the model and tier, and **confirm
-  with the user before spending**. Record actual spend against the estimate in the
-  document.
-- Attach the existing character style-key art from `assets/` (or the prior
-  style-key image job) as the reference on new generations rather than
-  establishing a fresh look. In practice each chapter key chains off the previous
-  one, swapping only the chapter motif — the lineage so far is group shot →
-  ch2 → ch3 → ch5 → ch8 → ch1. `medias[].value` takes a media ID or a prior job ID
-  only, never a URL.
-- Hosted asset URLs are CDN links from the generation service and may expire —
-  user to manually download and archive the final MP4 for any cut worth keeping.
-  Rendered media is gitignored (`renders/`, `*.mp4`, audio); download renders into
+  Generating costs real credits, so the skill's step-0 gate applies: price the
+  whole cut, name the model and tier, and **confirm with the user before
+  spending**. Record actual spend against the estimate in the document.
+- **New visuals chain off the existing style key rather than establishing a fresh
+  look.** The current head and the exact `medias[]` call are in the skill's
+  step 1.
+- **What lands in git**: rendered media never does — it is gitignored
+  (`renders/`, `*.mp4`, audio), and renders are downloaded into
   `output/episode-<N>/renders/`. Subtitle sidecars (`.srt`/`.vtt`) are small text,
-  are required deliverables, and *are* tracked.
-- The generation CDN and `upload.higgsfield.ai` are frequently blocked from the
-  repo host, so a cut often cannot be fetched back for visual QA. When that
-  happens, verify at the job-metadata level (dimensions, per-take durations,
-  assembly completion), say so explicitly in the document, and record the CDN link
-  for manual download rather than committing a broken binary.
+  are required deliverables, and *are* tracked. CDN links expire, so archive any
+  final MP4 worth keeping by hand.
+- **The CDN is often unreachable from the repo host**, so a cut frequently cannot
+  be fetched back for visual QA. Never write that a cut looks right, or that its
+  captions wrap, if nobody watched the file. The skill's *Environment caveats*
+  gives the fallback.
 
 ## Git conventions
 
 - **`claude/main` is the long-lived default branch.** Work happens on
   `claude/<description>-<id>` branches cut from it, pushed to origin, and merged
   back via pull request; feature branches are deleted after merge.
-- Commit messages describe the content deliverable (e.g. "Add 1-minute Chapter 8 trailer: narration, shot list, and production record").
+- Commit messages describe the content deliverable (e.g. "Add 80-second Chapter 1 trailer: narration, shot list, and production record").
 - New script versions get a new file; never overwrite or rewrite a prior version's
   document, since its production record is the reproduction evidence for the next cut.
 

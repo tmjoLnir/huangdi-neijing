@@ -16,10 +16,10 @@ reasoning as v1; do not upload it uncaptioned.
 > manually into `output/episode-1/renders/` — the link expires.
 
 A sixty-second vertical cut of Chapter 1, built to the **source script's own
-`VERTICAL CUT (9:16 · 0:38)` specification** (`Ep01_Trailer_Script.md` lines
-57–66), which `inner-canon-ch1-trailer-v1.md` did not implement. v1 is the full
-80-second version and remains the primary cut; this is the compressed one the
-script asked for.
+`VERTICAL CUT (9:16 · 0:38)` specification** — see the `## VERTICAL CUT` section
+of `Ep01_Trailer_Script.md` — which `inner-canon-ch1-trailer-v1.md` did not
+implement. v1 is the full 80-second version and remains the primary cut; this is
+the compressed one the script asked for.
 
 **Every asset is reused from v1.** No new clips, no new voice takes — only a
 re-assembly and a fresh subtitle sidecar. See the production record.
@@ -38,8 +38,11 @@ re-assembly and a fresh subtitle sidecar. See the production record.
 | 6 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. |
 
 Voices as cast (`CLAUDE.md`): Arthur, Xavier, Zane, all `seed_audio` presets at
-`speech_rate` 55. Take durations: 5.9s, 6.9s, 2.6s, 6.6s, 8.0s, 5.0s — every one
-inside the fixed 10s window, blocks 3 and 6 deliberately short (see v1).
+`speech_rate` 55. Take durations: **6.5s, 6.6s, 2.6s, 7.2s, 7.1s, 5.0s** — every
+one inside the fixed 10s window, blocks 3 and 6 deliberately short (see v1).
+These are the shipped takes listed in the production record below; an earlier
+version of this line quoted the *superseded* takes' durations, which are ~1s out
+and belong to the caption-fix re-records documented in v1.
 
 **Vesper does not appear in this cut.** Dr-Qi is on screen in the style key and in
 v1, but her only line is v1's block 6, which the script's keep-list cuts.
@@ -126,7 +129,7 @@ Identical to v1 for the blocks retained; renumbered here.
 `inner-canon-ch1-trailer-v1.md`. Nothing was regenerated for this cut.
 
 - **Style key** — `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (`nano_banana_pro`,
-  768×1376), chained off the ch8 head `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`.
+  768×1376), chained off the preceding series key `2cfd7596-2d93-4d14-aae4-448b3b9b9f51`.
 - **Clips** (`seedance_2_0_mini`, **Draft tier 480p**, 10s, 9:16 480×854,
   `generate_audio: false`): block 1 `91cb182e-f1a0-4f6b-ae47-a30497ced28b`,
   block 2 `2297a411-da14-4555-b38e-90236633e06b`, block 3
