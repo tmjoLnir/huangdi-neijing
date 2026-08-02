@@ -254,23 +254,37 @@ prompts (blocks 3 and 8) that were expected to trigger it.
 ### Credit spend
 
 Measured against the balance, not estimated: **1,037.3 → 942.4 = 94.9 credits**
-for the whole run.
+for the whole run. That balance delta is the authoritative figure.
 
-| Item | Credits |
-|---|---|
-| Voice measurement (7 takes) | ~4.2 |
-| Style key | 2 |
-| 8 clips — Draft 480p | 80 |
-| 9 voice takes (8 + block 2 re-cut) | ~5.4 |
-| Subtitles on the superseded assembly | 0.4 |
-| 4 caption-fix re-takes (blocks 1, 2, 4, 7) | 3.9 |
-| Final assembly — no subtitles | free |
-| **Draft total (actual)** | **98.8** |
+**This run generated 20 voice takes**, counted off the job IDs recorded in this
+document: 7 voice-measurement takes, 8 final block takes, and 5 superseded takes
+(one block-2 overshoot, plus the four caption-fix re-records on blocks 1, 2, 4
+and 7).
+
+| Item | Count | Rate | Credits |
+|---|---|---|---|
+| Style key | 1 | 2 | 2.0 |
+| Clips — Draft 480p | 8 | 10 | 80.0 |
+| Voice takes — all of them | 20 | ~0.6 | ~12.1 |
+| Subtitles on the superseded assembly | 8 blocks | 0.05 | 0.4 |
+| Final assembly — no subtitles | 1 | free | 0 |
+| **Total** | | | **94.9** |
+
+**This reconciliation settles the per-take rate.** 20 takes at ~0.6 gives
+`12.0 + 2 + 80 + 0.4 = 94.4` against a measured 94.9 — the residual is rounding.
+At 1.0/take the run would have cost 102.4, which the balance delta rules out. So
+**`SKILL.md`'s ~0.6/take is correct**, and a `get_cost` preflight returning 1
+credit for a take is rounding up to a whole-credit floor rather than reporting the
+billed rate. Budget voice at ~0.6.
+
+*(An earlier version of this table listed three different totals — 94.9 in the
+prose, 95.9 across its rows and 98.8 on the total line — and split the takes
+across two rows at inconsistent rates. The counts above are derived from the job
+IDs in this document and supersede it.)*
 
 Live `get_cost` confirmed both tiers on `seedance_2_0_mini` at 10s / 9:16:
 **480p = 10 credits/clip**, **720p = 25**. A full-tier upgrade is 8 × 25 =
-**200** additional; the nine voice takes are resolution-independent and are not
-re-paid.
+**200** additional; voice takes are resolution-independent and are not re-paid.
 
 ### Reproduction notes
 

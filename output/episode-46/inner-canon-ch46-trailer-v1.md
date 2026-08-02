@@ -216,21 +216,25 @@ discards):
 |---|---|---|---|
 | Style key (`nano_banana_pro`, 1k, 9:16) | `generate_image` `get_cost` | 2 | *reused* |
 | 8 clips | `generate_video` `get_cost` | **80** (10/clip) | **200** (25/clip) |
-| 8 voice takes | `generate_audio` `get_cost` | 8 | *reused, resolution-independent* |
+| 8 voice takes | ch1 balance reconciliation | ~4.8 (0.6/take) | *reused, resolution-independent* |
 | Subtitles, 0.05/voiced block | `explainer_video` tool contract | 0.4 | 0.4 |
 | Assembly | free | 0 | 0 |
-| **Total** | | **90.4** | **200.4 additional** |
+| **Total** | | **~87.2** | **200.4 additional** |
 
-Draft alone leaves **852.0**. Draft then Full costs **290.8** and leaves
-**651.6**. The 8-block cut is not budget-constrained at either tier.
+Draft alone leaves **~855**. Draft then Full costs **~287.6** and leaves **~655**.
+The 8-block cut is not budget-constrained at either tier.
 
-**One live figure disagrees with the record: a voice take preflights at 1 credit,
-not the ~0.6 that `SKILL.md` and the ch1 document both carry.** Chapter 1's
-measured balance delta implies ~0.78/take averaged over 16 takes, which matches
-neither, so the preflight may round up to a 1-credit floor while billing
-fractionally. Budgeted at **1** here because that is what the API returned;
-reconcile against the actual balance delta after the run and correct the skill's
-figure with whichever number the balance proves.
+**A voice take preflights at 1 credit but bills at ~0.6 — budget 0.6.** Chapter
+1's measured balance delta settles this: that run generated **20** takes (7
+measurement, 8 final, 5 superseded) against a 94.9-credit delta, and
+`20 × 0.6 + 2 + 80 + 0.4 = 94.4` reconciles to within rounding, while 1.0/take
+would have cost 102.4. The `get_cost` figure is rounding up to a whole-credit
+floor. Voice is budgeted at 0.6 above; confirm against the balance delta after
+this run as usual.
+
+*(An earlier version of this preflight budgeted takes at 1 credit and reported the
+ch1 delta as "~0.78/take over 16 takes". The take count was wrong — there were 20,
+not 16 — which is what made the figure look irreconcilable.)*
 
 Budget one or two re-takes for blocks 3 and 7 per the line-length note above.
 **Draft then Full is the house default and this cut should keep it** — a

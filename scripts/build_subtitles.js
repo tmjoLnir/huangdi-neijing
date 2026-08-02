@@ -250,12 +250,17 @@ function burnCommand(srtPath, fmt) {
 // ── CLI ──────────────────────────────────────────────────────
 function main() {
   const args = process.argv.slice(2);
-  const docPath = args.find((a) => !a.startsWith("--"));
+  const fmtIdx = args.indexOf("--format");
+  // Skip the value that follows --format, so `--format 16:9 doc.md` does not
+  // pick up "16:9" as the document path.
+  const docPath = args.find(
+    (a, i) => !a.startsWith("--") && !(fmtIdx !== -1 && i === fmtIdx + 1)
+  );
   if (!docPath) {
     console.error("usage: node scripts/build_subtitles.js <cut-document.md> [--format 9:16|16:9]");
     process.exit(1);
   }
-  const fmtKey = args.includes("--format") ? args[args.indexOf("--format") + 1] : "9:16";
+  const fmtKey = fmtIdx !== -1 ? args[fmtIdx + 1] : "9:16";
   const fmt = FORMATS[fmtKey];
   if (!fmt) {
     console.error(`unknown --format ${fmtKey} (expected 9:16 or 16:9)`);

@@ -4,7 +4,8 @@
 > names and colours predate `CLAUDE.md` and **must not be copied into new work**:
 > *Chronicle of Balance* → **The Emperor's Inner Canon**, *Xiao-Lei* →
 > **Lei-Gong**, Dr-Qi's *jade* → **blue** cheongsam. The shipping cuts are
-> `inner-canon-ch1-trailer-v1.md` (80s) and `-v2.md` (0:38); their
+> `inner-canon-ch1-trailer-v1.md` (80s) and `-v2.md` (60s — the 0:38 vertical
+> spec below becomes six 10s blocks on the assembler's grid); their
 > *Source-script mapping* sections carry the full reconciliation.
 
 # CHRONICLE OF BALANCE
