@@ -1,6 +1,6 @@
 # The Emperor's Inner Canon — YouTube Series Blueprint
 
-*Plain-English companion to the slide deck. Source: 黄帝内经 (huangdineijing) full text index, 太极书馆 (8bei8.com).*
+*Source: 黄帝内经 (huangdineijing) full text index, 太极书馆 (8bei8.com).*
 
 Note on the standing translation convention: **黄帝内经** is rendered here as *The Emperor's Inner Canon*. (The English title in this document is a widely-used editorial rendering, "The Yellow Emperor's Inner Canon / Classic of Internal Medicine," shortened for the series.)
 
