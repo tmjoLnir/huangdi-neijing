@@ -6,7 +6,6 @@
 // build_subtitles.js and check_caption_fit.js and held identical only by a
 // comment, which meant a change to Anton's metrics or the margins in one file
 // would make the two scripts silently disagree about whether a cut fits.
-// 
 
 // ── Frame geometry ───────────────────────────────────────────
 // MarginL/R/V and Fontsize are pixels at the video's own resolution (ffmpeg sets
