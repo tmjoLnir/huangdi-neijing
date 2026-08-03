@@ -57,9 +57,9 @@ scripts/
   lib/caption_metrics.js                    # frame geometry + Anton metrics, shared by both
 ```
 
-- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the Suwen chapter number, not a sequential episode index** — the folders are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
+- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the chapter number of the file name of the input script, not a sequential episode index** — the folders are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min). Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
-- `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next. `repo-review-backlog.md` carries the open findings from the repo-wide review — read it before editing `CLAUDE.md` or `SKILL.md`, since several entries are about those two files duplicating each other.
+- `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
 - `scripts/` — `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which flags narration clauses that will overflow `explainer_video`'s burned-in captions (both dependency-free — `.claude/settings.json` denies `npm install`, so anything added here has to stay that way or be cleared first). **Run `check_caption_fit.js` before generating voice takes** — it checks a different failure than `build_subtitles.js` does, and a document can pass the sidecar build and still overflow on the assembled video.
 
 Each production document contains, in order:
@@ -111,7 +111,7 @@ A trailer *may* give the characters lines and longform requires them, but the na
 Two constraints bind every script written for these voices, and the skill holds the figures for both:
 
 - **A take must land in 6–8s inside its fixed 10s block.** The window is pipeline geometry and holds for every voice. The word count that produces it is voice-specific and does **not** transfer between voices — take it from the skill's table, never from another cut's document.
-- **`speech_rate` is not a duration lever.** Word count and punctuation are the only controls on take length. All four voices run at `speech_rate` 55; the measurements behind that are in the skill.
+- **`speech_rate` is not a duration lever.** Word count and punctuation are the only controls on take length.
 
 Measure any new voice on one take, and write the result into the skill's table, before writing a script to it.
 
@@ -193,4 +193,4 @@ edit/upload time on every cut:
 
 ## Prompt cleaner
 
-- Always prompt the user to clean up the initial prompt. Strip out words that does not tell the model what to do. Re-write and suggest a new prompt with specific words that the model need to achieve a consistent output required from this document and from the SKILL.md document. Get a confirmation from the user before proceeding with the next steps.
+- Always prompt the user to clean up the initial prompt. Re-write and suggest a new prompt with specific words that the model need to achieve a consistent output required from this document and from the SKILL.md document. Get a confirmation from the user before proceeding with the next steps.
