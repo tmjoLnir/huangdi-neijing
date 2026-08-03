@@ -20,7 +20,7 @@
 | # | Ch | Episode | RPM | Risk | Why here |
 |---|----|---------|-----|------|----------|
 | 1 | 01 | Longevity — living past 100 | $9–14 | Low | Broadest hook on YouTube, top RPM, and it opens the actual canon. Your strongest cold-open. |
-| 2 | 46 | The ancient science of sleep | $9–15 | Low | Highest RPM on the slate; heavy sleep-app / supplement ad overlap. Follow the hook with the money. |
+| 2 | 46 | What the Oldest Chinese Medical Text Got Right About Sleep — and Wrong | $9–15 | Low | Highest RPM on the slate; heavy sleep-app / supplement ad overlap. Follow the hook with the money. |
 | 3 | 06 | Your body is an empire | $6–10 | Low | Most cinematic & shareable — shows off the animation and the trio. Cements channel identity. |
 | 4 | 72 | The 25 personality types | $8–12 | Low | "Which are you?" is viral, comment-driving reach. Pull that audience in while momentum is fresh. |
 | 5 | 42 | Five spirits — map of the mind | $8–12 | Low | Mental-health crossover, novel to Western viewers. Closes a killer first month. |
