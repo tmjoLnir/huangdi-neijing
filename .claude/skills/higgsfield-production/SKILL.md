@@ -16,8 +16,7 @@ failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
 
 `output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference document —
-match its section order on any new cut. Note that `episode-<N>` is the **Suwen
-chapter number**, not a sequential index, so the folders are not consecutive and
+match its section order on any new cut. Note that `episode-<N>` is the **chapter number of the file name of the input script**, not a sequential index, so the folders are not consecutive and
 gaps are expected.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
