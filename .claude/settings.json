@@ -17,11 +17,9 @@
       "mcp__higgsfield__job_display"
     ],
     "deny": [
-      "Bash(npm install *)",
       "Bash(npm uninstall *)",
       "Bash(yarn add *)",
       "Bash(pip install *)",
-      "Bash(rm *)",
       "Bash(rm -rf *)",
       "Bash(rmdir *)"
     ],
