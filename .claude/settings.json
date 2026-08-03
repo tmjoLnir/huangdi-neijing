@@ -14,7 +14,10 @@
       "mcp__higgsfield__generate_video",
       "mcp__higgsfield__generate_audio",
       "mcp__higgsfield__explainer_video",
-      "mcp__higgsfield__job_display"
+      "mcp__higgsfield__job_display",
+      "mcp__higgsfield__reframe",
+      "mcp__higgsfield__upscale_video",
+      "mcp__higgsfield__media_upload"
     ],
     "deny": [
       "Bash(npm uninstall *)",
