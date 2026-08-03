@@ -1,7 +1,7 @@
 # .gitignore — The Emperor's Inner Canon
 #
 # This is a video-content-production repository. What belongs in git:
-# production documents (markdown), character style-key art (assets/*.png),
+# production documents (markdown), character style-key art (assets/*.png).
 # What does not: the rendered
 # video/audio those documents describe, and anything machine-local.
 
