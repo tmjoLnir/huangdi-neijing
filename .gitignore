@@ -2,7 +2,7 @@
 #
 # This is a video-content-production repository. What belongs in git:
 # production documents (markdown), character style-key art (assets/*.png),
-# the chapter deck, and the build script. What does not: the rendered
+# What does not: the rendered
 # video/audio those documents describe, and anything machine-local.
 
 # ── Generated / downloaded media ─────────────────────────────
