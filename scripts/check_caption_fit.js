@@ -42,14 +42,18 @@ function main() {
   const usable = usableWidth(fmt);
   const cap = usable * MAX_LINES;
   let failures = 0;
+  let unparsed = 0;
 
   console.log(`${fmt.label} — ${Math.round(usable)}px/line, ${MAX_LINES} lines max, ${Math.round(cap)}px budget`);
 
   for (const doc of docs) {
     const blocks = parseNarration(fs.readFileSync(doc, "utf8"));
     if (!blocks.length) {
-      console.error(`  ${doc}: no narration table found`);
-      failures++;
+      // Not an overflow — the document has nothing to check yet. A longform
+      // script in SOUND / VISUAL / CHARACTER form has no narration table until
+      // one is derived from it, so this is an expected state, not a defect.
+      console.error(`  ${doc}: no narration table found — nothing to check`);
+      unparsed++;
       continue;
     }
     const bad = [];
@@ -89,8 +93,13 @@ function main() {
     console.log(
       "or skip explainer_video's subtitles entirely and burn the sidecar (see SKILL.md, the guaranteed path)."
     );
-    process.exit(1);
   }
+  if (unparsed) {
+    console.log(
+      `\n${unparsed} document(s) had no narration table to check. Derive one before recording takes.`
+    );
+  }
+  if (failures || unparsed) process.exit(1);
   console.log("\nAll clauses fit.");
 }
 
