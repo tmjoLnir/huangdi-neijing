@@ -38,7 +38,6 @@ yarn-error.log*
 .npm/
 
 # ── Office lock & temp files (decks/) ────────────────────────
-# PowerPoint drops ~$name.pptx beside an open deck.
 ~$*
 *.tmp
 
