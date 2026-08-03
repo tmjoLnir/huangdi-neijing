@@ -37,7 +37,7 @@ npm-debug.log*
 yarn-error.log*
 .npm/
 
-# ── Office lock & temp files (decks/) ────────────────────────
+# ── Office lock & temp files ────────────────────────
 ~$*
 *.tmp
 
