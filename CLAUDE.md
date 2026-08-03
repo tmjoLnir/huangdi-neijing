@@ -50,7 +50,6 @@ assets/
 docs/
   Emperors Inner Canon Series Blueprint.md  # 80-chapter index, Top-20 slate, compliance audit
   Emperors_Inner_Canon_Publish_Sequence.md  # what order to publish in (≠ chapter order)
-  repo-review-backlog.md                    # outstanding items from the repo review
 scripts/
   build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
   check_caption_fit.js                      # node scripts/check_caption_fit.js <cut-document>.md
