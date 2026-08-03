@@ -355,7 +355,8 @@ and generates no music.
 - **Disclaimer** — repo string used verbatim, in the blockquote above, spoken in
   block 8, on screen as the end card, and in the description. The source script's
   *"A history series. Not medical advice."* was not adopted: it is tighter
-  English.
+  English, but changing it in one cut silently desynchronises Ep 2 from the rest
+  of the series.
 - **Health content stays philosophical — this is the load-bearing rule for this
   chapter.** Sleep is the highest-RPM vertical on the slate precisely because of
   sleep-app and supplement advertiser overlap, which is the exact pressure that

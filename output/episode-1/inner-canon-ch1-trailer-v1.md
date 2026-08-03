@@ -169,7 +169,9 @@ The seven-and-eight arcs are correctly Chapter 1.
 
 ## Production record (Higgsfield)
 
-**Status:** Voice measurement is complete; no clips, no assembly.
+**Status: draft rendered.** Voice measurement, all eight clips, all eight takes
+and the assembly are complete at the 480p draft tier; the 720p full render has
+not been run.
 
 ### Voice measurement — 2026-08-01
 

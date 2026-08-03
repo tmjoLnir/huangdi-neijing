@@ -150,7 +150,9 @@ is in the re-cut.
 ### 1.4 Aspect ratio is inverted
 
 The script leads with **"16:9 master · 9:16 vertical derivative."** `CLAUDE.md`:
-*"Render trailers in 9:16 vertical format; long form in 16:9 landscape."* All full render cut is 9:16, the whole style-key lineage is 9:16 768×1376, and `build_subtitles.js` labels its `16:9` profile "longform episode."
+*"Render trailers in 9:16 vertical format; long form in 16:9 landscape."* Every
+shipped cut is 9:16, the whole style-key lineage is 9:16 768×1376, and
+`build_subtitles.js` labels its `16:9` profile "longform episode."
 
 Cost point, identical to ch1 §1.4: **two masters is two full clip bills.**
 9:16 is the master; derive landscape with `reframe` on the finished cut if it is
