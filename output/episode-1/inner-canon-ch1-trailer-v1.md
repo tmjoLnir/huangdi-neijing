@@ -169,7 +169,7 @@ The seven-and-eight arcs are correctly Chapter 1.
 
 ## Production record (Higgsfield)
 
-**Status: pre-render.** Voice measurement is complete; no clips, no assembly.
+**Status:** Voice measurement is complete; no clips, no assembly.
 
 ### Voice measurement — 2026-08-01
 
