@@ -23,7 +23,7 @@
       "Bash(npm uninstall *)",
       "Bash(yarn add *)",
       "Bash(pip install *)",
-      "Bash(rm -rf *)",
+      "Bash(rm *)",
       "Bash(rmdir *)"
     ],
     "ask": [
