@@ -141,7 +141,7 @@ an NLE. Say so explicitly; don't discover it at assembly.
 ### 1.4 Aspect ratio is inverted
 
 The script leads with **"16:9 master + 9:16 vertical cut."** `CLAUDE.md`: *"Render
-trailers in 9:16 vertical format; long form in 16:9 landscape."* Every shipped
+trailers in 9:16 vertical format; long form in 16:9 landscape."* Every full render
 trailers are 9:16 720×1280, the whole style-key lineage is 9:16 768×1376, and
 `build_subtitles.js` labels its `16:9` profile "longform episode."
 
