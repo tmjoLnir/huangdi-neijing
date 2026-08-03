@@ -11,7 +11,6 @@
 *.vtt  text
 
 # Binary deliverables and art — never diff or attempt to merge these.
-# A three-way merge on a .pptx produces a corrupt deck.
 *.pptx binary
 *.potx binary
 *.docx binary
