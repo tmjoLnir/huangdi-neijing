@@ -4,10 +4,12 @@
 //   node scripts/check_caption_fit.js <doc>.md --format 16:9
 //   node scripts/check_caption_fit.js output/episode-*/*-v*.md      # sweep every cut
 //
-// Checks the server-burned caption path, which fails differently from the
-// sidecar path build_subtitles.js produces — a document can pass that and still
-// overflow here. Why, and which path to use when:
-// see .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
+// Originally this checked the server-burned caption path, which failed
+// differently from the sidecar build_subtitles.js produces. That path went away
+// with explainer_video on 2026-08-04, so the overflow it guarded can no longer
+// happen. What remains is a readability check on the writing: a clause needing
+// three or four cues to fit is caption churn on screen even when it wraps
+// correctly. See .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
 
 const fs = require("fs");
 const {
@@ -19,12 +21,22 @@ const {
   parseArgs,
 } = require("./lib/caption_metrics");
 
-// The end disclaimer card's clause is mandated verbatim by CLAUDE.md and is 58
-// characters, so it can never pass this check. Rewording a compliance string to
-// fit a caption is the wrong trade, so it is reported as a known exception
-// rather than a failure — every cut carries it, and a check that always fails is
-// a check nobody reads. The real fix is to assemble without server-side
-// subtitles and burn the sidecar, which handles this clause correctly.
+// The end disclaimer card carries the full 78-character compliance string
+// mandated by CLAUDE.md: "A dramatized adaptation of a classical philosophical
+// text. Not medical advice." This constant is deliberately NOT that string.
+//
+// Captions are measured per clause, and clauses() splits on sentence-final
+// punctuation, so the card arrives here as two clauses: the 58-character first
+// sentence, and "Not medical advice." at 19. Only the first overflows, and only
+// in 9:16 (1187px against a 1111px two-line cap; it fits on one line in 16:9).
+// So the value below is the widest CLAUSE, not the whole card — matching it
+// against the full 78 characters would never fire, and the disclaimer would be
+// reported as a hard failure on every vertical cut.
+//
+// Rewording a compliance string to fit a caption is the wrong trade, so it is
+// reported as a known exception rather than a failure: every cut carries it, and
+// a check that always fails is a check nobody reads. It is handled correctly by
+// the sidecar, which is now the only caption path.
 const MANDATED_DISCLAIMER =
   "A dramatized adaptation of a classical philosophical text.";
 
@@ -71,7 +83,7 @@ function main() {
       console.log(
         `  block ${k.block}  known exception — the mandated disclaimer string (${k.lines} lines).`
       );
-      console.log("    Not a defect: do not reword it. Assemble without subtitles and burn the sidecar.");
+      console.log("    Not a defect: do not reword it. The sidecar burn wraps this clause correctly.");
     }
     failures += bad.length;
     if (!bad.length) {
@@ -91,7 +103,7 @@ function main() {
       `\n${failures} overflowing clause(s). Add internal commas and re-record those blocks' takes,`
     );
     console.log(
-      "or skip explainer_video's subtitles entirely and burn the sidecar (see SKILL.md, the guaranteed path)."
+      "or leave them: the sidecar splits a long clause across cues, so this is readability, not a render failure."
     );
   }
   if (unparsed) {

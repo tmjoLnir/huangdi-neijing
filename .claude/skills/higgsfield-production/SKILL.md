@@ -771,13 +771,28 @@ option of two, it is the only one.
 | Cost | free |
 
 This resolves rather than complicates things. The old two-path section existed to
-manage a real conflict: every cut carries the end disclaimer card, whose mandated
-string — *"A dramatized adaptation of a classical philosophical text."* — is 58
-characters and three lines in a 9:16 frame. It is a compliance string, so it
-cannot be reworded, and it could not be made to fit the server-burned captions.
-**Every cut therefore had to take the sidecar path anyway.** The choice was
-already only nominal; now it is gone. `check_caption_fit.js` still reports that
-one clause as a known exception rather than a failure.
+manage a real conflict: every cut carries the end disclaimer card, and the card
+carries the **full 78-character** compliance string mandated by `CLAUDE.md` —
+*"A dramatized adaptation of a classical philosophical text. Not medical
+advice."* It is a compliance string, so it cannot be reworded to fit anything.
+
+**Captions are measured per clause, not per card**, and the card is two sentences,
+so the 78 characters never meet a caption boundary as one unit. Measured with
+`scripts/lib/caption_metrics.js`:
+
+| Clause | 9:16 (556px/line, 1111px cap) | 16:9 (1001px/line) |
+|---|---|---|
+| *"A dramatized adaptation of a classical philosophical text."* (58ch) | **1187px — overflows, 3 lines** | 967px, fits on one |
+| *"Not medical advice."* (19ch) | 406px, fits on one | 331px, fits on one |
+
+So exactly one clause overflows, and only on vertical. That single clause is what
+`check_caption_fit.js` carries as `MANDATED_DISCLAIMER` and reports as a known
+exception rather than a failure — the constant is the widest *clause*, not the
+whole card, which is why an exact-match against 58 characters is correct there.
+
+Because that clause could never fit the server-burned captions, **every cut had to
+take the sidecar path anyway.** The choice was already only nominal; now it is
+gone.
 
 **The double-layering warning no longer applies** — there is nothing to
 double-layer with. Burn the sidecar over the assembled cut without checking
