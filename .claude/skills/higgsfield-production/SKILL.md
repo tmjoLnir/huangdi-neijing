@@ -705,10 +705,10 @@ disagree, `CLAUDE.md` is correct and this list needs updating:
 6. **Shot list**, numbered to match the blocks.
 7. **Production record (Higgsfield)** — see below.
 8. **Deliverables the assembler cannot produce** — the four are listed in
-   `CLAUDE.md`; always all four, because `assemble_final.sh` has no text-overlay
-   parameter. (It *can* now lay a licensed bed under the cut via `--music`, so
-   music is no longer strictly hand-only — but it still generates none, and the
-   guqin licensing rule is unchanged.) **The one with a cost consequence is the end
+   `CLAUDE.md` and every cut carries all four. The three text ones are hand-added
+   at edit time because `assemble_final.sh` has no text-overlay parameter; music
+   is the exception, in one direction only — `--music` *places* a licensed bed you
+   supply, and generates nothing. **The one with a cost consequence is the end
    disclaimer card**: it needs its own final 10s block in the block plan *and* in
    the step-0 preflight, rendered as a plain plate with the narrator reading the
    disclaimer to fill the block's one audio slot. Ship the `.srt`/`.vtt` sidecar
