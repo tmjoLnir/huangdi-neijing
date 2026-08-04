@@ -252,9 +252,15 @@ re-recorded anyway.
 | 7 voice takes | ~4.2 |
 | Subtitles | **0** — not burned server-side |
 | Assembly | free (not yet run) |
-| **Total spent** | **~74** |
+| **Total spent (measured)** | **75.6** |
 
-Against the ~74 estimated at the gate. Balance before the run: **938.2**.
+**Measured against the balance, not estimated: 938.2 → 862.6 = 75.6 credits**,
+against ~74 estimated at the gate. The 1.6 over is the voice takes running
+slightly above the 0.6-each rule of thumb. This is the second cut in the repo with
+a real balance delta rather than a reconstructed figure.
+
+Assembly is free, so **finishing this cut costs nothing further** — the fallback
+below is local `ffmpeg`.
 
 ### Reproduction notes
 
