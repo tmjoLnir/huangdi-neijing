@@ -159,8 +159,21 @@ function toVtt(cues) {
 }
 
 // The burn command. libass measures the real Anton glyphs and wraps inside
-// MarginL/MarginR, so nothing can render outside the safe area — this is the
-// part that makes the fit a guarantee rather than an estimate.
+// MarginL/MarginR, so nothing can render outside the safe area — that is what
+// makes the fit a guarantee rather than an estimate. It only holds once the
+// numbers below mean video pixels, which is what step 1 is for:
+//
+// libass reads Fontsize and MarginL/R/V in the ASS script's own PlayRes
+// coordinate space, not in video pixels. ffmpeg's SRT->ASS converter hardcodes
+// PlayResX/Y to 384x288, so burning the .srt directly makes libass scale every
+// value here by frame_height/288 — ~4.4x on a 1280-tall cut. Anton lands about
+// 240px, single words no longer fit between the margins, and lines spill off
+// frame. Re-targeting PlayRes to the cut's own resolution makes these values
+// mean what they say.
+//
+// The style also assumes Anton is installed and resolvable (check with
+// `fc-match Anton`). libass substitutes a wider default silently, which breaks
+// the measured fit with no warning — the sidecar still says "fits".
 function burnCommand(srtPath, fmt) {
   const style = [
     "FontName=Anton",
@@ -176,9 +189,23 @@ function burnCommand(srtPath, fmt) {
     `MarginV=${fmt.marginV}`,
     "WrapStyle=0",
   ].join(",");
+  // Scratch artifact of the burn, not a deliverable — park it beside the
+  // downloaded MP4 in renders/, which .gitignore already covers.
+  const rendersDir = path.join(path.dirname(srtPath), "renders");
+  const assPath = path.join(rendersDir, path.basename(srtPath).replace(/\.srt$/, ".ass"));
+  const scaleFactor = (fmt.height / 288).toFixed(1);
   return [
+    `# 1. Re-target PlayRes to ${fmt.width}x${fmt.height}. Required: ffmpeg's SRT->ASS`,
+    `#    converter hardcodes 384x288, which scales the style below by ~${scaleFactor}x.`,
+    `mkdir -p ${rendersDir}`,
+    `ffmpeg -i ${srtPath} -f ass - \\`,
+    `  | sed 's/^PlayResX: .*/PlayResX: ${fmt.width}/; s/^PlayResY: .*/PlayResY: ${fmt.height}/' \\`,
+    `  > ${assPath}`,
+    "",
+    `# 2. Burn. The cut must be ${fmt.width}x${fmt.height} at this point — prepend`,
+    `#    scale=${fmt.width}:${fmt.height}, to the -vf chain when burning a lower-res draft.`,
     "ffmpeg -i <cut>.mp4 \\",
-    `  -vf "subtitles=${srtPath}:force_style='${style}'" \\`,
+    `  -vf "subtitles=${assPath}:force_style='${style}'" \\`,
     "  -c:a copy <cut>-subtitled.mp4",
   ].join("\n");
 }
@@ -225,7 +252,7 @@ function main() {
     console.log(`           assumed a full ${BLOCK_SECONDS}s. Add them to the production record and re-run.`);
   }
   console.log(`  wrote        ${path.basename(base)}.srt, ${path.basename(base)}.vtt`);
-  console.log(`\nBurn (libass enforces the margins — this is the guarantee):\n`);
+  console.log(`\nBurn (libass enforces the margins — but only once step 1 has run):\n`);
   console.log(burnCommand(`${base}.srt`, fmt));
 }
 
