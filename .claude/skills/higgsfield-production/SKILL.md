@@ -705,10 +705,10 @@ disagree, `CLAUDE.md` is correct and this list needs updating:
 6. **Shot list**, numbered to match the blocks.
 7. **Production record (Higgsfield)** — see below.
 8. **Deliverables the assembler cannot produce** — the four are listed in
-   `CLAUDE.md`; always all four, because `assemble_final.sh` has no text-overlay
-   parameter. (It *can* now lay a licensed bed under the cut via `--music`, so
-   music is no longer strictly hand-only — but it still generates none, and the
-   guqin licensing rule is unchanged.) **The one with a cost consequence is the end
+   `CLAUDE.md` and every cut carries all four. The three text ones are hand-added
+   at edit time because `assemble_final.sh` has no text-overlay parameter; music
+   is the exception, in one direction only — `--music` *places* a licensed bed you
+   supply, and generates nothing. **The one with a cost consequence is the end
    disclaimer card**: it needs its own final 10s block in the block plan *and* in
    the step-0 preflight, rendered as a plain plate with the narrator reading the
    disclaimer to fill the block's one audio slot. Ship the `.srt`/`.vtt` sidecar
@@ -771,13 +771,28 @@ option of two, it is the only one.
 | Cost | free |
 
 This resolves rather than complicates things. The old two-path section existed to
-manage a real conflict: every cut carries the end disclaimer card, whose mandated
-string — *"A dramatized adaptation of a classical philosophical text."* — is 58
-characters and three lines in a 9:16 frame. It is a compliance string, so it
-cannot be reworded, and it could not be made to fit the server-burned captions.
-**Every cut therefore had to take the sidecar path anyway.** The choice was
-already only nominal; now it is gone. `check_caption_fit.js` still reports that
-one clause as a known exception rather than a failure.
+manage a real conflict: every cut carries the end disclaimer card, and the card
+carries the **full 78-character** compliance string mandated by `CLAUDE.md` —
+*"A dramatized adaptation of a classical philosophical text. Not medical
+advice."* It is a compliance string, so it cannot be reworded to fit anything.
+
+**Captions are measured per clause, not per card**, and the card is two sentences,
+so the 78 characters never meet a caption boundary as one unit. Measured with
+`scripts/lib/caption_metrics.js`:
+
+| Clause | 9:16 (556px/line, 1111px cap) | 16:9 (1001px/line) |
+|---|---|---|
+| *"A dramatized adaptation of a classical philosophical text."* (58ch) | **1187px — overflows, 3 lines** | 967px, fits on one |
+| *"Not medical advice."* (19ch) | 406px, fits on one | 331px, fits on one |
+
+So exactly one clause overflows, and only on vertical. That single clause is what
+`check_caption_fit.js` carries as `MANDATED_DISCLAIMER` and reports as a known
+exception rather than a failure — the constant is the widest *clause*, not the
+whole card, which is why an exact-match against 58 characters is correct there.
+
+Because that clause could never fit the server-burned captions, **every cut had to
+take the sidecar path anyway.** The choice was already only nominal; now it is
+gone.
 
 **The double-layering warning no longer applies** — there is nothing to
 double-layer with. Burn the sidecar over the assembled cut without checking
