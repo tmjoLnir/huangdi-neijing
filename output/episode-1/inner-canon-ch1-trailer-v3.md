@@ -260,9 +260,12 @@ re-recorded anyway.
 | **Total spent (measured)** | **75.6** |
 
 **Measured against the balance, not estimated: 938.2 → 862.6 = 75.6 credits**,
-against ~74 estimated at the gate. The 1.6 over is the voice takes running
-slightly above the 0.6-each rule of thumb. This is the second cut in the repo with
-a real balance delta rather than a reconstructed figure.
+against ~74 estimated at the gate. **This delta is the repo's per-take price.**
+The seven Draft clips account for 70 of it, the style key was reused at 0 and no
+subtitles were burned, so the seven voice takes are the remaining 5.6 — **~0.8
+credits each**, not the 0.6 the gate estimate assumed. `SKILL.md` now budgets
+voice at 0.8 on the strength of this run, which is the repo's only measured
+balance delta.
 
 Assembly is free, so **finishing this cut costs nothing further** — the fallback
 below is local `ffmpeg`.
@@ -321,7 +324,7 @@ node scripts/check_caption_fit.js output/episode-1/inner-canon-ch1-trailer-v3.md
 
 Block 7's clause is reported as a known exception — the mandated disclaimer string,
 which is not to be reworded. Everything else must pass before takes are generated,
-because a fix is free now and ~0.6 credits per block afterwards.
+because a fix is free now and ~0.8 credits per block afterwards.
 
 **2. After the voiceover exists, build and burn.**
 

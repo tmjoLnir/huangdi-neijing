@@ -10,19 +10,30 @@ Note on the standing translation convention: **黄帝内经** is rendered here a
 
 - **China's oldest surviving medical classic.** Compiled across the Warring States and Han periods (roughly 2,000+ years ago) from far older oral teaching. Not one author, not one moment — a living tradition eventually written down.
 - **It reads as a conversation.** The legendary Yellow Emperor asks; his physician-ministers (chiefly Qi Bo, sometimes Lei Gong) answer. That question-and-answer format is why it feels alive on the page — and why it adapts so naturally to a hosted video series.
-- **Two books, 80 chapters.**
-  - **Su Wen 素问 ("Basic Questions," Ch 1–35)** — the *theory* volume: yin-yang, the organs, the seasons, the origins of disease.
-  - **Ling Shu 灵枢 ("Spiritual Pivot," Ch 36–80)** — the *hands-on* volume: acupuncture, the channels, the mind.
+- **Two books, 81 chapters each — 162 in all.**
+  - **Su Wen 素问 ("Basic Questions," 81 chapters)** — the *theory* volume: yin-yang, the organs, the seasons, the origins of disease.
+  - **Ling Shu 灵枢 ("Spiritual Pivot," 81 chapters)** — the *hands-on* volume: acupuncture, the channels, the mind.
+  - **The 1–80 numbering used in this document is not those chapter numbers.** It is
+    this document's own curated index over a selection from both books — see §2.
+    Every chapter cited on screen must carry its **received** number, which §4 gives
+    in parentheses.
 - **A worldview, not a recipe book.** Health = balance with nature; illness = imbalance. Its famous ideal is to *treat disease before it appears* (治未病) — strikingly modern.
 - **Read it as history and philosophy**, not as a substitute for modern medical care.
 
 ---
 
-## 2. Full 80-chapter index — plain-English titles
+## 2. The 80-chapter slate index — plain-English titles
 
 Rows marked ★ are in the Top-20 slate.
 
-### Su Wen 素问 — "Basic Questions" (Ch 1–35)
+> **This is a curated index, not the canonical chapter order.** It selects 35
+> chapters from Su Wen and 45 from Ling Shu and renumbers them 1–80 for series
+> planning; the `output/episode-<N>/` folders follow *this* numbering. It is not
+> the received chapter number and the two do not track — Ch 46 here is Ling Shu
+> **18**, Ch 18 here is Su Wen **38**. §4 gives the received citation for every
+> Top-20 pick, and that is the only number that may go on screen.
+
+### Su Wen 素问 — "Basic Questions" (slate index 1–35)
 
 | # | Chapter (plain English) | |
 |---|---|---|
@@ -62,7 +73,7 @@ Rows marked ★ are in the Top-20 slate.
 | 34 | Classifying Yin & Yang | |
 | 35 | On Waxing & Waning (Dreams & Decline) | ★ |
 
-### Ling Shu 灵枢 — "Spiritual Pivot" (Ch 36–80)
+### Ling Shu 灵枢 — "Spiritual Pivot" (slate index 36–80)
 
 | # | Chapter (plain English) | |
 |---|---|---|
@@ -138,84 +149,91 @@ Each pick had to clear five filters:
 
 ## 4. The Top-20 slate
 
-*Ordered by chapter number. RPM is the Tier-1 estimate; risk is the monetization/policy read.*
+*Ordered by slate index. RPM is the Tier-1 estimate; risk is the monetization/policy read.*
+
+**Read the two numbers on each entry as `Ch <slate index> (<received chapter>)`.**
+The slate index is what `output/episode-<N>/` uses; the parenthetical is the
+received Su Wen / Ling Shu chapter and is **the only one that may appear on
+screen, in a title card, or in a description.** They coincide for Ch 01–05 and
+diverge everywhere after — an earlier version of this document derived the Ling
+Shu numbers as `slate index − 35`, which was wrong for all seven Ling Shu picks.
 
 ### Su Wen
 
-**Ch 01 · 上古天真论 · Shàng Gǔ Tiān Zhēn Lùn — "Natural Purity of High Antiquity"**
+**Ch 01 (Su Wen 1) · 上古天真论 · Shàng Gǔ Tiān Zhēn Lùn — "Natural Purity of High Antiquity"**
 Hook: *The First Sentence of Chinese Medicine's Founding Text Is False* · **RPM $9–14 · Low risk**
 The canon opens on a boast — the emperor has *heard* that the ancients passed a hundred years without weakening — and flags it as hearsay in the same breath (余聞). Qi Bo's reply is conditional: 其知道者, *those among them who knew the Way*, not everyone. They did not in fact live to a hundred. The chapter's real content is what follows: living in rhythm with the seasons, eating simply, working without exhaustion, keeping desire in check — plus the life-map of women in 7-year and men in 8-year stages.
 *Why:* The series' clearest positioning piece. It contradicts its own source material on page one, which is the differentiator against uncritical ancient-wisdom content and the strongest signal to both viewers and classifiers that this is history of science. Built-in whodunit — why was it copied faithfully for two thousand years? — with a clean, shareable list payoff.
 *Production note:* Ep 1 anchor. Lead with the false first sentence; reveal the habits; end on the 7s-and-8s life map. Trailers shipped — see `output/episode-1/`.
 **Title/thumbnail compliance:** the previous hook here read *"The 2,000-Year-Old Secret to Living Past 100"*, which tripped the banned-terms rule twice (*ancient secret*, *live to 100*) and, separately, asserted as fact the very claim the episode debunks. Any title or thumbnail for this chapter must avoid *longevity*, *live to 100*, *ancient secret* and *anti-aging*, and must read as **objection**, not as ancient secret.
 
-**Ch 02 · 四气调神大论 · Sì Qì Tiáo Shén Dà Lùn — "Attuning the Spirit to the Four Seasons"**
+**Ch 02 (Su Wen 2) · 四气调神大论 · Sì Qì Tiáo Shén Dà Lùn — "Attuning the Spirit to the Four Seasons"**
 Hook: *How the Ancients Synced Their Bodies to the Seasons* · **RPM $7–11 · Low risk**
 A living almanac: how to sleep, wake, move and feel across spring, summer, autumn and winter — and the price the body pays for fighting the season. Introduces the radical ideal of "treating disease before it exists."
 *Why:* Seasonal living and prevention-over-cure are evergreen wellness themes; each season is its own ready-made segment.
 *Production note:* Four-act structure by season. A reusable recurring-format template.
 
-**Ch 03 · 生气通天论 · Shēng Qì Tōng Tiān Lùn — "How Life's Force Connects to Heaven"**
+**Ch 03 (Su Wen 3) · 生气通天论 · Shēng Qì Tōng Tiān Lùn — "How Life's Force Connects to Heaven"**
 Hook: *Yang Qi: The "Inner Sun" the Ancients Said Keeps You Alive* · **RPM $6–9 · Low risk**
 Casts yang qi as the body's inner sun — the warming, protecting force that shields you from the "six evils" (wind, cold, heat, damp, dryness, fire). Drain it through overwork, stress or excess and illness walks in.
 *Why:* One vivid metaphor per episode with a clear cause-and-effect villain list — ideal animated explainer.
 *Production note:* Single-metaphor episode. Personify the "six evils" as antagonists.
 
-**Ch 05 · 阴阳应象大论 · Yīn Yáng Yìng Xiàng Dà Lùn — "Grand Correspondences of Yin & Yang"**
+**Ch 05 (Su Wen 5) · 阴阳应象大论 · Yīn Yáng Yìng Xiàng Dà Lùn — "Grand Correspondences of Yin & Yang"**
 Hook: *Yin & Yang: The Operating System Behind Chinese Medicine* · **RPM $5–8 · Low risk**
 The philosophical engine of the entire canon: how day/night, hot/cold, organs, emotions and flavors all map onto two interacting forces — and why health is balance while disease is imbalance.
 *Why:* The idea everyone half-knows but few understand. A flagship explainer that anchors the series and pulls steady search traffic.
 *Production note:* Foundational "101" episode. Evergreen search magnet; link from all others.
 
-**Ch 06 · 灵兰秘典论 · Líng Lán Mì Diǎn Lùn — "Secret Canon of the Spirit-Orchid Chamber"**
+**Ch 06 (Su Wen 8) · 灵兰秘典论 · Líng Lán Mì Diǎn Lùn — "Secret Canon of the Spirit-Orchid Chamber"**
 Hook: *Your Body Is an Empire — and Every Organ Has a Job Title* · **RPM $6–10 · Low risk**
 The most cinematic chapter. The twelve organs are ministers of a royal court: the heart is the monarch, the lungs the prime minister, the liver the general, the gallbladder the judge. Govern well and the realm thrives; a weak ruler and the whole kingdom sickens.
 *Why:* A ready-made animated world. Dramatic, funny, and it genuinely teaches organ function — elite thumbnail material.
 *Production note:* Flagship animation episode. Cast each organ as a court character.
 
-**Ch 09 · 脉要精微论 · Mài Yào Jīng Wēi Lùn — "Subtle Essentials of Pulse Diagnosis"**
+**Ch 09 (Su Wen 17) · 脉要精微论 · Mài Yào Jīng Wēi Lùn — "Subtle Essentials of Pulse Diagnosis"**
 Hook: *How a Doctor Read Your Whole Body From One Wrist* · **RPM $5–8 · Low–moderate risk**
 The lost art of pulse-taking: how physicians claimed to detect disease, emotion, even approaching death from the rhythm, depth and quality of a pulse — and why dawn was the ideal moment to read it.
 *Why:* Exotic, mysterious, visual. Taps the "ancient superpower" fascination; pairs with a modern skeptic/demo segment.
 *Production note:* Frame historically + add a modern demo. Keep claims descriptive, not diagnostic.
 
-**Ch 15 · 热论 · Rè Lùn — "On Febrile Disease"**
+**Ch 15 (Su Wen 31) · 热论 · Rè Lùn — "On Febrile Disease"**
 Hook: *How the Ancients Mapped a Fever, Day by Day* · **RPM $4–7 · Limited-ad risk**
 A six-day model of how a feverish illness invades the body channel by channel, with predicted symptoms and turning points at each stage — an early attempt to chart the course of an epidemic.
 *Why:* Post-pandemic curiosity about how old cultures understood contagion, told with a tense ticking-clock structure.
 *Production note:* History-of-medicine angle only. Disclaimer + no contradiction of public-health guidance.
 
-**Ch 18 · 咳论 · Ké Lùn — "On Coughing"**
+**Ch 18 (Su Wen 38) · 咳论 · Ké Lùn — "On Coughing"**
 Hook: *Ancient Doctors Said a Cough Isn't Just Your Lungs* · **RPM $5–8 · Low–moderate risk**
 A surprising claim: every organ can drive a cough in its own way — a liver cough, a kidney cough, a stomach cough — each with a distinct signature. A whole-body theory of one everyday symptom.
 *Why:* A tiny, universally-experienced symptom flipped into a counter-intuitive reveal — a textbook curiosity-gap hook.
 *Production note:* Relatable cold-open. Keep educational, not prescriptive.
 
-**Ch 19 · 举痛论 · Jǔ Tòng Lùn — "On the Origins of Pain"**
+**Ch 19 (Su Wen 39) · 举痛论 · Jǔ Tòng Lùn — "On the Origins of Pain"**
 Hook: *How Anger, Fear & Grief "Move Your Qi" and Make You Ill* · **RPM $7–11 · Low risk**
 The psychosomatic centerpiece. It declares that "a hundred diseases arise from qi," then maps each emotion's effect: anger drives qi up, joy slackens it, grief dissolves it, fear sinks it, fright scatters it. Cold and heat cause pain by freezing or forcing the flow.
 *Why:* Mind-body medicine is a huge modern topic and this is its ancient blueprint — with a crisp, quotable emotion→effect table.
 *Production note:* Strong wellness/psychology crossover. The emotion→qi list is the shareable centerpiece.
 
-**Ch 21 · 风论 · Fēng Lùn — "On Wind"**
+**Ch 21 (Su Wen 42) · 风论 · Fēng Lùn — "On Wind"**
 Hook: *Wind: The Invisible Villain Behind "a Hundred Diseases"* · **RPM $4–7 · Low–moderate risk**
 Wind is cast as the chief troublemaker of the outer world — slipping through the pores to trigger everything from chills and sweats to tremors and sudden collapse, changing character with the season it rides in on.
 *Why:* An "invisible antagonist" framing turns an abstract pathogen into a character viewers can follow.
 *Production note:* Villain-origin-story treatment. Pairs naturally with the Yang Qi episode.
 
-**Ch 25 · 奇病论 · Qí Bìng Lùn — "On Strange Diseases"**
+**Ch 25 (Su Wen 47) · 奇病论 · Qí Bìng Lùn — "On Strange Diseases"**
 Hook: *The Weirdest Medical Cases in an Ancient Chinese Textbook* · **RPM $4–7 · Limited-ad risk**
 A file of baffling conditions — a pregnant woman who loses her voice, a mouth that tastes constantly sweet, a swelling with no obvious cause — each opening with the Emperor asking "what is this?" and Qi Bo reasoning to an answer.
 *Why:* A case-file / mystery-box format that binge-watches naturally; "ancient doctors were stumped by…" is a proven hook.
 *Production note:* Anthology / recurring format. Balance intrigue with sober framing; add disclaimer.
 
-**Ch 28 · 刺禁论 · Cì Jìn Lùn — "The Prohibitions of Needling"**
+**Ch 28 (Su Wen 52) · 刺禁论 · Cì Jìn Lùn — "The Prohibitions of Needling"**
 Hook: *The Acupuncture Points the Ancients Said Could Kill You* · **RPM $3–6 · Limited-ad risk**
 A catalogue of forbidden targets — places where a needle striking the heart, lung, liver or spinal cord brought death within a stated number of days. Anatomy learned the hard, grim way.
 *Why:* A high-drama "forbidden knowledge" angle that still teaches genuine anatomy.
 *Production note:* **Highest policy care.** Historical framing only, explicit "do not attempt," no how-to detail.
 
-**Ch 35 · 方盛衰论 · Fāng Shèng Shuāi Lùn — "On Waxing & Waning"**
+**Ch 35 (Su Wen 80) · 方盛衰论 · Fāng Shèng Shuāi Lùn — "On Waxing & Waning"**
 Hook: *What the Ancients Believed Your Dreams Revealed About Your Health* · **RPM $7–11 · Low risk**
 Amid discussions of vitality and decline, the canon links specific dreams to specific internal imbalances — dreams of fire, of flying, of weeping — reading the sleeping mind as a diagnostic window.
 *Why:* Dreams are endlessly clickable and shareable, and this is a fresh, little-known angle on a famous text.
@@ -223,43 +241,43 @@ Amid discussions of vitality and decline, the canon links specific dreams to spe
 
 ### Ling Shu
 
-**Ch 40 (Ling Shu 5) · 寿夭刚柔 · Shòu Yāo Gāng Róu — "Longevity, Early Death; Hard & Soft"**
+**Ch 40 (Ling Shu 6) · 寿夭刚柔 · Shòu Yāo Gāng Róu — "Longevity, Early Death; Hard & Soft"**
 Hook: *Why Some People Are "Built" to Live Long — and Others Aren't* · **RPM $7–10 · Low risk**
 An early theory of constitution: how the balance of firm and yielding, yin and yang in a person's makeup shapes whether they're robust or frail, long-lived or short-lived — and how treatment must change to match.
 *Why:* The nature-vs-lifestyle longevity debate never gets old; a strong companion to Ep 1 with a personal "what type am I?" angle.
 *Production note:* Pairs with Ch 1 & Ch 68 as a "longevity" cluster/playlist.
 
-**Ch 42 (Ling Shu 7) · 本神 · Běn Shén — "The Root of the Spirit"**
+**Ch 42 (Ling Shu 8) · 本神 · Běn Shén — "The Root of the Spirit"**
 Hook: *The Ancient Chinese Map of the Mind: Five Spirits, One Body* · **RPM $8–12 · Low risk**
 The canon's psychology. It splits consciousness into five "spirits" housed in five organs — shen (spirit), hun (ethereal soul), po (bodily soul), yi (intellect) and zhi (will) — and warns how fear, worry and grief injure each in turn.
 *Why:* Consciousness, the soul and mental health are enormous high-retention topics; a strikingly systematic ancient model that begs comparison with modern psychology.
 *Production note:* Mental-health crossover. Compare/contrast with modern psychology for depth.
 
-**Ch 46 (Ling Shu 11) · 营卫生会 · Yíng Wèi Shēng Huì — "Meeting of Nutritive & Defensive Qi"**
+**Ch 46 (Ling Shu 18) · 营卫生会 · Yíng Wèi Shēng Huì — "Meeting of Nutritive & Defensive Qi"**
 Hook: *What the Oldest Chinese Medical Text Got Right About Sleep — and Wrong* · **RPM $9–15 · Low risk**
 Explains the day–night energy cycle: a "nutritive" and a "defensive" qi circulating on a schedule, why we grow drowsy at night and sharp by day, and why the elderly wake before dawn as their circulation thins.
 *Why:* Sleep is one of YouTube's most monetizable wellness verticals — and this is a genuinely elegant ancient circadian model with a poignant aging twist.
 *Production note:* Top RPM pick. Heavy sleep-app / supplement advertiser overlap.
 
-**Ch 57 (Ling Shu 22) · 五阅五使 · Wǔ Yuè Wǔ Shǐ — "Five Observations & Five Messengers"**
+**Ch 57 (Ling Shu 37) · 五阅五使 · Wǔ Yuè Wǔ Shǐ — "Five Observations & Five Messengers"**
 Hook: *Face Reading, 2,000 Years Ago: What Your Features "Reveal"* · **RPM $6–9 · Low–moderate risk**
 Teaches reading the five sense-organs and facial colors as "messengers" of the five internal organs — a nose, the eyes, or the complexion shifting hue to signal what's wrong within.
 *Why:* Face-reading is extremely visual and shareable, with a "can they really tell?" hook and clear on-screen demo potential.
 *Production note:* Very shareable. Demo on stylized illustrations; add "not medical diagnosis" note.
 
-**Ch 61 (Ling Shu 26) · 顺气一日分为四时 · Shùn Qì Yī Rì Fēn Wéi Sì Shí — "The Day Divided Into Four Seasons"**
+**Ch 61 (Ling Shu 44) · 顺气一日分为四时 · Shùn Qì Yī Rì Fēn Wéi Sì Shí — "The Day Divided Into Four Seasons"**
 Hook: *Why the Ancients Said You Feel Worse at Night* · **RPM $6–10 · Low risk**
 Maps a single day onto the four seasons — morning as spring, midday as summer, evening as autumn, night as winter — to explain why so many illnesses ease by day and flare after dark.
 *Why:* A near-universal, relatable observation wrapped in a neat visual framing device, with wellness/sleep advertiser overlap.
 *Production note:* Relatable everyday hook. Natural companion to the Sleep episode.
 
-**Ch 68 (Ling Shu 33) · 天年 · Tiān Nián — "The Natural Span of Years"**
+**Ch 68 (Ling Shu 54) · 天年 · Tiān Nián — "The Natural Span of Years"**
 Hook: *The Ancient Timeline of a Human Life — Decade by Decade* · **RPM $7–11 · Low risk**
 Charts the full arc of a life in ten-year stages: when the body peaks, when the organs begin to fade, why vitality drains, and what a "complete" hundred-year lifespan looked like to the ancients.
 *Why:* A moving, universal subject — the shape of an entire life — that lands emotionally and pairs beautifully with animation.
 *Production note:* Emotional payoff episode. Animate the decade-by-decade arc as a timeline.
 
-**Ch 72 (Ling Shu 37) · 阴阳二十五人 · Yīn Yáng Èr Shí Wǔ Rén — "The Twenty-Five Human Types"**
+**Ch 72 (Ling Shu 64) · 阴阳二十五人 · Yīn Yáng Èr Shí Wǔ Rén — "The Twenty-Five Human Types"**
 Hook: *The Ancient Chinese Personality Test: Which of 25 Types Are You?* · **RPM $8–12 · Low risk**
 Sorts everyone into five elemental types — Wood, Fire, Earth, Metal, Water — each split five further ways, describing the body, temperament, strengths and weaknesses of each, millennia before modern personality systems.
 *Why:* Personality-typing is one of the most shareable formats online ("which are you?"). A built-in interactive quiz episode and a natural season finale.

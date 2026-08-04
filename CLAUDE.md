@@ -35,12 +35,9 @@ README.md
   hooks/session-start.sh                    # reinstalls ffmpeg + the Anton font on the ephemeral host
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
 output/
-  episode-1/inner-canon-ch1-trailer-v1.md   # current reference layout
-  episode-1/inner-canon-ch1-trailer-v2.md   # 60s cut, v1's assets re-assembled
-  episode-1/inner-canon-ch1-trailer-script-review.md
-  episode-1/Ep01_Trailer_Script.md          # archived source script, superseded naming
-  episode-46/inner-canon-ch46-trailer-v1.md # pre-render; step-0 gate still open
-  episode-46/inner-canon-ch46-trailer-script-review.md
+  episode-1/inner-canon-ch1-trailer-v3.md   # current reference layout
+  episode-1/assemble-ch1-trailer-v3.sh      # v3's service-free ffmpeg assembly
+  episode-1/inner-canon-ch1-longform-v1.md  # 18-min script + plan; pre-render
   # every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
   # pre-render cut has none yet — build them once the voice takes exist.
@@ -70,16 +67,17 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference.
+  - **Deliverables the assembler cannot produce** — on-screen text, credits and music that have to be added by hand at edit time, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/episode-1/inner-canon-ch1-trailer-v3.md` is the reference.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
 When adding a new trailer or episode document, follow this same layout so production records stay reproducible.
-`output/episode-1/inner-canon-ch1-trailer-v1.md` is the current reference — it is
-the first cut on the permanent voice cast and on `seedance_2_0_mini`, and it adds
-two sections worth carrying forward: a **voice measurement** table where a voice
-is newly measured, and a **credit spend** breakdown reconciled against the
-preflight estimate.
+`output/episode-1/inner-canon-ch1-trailer-v3.md` is the current reference — the
+most recent cut on the permanent voice cast and on `seedance_2_0_mini`, and it
+carries two sections worth reusing: a **credit spend** breakdown reconciled
+against the preflight estimate, and a **Fallback** giving a service-free `ffmpeg`
+assembly for when `explainer_video` is unavailable. Add a **voice measurement**
+table as well on any cut that measures a voice for the first time.
 
 ## Core Cast (recurring)
 
@@ -118,7 +116,7 @@ Measure any new voice on one take, and write the result into the skill's table, 
 ## Writing conventions
 
 - **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
-- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-1/inner-canon-ch1-trailer-v1.md`.
+- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-1/inner-canon-ch1-trailer-v3.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
 - Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — six blocks is 60s, eight is 80s.
 - **Every deliverable ships captioned**, in the **anton** font, with every subtitle wrapping on screen and readable across the whole video. The `.srt`/`.vtt` sidecars are **tracked, required deliverables** — build them with `node scripts/build_subtitles.js <cut-document>.md` and commit them with the cut. How the two caption paths differ, why the sidecar is the one that *guarantees* the wrap, and when to use each: see the skill's **Subtitles** section.

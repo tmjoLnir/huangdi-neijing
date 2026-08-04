@@ -15,7 +15,7 @@ The house pipeline for this repo. Every cut has been produced this way, and the
 failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
 
-`output/episode-1/inner-canon-ch1-trailer-v1.md` is the reference document —
+`output/episode-1/inner-canon-ch1-trailer-v3.md` is the reference document —
 match its section order on any new cut. Note that `episode-<N>` is the **chapter number of the file name of the input script**, not a sequential index, so the folders are not consecutive and
 gaps are expected.
 
@@ -50,9 +50,17 @@ Never reorder these — each step consumes the previous step's **job ID**.
 5. **The document** — every job ID above, plus the shot list, compliance audit,
    manual deliverables and runtime levers.
 
-Log the run's actual credit spend in the production record as you go. **Chapter 1
-is the only run with a measured balance delta**, so it is the single historical
-figure available to check an estimate against — see its *Credit spend* section.
+Log the run's actual credit spend in the production record as you go. **The
+chapter 1 trailer v3 run is the repo's measured balance delta** — 938.2 → 862.6 =
+75.6 credits for 7 clips and 7 takes — so it is the single historical figure
+available to check an estimate against. See its *Credit spend* section in
+`output/episode-1/inner-canon-ch1-trailer-v3.md`.
+
+**That delta is also where the per-take price comes from.** Seven Draft-tier clips
+account for 70 of the 75.6, the style key was reused at 0, and no subtitles were
+burned — so the seven voice takes are the remaining **5.6, or ~0.8 credits each**.
+Budget voice at 0.8. A `get_cost` preflight returning 1 credit for a take is
+rounding up to a whole-credit floor rather than reporting the billed rate.
 
 ## 0. Model + tier gate — cost it, then confirm
 
@@ -150,8 +158,8 @@ Also duration-incompatible with the fixed 10s block: `veo3_1_lite` (8 credits, b
 4/6/8s only), `seedance1_5` (4/8/12s), `veo3` (no duration control).
 
 Fixed costs per 6-block trailer, independent of clip model: style key **2**
-(`nano_banana_pro`, 1k), voiceover **0.6/take** = 3.6, subtitles **0.05/voiced
-block** = 0.3, assembly free. **≈5.9 credits.**
+(`nano_banana_pro`, 1k), voiceover **0.8/take** = 4.8, subtitles **0.05/voiced
+block** = 0.3, assembly free. **≈7.1 credits.**
 
 **Turn native audio off.** `seedance_*` default `generate_audio: true`, `kling*`
 and `cinematic_studio_video*` default `sound: on`, and `wan`/`grok`/`gemini_omni`
@@ -261,8 +269,7 @@ re-picked per chapter:
 | **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.42 words/sec** | **27–35 words** |
 | **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | *re-measure at length* |
 
-Measured 2026-08-01 on chapter 1, one take per voice, `seed_audio` presets; job
-IDs and durations are in `output/episode-1/inner-canon-ch1-trailer-v1.md`. Zane
+Measured 2026-08-01 on chapter 1, one take per voice, `seed_audio` presets. Zane
 has only been measured on a 5-word line (2.3–2.6s), where pause overhead
 dominates and no reliable words/sec can be derived — **measure him on a
 full-length line before writing him one.**
@@ -284,7 +291,7 @@ and who now carries it.
 
 For any voice still marked unmeasured, **generate one take, read its duration,
 and write the measured words/second back into this table** before committing a
-script to it. One take is ~0.6 credits; a mis-sized script is six.
+script to it. One take is ~0.8 credits; a mis-sized script is six.
 
 ### `speech_rate` is not a duration lever — do not reach for it
 
@@ -502,8 +509,8 @@ disagree, `CLAUDE.md` is correct and this list needs updating:
    caption band, the end card's exact in/out timecodes and text, and where the
    music drops out. Never write it as a generic recipe — block numbering and
    timecodes differ between versions of the same chapter, and that is where the
-   mistakes land. `output/episode-1/inner-canon-ch1-trailer-v1.md` is the
-   reference; its v2 shows the same procedure re-derived for a different cut.
+   mistakes land. `output/episode-1/inner-canon-ch1-trailer-v3.md` is the
+   reference.
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
     reach 1:30.
@@ -606,7 +613,7 @@ video** — chapter 1 did, on six clauses.
 ### Build the sidecar — `build_subtitles.js`
 
 ```
-node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v1.md
+node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v3.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
 ```
 
@@ -702,8 +709,8 @@ can afford and one you cannot:
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision
 before starting: top up, cut the runtime, or produce act by act across billing
 periods. Assembly stays free; subtitles run 0.05/voiced block (~5.7 credits per
-captioned pass, so ~11.4 if you draft then render) and voice takes ~0.6 each
-(~68, paid once and reused), so clips are essentially the entire bill and the
+captioned pass, so ~11.4 if you draft then render) and voice takes ~0.8 each
+(~91, paid once and reused), so clips are essentially the entire bill and the
 model choice *is* the budget.
 
 A **Draft pass matters far more here than on a trailer** — 114 blocks of wrong
