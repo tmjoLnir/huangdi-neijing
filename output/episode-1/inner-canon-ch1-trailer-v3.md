@@ -2,11 +2,16 @@
 
 **上古天真論篇第一 · Sevens and Eights**
 
-**Draft render (480×854, 9:16 vertical, 70s, MP4):** *assets complete, assembly
-blocked.* All 7 clips and all 7 voice takes are generated and paid for — job IDs
-in the production record — but `explainer_video` was unavailable from this session
-when the run reached step 4, so the cut has not been assembled. **Nothing needs
-regenerating; the run resumes at assembly.** See *Reproduction notes*.
+**Draft render (480×854, 9:16 vertical, 70.0s, MP4):** *assets complete; assemble
+locally.* All 7 clips and all 7 voice takes are generated and paid for — job IDs
+in the production record. `explainer_video` is **withdrawn from this session**
+(retried 2026-08-04; the two other explainer tools resolve, it does not), so the
+cut was never assembled by the service.
+
+**It does not need to be.** The production record's *Fallback* gives a complete
+`ffmpeg` assembly with this cut's own per-block padding, producing the identical
+70.0s deliverable. `ffmpeg` is not installed on the repo host, so that step runs
+on your machine. **Nothing needs regenerating.**
 
 A seventy-second vertical trailer for Chapter 1, written as the companion teaser
 to `inner-canon-ch1-longform-v1.md`.
@@ -182,6 +187,61 @@ Omitting `subtitles` is deliberate and is the standing default for trailers: blo
 7 carries the mandated disclaimer string, which is 58 characters and cannot fit a
 9:16 caption at any font, so any cut with the end card overflows the server-burned
 captions by construction. Captions come from the tracked sidecar through libass.
+
+**Retried 2026-08-04 — still unavailable.** `get_explainer_presets` and
+`resolve_explainer_preset` both resolve from the same server; `explainer_video`
+does not, under either a direct name lookup or a keyword search. Treat it as
+withdrawn rather than as a transient disconnect, and use the fallback below.
+
+#### Fallback — assemble by hand, no `explainer_video` required
+
+**This cut does not need the tool.** Its assembly is fully determined: seven clips
+already exactly 10s, one take per block, each take centred in its window. That is
+the whole of what `explainer_video` would do here, and none of it needs a service.
+
+The numbers below are this cut's own. Front-pad is `(10 − take) / 2`, which is the
+same centring `build_subtitles.js` assumes — so the sidecar lines up with this
+assembly exactly, with no nudging.
+
+| Block | Take | Front pad |
+|---|---|---|
+| 1 | 6.506s | **1.747s** |
+| 2 | 8.141s | **0.930s** |
+| 3 | 2.373s | **3.814s** |
+| 4 | 7.935s | **1.033s** |
+| 5 | 7.979s | **1.011s** |
+| 6 | 7.078s | **1.461s** |
+| 7 | 4.403s | **2.798s** |
+
+Download the seven clips and seven takes from the CDN links in this record (the
+repo host cannot — see *Environment caveats*), name them `clip1..7.mp4` and
+`take1..7.wav`, then:
+
+```bash
+# 1. Pad each take to exactly 10s with its take centred.
+pads=(1747 930 3814 1033 1011 1461 2798)
+for i in 1 2 3 4 5 6 7; do
+  ffmpeg -y -i "take$i.wav" \
+    -af "adelay=${pads[$i-1]}:all=1,apad" -t 10 -ar 48000 -ac 2 "blk$i.wav"
+done
+
+# 2. Concatenate video and audio separately, then mux.
+for i in 1 2 3 4 5 6 7; do echo "file 'clip$i.mp4'"; done > v.txt
+for i in 1 2 3 4 5 6 7; do echo "file 'blk$i.wav'";  done > a.txt
+ffmpeg -y -f concat -safe 0 -i v.txt -c copy videoonly.mp4
+ffmpeg -y -f concat -safe 0 -i a.txt -c copy audioonly.wav
+ffmpeg -y -i videoonly.mp4 -i audioonly.wav -c:v copy -c:a aac -shortest \
+  inner-canon-ch1-trailer-v3-draft.mp4
+```
+
+The result is 70.0s at 480×854 with no burned captions — the same deliverable the
+tool would have produced. Then run the finishing steps below.
+
+**One behaviour this does not reproduce:** `explainer_video` speeds a slightly
+over-length take up pitch-safely to fit its block. No take here needs it — the
+longest is 8.14s against a 10s window — so the difference is inert for this cut.
+It would matter for a cut with a take over 10s, which is a take that should be
+re-recorded anyway.
 
 ### Credit spend
 
