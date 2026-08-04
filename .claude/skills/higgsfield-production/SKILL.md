@@ -625,6 +625,29 @@ Two mechanisms make the fit real, and the second is the one that guarantees it:
    Anton glyphs and wraps inside those margins — it *cannot* draw outside them.
    That is the guarantee; step 1 only keeps the result from looking mechanical.
 
+   **The guarantee is conditional on two things, and both fail silently.** Run
+   the command `build_subtitles.js` prints — it now handles the first — and check
+   the second before burning:
+
+   - **PlayRes must match the cut.** libass reads `Fontsize` and `MarginL/R/V` in
+     the ASS script's own PlayRes space, *not* in video pixels, and ffmpeg's
+     SRT→ASS converter hardcodes `PlayResX/Y` to `384x288`. Burning the `.srt`
+     directly therefore scales every value in the style by `frame_height/288` —
+     about 4.4× on a 720x1280 cut, putting Anton near 240px, at which point single
+     words no longer fit between the margins and the lines run off frame. This is
+     why the printed command is now **two steps**: convert to `.ass` and re-target
+     PlayRes to the cut's own resolution first, then burn. The intermediate
+     `.ass` goes to `renders/` and is gitignored.
+   - **Anton must be installed** (`fc-match Anton`). libass substitutes a wider
+     font silently when it is missing, which breaks the measured fit while
+     `build_subtitles.js` still reports the line as fitting. On the repo host,
+     `.claude/hooks/session-start.sh` installs ffmpeg and Anton at session start.
+
+   Both failures are invisible to step 1, because step 1 measures the sidecar and
+   these corrupt the *render*. A widest-line figure of "fits" says nothing about
+   either — only watching the file, or checking that the margin columns stay at
+   background luma, does.
+
 Cue timing follows the assembler's own rule, so the sidecar lines up with an
 `explainer_video` cut without manual nudging.
 
@@ -813,6 +836,24 @@ expand to reach 120.
   verify at the job-metadata level instead — all clips at the expected
   dimensions, every take inside its window, assembly completed — then record the
   CDN URL for manual download. Those links expire.
+- **ffmpeg and Anton are installed by a hook, not baked into the image.** The
+  container is ephemeral and rebuilt from the repo each session, so
+  `.claude/hooks/session-start.sh` reinstalls both at session start — see
+  [Subtitles](#subtitles) for why the font matters as much as the binary. Two
+  consequences: the Ubuntu archives are reachable but the **deadsnakes** and
+  **ondrej/php** PPAs are 403 under the egress policy, so `apt-get update` always
+  prints two warnings that are unrelated to this pipeline; and if the hook is
+  ever removed, the burn step still *runs* and still produces a file — just in
+  the wrong font.
+- **The hook is synchronous**, so the session does not start until both tools are
+  in place — a cold container pays about a minute of startup for that, and a warm
+  one pays nothing and reports `ffmpeg and Anton already present`. It still costs
+  nothing to run `ffmpeg -version` and `fc-match Anton` **before burning rather
+  than after**, and it is the only check that catches a hook that was removed,
+  edited, or cut short. The hook installs the font before the binary on purpose:
+  an interrupted run then leaves the state that fails loudly with
+  `ffmpeg: not found` rather than the one that quietly burns in a substituted
+  font. Do not reorder it.
 
 ### What lands in git
 
