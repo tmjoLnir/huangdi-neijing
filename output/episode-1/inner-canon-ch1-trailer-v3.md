@@ -2,8 +2,16 @@
 
 **上古天真論篇第一 · Sevens and Eights**
 
-**Final video (720×1280, 9:16 vertical, 70s, MP4):** *not produced — script only.
-The step-0 gate is open; nothing has been generated.*
+**Draft render (480×854, 9:16 vertical, 70.0s, MP4):** *assets complete; assemble
+locally.* All 7 clips and all 7 voice takes are generated and paid for — job IDs
+in the production record. `explainer_video` is **withdrawn from this session**
+(retried 2026-08-04; the two other explainer tools resolve, it does not), so the
+cut was never assembled by the service.
+
+**It does not need to be.** The production record's *Fallback* gives a complete
+`ffmpeg` assembly with this cut's own per-block padding, producing the identical
+70.0s deliverable. `ffmpeg` is not installed on the repo host, so that step runs
+on your machine. **Nothing needs regenerating.**
 
 A seventy-second vertical trailer for Chapter 1, written as the companion teaser
 to `inner-canon-ch1-longform-v1.md`.
@@ -110,34 +118,185 @@ The style key is **already generated** and needs no landscape sibling — this i
 9:16 cut, so it reuses the Chapter 1 vertical key directly. That is the whole
 saving against a new chapter.
 
-### Style key, clips, voiceover, assembly
+### Step-0 gate — run 2026-08-04
 
-**Pending.** Style key reuses `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (768×1376,
-`nano_banana_pro`), attached as `image_references` on every clip. Clips
-`seedance_2_0_mini` at the tier the user confirms, 10s, `aspect_ratio: "9:16"`
-**and** "vertical 9:16 portrait framing" written into every prompt — the double
-declaration held on this model for Chapter 1 and should not be dropped.
-Pre-decline `IN THE DARK` (`24bae836-2c4a-48e0-89b6-49fcc0b21612`) on every clip;
-it was not offered on any Chapter 1 clip, including the dark-field prompts, but
-the pre-decline is free.
+`balance` **938.2 credits** (ultra). `get_cost` on `seedance_2_0_mini`, 10s, 9:16,
+480p: **10 credits/clip**, matching the skill's table. Draft tier confirmed by the
+user. Estimated ~74; see *Credit spend*.
 
-**Assemble with the `subtitles` parameter omitted**, as Chapter 1's v1 and v2 now
-do. Captions come from the tracked sidecar through libass. This is the standing
-default for trailers: block 7 carries the mandated disclaimer string, which is 58
-characters and cannot fit a 9:16 caption at any font, so any cut with the end card
-overflows the server-burned captions by construction.
+### Style key
+
+- **Style key** — `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (`nano_banana_pro`,
+  768×1376, 9:16), **reused from `inner-canon-ch1-trailer-v1.md`, not
+  regenerated.** Attached as `image_references` on all 7 clips. This is the whole
+  saving against a new chapter: the lineage entry already exists (group shot → ch2
+  → ch3 → ch5 → ch8 → ch1) and this cut adds nothing to it.
+
+### Clips
+
+- **Clips** (`seedance_2_0_mini`, **Draft tier 480p**, 10s, 9:16 **480×854**,
+  `generate_audio: false`, style key on each): block 1
+  `31da523d-eb4a-408f-b7fd-fb1d3220f99f`, block 2
+  `31d226e9-b7a7-4cd6-ba26-62e92a56c9ea`, block 3
+  `48f2cf85-6924-473e-ae26-0b9a9ce77604`, block 4
+  `31b3eb43-11ea-4386-b2e4-ba5e9b4802e1`, block 5
+  `c6854eb5-405a-4be0-9041-b0b7f1a5898b`, block 6
+  `2a9678c6-dcdc-4eb3-978b-e3e9c956c758`, block 7
+  `90b9492a-a71a-4a48-90f5-c0ec31797e0c`.
+
+All seven returned **480×854 vertical on the first pass**. Block 1 was generated
+alone and its dimensions checked before the other six were committed, per the
+skill. `IN THE DARK` was pre-declined on every clip; **no preset swap was offered
+on any of the seven**, including the two dark-field prompts — the same result as
+Chapter 1, so that is now two cuts of evidence on `seedance_2_0_mini` rather than
+one.
+
+### Voiceover
+
+- **Voiceover** (`seed_audio`, presets **Arthur** `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, **Xavier** `43173c95-3ec8-446a-a162-6504332c578b`, **Vesper** `c3204739-4084-41a3-9dc5-c805b307ec18`, **Zane** `9ddbff06-a984-4c0d-b641-4d8ca846bf60`, speech_rate 55): block 1 `d0f1422d-fb8d-46e4-8f9d-c81640fc64b9` (6.5s), block 2 `a053c5e7-9b42-4af7-8c04-78a6cc0e4c1d` (8.1s), block 3 `51f88452-623d-4aed-ada9-a48e7352cb48` (2.4s), block 4 `324a7c85-0f23-4e11-aaa1-ade1117333eb` (7.9s), block 5 `bd8fd04f-b474-4571-9062-a8a8a677a573` (8.0s), block 6 `3144cb4c-4ae7-4a0f-9881-26104558b2a8` (7.1s), block 7 `e9ab2459-9dc6-433b-993a-e55b6a26f5f8` (4.4s).
+
+**No take was re-recorded.** Every one is inside the 10s block, so none will be
+pitch-shifted at assembly. Blocks 3 and 7 are the deliberate short takes. Block 2
+at 8.14s is **marginally over the 6–8s target** and was accepted rather than
+re-cut — it sits where Chapter 1's block 7 shipped (8.03s) and has 1.86s of
+headroom against the hard limit. Blocks 4 and 5 (7.93s, 7.98s) sit at the top of
+the window. See the sentence-count finding below: this cut ran long across the
+board, and the next one should be written shorter.
+
+### Assembly
+
+**BLOCKED — not run.** `explainer_video` was not available from this session at
+step 4; it did not resolve under a direct name lookup or a keyword search, while
+other tools from the same server loaded normally in the same call. Every input it
+needs is listed above and is unaffected.
+
+To finish, call `explainer_video` with **`width: 480, height: 854`**, the
+`subtitles` parameter **omitted**, and these seven items in order:
+
+| # | video | audio |
+|---|---|---|
+| 1 | `31da523d-eb4a-408f-b7fd-fb1d3220f99f` | `d0f1422d-fb8d-46e4-8f9d-c81640fc64b9` |
+| 2 | `31d226e9-b7a7-4cd6-ba26-62e92a56c9ea` | `a053c5e7-9b42-4af7-8c04-78a6cc0e4c1d` |
+| 3 | `48f2cf85-6924-473e-ae26-0b9a9ce77604` | `51f88452-623d-4aed-ada9-a48e7352cb48` |
+| 4 | `31b3eb43-11ea-4386-b2e4-ba5e9b4802e1` | `324a7c85-0f23-4e11-aaa1-ade1117333eb` |
+| 5 | `c6854eb5-405a-4be0-9041-b0b7f1a5898b` | `bd8fd04f-b474-4571-9062-a8a8a677a573` |
+| 6 | `2a9678c6-dcdc-4eb3-978b-e3e9c956c758` | `3144cb4c-4ae7-4a0f-9881-26104558b2a8` |
+| 7 | `90b9492a-a71a-4a48-90f5-c0ec31797e0c` | `e9ab2459-9dc6-433b-993a-e55b6a26f5f8` |
+
+Omitting `subtitles` is deliberate and is the standing default for trailers: block
+7 carries the mandated disclaimer string, which is 58 characters and cannot fit a
+9:16 caption at any font, so any cut with the end card overflows the server-burned
+captions by construction. Captions come from the tracked sidecar through libass.
+
+**Retried 2026-08-04 — still unavailable.** `get_explainer_presets` and
+`resolve_explainer_preset` both resolve from the same server; `explainer_video`
+does not, under either a direct name lookup or a keyword search. Treat it as
+withdrawn rather than as a transient disconnect, and use the fallback below.
+
+#### Fallback — assemble by hand, no `explainer_video` required
+
+**Runnable:** `bash output/episode-1/assemble-ch1-trailer-v3.sh` — the steps below,
+with the URLs and per-block padding already filled in. Run it where `ffmpeg` and
+the CDN are both reachable; the repo host has neither. The prose below documents
+what it does, so the procedure survives the script's URLs expiring.
+
+**This cut does not need the tool.** Its assembly is fully determined: seven clips
+already exactly 10s, one take per block, each take centred in its window. That is
+the whole of what `explainer_video` would do here, and none of it needs a service.
+
+The numbers below are this cut's own. Front-pad is `(10 − take) / 2`, which is the
+same centring `build_subtitles.js` assumes — so the sidecar lines up with this
+assembly exactly, with no nudging.
+
+| Block | Take | Front pad |
+|---|---|---|
+| 1 | 6.506s | **1.747s** |
+| 2 | 8.141s | **0.930s** |
+| 3 | 2.373s | **3.814s** |
+| 4 | 7.935s | **1.033s** |
+| 5 | 7.979s | **1.011s** |
+| 6 | 7.078s | **1.461s** |
+| 7 | 4.403s | **2.798s** |
+
+Download the seven clips and seven takes from the CDN links in this record (the
+repo host cannot — see *Environment caveats*), name them `clip1..7.mp4` and
+`take1..7.wav`, then:
+
+```bash
+# 1. Pad each take to exactly 10s with its take centred.
+pads=(1747 930 3814 1033 1011 1461 2798)
+for i in 1 2 3 4 5 6 7; do
+  ffmpeg -y -i "take$i.wav" \
+    -af "adelay=${pads[$i-1]}:all=1,apad" -t 10 -ar 48000 -ac 2 "blk$i.wav"
+done
+
+# 2. Concatenate video and audio separately, then mux.
+for i in 1 2 3 4 5 6 7; do echo "file 'clip$i.mp4'"; done > v.txt
+for i in 1 2 3 4 5 6 7; do echo "file 'blk$i.wav'";  done > a.txt
+ffmpeg -y -f concat -safe 0 -i v.txt -c copy videoonly.mp4
+ffmpeg -y -f concat -safe 0 -i a.txt -c copy audioonly.wav
+ffmpeg -y -i videoonly.mp4 -i audioonly.wav -c:v copy -c:a aac -shortest \
+  inner-canon-ch1-trailer-v3-draft.mp4
+```
+
+The result is 70.0s at 480×854 with no burned captions — the same deliverable the
+tool would have produced. Then run the finishing steps below.
+
+**One behaviour this does not reproduce:** `explainer_video` speeds a slightly
+over-length take up pitch-safely to fit its block. No take here needs it — the
+longest is 8.14s against a 10s window — so the difference is inert for this cut.
+It would matter for a cut with a take over 10s, which is a take that should be
+re-recorded anyway.
+
+### Credit spend
+
+| Item | Credits |
+|---|---|
+| Style key | **0** — reused from v1 |
+| 7 clips — Draft 480p | 70 |
+| 7 voice takes | ~4.2 |
+| Subtitles | **0** — not burned server-side |
+| Assembly | free (not yet run) |
+| **Total spent (measured)** | **75.6** |
+
+**Measured against the balance, not estimated: 938.2 → 862.6 = 75.6 credits**,
+against ~74 estimated at the gate. The 1.6 over is the voice takes running
+slightly above the 0.6-each rule of thumb. This is the second cut in the repo with
+a real balance delta rather than a reconstructed figure.
+
+Assembly is free, so **finishing this cut costs nothing further** — the fallback
+below is local `ffmpeg`.
 
 ### Reproduction notes
 
-- **Zane has no measured rate at length.** Block 3 is short enough not to expose
-  it. The longform does expose it. Measure him before writing that script's
-  dialogue to a word count.
-- **Measure block 2 before recording the rest.** It is the longest line and Xavier
-  is the voice that overshot on Chapter 1.
-- **The sidecar is not built yet** — `build_subtitles.js` needs the per-block take
-  durations from the production record, so it runs after the voiceover, not before.
-  `check_caption_fit.js` runs *now*, on the narration table, and does not need
-  them.
+- **Assembly is the only outstanding step**, and the tool was unavailable rather
+  than the inputs being wrong. Resume at the table above; regenerate nothing.
+- **Every take ran longer than predicted, and the cause is measurable.** Sized off
+  the words/second from Chapter 1, every block came in high — the two 23–24 word
+  narrator lines predicted at ~6.2s delivered 6.5s, 7.1s and 8.0s. Word count did
+  not vary; **sentence count did**, and it is the better predictor:
+
+  | Take | Words | Sentences | Delivered |
+  |---|---|---|---|
+  | ch1 v1 block 1 | 24 | 2 | 6.53s |
+  | **v3 block 6** | 24 | 3 | **7.08s** |
+  | **v3 block 5** | 23 | 4 | **7.98s** |
+
+  Same voice, same rate, near-identical word counts. **Each additional sentence
+  boundary costs roughly 0.55–0.7s**, and that dominates the word count over the
+  range a 10s block allows.
+
+  This completes the Chapter 1 finding rather than contradicting it. Chapter 1
+  learned that one long sentence hinged on an em-dash runs very long (32 words →
+  10.78s); this cut shows the opposite extreme also runs long. The lever is not
+  "shorter sentences" but **two to three sentences per block** — few enough to
+  avoid pause accumulation, joined enough to avoid one long unbroken clause.
+  Written for captions, this cut went to four and five sentences and paid for it.
+- **Zane still has no measured rate at length.** Block 3 is 7 words. The longform
+  gives him real dialogue and this run did not clear that risk.
+- **The sidecar cannot be built until assembly** — `build_subtitles.js` needs the
+  per-block take durations, which now exist above, but the cut itself does not.
+  Build it as part of the finishing steps.
 
 ## Deliverables the assembler cannot produce
 

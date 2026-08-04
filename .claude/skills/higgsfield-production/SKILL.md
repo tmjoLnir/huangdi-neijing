@@ -360,17 +360,52 @@ and add dramatic pauses**, and a linear words/second extrapolation from a short
 measurement line will not predict it. Block 8 showed the same effect inverted: 11
 words across two sentences came back at 4.95s against a 2.9s linear prediction.
 
+### …and the other extreme runs long too — the ch1 v3 measurement
+
+Breaking sentences up is not a free lever. The v3 trailer was written in short
+sentences *specifically* to pass the caption check, and every take came in high.
+Isolating sentence count against a near-fixed word count, same voice, same rate:
+
+| Take | Words | Sentences | Delivered |
+|---|---|---|---|
+| ch1 v1 block 1 | 24 | 2 | 6.53s |
+| ch1 v3 block 6 | 24 | 3 | **7.08s** |
+| ch1 v3 block 5 | 23 | 4 | **7.98s** |
+
+**Each additional sentence boundary costs roughly 0.55–0.7s**, and over the range
+a 10s block allows, that dominates the word count. v3 shipped one take at 8.14s
+and two more at 7.9s purely from sentence count.
+
+So the two findings bracket the same curve rather than contradicting each other:
+
+```
+1 long em-dash sentence  ────────────────────────────►  10.78s   (32 words)
+2–3 sentences            ────────────►                  6.5–7.1s (24 words)
+4–5 sentences            ──────────────────►            8.0–8.1s (23–30 words)
+```
+
+**Aim for two to three sentences per block.** Few enough that pauses do not
+accumulate, joined enough to avoid one long unbroken clause. That is the target
+to write to, not "short sentences."
+
 So the measured words/second in the voice table sizes a *first draft*. What
 actually lands the take in the window is structure:
 
-- **Take is long** → break the sentence up. Full stops in place of em-dashes and
-  subordinate clauses is the fastest way to pull seconds off without losing
-  content. This is what re-cut ch1 block 2.
+- **Take is long** → if it is one long sentence, break it. If it is already four
+  or five, **merge** — commas in place of full stops. Both directions shorten,
+  and which one applies depends on where you are on the curve above.
 - **Take is short** → more internal commas, fewer full stops. This has lifted a
   22-word line from 4.7s to 6.3s without changing a word of its content.
 
 Both levers are voice-independent and cost a single re-take. Reach for them
 before rewriting the line's content, and **never** reach for `speech_rate`.
+
+**Caption fit pushes against this.** Short clauses are what keeps a line inside
+the caption budget, and short clauses tend to arrive as short sentences — which is
+exactly how v3 drifted long. When a cut assembles **without** server-side
+subtitles, which is now the trailer default, the caption pressure largely
+disappears: the sidecar splits long clauses across cues by itself. Write those
+cuts for the take window first.
 
 ### Take length is not caption fit — two constraints on one line
 
