@@ -4,8 +4,11 @@
 #   bash output/episode-1/assemble-ch1-trailer-v3.sh
 #
 # Run this on a machine with ffmpeg and network access to the Higgsfield CDN.
-# The repo host has neither: ffmpeg is not installed there, and the agent proxy
-# denies the CDN (CONNECT 403), so the fourteen source assets cannot be fetched.
+# The repo host now has ffmpeg — .claude/hooks/session-start.sh installs it, with
+# Anton, at session start — but the agent proxy still denies the CDN
+# (CONNECT 403), so the fourteen source assets still cannot be fetched there.
+# The blocker is the download, not the toolchain: once the assets are on disk,
+# every ffmpeg step below runs on the repo host.
 #
 # Why this exists: explainer_video was withdrawn from the session's tool set
 # partway through the run (retried three times; the server stayed healthy and
