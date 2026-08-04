@@ -1,6 +1,6 @@
 ---
 name: higgsfield-production
-description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfield — style key, per-block clips, narrator voiceover, subtitled assembly, and the production record. Use whenever generating or re-rendering a 30-90 sec vertical trailer or a 15-20 min longform episode for this repo, adding a new chapter under output/, or debugging a Higgsfield job (wrong aspect ratio, preset swap prompts, expired CDN links, blocked uploads).
+description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfield — style key, per-block clips, narrator voiceover, sandbox assembly, captions, and the production record. Use whenever generating or re-rendering a 30-90 sec vertical trailer or a 15-20 min longform episode for this repo, adding a new chapter under output/, or debugging a Higgsfield job (wrong aspect ratio, preset swap prompts, expired CDN links, blocked uploads, a missing explainer_video tool, or an assemble_final.sh speech-window error).
 ---
 
 # Higgsfield production pipeline
@@ -14,6 +14,25 @@ parameters and failure modes instead.
 The house pipeline for this repo. Every cut has been produced this way, and the
 failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
+
+> **⚠ The assembler changed, 2026-08-04. `explainer_video` no longer exists.**
+> Higgsfield removed the server-side assembler from the MCP surface; there is no
+> deprecation shim and no fallback assembler. Assembly is now a shell script run
+> in a remote sandbox — [step 4](#4-assembly) has the new call. Three consequences
+> reach back into how a cut is *written*, so they are not merely a swapped tool:
+>
+> - **The take window moved from 6–8s to 8.6–10.0s** of *detected speech*, and
+>   over-window is now a hard error instead of a pitch-safe speed-up. Every
+>   narration line in the repo is now short of the gate — see [step 3](#3-voiceover).
+> - **Captions are no longer burned at assembly.** The sidecar path is the only
+>   path now, not the preferred one of two — see [Subtitles](#subtitles).
+> - **Clip audio is now mixed in at 0.12, not discarded**, so `generate_audio:
+>   false` went from a cost saving to a correctness requirement — see
+>   [step 2](#2-clips).
+>
+> **No cut has yet been assembled end-to-end on this path.** The script's own gates
+> are quoted below from source, but the first run through it should be treated as
+> a shakedown, not a render.
 
 `output/episode-1/inner-canon-ch1-trailer-v3.md` is the reference document —
 match its section order on any new cut. Note that `episode-<N>` is the **chapter number of the file name of the input script**, not a sequential index, so the folders are not consecutive and
@@ -30,6 +49,7 @@ estimate, and confirmed model and tier.
 | | |
 |---|---|
 | Steps 0–5 | the trailer pipeline, in order |
+| [4. Assembly](#4-assembly) | the sandbox assembler that replaced `explainer_video` |
 | [Subtitles](#subtitles) | caption constraints and the guaranteed-fit sidecar |
 | [Longform episodes](#longform-episodes-1520-min) | what changes for a 15–20 min cut |
 | [Environment caveats](#environment-caveats) | blocked uploads/CDN, what lands in git |
@@ -46,7 +66,9 @@ Never reorder these — each step consumes the previous step's **job ID**.
 1. **Style key** (`generate_image`) — one vertical key image per chapter.
 2. **Clips** (`generate_video`) — one per narration block, style key attached to each.
 3. **Voiceover** (`generate_audio`) — one take per block, narrator preset.
-4. **Assembly** (`explainer_video`) — clips + takes, subtitles burned in.
+4. **Assembly** (`sandbox_exec` → `assemble_final.sh`) — clips + takes in, one
+   MP4 out. **No captions here**: the assembler has no subtitle option, so
+   burning them is a separate step afterwards — see [Subtitles](#subtitles).
 5. **The document** — every job ID above, plus the shot list, compliance audit,
    manual deliverables and runtime levers.
 
@@ -158,14 +180,25 @@ Also duration-incompatible with the fixed 10s block: `veo3_1_lite` (8 credits, b
 4/6/8s only), `seedance1_5` (4/8/12s), `veo3` (no duration control).
 
 Fixed costs per 6-block trailer, independent of clip model: style key **2**
-(`nano_banana_pro`, 1k), voiceover **0.8/take** = 4.8, subtitles **0.05/voiced
-block** = 0.3, assembly free. **≈7.1 credits.**
+(`nano_banana_pro`, 1k), voiceover **0.8/take** = 4.8, assembly free. **≈6.8
+credits.**
+
+**The 0.05/voiced-block subtitle charge is gone with `explainer_video`** — it was
+the server-burn path's fee, and captions are now burned locally for free. Budget
+0.3 less per 6-block trailer than the pre-2026-08-04 records show.
 
 **Turn native audio off.** `seedance_*` default `generate_audio: true`, `kling*`
 and `cinematic_studio_video*` default `sound: on`, and `wan`/`grok`/`gemini_omni`
-generate audio natively. `explainer_video` replaces per-block audio with the
-narrator take anyway, so generated audio is discarded — you would be paying for a
-soundtrack that gets thrown away, and on some models it raises the per-clip price.
+generate audio natively. Pass `generate_audio: false` (or the model's equivalent)
+on every clip.
+
+**This is now a correctness requirement, not just a saving.** `explainer_video`
+discarded a clip's own audio and substituted the narrator take, so a stray
+generated soundtrack was merely wasted money. `assemble_final.sh` does the
+opposite — its LEVEL LAW *keeps* the clips' diegetic audio, ducked under the voice
+at **0.12** (`--sfx-vol`, clamped ≤0.20). A clip generated with native audio on
+will therefore be **audible in the finished cut**, under the narrator, and the
+only fix is regenerating the clip.
 
 ## 1. Style key
 
@@ -251,9 +284,22 @@ Other models declare their roles differently; check `models_explore` rather than
 assuming this coercion happens everywhere.
 
 Keep the clips **text-free** — no titles, no captions in-frame. Captions are
-burned server-side at assembly. Longform quotation cards are the sole exception,
-for a reason specific to them — see
+burned from the sidecar after assembly. Longform quotation cards are the sole
+exception, for a reason specific to them — see
 [ON-SCREEN TEXT](#on-screen-text--the-one-exception-to-text-free-clips).
+
+**Two clip properties are now hard-gated by the assembler**, and both fail the
+whole run rather than the block:
+
+- **Duration ≥ 9.5s.** `assemble_final.sh` rejects any clip shorter than
+  `--clip-seconds` minus 0.5 — `clip N is only X s — REGENERATE the block; a held
+  still frame is not a scene.` At the house 10s block that is a 9.5s floor, which
+  the 10s clip default clears; it is the models capped below 10s that do not, and
+  the step-0 table already excludes them on exactly this ground.
+- **Motion from frame 1.** The assembler freeze-probes the first ~1.5s and last
+  ~2s of every clip and *warns* on a static open or a frozen tail. It is only a
+  warning, so it will not stop a render — but it is the assembler telling you the
+  block reads as a still, and the house answer is to regenerate that block.
 
 ## 3. Voiceover
 
@@ -262,17 +308,34 @@ what fits a line inside a fixed 10s block. **The full cast is cast permanently**
 (CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
-| Role | Voice | `voice_id` | Measured rate | 6–8s window |
+| Role | Voice | `voice_id` | Measured rate | 8.6–10.0s window |
 |---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.73 words/sec** | **22–30 words** |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.55 words/sec** | **27–36 words** |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.42 words/sec** | **27–35 words** |
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.73 words/sec** | **32–37 words** |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.55 words/sec** | **39–45 words** |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.42 words/sec** | **38–44 words** |
 | **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | *re-measure at length* |
 
-Measured 2026-08-01 on chapter 1, one take per voice, `seed_audio` presets. Zane
-has only been measured on a 5-word line (2.3–2.6s), where pause overhead
+Rates measured 2026-08-01 on chapter 1, one take per voice, `seed_audio` presets.
+Zane has only been measured on a 5-word line (2.3–2.6s), where pause overhead
 dominates and no reliable words/sec can be derived — **measure him on a
 full-length line before writing him one.**
+
+**The word columns are recomputed for the new window and are not themselves
+measured.** They are `rate × 8.6` to `rate × 10.0`, carried over from rates taken
+against the old 6–8s window. Two things could move them, and both point the same
+way — *shorter* than the arithmetic suggests:
+
+- **The rates may be file-duration rates, not speech rates.** The assembler gates
+  on *detected speech* with the provider's head and tail padding trimmed off. If
+  the 2026-08-01 figures were taken against raw take length, they understate the
+  true speaking rate, and these word counts overshoot.
+- **`seed_audio` is bimodal.** The assembler's own source note records the same
+  line returning near 9.0s or near 10.4s across generations, with pace wandering
+  between runs. A word count is a starting estimate here, not a setting.
+
+**Re-measure with `speech_metrics.sh` before committing a full cut to these
+numbers** — see the window section below for the call. Treat a first pass at these
+counts as calibration, and expect regenerations.
 
 **Word counts do not transfer between voices**, and the gap is large enough to
 break a cut: at the same `speech_rate`, 23 words measured 6.17s on Arthur against
@@ -306,15 +369,29 @@ for commas; do not re-render it at a different rate expecting a different
 duration. All four voices run at `speech_rate` 55.
 
 **Character lines are structurally short, and a block is structurally 10s.** At
-4.4–4.6 words/sec, Xavier and Vesper need ~30 words to fill a block — which is a
-speech, not an interjection. Two ways out, and the choice is per line:
+4.4–4.6 words/sec, Xavier and Vesper now need ~40 words to clear the 8.6s floor —
+which is a speech, not an interjection.
 
-- **Write the character a real paragraph.** Fine for a reframe or a monologue.
-- **Let the take run short and centred.** A 2.6s line leaves ~3.7s of silence
-  either side. For an interruption or a hard beat that silence *is* the effect,
-  and chapter 1 uses it deliberately in block 3. **Record it in the production
-  record as a chosen exception**, or the next cut will read it as the dead-air
-  mistake below and "fix" it.
+**The old second way out is now closed.** Letting a take run short and centred —
+a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
+chapter 1's block 3 — is a **hard assembler error** under the new floor:
+`voice N carries 2.6s of speech; required 8.6–10.0s`. The assembler will not
+build the cut. There is no flag to permit it; `--clip-seconds` moves the whole
+window rather than widening it, because the window is always exactly 1.4s wide
+and its ceiling *is* the block length.
+
+So a short character beat now costs a structural decision, not a note in the
+record. The options, in the order worth trying:
+
+- **Write the character a real paragraph** — a reframe or a monologue that earns
+  its ~40 words.
+- **Fold the beat into a neighbouring block** so one voice carries the full window
+  and the interjection lives inside it. This changes the block count, so it
+  reaches the cost preflight.
+- **Cut the beat.**
+
+Any cut carrying a deliberate short take — chapter 1 does — cannot be reassembled
+on this path without rewriting that block first.
 
 A cut is never re-voiced retroactively unless someone decides to, in which case
 only the voiceover and assembly are re-paid — the clips are untouched.
@@ -322,33 +399,75 @@ only the voiceover and assembly are re-paid — the clips are untouched.
 One take per block. Record each take's **duration** alongside its job ID — the
 record is how you know a block was comfortable or tight.
 
-### Write to 6–8 seconds. This is the most expensive thing to get wrong.
+### Write to 8.6–10.0 seconds. This is the most expensive thing to get wrong.
 
-Two separate re-render events have been caused by narration length, in opposite
-directions, so treat the window as two-sided:
+**The window is enforced by the assembler, and both edges are hard errors.**
+`assemble_final.sh` computes it from the block length as `CLIP-1.4` to `CLIP`, so
+at the house 10s block it is **8.6–10.0s of detected speech**. Miss it either way
+and the run stops:
 
-- **Too long** — a pass written at ~28–30 words per line came back 9.5–11.6s
-  against a fixed 10s block, with most of the cut overshooting outright. The
-  assembler would have pitch-safely sped those takes up, breaking the narrator's
-  measured register. **Every block had to be re-cut.**
-- **Too short** — the over-correction to a hard ~22-word ceiling produced 4.7s
-  and 3.5s takes. Inside the window, but 5–6.5s of dead air per block reads as a
-  stall, not as breathing room. **Those blocks were re-cut longer.**
+```
+ERROR: voice 3 (voice03.wav) carries 6.42s of speech; required 8.600–10.000s
+       — REWRITE and regenerate (never pad, atempo, or trim speech).
+```
 
-**The 6–8s window is the rule; the word count is not.** The window is a property
-of the pipeline — a fixed 10s block, a take that must not overshoot it or rattle
-around inside it — so it holds for every voice. The word count that *produces*
-6–8s is a property of the voice, and it moves:
+Three properties of that gate matter when writing:
+
+- **It measures *speech*, not file length.** The assembler runs `silencedetect`
+  and ignores the provider's leading and trailing padding, then centres the words
+  on the block. A padded take cannot shift the words off their scene — and cannot
+  sneak under the ceiling either.
+- **There is no time-stretch any more.** `explainer_video` sped an overlong take
+  up pitch-safely; `assemble_final.sh` explicitly does not (`NO time-stretch (no
+  atempo / no speed change)`). An over-window take is not absorbed, it fails.
+- **Never fix it in the audio.** The error text names the three forbidden repairs
+  — pad, `atempo`, trim — because a dev run that started cutting silence inside
+  takes to pass the gate produced audible artefacts. Rewrite the line and
+  regenerate.
+
+**The window is the rule; the word count is not.** The window is a property of the
+pipeline — a fixed 10s block, a take that must fill it without clipping — so it
+holds for every voice. The word count that *produces* it is a property of the
+voice, and it moves:
 
 | | |
 |---|---|
-| Take duration per 10s block | **6–8s — fixed, applies to every voice** |
-| Line length | per voice — **22–30 words Arthur, 27–36 Xavier, 27–35 Vesper** |
+| Speech per 10s block | **8.6–10.0s — fixed, applies to every voice** |
+| Line length | per voice — **32–37 words Arthur, 39–45 Xavier, 38–44 Vesper** (computed, not measured) |
 | Delivery rate | per voice — **3.73 / 4.55 / 4.42 words/sec** for Arthur / Xavier / Vesper |
 
 **Take the line length from the voice table above, never from another cut's
 document.** A word budget written for one voice undershoots or overshoots another
-by more than a second per block.
+by more than a second per block — and **every cut written before 2026-08-04 is
+sized to the old 6–8s window**, so those documents are now a source of
+guaranteed-failing lines rather than a reference.
+
+**Measure, don't infer.** The sanctioned tool trims exactly what the assembler
+trims, so its `speech=` is the number that will be gated:
+
+```
+sandbox_exec({ command:
+  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/narrator/speech_metrics.sh \
+     --text 'the line exactly as spoken' work/voices/voice01.wav" })
+```
+
+Hand-rolled `silenceremove` or volume-detect math measures something else.
+
+**Expect regenerations, and budget for them.** `seed_audio` returns the same line
+near 9.0s or near 10.4s depending on the run — the assembler's source records pace
+wandering between generations on identical text. The 8.6s floor was chosen to
+catch the lower mode, so **only the upper mode needs a rewrite**; a take that
+comes back over the ceiling is often the same line that would have passed on a
+re-roll. Re-roll once before rewriting, at ~0.8 credits a take.
+
+### Dead air is no longer the failure it was
+
+The old 6–8s window left 2–4s of silence per block, and this section used to warn
+that 5–6.5s of it "reads as a stall". Under an 8.6–10.0s window that risk is
+largely designed out: a take at the floor leaves **0.7s of lead and tail after
+centring**, which the assembler's own note calls inaudible. The pressure has
+inverted — the writing problem is now finding enough content to fill a block, not
+trimming to fit one.
 
 ### Sentence structure beats word count — the ch1 lesson
 
@@ -391,28 +510,46 @@ So the two findings bracket the same curve rather than contradicting each other:
 4–5 sentences            ──────────────────►            8.0–8.1s (23–30 words)
 ```
 
-**Aim for two to three sentences per block.** Few enough that pauses do not
-accumulate, joined enough to avoid one long unbroken clause. That is the target
-to write to, not "short sentences."
+**The curve is still valid; the target on it has moved.** Every duration in the
+three tables above was measured against the old window, where the job was to stay
+*under* 8s. Read them now as a map of how to get *up* to 8.6s — and note that the
+whole measured range, 5.87s to 8.14s, **now sits below the floor**. The old
+"aim for two to three sentences per block" advice targeted 6.5–7.1s and is
+therefore a recipe for a failing take. It has been removed.
 
-So the measured words/second in the voice table sizes a *first draft*. What
-actually lands the take in the window is structure:
+**Reach the window with words, not with sentence boundaries.** That distinction is
+now load-bearing, because the assembler polices the other end:
 
-- **Take is long** → if it is one long sentence, break it. If it is already four
-  or five, **merge** — commas in place of full stops. Both directions shorten,
-  and which one applies depends on where you are on the curve above.
-- **Take is short** → more internal commas, fewer full stops. This has lifted a
-  22-word line from 4.7s to 6.3s without changing a word of its content.
+> `WARN: voice 4 has 2 internal pause(s) >=0.8s (longest 1.30s) — pausey take:
+> rewrite the line as ONE flowing clause (fewer full stops) and regenerate.`
+
+So the cheap old lever — adding full stops to buy ~0.55–0.7s each — now buys
+duration in exactly the currency the assembler flags. Padding a thin line to 8.6s
+with sentence breaks produces a take that passes the gate and trips the warning.
+**Write ~35 words of actual content in two to three sentences** rather than ~24
+words in five.
+
+The measured words/second in the voice table sizes a *first draft*. What lands the
+take in the window is structure:
+
+- **Take is short of 8.6s** → add content. This is now the common case and the
+  only clean fix; the line was written to a window 2.6s narrower than the one it
+  has to fill. Reach for words first, then a single extra sentence boundary, and
+  stop before the pause warning fires.
+- **Take is over 10.0s** → re-roll once (bimodality accounts for a lot of ceiling
+  misses). If it lands long again and it is one long sentence carrying a
+  subordinate clause after an em-dash, break it — that structure alone put a
+  32-word line at 10.78s.
 
 Both levers are voice-independent and cost a single re-take. Reach for them
 before rewriting the line's content, and **never** reach for `speech_rate`.
 
-**Caption fit pushes against this.** Short clauses are what keeps a line inside
-the caption budget, and short clauses tend to arrive as short sentences — which is
-exactly how v3 drifted long. When a cut assembles **without** server-side
-subtitles, which is now the trailer default, the caption pressure largely
-disappears: the sidecar splits long clauses across cues by itself. Write those
-cuts for the take window first.
+**Caption fit no longer pushes against this.** It used to: short clauses kept a
+line inside the server-burned caption budget, and short clauses arrive as short
+sentences — exactly how v3 drifted long. With the sidecar as the only path, that
+pressure is gone, because the sidecar splits long clauses across cues by itself.
+**Write every cut for the take window first**; caption fit is now downstream of it
+rather than in tension with it.
 
 ### Take length is not caption fit — two constraints on one line
 
@@ -425,7 +562,7 @@ point the same way often enough to look like one, and they are not:
 | Set by | the voice against a fixed 10s block | frame width, margins, Anton glyph widths |
 | Voice-dependent | **yes** | **no** — pure geometry |
 | Lever | how much content, and how many hard stops | where the clause breaks fall |
-| Failure | pitch-shifted speed-up, or dead air | the line renders past the frame edge |
+| Failure | **the assembly stops** — hard error at either edge | the line renders past the frame edge |
 
 **Never size captions off a word count.** The caption budget is a clause width and
 does not move when the cast changes; the word count is voice-specific. The two
@@ -433,41 +570,116 @@ only ever looked like one rule because a single narrator carried the whole serie
 
 **They interact through duration, not words.** `build_subtitles.js` times cues from
 the take duration in the production record, so a *short* take makes captions flash
-rather than overflow; an *overshooting* take is sped up at assembly, which drags
-the Whisper-timed burned-in captions along with it. **Take length governs caption
-timing; clause length governs caption width.**
+rather than overflow. The old counterpart to that — an overshooting take being sped
+up at assembly and dragging the burned-in captions with it — **can no longer
+happen**: nothing is sped up and nothing is burned in. **Take length governs
+caption timing; clause length governs caption width.**
 
-**When they conflict** — a line already near 8s with one wide clause — cut content
-rather than adding punctuation. Punctuation buys caption width with duration you
-do not have.
+**They no longer conflict in the direction they used to.** The old advice was to
+cut content when a line neared 8s with one wide clause, because punctuation bought
+caption width with duration the take did not have. Under an 8.6s floor the take
+usually *needs* that duration, and the sidecar splits wide clauses across cues by
+itself — so write for the take window and let the sidecar handle the width.
 
 ## 4. Assembly
 
-```jsonc
-explainer_video({ params: {
-  items: [ { video: "<clip job id>", audio: "<vo job id>" }, ... ],  // play order
-  width: 720, height: 1280,
-  subtitles: { font: "anton" }
-}})
+**`explainer_video` was removed from the Higgsfield MCP surface on 2026-08-04.**
+Assembly now runs `assemble_final.sh` inside `sandbox_exec` — a remote Linux
+sandbox with ffmpeg preinstalled. The script ships in every sandbox under
+`$HF_WORKFLOWS/faceless-channel-video/scripts/`.
+
+We borrow that one script; we do **not** adopt the `faceless-channel-video`
+workflow around it. Its scriptwriting, style and preset rules are a different
+house style and do not govern this series — `CLAUDE.md` still does.
+
+### The sandbox is ephemeral — this changes the shape of the call
+
+The sandbox is discarded ~10 seconds after a call returns, and files do not
+survive between calls. Two consequences, both of which have their own failure
+mode:
+
+- **Download, assemble and export go in ONE command**, chained with `&&`. Split
+  them across calls and the second call starts on an empty filesystem.
+- **`explainer_video` returned a hosted job; this returns a file in a sandbox that
+  is about to vanish.** Nothing archives it for you. Call `media_upload` *before*
+  the assembling command, append `curl -f -X PUT --upload-file` to that **same**
+  command, and `media_confirm` only after HTTP 200.
+
+```
+sandbox_exec({ background: true, command:
+  "set -e; mkdir -p work/blocks work/voices work/output; " +
+  "curl -fL '<clip1 url>' -o work/blocks/block01.mp4; " +
+  "curl -fL '<voice1 url>' -o work/voices/voice01.wav; " +   // …one pair per block
+  "printf '%s\\n' 'work/blocks/block01.mp4 work/voices/voice01.wav' " +
+  "               'work/blocks/block02.mp4 work/voices/voice02.wav' > pairs.txt; " +
+  "chmod +x $HF_WORKFLOWS/faceless-channel-video/scripts/*.sh; " +
+  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh " +
+  "  --out work/output/final.mp4 --blocks 6 --manifest pairs.txt && " +
+  "curl -f -X PUT --upload-file work/output/final.mp4 '<upload_url>'" })
 ```
 
-`width`/`height` must match **the source clips as actually returned** — 720×1280
-for a full-tier vertical trailer, but a 480p draft comes back smaller, so read
-the dimensions off the clip jobs rather than pasting 720×1280. Blocks go in final
-play order.
+Assembly is long — run `background: true` and poll the returned log with `tail`
+in the next call. Poll at least every 60s or the sandbox dies under the job.
 
-Assembly itself is free. Whether to pass `subtitles` at all is a per-cut
-decision, and on a trailer the answer is usually **no** — see
-[Subtitles](#subtitles), which owns the caption path and its cost.
+### The flags that matter here
 
-**Blocks are fixed windows** — a short take is centred, a slightly long one is
-sped up pitch-safely, and the video is never stretched, so a 6-block trailer is
-exactly 60s. This is the rule the whole pipeline is written around: it is why the
-take window is 6–8s, why a short take buys usable silence, and why the sidecar's
-cue timing lines up without nudging.
+| Flag | |
+|---|---|
+| `--out` | output path |
+| `--blocks N` | **required** — asserted against the manifest *before* any work, so a dropped pair fails instead of shipping a hole |
+| `--manifest` | one `clip voice` pair per line, block order, `#` comments allowed. Preferred over positional args in production |
+| `--clip-seconds` | block length, default 10. **Moves the speech window with it** — leave it alone |
+| `--music bed.mp3` | optional licensed bed, `--music-vol` default 0.10, clamped ≤0.20 |
+| `--sfx-vol` | clip diegetic audio level, default 0.12, clamped ≤0.20 |
+| `--allow-mismatch` | overrides the pair-numbering assert. Do not use — see below |
 
-Captions carry constraints worth knowing before you write narration, and an
-escape hatch when the fit has to be guaranteed — see [Subtitles](#subtitles).
+**No `width`/`height`.** Output geometry follows the source clips, so the old rule
+about reading dimensions off the clip jobs rather than pasting 720×1280 is
+handled for you. Draft and full tier both just work.
+
+**No `--subs`.** Passing it is a hard error: `--subs was removed. Captions are the
+subtitles skill's job: assemble first, then run it on the clean voice takes +
+<out>.mp4.assembly.json.` See [Subtitles](#subtitles).
+
+**Name files `blockNN.mp4` / `voiceNN.wav` and keep the numbers aligned.** The
+script cross-checks the numbers in each pair and errors on `block03 + voice05` —
+it calls this "the #1 cause of audio on the wrong block". `--allow-mismatch`
+exists for genuinely unnumbered files; reaching for it to silence the assert
+re-arms precisely the failure it was added to catch.
+
+### What it guarantees, and what now fails instead
+
+**Blocks are still fixed windows** — the cut is exactly `N × 10s`, asserted on the
+output to ±1s, and the video is never shortened to the audio. A 6-block trailer is
+60s. That is still the rule the whole pipeline is written around, and it is why
+the sidecar's cue timing lines up without nudging.
+
+**What changed is the treatment of a take that does not fit.** `explainer_video`
+absorbed both edges — it centred a short take and pitch-safely sped up a long one.
+`assemble_final.sh` absorbs neither:
+
+| | `explainer_video` | `assemble_final.sh` |
+|---|---|---|
+| Take short of window | centred, silence either side | **hard error** below 8.6s |
+| Take over window | sped up pitch-safely | **hard error** above 10.0s |
+| Centring | on file length | on **detected speech** (padding trimmed) |
+| Clip audio | discarded | **kept at 0.12** under the voice |
+| Captions | burned in, `font` option | **not burned** — separate step |
+| Output | hosted job ID | file in an ephemeral sandbox |
+
+It also asserts, on the finished file: every 10s window contains voice-level audio
+(`blocks [..] have NO narration in their windows`), the audio stream exists and
+matches the video length, and the file passes decode validation. Final mix is
+loudnorm **−16 LUFS**, voice at 1.0.
+
+**The sidecar is the assembler's own receipt.** It writes
+`<out>.mp4.assembly.json` carrying each block's measured speech and its absolute
+position in the finished file. **Never hand-write it** — the caption step rejects
+a hand-made one.
+
+Assembly itself is free; the sandbox costs no credits. What it can cost is a
+regenerated take, which is why the window in [step 3](#3-voiceover) is worth
+getting right before you reach this step.
 
 ## 5. The document
 
@@ -493,17 +705,20 @@ disagree, `CLAUDE.md` is correct and this list needs updating:
 6. **Shot list**, numbered to match the blocks.
 7. **Production record (Higgsfield)** — see below.
 8. **Deliverables the assembler cannot produce** — the four are listed in
-   `CLAUDE.md`; always all four, because `explainer_video` has no text-overlay
-   parameter and generates no music. **The one with a cost consequence is the end
+   `CLAUDE.md`; always all four, because `assemble_final.sh` has no text-overlay
+   parameter. (It *can* now lay a licensed bed under the cut via `--music`, so
+   music is no longer strictly hand-only — but it still generates none, and the
+   guqin licensing rule is unchanged.) **The one with a cost consequence is the end
    disclaimer card**: it needs its own final 10s block in the block plan *and* in
    the step-0 preflight, rendered as a plain plate with the narrator reading the
    disclaimer to fill the block's one audio slot. Ship the `.srt`/`.vtt` sidecar
    alongside the document — see [Subtitles](#subtitles).
 
    Close the section with a **Finishing steps** subsection — the ordered
-   procedure that turns the delivered render into an uploadable file, since a
-   cut assembled without server-side subtitles carries neither captions nor
-   on-screen text. Cover, with **this cut's own numbers**: the `.srt` to burn and
+   procedure that turns the delivered render into an uploadable file. Every cut
+   now arrives from the assembler carrying neither captions nor on-screen text,
+   so this section is no longer conditional on how the cut was assembled.
+   Cover, with **this cut's own numbers**: the `.srt` to burn and
    which cues to strip first, the `ffmpeg` line (plus `scale=` if burning a
    480p draft with a 720p sidecar), where the lower-third sits relative to the
    caption band, the end card's exact in/out timecodes and text, and where the
@@ -523,10 +738,17 @@ The record is what makes a cut reproducible after the CDN links die:
 - **Clips** — model **and tier (Draft/Full)**, duration, resolution, and every
   block's job ID. Name the model explicitly; it is a per-cut choice now, and a
   future chapter cannot reproduce the look without it.
-- **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID *and* duration.
-- **Assembly** — block count, output dimensions, subtitle font, job ID, and
-  whether captions were **visually verified** or only assembled (the CDN is
-  usually blocked here, so say which).
+- **Voiceover** — model, preset name + ID, `speech_rate`, per-block job ID, take
+  duration *and* the assembler's measured **speech** figure (they differ; the
+  second is the one that was gated).
+- **Assembly** — there is no job ID to record any more, so record what makes the
+  run repeatable instead: block count, the `assemble_final.sh` flags used
+  (`--blocks`, `--clip-seconds` if not 10, `--music`/`--sfx-vol` if set), the
+  manifest, the `media_id` the finished MP4 was exported to, and any assembler
+  WARNs that were accepted rather than fixed (pausey take, static head/tail).
+- **Captions** — burned separately now, so say so explicitly: which sidecar, and
+  whether the burn was **visually verified** or only executed (the CDN is usually
+  blocked here, so say which).
 - **Credit spend** for the run.
 - **Reproduction notes** — anything that went wrong and how it was resolved.
 
@@ -536,26 +758,36 @@ next chapter, not clutter.
 
 ## Subtitles
 
-Every deliverable ships captioned (`CLAUDE.md`). Two paths produce them, and they
-are **alternatives, not layers**: burning a sidecar over a cut that already has
-server-burned captions double-layers them, so assemble **without** `subtitles`
-whenever you intend to burn the sidecar.
+Every deliverable ships captioned (`CLAUDE.md`). **There is now exactly one path.**
+`explainer_video`'s burned-in captions went with the tool, and `assemble_final.sh`
+rejects `--subs` outright — so the repo's own sidecar is no longer the preferred
+option of two, it is the only one.
 
-| | Burned in at assembly | Sidecar + libass burn |
-|---|---|---|
-| How | `subtitles: { font: "anton" }` on `explainer_video` | `scripts/build_subtitles.js`, then `ffmpeg` |
-| Wrapping | best-effort — influenced, never constrained | **guaranteed** by libass margins |
-| Cost | 0.05/voiced block | free |
-| Use for | drafts, and cuts with no end card | every trailer — see below |
+| | Sidecar + libass burn |
+|---|---|
+| How | `scripts/build_subtitles.js`, then `ffmpeg` |
+| When | **after** assembly, on the finished MP4 |
+| Wrapping | **guaranteed** by libass margins |
+| Cost | free |
 
-**On trailers the sidecar is the default, not the fallback.** Every cut carries the
-end disclaimer card, and its mandated string — *"A dramatized adaptation of a
-classical philosophical text."* — is 58 characters, three lines in a 9:16 frame.
-It is a compliance string, so it cannot be reworded, and it cannot be made to fit.
-**Any cut with the end card overflows the server-burned captions by
-construction.** Omit the `subtitles` parameter and burn the sidecar;
-`check_caption_fit.js` reports that one clause as a known exception rather than a
-failure, and dropping the parameter also saves the per-block subtitle charge.
+This resolves rather than complicates things. The old two-path section existed to
+manage a real conflict: every cut carries the end disclaimer card, whose mandated
+string — *"A dramatized adaptation of a classical philosophical text."* — is 58
+characters and three lines in a 9:16 frame. It is a compliance string, so it
+cannot be reworded, and it could not be made to fit the server-burned captions.
+**Every cut therefore had to take the sidecar path anyway.** The choice was
+already only nominal; now it is gone. `check_caption_fit.js` still reports that
+one clause as a known exception rather than a failure.
+
+**The double-layering warning no longer applies** — there is nothing to
+double-layer with. Burn the sidecar over the assembled cut without checking
+whether captions were already burned in.
+
+> **An alternative exists and we are not using it.** The sandbox also ships
+> `scripts/subtitles/*` (`audio_to_captions.py`, `burn_caps_clean.sh`), which times
+> captions off Whisper against the assembler's sidecar. It is untried here and
+> uses its own fonts (Metropolis, Montserrat) rather than Anton, which `CLAUDE.md`
+> mandates. `build_subtitles.js` stays the house path.
 
 Caption *width* is geometry and is identical for every voice; caption *timing*
 comes from take duration, which is not — see
@@ -603,12 +835,20 @@ It measures **every clause** in the narration table against the two-line budget
 and exits non-zero on any that overflow. Run it *before* recording takes: a fix is
 free at that point and costs a re-take afterwards.
 
-**It is not redundant with `build_subtitles.js`, and the two can disagree.** The
-sidecar pre-splits a long clause across several cues and burns through libass
-margins, so it always fits; `explainer_video` chunks on Whisper pauses, which fall
-at punctuation, so a clause with no internal comma has nowhere to break. **A
-document can pass `build_subtitles.js` and still overflow on the assembled
-video** — chapter 1 did, on six clauses.
+**The failure this was built to catch can no longer happen.** The disagreement it
+guarded was between the two caption paths: the sidecar pre-splits a long clause
+across several cues and burns through libass margins, so it always fits, whereas
+`explainer_video` chunked on Whisper pauses — which fall at punctuation — so a
+clause with no internal comma had nowhere to break. A document could pass
+`build_subtitles.js` and still overflow on the assembled video; chapter 1 did, on
+six clauses. **With the server-burn path gone, that overflow mode is gone with
+it.**
+
+`CLAUDE.md` still mandates the check before generating takes, and it is still
+worth running, but for a narrower reason: a clause that needs three or four cues
+to fit is caption churn on screen even when it technically wraps. Treat it now as
+a **readability check on the writing**, not as a guard against a render failure.
+Its non-zero exit no longer means "this cut will overflow."
 
 ### Build the sidecar — `build_subtitles.js`
 
@@ -655,8 +895,35 @@ Two mechanisms make the fit real, and the second is the one that guarantees it:
    either — only watching the file, or checking that the margin columns stay at
    background luma, does.
 
-Cue timing follows the assembler's own rule, so the sidecar lines up with an
-`explainer_video` cut without manual nudging.
+#### ⚠ Cue timing has drifted — `build_subtitles.js` has not been updated
+
+Cue timing used to follow the assembler's own rule exactly, so the sidecar lined
+up with an `explainer_video` cut without manual nudging. **The two rules no longer
+match.** Both centre the take in its block, but on different quantities:
+
+| | Centres on | Speech starts at |
+|---|---|---|
+| `build_subtitles.js:114` | take **file duration** from the production record | `blockStart + (10 − file_duration) / 2` |
+| `assemble_final.sh` | **detected speech**, padding trimmed | `blockStart + (10 − speech) / 2` |
+
+A `seed_audio` take carries leading and trailing silence, so `file_duration >
+speech` and the sidecar's cues therefore start **early by `(file_duration −
+speech) / 2`** — around 0.3s on a take with 0.6s of total padding, and worse on a
+heavily padded one. Captions lead the voice slightly, on every block.
+
+Two ways to correct it, and the second is authoritative:
+
+1. **Record speech, not file length.** Put the `speech_metrics.sh` figure in the
+   production record's voiceover line and `build_subtitles.js` centres correctly,
+   because its formula is right for whatever number it is given.
+2. **Take the timing from `<out>.mp4.assembly.json`.** The assembler writes each
+   block's measured speech *and* its absolute position in the finished file. That
+   is ground truth, and it is what the sandbox's own caption scripts consume.
+
+**Neither is implemented.** `build_subtitles.js` still reads the duration column
+as written, and nothing yet reads the assembly sidecar. Until one of them lands,
+a sidecar built for a cut assembled on this path is **approximately** timed —
+say so in the production record rather than claiming the old exact alignment.
 
 `.srt`/`.vtt` are tracked, required deliverables (`CLAUDE.md`), exempted in
 `.gitignore`. Commit them with the cut and **regenerate after any narration or
@@ -708,18 +975,26 @@ can afford and one you cannot:
 **A full-length episode does not currently fit in the credit balance at any
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision
 before starting: top up, cut the runtime, or produce act by act across billing
-periods. Assembly stays free; subtitles run 0.05/voiced block (~5.7 credits per
-captioned pass, so ~11.4 if you draft then render) and voice takes ~0.8 each
-(~91, paid once and reused), so clips are essentially the entire bill and the
-model choice *is* the budget.
+periods. Assembly stays free, and **captions are now free too** — the 0.05/voiced
+block charge went with `explainer_video`, taking ~11.4 credits off the old
+episode estimate. Voice takes are ~0.8 each (~91, paid once and reused), so clips
+are essentially the entire bill and the model choice *is* the budget.
 
 A **Draft pass matters far more here than on a trailer** — 114 blocks of wrong
 pacing is unrecoverable. Draft the whole episode at 480p, watch it end to end,
 then re-render only the clips at full tier, reusing every voice take.
 
-`explainer_video` caps at **180 blocks** (30 min), so a 20-minute episode at
-120 blocks has headroom — the cap is not the binding constraint. Cost and
-session length are.
+**The 180-block (30 min) cap was `explainer_video`'s and is gone.**
+`assemble_final.sh` declares no block limit. What replaces it is a *runtime*
+limit rather than a count: the sandbox is ephemeral, foreground calls cap at
+120s, and a background job dies with the sandbox if it is not polled at least
+every 60s. A 120-block episode means ~240 files to download before assembly even
+starts, inside one chained command.
+
+**This is the least-proven part of the new path.** Trailer-scale assembly is six
+pairs in one call; episode-scale is not, and nothing has been run through it. Do
+not plan a longform render against an assumed ceiling — assemble one act first
+and measure how long it actually takes.
 
 ### Style key — needs a landscape sibling
 
@@ -745,8 +1020,8 @@ recomputing anything.
 
 ### Voices — one speaker per block
 
-Longform has characters speaking (dialogue as blockquotes), but `explainer_video`
-takes **exactly one `audio` per block**. So:
+Longform has characters speaking (dialogue as blockquotes), but the manifest
+carries **exactly one voice file per block**. So:
 
 - Split dialogue so no 10s block contains two speakers. A line exchange becomes
   two consecutive blocks, not one shared block.
@@ -769,16 +1044,24 @@ Arthur, Xavier and Vesper are measured (§3 table). **Zane is measured only on a
 short line and must be re-measured at length before ~110 takes are committed to
 him** — one unmeasured voice across a 19-minute episode is the most expensive
 version of the take-length mistake. Character lines are also structurally short
-against a 10s block, so apply §3's two outs — write the character a real
-paragraph, or let the take run short and centred deliberately — **per line**, and
-record each deliberate short take in the production record.
+against a 10s block — and **the deliberate short take is no longer available** as
+the second way out, because the assembler hard-rejects anything under 8.6s. Apply
+§3's remaining options **per line**: write the character a real ~40-word
+paragraph, fold the beat into a neighbouring block, or cut it. On an episode with
+~110 blocks of dialogue this is a scripting constraint, not a per-line
+adjustment — it wants deciding before the takes are generated, not after.
 
 ### ON-SCREEN TEXT — the one exception to text-free clips
 
-The trailer rule is that clips carry no text and captions are burned at
-assembly. That breaks here: `explainer_video` has **no text-overlay parameter**,
-and its subtitles are Whisper-transcribed *from the voiceover* — so a classical
-quotation card with no narration over it will produce no text at all.
+The trailer rule is that clips carry no text and captions come from the sidecar.
+That breaks here: `assemble_final.sh` has **no text-overlay parameter** either,
+and the sidecar is built from the narration table — so a classical quotation card
+with no narration over it will produce no text at all.
+
+**The card block still needs a voice take**, and now it must clear 8.6s like any
+other: a silent quotation card fails the narration-per-window assert
+(`blocks [..] have NO narration in their windows`). Narrate the quotation over its
+own card.
 
 Generate quotation cards as their **own blocks with the text in-frame**
 (`generate_image` for a still, or a held clip), styled off the chapter key.
@@ -793,25 +1076,32 @@ Do not attempt ~110 clips in one unbroken pass. Per act:
 2. **Append the job IDs to the production record immediately** — before moving
    on. The record is the crash-recovery file; a lost session with unrecorded IDs
    means paying twice.
-3. Assemble the act as its own `explainer_video` job to check pacing early.
+3. Assemble the act as its own `assemble_final.sh` run to check pacing early,
+   exporting each act's MP4 out of the sandbox before the call returns.
 
-Then join the act assemblies into the final cut with a last `explainer_video`
-pass — it accepts video job IDs, so act outputs are valid inputs.
+**The join is now the open problem.** `explainer_video` accepted video job IDs, so
+act outputs fed straight back in as inputs. `assemble_final.sh` does not work that
+way — it takes clip/voice *pairs* against a declared block count and asserts a
+`N × 10s` output, so an assembled 40-block act is not a valid input to it. Joining
+acts means a plain `ffmpeg concat` of the act MP4s, which is exactly the
+hand-rolled ffmpeg the workflow's own rules forbid inside its pipeline.
 
-**The one exception to captioning every assembly.** Burned-in captions are
-pixels, so an act assembly that gets captioned and then re-captioned at the join
-carries two overlapping caption layers. Therefore:
+Two routes, neither yet run here:
 
-- **Act assemblies that feed the join: no `subtitles`.** They are intermediate
-  video, not deliverables.
-- **The final join: `subtitles: { font: "anton" }`.** Once, at the end.
-- **Caption checking happens on the 480p draft**, which is a separate whole-
-  episode pass and *is* captioned. That is why the draft matters more on longform
-  than on a trailer — it is the only captioned artifact you see before the render.
+- **Assemble the whole episode in one call** and skip the join entirely. Removes
+  the problem, but it is the ~240-file download discussed above.
+- **Concat the act outputs** with our own ffmpeg, outside the sandbox's rules.
+  Defensible — the acts are already assembled correctly and a concat of equal-
+  geometry MP4s is a lossless remux — but it puts the −16 LUFS normalisation per
+  act rather than across the episode. Check levels at the seams.
 
-If you need to check captions on a single act without a full draft, assemble that
-act a second time *with* subtitles as a throwaway QA job (0.05/block) and do not
-feed that captioned version into the join.
+**Decide this before generating an episode's worth of takes**, not at the join.
+
+**Captioning is simpler than it was.** The old double-layering rule — act
+assemblies uncaptioned, captions only at the final join — existed because burned-in
+captions are pixels and would stack. Nothing is burned at assembly now, so act
+assemblies carry no captions by construction and there is no layering to avoid.
+Burn the sidecar once, over the finished episode.
 
 ### Finishing
 
@@ -839,10 +1129,19 @@ expand to reach 120.
   allows this, and it's the better default anyway.
 - **The CDN may be blocked too.** It has been blocked on every cut for a long time
   (`CONNECT tunnel failed, 403`), so assume the final MP4 cannot be fetched back
-  for visual QA. When that happens, **say so explicitly in the document** and
-  verify at the job-metadata level instead — all clips at the expected
-  dimensions, every take inside its window, assembly completed — then record the
-  CDN URL for manual download. Those links expire.
+  to *this host* for visual QA. When that happens, **say so explicitly in the
+  document** and verify at the job-metadata level instead — all clips at the
+  expected dimensions, every take inside its window, assembly completed — then
+  record the CDN URL for manual download. Those links expire.
+- **The sandbox is not behind that egress policy, and this is newly useful.**
+  `sandbox_exec` has its own internet access and its own ffmpeg — it has to, since
+  it downloads every clip and take to assemble them. So a check that was
+  impossible from the repo host can now run next to the file, in the same call
+  that assembles it: `ffprobe` the output, extract frames, sample the caption
+  margin columns for background luma. **This does not mean anyone watched it.**
+  The honest line in the production record is still *assembled and probed, not
+  visually verified* — automated checks catch a substituted font or an overflowing
+  margin, not whether the cut reads well.
 - **ffmpeg and Anton are installed by a hook, not baked into the image.** The
   container is ephemeral and rebuilt from the repo each session, so
   `.claude/hooks/session-start.sh` reinstalls both at session start — see
