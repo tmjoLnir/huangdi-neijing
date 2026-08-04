@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)",
+      "Bash(node scripts/build_subtitles.js:*)",
+      "Bash(node scripts/check_caption_fit.js:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git status:*)",
@@ -13,11 +14,12 @@
       "mcp__higgsfield__generate_image",
       "mcp__higgsfield__generate_video",
       "mcp__higgsfield__generate_audio",
-      "mcp__higgsfield__explainer_video",
       "mcp__higgsfield__job_display",
       "mcp__higgsfield__reframe",
       "mcp__higgsfield__upscale_video",
-      "mcp__higgsfield__media_upload"
+      "mcp__higgsfield__media_upload",
+      "mcp__higgsfield__media_confirm",
+      "mcp__higgsfield__sandbox_exec"
     ],
     "deny": [
       "Bash(npm uninstall *)",
