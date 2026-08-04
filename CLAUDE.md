@@ -30,6 +30,8 @@ One folder per chapter, one markdown file per cut. The current tree is:
 ```
 CLAUDE.md
 README.md
+.gitignore                                  # renders out, .srt/.vtt deliberately kept in
+.gitattributes                              # LF everywhere; media and art marked binary
 .claude/
   settings.json                             # Bash + Higgsfield MCP permission lists, SessionStart hook
   hooks/session-start.sh                    # reinstalls ffmpeg + the Anton font on the ephemeral host
@@ -198,7 +200,27 @@ edit/upload time.** The fourth, music, it still cannot *generate* — but it can
   back via pull request; feature branches are deleted after merge.
 - Commit messages describe the content deliverable (e.g. "Add 80-second Chapter 1 trailer: narration, shot list, and production record").
 - New script versions get a new file; never overwrite the previous file or version.
+- **The web-session clone is shallow, and history commands lie until you fix it.**
+  A truncated clone reports its cut-off points as root commits, so `git log` looks
+  short and `git merge-base` can return *nothing* for two branches that are in fact
+  directly related. Read that as "history not fetched", never as "unrelated
+  histories" — it is not evidence of a repo problem, and it has already produced one
+  wrong conclusion in this repo. Check `git rev-parse --is-shallow-repository`
+  before trusting any history claim, and run `git fetch --unshallow origin` first if
+  it says `true`.
 
 ## Prompt cleaner
 
-- Always prompt the user to clean up the initial prompt. Re-write and suggest a new prompt with specific words that the model need to achieve a consistent output required from this document and from the SKILL.md document. Get a confirmation from the user before proceeding with the next steps.
+**Before any run that generates assets or writes a cut document**, re-write the
+user's request as an explicit prompt — naming the chapter, the cut type, the block
+count, the model and tier, and whatever else this file and `SKILL.md` require for a
+consistent result — and **get confirmation before proceeding**. A vague brief is
+how a paid re-render starts, so this gate sits alongside the step-0 cost gate and
+the compliance gate rather than replacing either.
+
+**This is not a gate on conversation.** Answering a question, reading the repo,
+auditing a document, fixing a typo, running the caption scripts, or any other
+reversible non-generating work does not need a rewritten prompt first — just do it.
+Reach for this when the next step spends credits or commits a new cut, and when the
+brief is genuinely underspecified; if the request is already unambiguous, say what
+you understood it to mean and carry on.
