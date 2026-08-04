@@ -2,10 +2,16 @@
 
 **上古天真論篇第一 · The Editor**
 
-**Draft render (480×854, 9:16 vertical, 70s, MP4):** *not assembled — 6 of 7 voice
-takes cleared the assembler's speech gate; block 5 did not after ten attempts. All
-7 clips and 6 takes are generated and paid for. See **Assembly — blocked on block
-5**.*
+**Draft render (496×864, 9:16 vertical, 70.059s, MP4):**
+https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/04e722b9-616f-4273-b037-54b15cf0fde6.mp4
+
+**No captions on this file by design** — the assembler has no subtitle option, so
+captions are a separate step from the tracked sidecar. Do not upload it
+uncaptioned. **Download it**: the CDN link expires and the repo host cannot fetch
+it back.
+
+First cut in the repo assembled end-to-end on `assemble_final.sh`. Decode-validated
+by the script, narration confirmed present in all 7 windows.
 
 Companion teaser to `inner-canon-ch1-longform-v3.md`, previewing its Act II.
 Source translation: `inner-canon-ch1-translation-v4.md`.
@@ -26,13 +32,13 @@ One speaker per block. The speaker sits in the beat column, because
 
 | Block | Beat | Narration |
 |---|---|---|
-| 1 | Arthur (V.O.) — the hook | Chinese medicine has a founding text, and it is about two thousand years old. But the version we read came from one man, working in the eighth century, eight hundred years after the material. |
-| 2 | Arthur (V.O.) — the editor | His name was Wang Bing. In seven sixty-two, he found the canon in disarray: chapters out of order, passages repeated, sections missing. So he reorganised it, wrote a commentary, and supplied what he judged lost. |
+| 1 | Arthur (V.O.) — the hook | Chinese medicine has a founding text, and it is about two thousand years old. But the version the whole world reads came from one man, working in the eighth century, eight hundred years after the material he was editing. |
+| 2 | Arthur (V.O.) — the editor | His name was Wang Bing. In seven sixty-two he found the canon in disarray, chapters out of order and passages repeated, so he reorganised it, wrote a commentary, and supplied what he judged lost. |
 | 3 | Fan-di (Xavier) — the outrage | He added things. To the founding text of medicine. And everyone simply kept them. If a clerk did that to my records, he would be out of the palace by noon. And this man gets his name on the front. |
-| 4 | Dr-Qi (Vesper) — the correction | He was not a forger. He marked his additions in a different ink, so a reader could tell them apart. Did every copyist preserve that distinction? Not reliably. The canon we have is a curated object, not a fixed one. |
-| 5 | Arthur (V.O.) — why it survived | And it survived for ordinary reasons. Song officials funded scholars to fix the text. Printing turned one edition into thousands. And when physicians were licensed on the classics, memorising it became a career. |
-| 6 | Arthur (V.O.) — the withhold / title | A claim need not be true to be preserved. It has to be useful to someone with a budget. So what actually deserved to last? The Emperor's Inner Canon. Chapter One — The Sentence That Survived. |
-| 7 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. We present it as history and philosophy, we examine what it claims, and we say where evidence does not support it. |
+| 4 | Dr-Qi (Vesper) — the correction | He was not a forger, and that distinction matters. He marked his additions in a different coloured ink, so that any careful reader could tell them apart. Did every later copyist keep that marking? Not reliably at all. |
+| 5 | Arthur (V.O.) — why it survived | Nothing mysterious kept it alive. The state paid scholars to fix its wording, printing turned one edition into thousands, and every doctor who wanted to practise had to know it by heart. |
+| 6 | Arthur (V.O.) — the withhold / title | A claim need not be true to be preserved. It only has to be useful. So what actually deserved to last? The Emperor's Inner Canon. Chapter One — The Sentence That Survived. |
+| 7 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. We present the Inner Canon as history and philosophy, and we say plainly where the evidence does not support it. |
 
 Cast: Arthur, Xavier, Vesper — `seed_audio` presets at `speech_rate` 55.
 
@@ -93,7 +99,7 @@ throughout — it is the episode's visual thesis as much as a safety choice.
 
 ## Production record (Higgsfield)
 
-**Status: script only. Nothing generated. Step-0 gate open.**
+**Status: draft rendered and assembled 2026-08-04.**
 
 ### Preflight
 
@@ -136,7 +142,7 @@ All returned 480×854 first pass. Block 1 generated alone and checked before the
 other six. `IN THE DARK` pre-declined; **no preset swap offered on any of the
 seven** — third cut running with that result on this model.
 
-### Voiceover — 6 of 7 clear the gate
+### Voiceover — all 7 clear the gate
 
 Measured against the assembler's own gate (`silencedetect=noise=-45dB:d=0.25`,
 speech must land in **8.6–10.0s**), by running `assemble_final.sh` against each
@@ -147,54 +153,72 @@ take in the sandbox rather than trusting a rate table:
 | 1 | Arthur | `24af6fd9-1d98-4d18-868e-b244f44db5ed` | 9.97s | pass |
 | 2 | Arthur | `16de0a17-4339-44fd-be3f-e3ebf26f0933` | 8.81s | pass |
 | 3 | Xavier | `8128f157-087b-49d6-8c08-7e6e55edf286` | 9.64s | pass |
-| 4 | Vesper | `e8742ad4-1a67-4eca-8796-0b84ad3fd02d` | 8.50s | pass |
-| 5 | Arthur | — | — | **10 attempts, none in window** |
+| 4 | Vesper | `e797fe8b-800a-4fb6-8998-54dc25c04dba` | 9.06s | pass |
+| 5 | Arthur | `d77fdc18-b543-4541-b914-722a781f6a58` | 8.66s | pass |
 | 6 | Arthur | `0598c260-46eb-45cc-bdac-50aa5edb9b37` | 9.09s | pass |
 | 7 | Arthur | `0fd0254f-dff9-4967-94f4-db6cc7281d07` | 9.45s | pass |
 
-### Assembly — blocked on block 5
+### Assembly — complete
 
-**Not run.** `assemble_final.sh` asserts `--blocks 7` against the manifest before
-doing any work, and rejects any take outside the window, so a 7-block assembly
-cannot start while block 5 is missing.
+`sandbox_exec` → `assemble_final.sh`, 7 blocks, `--manifest pairs.txt`. Output
+**496×864, 70.059s**, decode-validated by the script, *"narration present in all
+7 windows"*. Exported via `media_upload` → `curl PUT` → `media_confirm` in the same
+chained command, media_id `04e722b9-616f-4273-b037-54b15cf0fde6`.
 
-**Block 5 cannot simply be dropped.** A 6-block cut would be 60s and inside the
-30–90s window, but block 5 is where this cut's debunk lives — it attributes the
-canon's survival to state funding, printing and licensing rather than to secret
-knowledge. The compliance notes make that load-bearing, so dropping it changes
-the audit rather than just the runtime.
+**This is the repo's first end-to-end run on the new assembler.** Four things the
+first run established, none of which were in the skill:
 
-### The block 5 measurements — why this is structural, not bad luck
+- **Output geometry is 496×864, not the clips' 480×854.** The assembler pads to
+  even/safe dimensions rather than passing source geometry through. Harmless, but
+  the sidecar and any burn should be built against **496×864**, not the clip size.
+- **`background: true` lost the whole run.** The transport call timed out and the
+  sandbox was reclaimed with nothing on disk. The 7-block assembly finishes inside
+  the 120s foreground budget, so run it foreground; reserve background for longform.
+- **The gate reports every block before failing**, so one run diagnoses the whole
+  manifest — but it stops at the *first* bad take, so a cut with several failures
+  needs several runs to enumerate them.
+- **The gate is on file duration here.** For every take the script reported
+  `file == speech` with zero lead silence, so `seed_audio` output has no padding to
+  trim and file length is the number to design against.
 
-Ten takes, Arthur, `speech_rate` 55, texts from 24 to 37 words:
+- **Voiceover** (`seed_audio`, presets **Arthur** `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, **Xavier** `43173c95-3ec8-446a-a162-6504332c578b`, **Vesper** `c3204739-4084-41a3-9dc5-c805b307ec18`, speech_rate 55): block 1 `24af6fd9-1d98-4d18-868e-b244f44db5ed` (9.97s), block 2 `16de0a17-4339-44fd-be3f-e3ebf26f0933` (8.81s), block 3 `8128f157-087b-49d6-8c08-7e6e55edf286` (9.64s), block 4 `e797fe8b-800a-4fb6-8998-54dc25c04dba` (9.06s), block 5 `d77fdc18-b543-4541-b914-722a781f6a58` (8.66s), block 6 `0598c260-46eb-45cc-bdac-50aa5edb9b37` (9.09s), block 7 `0fd0254f-dff9-4967-94f4-db6cc7281d07` (9.45s).
 
-| Words | Speech |
-|---|---|
-| 37 | 11.48s |
-| 31 | 10.69s |
-| 26 | 10.23s |
-| 24 | 7.05s |
-| 26 *(re-roll, identical text)* | 7.79s |
-| 27 | 11.17s |
-| 26 | 7.65s |
-| 26 | 8.34s |
-| 28 | 11.66s |
-| 27 | 10.68s |
+*(Single-line form above is what `build_subtitles.js` parses; the table is for reading.)*
 
-Two findings, and the second is the important one:
+### Block 5 took fourteen takes — and what actually explains it
+
+Block 5 was the whole cost of this run. Fourteen Arthur takes, `speech_rate` 55,
+24 to 37 words. Twelve missed the 8.6–10.0s window:
+
+| Attempt | Words | Speech | |
+|---|---|---|---|
+| 1–3 | 37, 31, 26 | 11.48, 10.69, 10.23s | over |
+| 4–5 | 24, 26 *(re-roll, identical text)* | 7.05, 7.79s | under |
+| 6–8 | 27, 26, 26 | 11.17, 7.65, 8.34s | over, under, under |
+| 9–10 | 28, 27 | 11.66, 10.68s | over |
+| 11–12 | 37, 35 — **rewritten as flowing prose** | 11.98, **17.64s** | over |
+| 13 | 32 — **"Song" removed** | **8.66s** | **pass** |
+| 14 | 30 — "Song" removed, four sentences | 7.79s | under |
+
+Three findings, in increasing order of usefulness:
 
 - **Word count does not control duration.** The same 26-word text returned 10.23s
-  and 7.79s on consecutive generations — a 2.4s spread with the input held
-  constant. Any word-count table for this voice is describing noise.
-- **The results are bimodal, and the gate sits in the gap.** Every take landed
-  either in a *fast* cluster (7.05–8.34s) or a *slow* one (10.23–11.66s). The
-  required 8.6–10.0s window falls between the two clusters, so for this block's
-  content the gate is not merely hard to hit — it is largely off-distribution.
+  and 7.79s on consecutive generations — 2.4s apart, input identical.
+- **The "three declaratives" theory was wrong.** Attempts 11–12 recast the block as
+  connected prose, on the theory that three parallel short sentences drove the
+  extremes. They produced the two *longest* takes of the fourteen, including 17.64s
+  from a 35-word line. Recorded because it was plausible and it failed.
+- **Removing the word "Song" coincided with the only two in-range results** — 8.66s
+  and 7.79s, the tightest pair in the set and the only pass. **One trial, not a
+  controlled test**, and with a 2.4s spread on identical text it may be
+  coincidence. But a proper-noun homograph (*Song* the dynasty vs. *song*) is a
+  plausible prosody trap and is cheap to test on the next cut. **A lead, not a
+  rule** — and note the cost: block 5 now says *"the state"* rather than *"the Song
+  state"*, which is vaguer history than the longform gives.
 
-Six other blocks cleared it, so this is not a general property of the window; it
-is an interaction with this block's phrasing — a three-item institutional list
-with proper nouns. **Rewriting block 5's sentence structure is more likely to work
-than another re-roll**, and that is the next thing to try.
+For the longform: at 108 blocks this gate is the dominant risk. Block 5 alone burned
+~11 credits. Budget re-takes explicitly and measure with `assemble_final.sh`, not a
+rate table.
 
 ### Credit spend
 
@@ -208,6 +232,11 @@ than another re-roll**, and that is the next thing to try.
 Roughly 8 of that is block 5 alone. Balance before the run: **862.6**.
 
 ### Superseded takes
+
+**A correction to an earlier figure in this document.** Block 4's 8.497s take was
+logged as "8.50s pass". It is not a pass — it is 0.1s *under* the floor, and the
+assembler rejected it on the first assembly attempt. Rounding to two significant
+figures hid a hard failure, so durations here are kept to 3 d.p.
 
 Kept as evidence for the next cut: block 1 `95471562-e582-4651-9ca4-4e6ad04038bc`
 (8.24s, under), block 2 `2edcfa9e-3f54-4ebc-807a-997f67206f89` (13.26s, over),
