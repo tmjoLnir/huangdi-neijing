@@ -844,8 +844,15 @@ expand to reach 120.
   **ondrej/php** PPAs are 403 under the egress policy, so `apt-get update` always
   prints two warnings that are unrelated to this pipeline; and if the hook is
   ever removed, the burn step still *runs* and still produces a file — just in
-  the wrong font. Confirm with `ffmpeg -version` and `fc-match Anton` before
-  burning, not after.
+  the wrong font.
+- **The hook is async, so on a cold container the toolchain arrives after the
+  session does.** Run `ffmpeg -version` and `fc-match Anton` **before burning,
+  not after** — on a first session in a fresh container the install may still be
+  in flight. A warm or resumed container skips the install entirely and reports
+  `ffmpeg and Anton already present`, which is the confirmation you want to see.
+  The hook installs the font before the binary on purpose: a burn attempted mid
+  install then fails loudly with `ffmpeg: not found` rather than quietly
+  succeeding in a substituted font. Do not reorder it.
 
 ### What lands in git
 
