@@ -17,25 +17,20 @@
 # anything installed by hand is gone by the next session. This hook puts both
 # back automatically.
 #
-# ── Async, and the one race it creates ───────────────────────
-# The install runs in the background so the session starts immediately, which
-# means a cold container can be answering prompts while ffmpeg is still
-# unpacking. Only one interleaving is actually dangerous:
+# ── Synchronous, deliberately ────────────────────────────────
+# The session waits for this hook to finish. On a cold container that costs
+# roughly a minute of startup, and buys the guarantee that both tools are present
+# before the first prompt runs — so there is no window in which a burn can pick
+# up a substituted font and produce a finished-looking, wrong deliverable. On a
+# warm or resumed container both checks pass immediately and the hook is free.
 #
-#   neither installed yet   → burn fails with "ffmpeg: not found". Loud, safe.
-#   Anton in, ffmpeg not    → same loud failure. Safe.
-#   ffmpeg in, Anton not    → burn SUCCEEDS in a substituted font. Silent, wrong.
+# Anton is installed before ffmpeg. The font is one small download and ffmpeg is
+# a slow apt transaction, so if the hook is ever cut short — a harness timeout, a
+# reclaimed container — the half-installed state left behind is the one that
+# fails loudly with "ffmpeg: not found", not the one that burns successfully in
+# the wrong font. Do not reorder these.
 #
-# So Anton is installed FIRST even though ffmpeg is the headline dependency: the
-# font is a one-file download and ffmpeg is a slow apt transaction, so doing them
-# in this order keeps the window where the toolchain is half-present in the
-# fail-loud state for practically all of its duration. Do not reorder these.
-#
-# Before burning on a cold session, confirm with `ffmpeg -version` and
-# `fc-match Anton` — see the skill's Environment caveats.
-#
-# Idempotent: when both are already present the hook finishes synchronously and
-# never declares async at all, so a warm or resumed container has no race window.
+# Idempotent: both installs are skipped when the tool is already present.
 
 set -euo pipefail
 
@@ -55,15 +50,11 @@ have_anton() {
   command -v fc-match >/dev/null 2>&1 && fc-match Anton 2>/dev/null | grep -qi anton
 }
 
-# Fast path. Nothing to install means nothing to defer: stay synchronous and let
-# the session start against a toolchain that is verifiably already there.
+# Nothing to install on a warm container — report the toolchain and return.
 if have_ffmpeg && have_anton; then
   echo "session-start: ffmpeg and Anton already present."
   exit 0
 fi
-
-# Everything below runs in the background; the session starts now.
-echo '{"async": true, "asyncTimeout": 300000}'
 
 # A missing toolchain must not stop the session from starting: most work here is
 # writing markdown, and only the finishing step needs ffmpeg. Report loudly and

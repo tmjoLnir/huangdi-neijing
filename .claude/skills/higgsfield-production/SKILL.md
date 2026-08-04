@@ -845,14 +845,15 @@ expand to reach 120.
   prints two warnings that are unrelated to this pipeline; and if the hook is
   ever removed, the burn step still *runs* and still produces a file — just in
   the wrong font.
-- **The hook is async, so on a cold container the toolchain arrives after the
-  session does.** Run `ffmpeg -version` and `fc-match Anton` **before burning,
-  not after** — on a first session in a fresh container the install may still be
-  in flight. A warm or resumed container skips the install entirely and reports
-  `ffmpeg and Anton already present`, which is the confirmation you want to see.
-  The hook installs the font before the binary on purpose: a burn attempted mid
-  install then fails loudly with `ffmpeg: not found` rather than quietly
-  succeeding in a substituted font. Do not reorder it.
+- **The hook is synchronous**, so the session does not start until both tools are
+  in place — a cold container pays about a minute of startup for that, and a warm
+  one pays nothing and reports `ffmpeg and Anton already present`. It still costs
+  nothing to run `ffmpeg -version` and `fc-match Anton` **before burning rather
+  than after**, and it is the only check that catches a hook that was removed,
+  edited, or cut short. The hook installs the font before the binary on purpose:
+  an interrupted run then leaves the state that fails loudly with
+  `ffmpeg: not found` rather than the one that quietly burns in a substituted
+  font. Do not reorder it.
 
 ### What lands in git
 
