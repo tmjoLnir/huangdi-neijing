@@ -2,8 +2,10 @@
 
 **上古天真論篇第一 · The Editor**
 
-**Final video (720×1280, 9:16 vertical, 70s, MP4):** *not produced — script only.
-Step-0 gate open.*
+**Draft render (480×854, 9:16 vertical, 70s, MP4):** *not assembled — 6 of 7 voice
+takes cleared the assembler's speech gate; block 5 did not after ten attempts. All
+7 clips and 6 takes are generated and paid for. See **Assembly — blocked on block
+5**.*
 
 Companion teaser to `inner-canon-ch1-longform-v3.md`, previewing its Act II.
 Source translation: `inner-canon-ch1-translation-v4.md`.
@@ -109,7 +111,114 @@ balance **862.6**, and the v3 run came in at **75.6** against a ~74 estimate.
 Budget extra for re-takes: the word counts are unvalidated against the new window
 and the assembler rejects both over and under, so a first pass is calibration.
 
-### Style key, clips, voiceover, assembly
+### Step-0 gate — run 2026-08-04
+
+`balance` **862.6**; `get_cost` on `seedance_2_0_mini` 10s / 9:16 / 480p:
+**10 credits/clip**. Draft tier confirmed by the user.
+
+### Style key
+
+Reused from v1: `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (`nano_banana_pro`,
+768×1376). Not regenerated; no new lineage entry.
+
+### Clips — all 7 complete
+
+`seedance_2_0_mini`, **Draft 480p**, 10s, 9:16 **480×854**, `generate_audio: false`:
+block 1 `ccfcbd03-e683-4b72-b2c4-0ec2ca216167`, block 2
+`d8a16215-03e5-4130-9e71-7fe52e933e7a`, block 3
+`6099bebf-6779-426c-8b12-fb8ab3568fef`, block 4
+`c9754489-108a-4041-b04b-d18afe2ae019`, block 5
+`7efc3726-606b-4001-aad0-a7a2d9b3ad93`, block 6
+`ccdae7cb-c6f3-4774-954d-a4b0f3fd75bb`, block 7
+`ff4c21f6-2611-4326-960f-b2bb14504a0d`.
+
+All returned 480×854 first pass. Block 1 generated alone and checked before the
+other six. `IN THE DARK` pre-declined; **no preset swap offered on any of the
+seven** — third cut running with that result on this model.
+
+### Voiceover — 6 of 7 clear the gate
+
+Measured against the assembler's own gate (`silencedetect=noise=-45dB:d=0.25`,
+speech must land in **8.6–10.0s**), by running `assemble_final.sh` against each
+take in the sandbox rather than trusting a rate table:
+
+| Block | Voice | Job ID | Speech | |
+|---|---|---|---|---|
+| 1 | Arthur | `24af6fd9-1d98-4d18-868e-b244f44db5ed` | 9.97s | pass |
+| 2 | Arthur | `16de0a17-4339-44fd-be3f-e3ebf26f0933` | 8.81s | pass |
+| 3 | Xavier | `8128f157-087b-49d6-8c08-7e6e55edf286` | 9.64s | pass |
+| 4 | Vesper | `e8742ad4-1a67-4eca-8796-0b84ad3fd02d` | 8.50s | pass |
+| 5 | Arthur | — | — | **10 attempts, none in window** |
+| 6 | Arthur | `0598c260-46eb-45cc-bdac-50aa5edb9b37` | 9.09s | pass |
+| 7 | Arthur | `0fd0254f-dff9-4967-94f4-db6cc7281d07` | 9.45s | pass |
+
+### Assembly — blocked on block 5
+
+**Not run.** `assemble_final.sh` asserts `--blocks 7` against the manifest before
+doing any work, and rejects any take outside the window, so a 7-block assembly
+cannot start while block 5 is missing.
+
+**Block 5 cannot simply be dropped.** A 6-block cut would be 60s and inside the
+30–90s window, but block 5 is where this cut's debunk lives — it attributes the
+canon's survival to state funding, printing and licensing rather than to secret
+knowledge. The compliance notes make that load-bearing, so dropping it changes
+the audit rather than just the runtime.
+
+### The block 5 measurements — why this is structural, not bad luck
+
+Ten takes, Arthur, `speech_rate` 55, texts from 24 to 37 words:
+
+| Words | Speech |
+|---|---|
+| 37 | 11.48s |
+| 31 | 10.69s |
+| 26 | 10.23s |
+| 24 | 7.05s |
+| 26 *(re-roll, identical text)* | 7.79s |
+| 27 | 11.17s |
+| 26 | 7.65s |
+| 26 | 8.34s |
+| 28 | 11.66s |
+| 27 | 10.68s |
+
+Two findings, and the second is the important one:
+
+- **Word count does not control duration.** The same 26-word text returned 10.23s
+  and 7.79s on consecutive generations — a 2.4s spread with the input held
+  constant. Any word-count table for this voice is describing noise.
+- **The results are bimodal, and the gate sits in the gap.** Every take landed
+  either in a *fast* cluster (7.05–8.34s) or a *slow* one (10.23–11.66s). The
+  required 8.6–10.0s window falls between the two clusters, so for this block's
+  content the gate is not merely hard to hit — it is largely off-distribution.
+
+Six other blocks cleared it, so this is not a general property of the window; it
+is an interaction with this block's phrasing — a three-item institutional list
+with proper nouns. **Rewriting block 5's sentence structure is more likely to work
+than another re-roll**, and that is the next thing to try.
+
+### Credit spend
+
+| Item | Credits |
+|---|---|
+| Style key | 0 — reused |
+| 7 clips, Draft 480p | 70 |
+| Voice takes — 6 kept, ~13 spent incl. calibration and block 5 | ~10 |
+| **Total this run** | **~80** |
+
+Roughly 8 of that is block 5 alone. Balance before the run: **862.6**.
+
+### Superseded takes
+
+Kept as evidence for the next cut: block 1 `95471562-e582-4651-9ca4-4e6ad04038bc`
+(8.24s, under), block 2 `2edcfa9e-3f54-4ebc-807a-997f67206f89` (13.26s, over),
+block 4 `1e161c05-cef5-4b86-b5d8-374769ab0e74` (13.23s, over),
+`30bc27a1-6edf-4aa8-9722-fdce5735d587` (7.73s, under),
+`54c370ef-4e65-4df3-985f-0689c33df2ea` (7.23s, under), block 6
+`97f4cb99-3c3f-489d-9b79-82046c37ecee` (13.97s, over), block 7
+`29a70d1d-0589-4086-a6a3-b500ab273e50` (12.28s, over). Block 5's ten are listed
+above; the closest is `421e8693-8a09-4913-895a-18bc783077cd` at 8.34s.
+
+### Superseded — the original planning figures
 
 **Pending.** Style key reuses `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (768×1376) as
 `image_references` on every clip. Clips `seedance_2_0_mini` at the confirmed tier,
