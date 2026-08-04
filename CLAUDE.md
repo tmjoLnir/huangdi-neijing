@@ -188,8 +188,7 @@ edit/upload time on every cut:
   `claude/<description>-<id>` branches cut from it, pushed to origin, and merged
   back via pull request; feature branches are deleted after merge.
 - Commit messages describe the content deliverable (e.g. "Add 80-second Chapter 1 trailer: narration, shot list, and production record").
-- New script versions get a new file; never overwrite or rewrite a prior version's
-  document, since its production record is the reproduction evidence for the next cut.
+- New script versions get a new file; never overwrite the previous file or version.
 
 ## Prompt cleaner
 
