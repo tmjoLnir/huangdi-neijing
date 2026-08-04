@@ -1,6 +1,6 @@
 // Flags narration clauses that will overflow explainer_video's BURNED-IN captions.
 //
-//   node scripts/check_caption_fit.js output/episode-1/inner-canon-ch1-trailer-v1.md
+//   node scripts/check_caption_fit.js output/episode-1/inner-canon-ch1-trailer-v3.md
 //   node scripts/check_caption_fit.js <doc>.md --format 16:9
 //   node scripts/check_caption_fit.js output/episode-*/*-v*.md      # sweep every cut
 //

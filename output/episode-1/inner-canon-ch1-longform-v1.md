@@ -539,7 +539,7 @@ At the skill's 2026-07-31 snapshot prices, **108 blocks**:
 | `seedance_2_0_mini` 480p (draft) | 10 | **~1,080** |
 | `seedance_2_0_mini` 720p (full) | 25 | **~2,700** |
 
-Plus a 16:9 style key (~2), ~108 voice takes (~65, paid once and reused across
+Plus a 16:9 style key (~2), ~108 voice takes (~86, paid once and reused across
 draft and full), and subtitles at 0.05/voiced block (~5.4 per captioned pass).
 
 **This does not fit the balance.** The last measured balance was **938.2 credits**
