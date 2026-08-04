@@ -30,9 +30,11 @@ before generating anything.
 >   false` went from a cost saving to a correctness requirement — see
 >   [step 2](#2-clips).
 >
-> **No cut has yet been assembled end-to-end on this path.** The script's own gates
-> are quoted below from source, but the first run through it should be treated as
-> a shakedown, not a render.
+> **One cut has now been through this path end-to-end** — chapter 1 trailer v5,
+> assembled 2026-08-04 (`output/episode-1/inner-canon-ch1-trailer-v5.md`). The
+> [step 3](#3-voiceover) rates are re-measured from that run and are no longer
+> estimates; the rest of this file is still only one run old, so treat the second
+> cut as confirmation rather than routine.
 
 `output/episode-1/inner-canon-ch1-trailer-v3.md` is the reference document —
 match its section order on any new cut. Note that `episode-<N>` is the **chapter number of the file name of the input script**, not a sequential index, so the folders are not consecutive and
@@ -308,30 +310,62 @@ what fits a line inside a fixed 10s block. **The full cast is cast permanently**
 (CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
-| Role | Voice | `voice_id` | Measured rate | 8.6–10.0s window |
-|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.73 words/sec** | **32–37 words** |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.55 words/sec** | **39–45 words** |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.42 words/sec** | **38–44 words** |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | *re-measure at length* |
+| Role | Voice | `voice_id` | Measured rate | Draft to | Observed in-window |
+|---|---|---|---|---|---|
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.65 words/sec** | **32–36 words** | 31–39 words @ 8.66–9.97s (5 takes) |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.15 words/sec** | **36–41 words** | 40 words @ 9.64s (1 take) |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.19 words/sec** | **37–41 words** | 38 words @ 9.06s (1 take) |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | — | *re-measure at length* |
 
-Rates measured 2026-08-01 on chapter 1, one take per voice, `seed_audio` presets.
+**Rates re-measured 2026-08-04 from the chapter 1 trailer v5 run**
+(`output/episode-1/inner-canon-ch1-trailer-v5.md`) — the first cut assembled
+end-to-end on `assemble_final.sh`, and so the first whose figures come from the
+assembler's own gate rather than from an estimate. Each is words of *shipped*
+narration over the gate's measured speech, pooled per voice. `Draft to` is
+`rate × 8.6` to `rate × 10.0`, rounded inwards so both edges clear.
+
+**All three came back slower than the 2026-08-01 figures they replace** (Arthur
+3.73, Xavier 4.55, Vesper 4.42) — Arthur by 2%, Vesper by 5%, **Xavier by 9%**. The
+old columns therefore ran long at the top: a 45-word Xavier line, legal under the
+old table, computes to **10.8s** on the measured rate — a hard assembly failure
+with no re-roll that saves it. Note what this does *not* explain, though: Vesper's
+block needed five takes to land one, and only the first missed over (13.23s) while
+three missed under (7.73, 7.23, **8.497s**). The table's error sets the ceiling
+risk; the spread below accounts for the rest.
+
+That last one is why durations belong in the record at **3 decimal places**: it was
+written up as "8.50s pass" and carried as a keeper until the assembly stopped on
+it. It is 0.103s under the floor. **A take within ~0.2s of either edge is checked
+against the number, never eyeballed** — the gate does not round in your favour.
+
 Zane has only been measured on a 5-word line (2.3–2.6s), where pause overhead
 dominates and no reliable words/sec can be derived — **measure him on a
-full-length line before writing him one.**
+full-length line before writing him one.** v5 kept him deliberately silent for
+exactly this reason; longform v3 gives him two full blocks and cannot ship until
+he is measured.
 
-**The word columns are recomputed for the new window and are not themselves
-measured.** They are `rate × 8.6` to `rate × 10.0`, carried over from rates taken
-against the old 6–8s window. Two things could move them, and both point the same
-way — *shorter* than the arithmetic suggests:
+**Two of the three doubts about the old columns are now settled, and the third got
+worse:**
 
-- **The rates may be file-duration rates, not speech rates.** The assembler gates
-  on *detected speech* with the provider's head and tail padding trimmed off. If
-  the 2026-08-01 figures were taken against raw take length, they understate the
-  true speaking rate, and these word counts overshoot.
-- **`seed_audio` is bimodal.** The assembler's own source note records the same
-  line returning near 9.0s or near 10.4s across generations, with pace wandering
-  between runs. A word count is a starting estimate here, not a setting.
+- **Settled — these are speech rates, and file duration is the same number.** The
+  live hypothesis was that the old figures were taken against raw take length,
+  which would make them understate the true rate. It is wrong: the assembler
+  reported `file == speech` with **zero lead silence** on all seven kept takes, so
+  `seed_audio` ships no padding to trim. (This has a second consequence, in
+  [Subtitles](#subtitles).)
+- **Settled — the word columns are measurements now, not arithmetic.** Every
+  figure above comes from a take that cleared the gate.
+- **Worse — the spread is wider than the window.** Identical 26-word text returned
+  **10.23s and 7.79s** on consecutive generations: 2.44s apart, on a window 1.4s
+  wide. A word count cannot be a setting when the noise exceeds the target.
+
+**Read the rate as survivor-biased, and budget re-takes accordingly.** 3.65 w/s is
+what Arthur's *passing* takes delivered. Across all 18 Arthur takes whose text and
+duration are both recorded — the four other blocks' keepers plus block 5's fourteen
+attempts — he ran **3.04 w/s**, because a block passes on the roll that comes back
+fast. A line drafted at 3.65 is sized for the fast mode and will regularly come
+back over the ceiling. v5's block 5 took **fourteen attempts and ~11 credits** to
+land one take in the window.
 
 **Re-measure with `speech_metrics.sh` before committing a full cut to these
 numbers** — see the window section below for the call. Treat a first pass at these
@@ -368,9 +402,9 @@ take length** — if a take lands short, rewrite the line longer or trade full s
 for commas; do not re-render it at a different rate expecting a different
 duration. All four voices run at `speech_rate` 55.
 
-**Character lines are structurally short, and a block is structurally 10s.** At
-4.4–4.6 words/sec, Xavier and Vesper now need ~40 words to clear the 8.6s floor —
-which is a speech, not an interjection.
+**Character lines are structurally short, and a block is structurally 10s.** At the
+measured 4.15–4.19 words/sec, Xavier and Vesper need **36–37 words** to clear the
+8.6s floor and cannot pass ~41 — which is a speech, not an interjection.
 
 **The old second way out is now closed.** Letting a take run short and centred —
 a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
@@ -384,7 +418,8 @@ So a short character beat now costs a structural decision, not a note in the
 record. The options, in the order worth trying:
 
 - **Write the character a real paragraph** — a reframe or a monologue that earns
-  its ~40 words.
+  its 36–41 words. Chapter 1 v5 did this twice: Xavier cleared at 40 words → 9.64s
+  on the first roll, Vesper at 38 words → 9.06s only after four rejected takes.
 - **Fold the beat into a neighbouring block** so one voice carries the full window
   and the interjection lives inside it. This changes the block count, so it
   reaches the cost preflight.
@@ -433,8 +468,8 @@ voice, and it moves:
 | | |
 |---|---|
 | Speech per 10s block | **8.6–10.0s — fixed, applies to every voice** |
-| Line length | per voice — **32–37 words Arthur, 39–45 Xavier, 38–44 Vesper** (computed, not measured) |
-| Delivery rate | per voice — **3.73 / 4.55 / 4.42 words/sec** for Arthur / Xavier / Vesper |
+| Line length | per voice — **32–36 words Arthur, 36–41 Xavier, 37–41 Vesper** (measured, v5) |
+| Delivery rate | per voice — **3.65 / 4.15 / 4.19 words/sec** for Arthur / Xavier / Vesper |
 
 **Take the line length from the voice table above, never from another cut's
 document.** A word budget written for one voice undershoots or overshoots another
@@ -453,12 +488,14 @@ sandbox_exec({ command:
 
 Hand-rolled `silenceremove` or volume-detect math measures something else.
 
-**Expect regenerations, and budget for them.** `seed_audio` returns the same line
-near 9.0s or near 10.4s depending on the run — the assembler's source records pace
-wandering between generations on identical text. The 8.6s floor was chosen to
-catch the lower mode, so **only the upper mode needs a rewrite**; a take that
-comes back over the ceiling is often the same line that would have passed on a
-re-roll. Re-roll once before rewriting, at ~0.8 credits a take.
+**Expect regenerations, and budget for them.** `seed_audio` pace wanders between
+generations on identical text, and **v5 measured that spread wider than the
+assembler's own source note claims** — the same 26-word line came back at **10.23s
+and 7.79s**, missing the window at *both* ends rather than only the top. So the old
+reading, that only the upper mode needs a rewrite, does not hold: a re-roll can
+land either side of the window. Re-roll once before rewriting, at ~0.8 credits a
+take — but note the ceiling on that strategy. v5's block 5 alternated re-rolls and
+rewrites for **fourteen takes and ~11 credits** on one block.
 
 ### Dead air is no longer the failure it was
 
@@ -501,6 +538,14 @@ Isolating sentence count against a near-fixed word count, same voice, same rate:
 **Each additional sentence boundary costs roughly 0.55–0.7s**, and over the range
 a 10s block allows, that dominates the word count. v3 shipped one take at 8.14s
 and two more at 7.9s purely from sentence count.
+
+**v5 measured that cost far lower at the top of the range.** Its blocks 5 and 6 are
+both 32 Arthur words; block 5 is two sentences and landed 8.66s, block 6 is five
+sentences and landed 9.09s — **+0.14s per boundary, not 0.55–0.7s**. That is one
+pair on a voice whose run-to-run noise is ±1.2s, so it settles nothing by itself.
+Read it as a reason not to plan a thin line up to the floor on punctuation: at
+0.14s a boundary you would need eight of them, and the pause warning below fires
+long before that.
 
 So the two findings bracket the same curve rather than contradicting each other:
 
@@ -921,10 +966,18 @@ match.** Both centre the take in its block, but on different quantities:
 | `build_subtitles.js:114` | take **file duration** from the production record | `blockStart + (10 − file_duration) / 2` |
 | `assemble_final.sh` | **detected speech**, padding trimmed | `blockStart + (10 − speech) / 2` |
 
-A `seed_audio` take carries leading and trailing silence, so `file_duration >
-speech` and the sidecar's cues therefore start **early by `(file_duration −
-speech) / 2`** — around 0.3s on a take with 0.6s of total padding, and worse on a
-heavily padded one. Captions lead the voice slightly, on every block.
+A take that carries leading and trailing silence has `file_duration > speech`, and
+the sidecar's cues therefore start **early by `(file_duration − speech) / 2`** —
+around 0.3s on a take with 0.6s of total padding, and worse on a heavily padded
+one. Captions would lead the voice slightly, on every block.
+
+**Measured 2026-08-04: on `seed_audio` the two quantities are the same number.**
+All seven of v5's kept takes reported `file == speech` with zero lead silence, so
+the drift computes to **0.00s** and a sidecar built from a `seed_audio` cut's
+durations lines up as it always did. The mismatch in the table above is real in the
+code and would bite on any take that *does* carry padding — an uploaded or
+hand-mixed one — so neither fix below is redundant. But **do not hand-nudge cues on
+a `seed_audio` cut** to correct a drift that was not there.
 
 Two ways to correct it, and the second is authoritative:
 
