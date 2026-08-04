@@ -195,6 +195,11 @@ withdrawn rather than as a transient disconnect, and use the fallback below.
 
 #### Fallback — assemble by hand, no `explainer_video` required
 
+**Runnable:** `bash output/episode-1/assemble-ch1-trailer-v3.sh` — the steps below,
+with the URLs and per-block padding already filled in. Run it where `ffmpeg` and
+the CDN are both reachable; the repo host has neither. The prose below documents
+what it does, so the procedure survives the script's URLs expiring.
+
 **This cut does not need the tool.** Its assembly is fully determined: seven clips
 already exactly 10s, one take per block, each take centred in its window. That is
 the whole of what `explainer_video` would do here, and none of it needs a service.
