@@ -1,3 +1,3 @@
-This is a video-content-production repository, not a software project. It holds production documents for a dramatized documentary series adapting the Huangdi Neijing (The Emperor's Inner Canon, the foundational classical text of Chinese medicine).
+This repo uses a combination of claude and higgsfield to develop the scripts and videos for contents adapted from Huangdi Neijing. 
 
-It uses a combination of claude and higgsfield to write the script and to animate the given storyline adapted from Huangdi Neijing.
+Assets like character cast, style and storyline construction supported by AI and are proprietary in this repo. Created, written and edited by Joshua Chin.
