@@ -2,13 +2,22 @@
 
 **上古天真論篇第一 · The Editor**
 
-**Draft render (496×864, 9:16 vertical, 70.059s, MP4):**
+**Finished draft (496×864, 70.058s, MP4) — `renders/inner-canon-ch1-trailer-v5-final.mp4`**
+Captions burned, history lower-third and end disclaimer card in place, music
+outstanding. Built 2026-08-05; see *Captions and on-screen text* below. Not
+committed — `renders/` and `*.mp4` are gitignored.
+
+**Bare assembler output, uncaptioned (496×864, 70.059s, MP4):**
 https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/04e722b9-616f-4273-b037-54b15cf0fde6.mp4
 
-**No captions on this file by design** — the assembler has no subtitle option, so
+**No captions on that file by design** — the assembler has no subtitle option, so
 captions are a separate step from the tracked sidecar. Do not upload it
 uncaptioned. **Download it**: the CDN link expires and the repo host cannot fetch
 it back.
+
+**496×864 is not exactly 9:16** (0.5741 against 0.5625) — the assembler rescaled
+the 480×854 clips rather than passing their geometry through. Recorded here
+because every downstream caption and overlay value derives from it.
 
 First cut in the repo assembled end-to-end on `assemble_final.sh`. Decode-validated
 by the script, narration confirmed present in all 7 windows.
@@ -168,9 +177,15 @@ chained command, media_id `04e722b9-616f-4273-b037-54b15cf0fde6`.
 **This is the repo's first end-to-end run on the new assembler.** Four things the
 first run established, none of which were in the skill:
 
-- **Output geometry is 496×864, not the clips' 480×854.** The assembler pads to
-  even/safe dimensions rather than passing source geometry through. Harmless, but
-  the sidecar and any burn should be built against **496×864**, not the clip size.
+- **Output geometry is 496×864, not the clips' 480×854.** ~~The assembler pads to
+  even/safe dimensions~~ — **corrected 2026-08-05 by measurement: it *rescales*,
+  it does not pad.** Edge-strip luma sampled at t=30s and t=42s returns real
+  picture at every border (cols 0–8: 196.28 / 128.21; rows 0–5: 192.24 / 192.76),
+  matching the adjacent interior strip within ~1–2 units. There are no black bars
+  to crop. The practical consequence is the aspect drift: 480×854 is 0.5620
+  (essentially 9:16), 496×864 is 0.5741, so **the delivered file is ~2% wider than
+  9:16** and forcing it to 720×1280 stretches vertically by 2.1%. Build the
+  sidecar and any burn against **496×864**, not the clip size and not 720×1280.
 - **`background: true` lost the whole run.** The transport call timed out and the
   sandbox was reclaimed with nothing on disk. The 7-block assembly finishes inside
   the 120s foreground budget, so run it foreground; reserve background for longform.
@@ -219,6 +234,75 @@ Three findings, in increasing order of usefulness:
 For the longform: at 108 blocks this gate is the dominant risk. Block 5 alone burned
 ~11 credits. Budget re-takes explicitly and measure with `assemble_final.sh`, not a
 rate table.
+
+### Captions and on-screen text — burned 2026-08-05, at native 496×864
+
+**Draft finishing pass. Burned locally on the repo host, not in the sandbox** —
+the MP4 was committed to `claude/main` through the GitHub web UI (which bypasses
+`.gitignore`), so it arrived with the clone and neither the CDN nor
+`sandbox_exec` was needed. ffmpeg 6.1.1, Anton resolved via `fc-match`.
+
+**Burned at the cut's own 496×864, deliberately.** No upscale to 720×1280 and no
+crop: the geometry finding above says there is nothing to crop, and scaling a
+480p draft up would have cost a 2.1% vertical stretch for no draft-stage benefit.
+The user's call, to see the whole thing assembled before committing to the full
+tier.
+
+**The house caption style is defined at 720×1280, so every value was scaled** —
+by 864/1280 = 0.675 vertically, 496/720 = 0.689 horizontally. Do not burn the
+`build_subtitles.js` style verbatim onto a smaller frame: libass reads these in
+PlayRes space, so unscaled values render ~1.45× oversized and overflow.
+
+| Style value | House (720×1280) | This burn (496×864) |
+|---|---|---|
+| `PlayResX/Y` | 720 / 1280 | **496 / 864** |
+| `Fontsize` | 54 | **36** |
+| `MarginL` / `MarginR` | 58 | **40** |
+| `MarginV` | 150 | **101** |
+| `Outline` / `Shadow` | 3 / 1 | **2 / 1** |
+
+Usable line width becomes 416px and the sidecar's widest line scales to 369px, so
+the pre-wrap holds with room to spare. **Captions cover blocks 1–6 only** — cues
+1–32 of 37, ending 00:00:59.545. Cues 33–37 (block 7) were stripped on a copy so
+the disclaimer is not simultaneously a caption and a card.
+
+On-screen text was added in the same ffmpeg pass rather than in an NLE, via
+`drawtext` with one filter per line (ffmpeg 6.1 has no `text_align`, so
+multi-line text cannot be centre-justified in a single call):
+
+| Element | Text | Size | y | In / out |
+|---|---|---|---|---|
+| History lower-third | *Presented as history & philosophy* | 20 | 594 | 0:01 → 0:08 |
+| Disclaimer, line 1 | *A dramatized adaptation of a* | 28 | 330 | 1:00 → 1:10 |
+| Disclaimer, line 2 | *classical philosophical text.* | 28 | 370 | 1:00 → 1:10 |
+| Disclaimer, line 3 | *Not medical advice.* | 28 | 410 | 1:00 → 1:10 |
+| Editorial credit | *Written & edited by Joshua Chin* | 20 | 530 | 1:00 → 1:10 |
+
+Output `inner-canon-ch1-trailer-v5-final.mp4`, 496×864, 70.058s, H.264 CRF 20 /
+preset medium / yuv420p / `+faststart`, audio stream copied untouched. 14.8 MB.
+Burn wall time 13s. Clean decode validation.
+
+**Visually verified — frames were actually read, not merely probed.** Extracted
+and inspected at t=3s (lower-third + block 1 caption), 25s (Fan-di, block 3), 45s
+(block 5), 57s (title, block 6), 65s (end card), plus the y=540–660 band at 3s vs
+12s to confirm the lower-third clears. Every caption wraps to two lines inside the
+margins; nothing renders off frame; Anton is the face on screen, not a
+substitution. **Nobody has watched the cut end to end** — this is frame
+inspection, which catches geometry and font substitution but not pacing.
+
+**One finding worth carrying to the full render.** White captions with a
+proportionally-thin outline sit on **light cream backgrounds** in blocks 5 and 6
+(the printing sequence and the fanning-scrolls title shot). They are legible but
+the contrast is marginal, and this is **not an artefact of the downscale** — the
+house `Outline=3` at 720×1280 is proportionally identical to the `Outline=2` used
+here, so the 720p render will look the same. If it bothers you on playback, the
+fix belongs in `build_subtitles.js`'s style rather than in this cut: either raise
+`Outline`, or switch those blocks to `BorderStyle=3` (opaque box).
+
+**Still outstanding: music.** Not added. The licensed guqin bed is yours to supply
+and this pipeline generates none — and note that the assembler's `--music` flag
+cannot deliver step 6 as written either, because it mixes one continuous bed with
+no dropout window and step 6 calls for the bed to drop across block 5.
 
 ### Credit spend
 
@@ -283,37 +367,68 @@ end-to-end on this path yet** — treat the first as a shakedown, not a render.
 
 ### Finishing steps
 
-**1. Check captions before recording.**
+**Steps 1–5 ran 2026-08-05** against the draft; see *Captions and on-screen text*
+in the production record for the measured result. Step 6 is outstanding. Both
+caption scripts are pure text tools — they read this document, touch no video,
+need no network and cost no credits, so they run anywhere the repo is checked out
+with Node. **Both take a path relative to the current directory: run them from the
+repo root, or pass an absolute path.**
+
+**1. Check captions.** ✅ ran
 
 ```
 node scripts/check_caption_fit.js output/episode-1/inner-canon-ch1-trailer-v5.md
 ```
 
-Block 7's first clause is reported as a known exception — the mandated string, not
-to be reworded.
+**Exit 1 is the designed signal, not a crash.** Block 7's first clause is reported
+as a known exception — the mandated string, not to be reworded. **Three further
+clauses genuinely overflow**, and an earlier version of this section wrongly
+implied the known exception was the only report: block 1 *"But the version the
+whole world reads came from one man,"* (1187px), block 5 *"and every doctor who
+wanted to practise had to know it by heart."* (1318px), block 7 *"and we say
+plainly where the evidence does not support it."* (1204px), against a 1111px
+two-line budget. With the server-burn path gone these are **readability, not
+render failures** — the sidecar splits each across cues and libass margins keep
+them in frame, which the burned draft confirms. Fixing them costs a re-take plus a
+re-assembly per block, so it is a full-render decision, not a draft one.
 
-**2. After the voiceover, build the sidecar.**
+**2. Build the sidecar.** ✅ ran — 7 blocks, 37 cues, widest line 554px against
+556px usable.
 
 ```
 node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v5.md
 ```
 
-On a **copy** of the `.srt`, delete the cues covering **block 7** (from
-`00:01:00,000`) so the disclaimer is not both a caption and a card.
+Output is byte-identical to the tracked `.srt`/`.vtt`, so the committed sidecars
+are current. On a **copy** of the `.srt`, delete the cues covering **block 7**
+(cues 33–37, from `00:01:00,275`) so the disclaimer is not both a caption and a
+card. The burn copy is cues 1–32, ending `00:00:59,545`.
 
-**3. Burn** with the printed `ffmpeg` command — the only caption path now. Add
-`scale=720:1280,` as the first filter if burning onto a 480p draft. Anton is
-present on the repo host via the session-start hook.
+**3. Burn.** ✅ ran, at native **496×864**. ~~Add `scale=720:1280,` as the first
+filter if burning onto a 480p draft.~~ **Do not** — the delivered file is 496×864,
+which is not 9:16, so that scale introduces a 2.1% vertical stretch. Burn native
+and scale the style instead; the table in *Captions and on-screen text* has the
+five values. There is nothing to crop — the assembler rescales rather than pads.
+Re-target the `.ass` `PlayRes` to **496×864**, not 720×1280, before burning.
+`ffmpeg -version` and `fc-match Anton` before you start: the session-start hook
+installs both, and a missing Anton substitutes silently while the sidecar still
+reports "fits."
 
-**4. History lower-third** — in ~0:01, hold to ~0:08, anchored above the caption
-band (around y≈880 at 720×1280).
+**4. History lower-third** ✅ — *"Presented as history & philosophy"*, in at 0:01,
+out at 0:08, **y=594 at 496×864** (the y≈880 of the 720×1280 design, scaled).
+Added by `drawtext` in the burn pass, not in an NLE.
 
-**5. End card — 60:00 to 70:00.** Mandated disclaimer verbatim, credit beneath.
-Both also in the description.
+**5. End card — 1:00 to 1:10** ✅ (block 7; written "60:00 to 70:00" in an earlier
+version, which reads as minutes). Mandated disclaimer verbatim across three
+centred lines at y=330/370/410, editorial credit at y=530. Both also go in the
+description at upload.
 
-**6. Music.** Guqin, ducked ~12–15 dB under the voiceover. **Out across block 5** —
-the printing sequence is the cut's only fast passage and plays better dry. Out at
-the block 6 cut to black.
+**6. Music.** ⬜ outstanding. Guqin, licensed, ducked ~12–15 dB under the
+voiceover. **Out across block 5** — the printing sequence is the cut's only fast
+passage and plays better dry. Out at the block 6 cut to black at 1:00. **This
+cannot be moved to the assembler's `--music` flag**: `--music-vol` clamps at 0.20
+(≈ −14 dB, which does land in the target range), but it mixes one continuous bed
+with no dropout window, so the block-5 gap requires a hand mix either way.
 
 ## Compliance notes (YouTube)
 
