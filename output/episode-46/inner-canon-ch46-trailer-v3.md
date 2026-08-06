@@ -4,9 +4,18 @@
 
 **Framing:** history of ideas. Not health content.
 
-**Draft render (480×854 → assembler output ~496×864, 9:16 vertical, 70s, MP4):**
-*not run — pre-render.*
+**Draft render (496×864, 9:16 vertical, 70.059s, MP4) — assembled 2026-08-06.**
+https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/91305ec5-9756-44d4-b3c2-fb607c40c26b.mp4
+
+**No captions and no on-screen text on that file by design** — the assembler
+produces neither. Do not upload it as-is; see *Finishing steps*. **Download it**:
+the CDN link expires and the repo host cannot fetch it back.
+
 **Final render (720p tier):** *not run.*
+
+Decode-validated by the assembler, narration confirmed present in all 7 windows,
+and **no WARNs of any kind** — no pausey take, no static head or tail on any of the
+seven clips.
 
 A seventy-second vertical trailer for *"The Night Watch"* (營衛生會 · *The Meeting
 of Nutritive and Defensive Qi*). Seven 10-second blocks, stylized flat-2D ink-wash
@@ -49,12 +58,12 @@ a fourth would leak into the caption text.
 | Block | Beat | Narration |
 |---|---|---|
 | 1 | Arthur (V.O.) — the census | Two thousand years ago, a Chinese court tried to count something strange — the hour at which its empire fell asleep. Runners went out at midnight, tallying lit windows. The answer was already in a book. |
-| 2 | Arthur (V.O.) — the hour has a name | The book names the hour. It calls it the joining of the dark — the moment the ten thousand people, all of them, lie down at once, on the same reckoning as heaven and earth. |
+| 2 | Arthur (V.O.) — the hour has a name | The book names the hour, and the name it gives is beautiful. It calls it the joining of the dark — the moment when the ten thousand people, all of them at once, lie down together, on the same reckoning as heaven and earth. |
 | 3 | Fan-di (Xavier) — the deflection | Then the count is a formality, physician. Send the runners anyway. I want the tally in my hand by dawn. And while we wait — a question of natural philosophy, nothing more. Why do the old not sleep? |
 | 4 | Dr-Qi (Vesper) — the mechanism | In the vigorous the roads run clear, and the two currents keep their schedule. In the old the roads run rough. The nutritive thins, and the guard turns and campaigns inward. That is the text's answer, not a physician's. |
 | 5 | Arthur (V.O.) — both ends | The young get both halves — keen by day, asleep by night. The old lose both. In this model, ageing does not move your sleep to another hour. It takes one end, then the other. |
-| 6 | Arthur (V.O.) — the withhold / title | The runners came back before dawn, with a number. It was wrong by exactly one house, and everyone at court knew which one. The Emperor's Inner Canon. Ling Shu eighteen — The Night Watch. |
-| 7 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. We present the Inner Canon as history and philosophy, and we say plainly, on screen, where its mechanism does not survive the evidence. |
+| 6 | Arthur (V.O.) — the withhold / title | The runners came back at dawn, and the number was wrong by exactly one house, and everyone at court knew which one. The Emperor's Inner Canon. Ling Shu eighteen. The Night Watch. |
+| 7 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. We present the Inner Canon as history and philosophy, and we say plainly where its mechanism does not survive the evidence. |
 
 Cast: Arthur, Xavier, Vesper — `seed_audio` presets at `speech_rate` 55. **Zane /
 Lei-Gong does not speak.** He appears asleep on a bench in shot 2, which is exactly
@@ -73,9 +82,21 @@ v1 or v2 of this trailer:
 | Xavier, 4.15 w/s | 3 | 38 | **36–41** |
 | Vesper, 4.19 w/s | 4 | 39 | **37–41** |
 
-Counted off the parsed narration table, not by hand. Predicted speech at the measured
-rates runs **9.16–9.86s** — deliberately mid-window rather than at the floor, because
-the ceiling is the edge no re-roll saves.
+> **⚠ Superseded by the run. Keep this table only as the starting draft it was.**
+> The cut was rendered on 2026-08-06 and the shipped word counts are **36 / 44 / 38 /
+> 39 / 35 / 32 / 32**. Block 2 ships at **44 words — eight over this table's Arthur
+> ceiling — and measured 9.601s, a comfortable pass.** Blocks 6 and 7 ship at 32 and
+> also pass. A single Arthur word-window cannot describe both, because Arthur's rate
+> is line-dependent and ranged **2.83–6.94 w/s** across this run.
+>
+> **Consequence for the tooling:** a word-count check will now report block 2 as
+> "over" on a line that is measured, shipped and in-window. That report is the
+> *checker* being wrong, not the line. **Do not "fix" block 2 back to 36 words** — that
+> is precisely the version that came back at 7.4s and failed the floor twice. The
+> per-block evidence is in *What this run actually established about Arthur*.
+
+Xavier and Vesper both landed **first try** at the drafted counts, so their rows above
+held. Arthur's did not.
 
 **These are arithmetic against measured rates, not measurements.** Three things
 from the skill apply directly and all three cost credits:
@@ -181,11 +202,24 @@ hidden behind. Draft it early.
 
 ## Production record (Higgsfield)
 
-**Status: pre-render. Nothing generated. The step-0 gate has not been run.**
-The figures below are a planning preflight, not a priced gate — call `balance` and
-`get_cost` live before spending anything.
+**Status: draft rendered and assembled 2026-08-06.** Everything below is measured
+from the run, not estimated.
 
-### Cost preflight — re-price before use
+### Step-0 gate — run 2026-08-06
+
+`balance` **753.6** (not the 862.6 this document originally carried — the stale
+figure came from the ch1 v5 record and was 109 credits high). `get_cost` live:
+`seedance_2_0_mini` 10s / 9:16 / 480p = **10 credits/clip**; `nano_banana_pro` 9:16
+1k = **2**; `seed_audio` take = **0.2**. Draft tier confirmed by the user.
+
+> **⚠ The `seed_audio` preflight is wrong, and it is wrong by ~6×.** `get_cost`
+> returned **0.2** credits for a take. The transaction log for this run bills every
+> take at **1.1–1.6, averaging 1.31**. Twenty takes cost **26.2 credits**, against
+> the 4.0 the preflight implied. **Do not budget voice off `get_cost`** — and note
+> this also corrects `SKILL.md`'s own ~0.8 figure, which was inferred from a ch1 v3
+> balance delta and is itself ~40% low. See *Credit spend* for the reconciliation.
+
+### Cost preflight — superseded by the actual spend below
 
 `seedance_2_0_mini`, 7 blocks, 10s, `aspect_ratio: "9:16"`, `generate_audio: false`
 (the model defaults it to **true**, which is now a correctness fault, not just
@@ -207,31 +241,300 @@ a take at **~0.8**. Against that, **budget explicitly for re-takes**: ch1 v5's
 worst block took fourteen takes and ~11 credits on its own, which is more than the
 entire voice line above.
 
-### Style key
+### Style key — generated, and it is the chapter's new lineage head
 
-**Reuse the ch46 vertical key** once it exists — chained off the ch1 head
-`4b6f7106-67da-4d1a-a553-c58ba90ac43f`, motif described in
-`inner-canon-ch46-trailer-v1.md`. v1, v2 and v3 are the same chapter and must share
-a look; a second key would fork the chapter's style for no reason.
+`28ea941d-4442-4d39-8358-28d881ce2ef1` — `nano_banana_pro` (served by
+`nano_banana_2`), 9:16, 1k, **2 credits**.
 
-### Clips / Voiceover / Assembly
+**The ch46 key did not previously exist.** Both this document and
+`inner-canon-ch46-trailer-v2.md` said to "reuse the ch46 vertical key" and pointed
+at `inner-canon-ch46-trailer-v1.md` for the motif — **but v1 was deleted from the
+repo**, and no ch46 key job ID was recorded anywhere. The motif was recovered from
+v1's text in git history (commit `f91d3ca`) rather than reinvented, so the chapter's
+planned look is preserved: *a single closed ink ring with two currents on it, one
+riding the inner edge and one the outer, the upper arc pale daylight and the lower
+arc deep indigo, with one small lit paper window low in the frame.*
 
-*Not generated.* Model and tier come from the step-0 gate.
+Lineage: `4b6f7106…` (ch1 head) → **`28ea941d…` (ch46)**. Passed as
+`medias[{role: "image_references"}]` on every clip. **This is the new head for
+chapter 46** — the longform's 16:9 sibling derives from it, not from ch1.
 
-- **Clips** — record model, tier, per-block job ID, duration and *returned*
-  resolution. **Generate block 1 alone and check its returned dimensions before
-  committing the other six.**
-- **Voiceover** — `seed_audio` presets at `speech_rate` 55: **Arthur** on blocks 1,
-  2, 5, 6, 7; **Xavier** on 3; **Vesper** on 4. Record each take's job ID, file
-  duration *and* the assembler's measured speech figure, **to 3 decimal places** —
-  ch1 v5 lost an assembly to an "8.50s pass" that was 8.497s.
-- **Assembly** — `sandbox_exec` → `assemble_final.sh`, `--blocks 7`,
-  `--manifest pairs.txt`, `--clip-seconds` left at its default. **Run it
-  foreground**: ch1 v5 lost an entire run to `background: true` when the transport
-  call timed out and the ephemeral sandbox was reclaimed with the render still on
-  its disk. A 7-block assembly finishes inside the 120s foreground budget.
-- **No assembly job ID exists to record.** Capture the flags, the manifest and the
-  exported `media_id` instead, plus any WARNs accepted rather than fixed.
+### Clips — all 7 complete, first pass
+
+`seedance_2_0_mini`, **Draft 480p**, 10s, `aspect_ratio: "9:16"` **and** "vertical
+9:16 portrait framing" in every prompt, `generate_audio: false`, `IN THE DARK`
+pre-declined on every call.
+
+| Block | Job ID | |
+|---|---|---|
+| 1 | `1e1d38a1-2e25-4055-afc4-cb318772118e` | generated alone and checked first |
+| 2 | `2c3530e6-486f-4740-9854-bbb294bc3ffa` | |
+| 3 | `56ff0cfc-720e-4969-9a0b-a5408160f795` | |
+| 4 | `8b3b7342-42cd-44bd-9bb4-8397f6a69034` | |
+| 5 | `f7a76a1c-0b61-47ee-bb16-7028b7e1ad5b` | |
+| 6 | `9cb7c79b-8307-446f-858c-e7d58a643127` | retry; see below |
+| 7 | `3e32c984-b725-411b-aa00-4ad3deb33c87` | |
+
+**Every clip returned 496×864 at 10.04s.** Three findings worth carrying:
+
+- **The clips are natively 496×864, not 480×854.** ch1 v5 concluded the *assembler*
+  rescaled 480×854 up to 496×864. On this run the model returned 496×864 directly and
+  the assembler passed it through unchanged, so there was nothing to rescale. Either
+  the model's 480p geometry changed or ch1 v5's clips genuinely differed — either way,
+  **read the geometry off the clips, never assume 480×854 or 720×1280.**
+- **No preset swap was offered on any of the eight calls.** Fourth cut running with
+  that result on this model with `IN THE DARK` pre-declined.
+- **`generate_audio: false` verified, not assumed** — `ffprobe` on block 1 reports no
+  audio stream at all. This matters now that the assembler mixes clip audio in at 0.12
+  rather than discarding it.
+
+**Superseded clip:** block 6 first attempt `95cc9260-2b75-49dd-a261-eee1abd78c9f`
+**failed** on the service side. It was submitted with **two** `image_references` (the
+style key *and* block 3's job, per this document's own shot-6 note about character
+consistency). The retry passed the style key alone and succeeded on the first try.
+**A second reference may be the cause; one failure is not proof.** If shot 6 needs
+block 3's look again, try the two-reference form once and fall back rather than
+retrying it. **The failed job was automatically refunded (+10),** confirmed in the
+transaction log — a failed clip costs nothing.
+
+### Voiceover — all 7 clear the gate, 20 takes to get there
+
+Measured with `speech_metrics.sh`, which trims exactly what the assembler trims, so
+its `speech=` **is** the number that gets gated. Window **8.6–10.0s**.
+
+- **Voiceover** (`seed_audio`, presets **Arthur** `30fc8796-ceb6-4a66-b3a7-4a145ef7f346`, **Xavier** `43173c95-3ec8-446a-a162-6504332c578b`, **Vesper** `c3204739-4084-41a3-9dc5-c805b307ec18`, speech_rate 55): block 1 `98c6b359-e0b1-462c-b8da-15215fc5d9dc` (9.185s), block 2 `7a0a68e1-e600-4442-b823-dee777074bd6` (9.601s), block 3 `3530e824-2664-4864-ac0b-eb9c97ef0603` (9.102s), block 4 `6abc9a00-cef3-41b9-bc1d-0448daf83685` (9.762s), block 5 `81280a1b-68c9-4ea2-867e-744b90c81c81` (9.973s), block 6 `38bfb501-2ca6-44b1-8282-1dab393089e3` (9.807s), block 7 `058a5327-d457-4742-bedb-8f7ba56e84fe` (9.292s).
+
+*(The single-line form above is what `build_subtitles.js` parses. The table below is
+for reading.)*
+
+| Block | Voice | Words | Speech | Attempts |
+|---|---|---|---|---|
+| 1 | Arthur | 36 | 9.185s | 2 — re-roll of identical text |
+| 2 | Arthur | 43 | 9.601s | 3 — re-roll failed, then rewritten longer |
+| 3 | Xavier | 38 | 9.102s | **1** |
+| 4 | Vesper | 39 | 9.762s | **1** |
+| 5 | Arthur | 35 | 9.973s | **1** |
+| 6 | Arthur | 32 | 9.807s | **8** |
+| 7 | Arthur | 32 | 9.292s | 4 |
+
+**All three character/narrator voices behaved differently, and Arthur is the
+problem.** Xavier and Vesper each landed first try at the drafted word count, which
+is two more data points confirming the skill's 4.15 / 4.19 w/s figures. Arthur took
+17 of the 20 takes.
+
+### What this run actually established about Arthur — the rate is not a rate
+
+`SKILL.md` lists Arthur at **3.65 w/s**. Across this run's 17 Arthur takes he ran
+**2.83 to 6.94 w/s**, and the variation is not noise around a mean:
+
+| Block | Words | Speech | Implied w/s |
+|---|---|---|---|
+| 1 | 36 | 12.705 → **9.185** | 2.83 → **3.92** *(identical text, re-rolled)* |
+| 2 | 35, 35, **43** | 7.371, 7.542, **9.601** | 4.75, 4.64, **4.48** |
+| 6 | 34, 34, 28, 31, 29, 30, 29, **32** | 10.549, 11.232, 7.970, 10.777, 8.480, 10.808, 8.611, **9.807** | 3.22, 3.03, 3.51, 2.88, 3.42, 2.78, 3.37, **3.26** |
+| 7 | 34, 34, 30, **32** | 10.415, 10.256, 4.326, **9.292** | 3.26, 3.32, 6.94, **3.44** |
+
+Three things follow, and the third is the expensive one:
+
+- **Identical text spans 2.83–3.92 w/s** (block 1). A re-roll is a genuinely
+  different draw, which is why re-rolling before rewriting is the right first move —
+  it fixed block 1 outright.
+- **Different lines sit at genuinely different rates.** Block 2 ran 4.5–4.8 w/s on
+  every attempt while blocks 6 and 7 ran ~3.0–3.4 on nearly all of theirs. A single
+  per-voice words/sec figure cannot describe both. **Block 2 needed 43 words to reach
+  the same window block 6 reached with 32.**
+- **Shortening a line speeds up delivery, so it cuts duration more than
+  proportionally.** Block 7 at 34 words gave 10.3s; at 30 words it gave **4.3s** — a
+  4-word cut removed 6 seconds. Block 6 went 31 words → 10.777s but 29 words →
+  8.480s. **Interpolating linearly between a long take and a short one will overshoot
+  the floor**, which is how block 6 burned eight takes.
+
+**Practical rule this run supports:** re-roll once; if it still misses, change the
+word count by **one or two words at a time**, not by five. And measure — never eyeball.
+
+**The near-miss that proves the 3-decimal rule.** Block 6 attempt 5 measured
+**8.480s** and attempt 7 measured **8.611s**. The first is 0.12s *under* the floor and
+would have stopped the assembly; the second clears it by **0.011s**. Both round to
+"8.5s" and "8.6s" respectively in any 1-decimal write-up. The 8.611s take was
+nonetheless **rejected in favour of the 9.807s one** — an 11ms margin is a pass on
+paper and not something to ship when another take costs ~1.3 credits.
+
+### Assembly — complete
+
+`sandbox_exec` → `assemble_final.sh`, run **foreground** (ch1 v5 lost a whole run to
+`background: true` plus a timed-out transport call). Flags: `--out
+work/output/final.mp4` `--blocks 7` `--manifest pairs.txt`. No `--clip-seconds` (10 is
+the default and moving it moves the speech window). No `--music`, no `--sfx-vol`
+override (default 0.12). No `--subs` — it is a hard error now.
+
+Output **496×864, 70.059s**, decode-validated, *"narration present in all 7
+windows"*. **No WARNs at all** — no pausey take, and `freeze_head`/`freeze_tail` false
+on every one of the seven clips.
+
+**There is no assembly job ID.** Exported via `media_upload` → `curl -f -X PUT` →
+`media_confirm`, media_id **`91305ec5-9756-44d4-b3c2-fb607c40c26b`**.
+
+> **Process note, recorded because it nearly cost the render.** The assembling command
+> was run *without* the upload chained onto it, which is exactly what the skill warns
+> against — the sandbox is discarded ~10s after a call returns. It survived only
+> because the very next call was immediate and back-to-back calls keep the filesystem
+> alive. **This was luck, not method.** The upload belongs in the same `&&` chain as
+> the assembly.
+
+**The assembler's own sidecar** (`final.mp4.assembly.json`) reports
+`lead_silence_s: 0.000` and `speech == file` on all seven takes. So `seed_audio` ships
+no padding, and `build_subtitles.js`'s known cue-timing drift computes to **0.00s** on
+this cut. **Do not hand-nudge cues to correct a drift that is not there.** Block start
+positions from the sidecar: 0.407, 10.199, 20.448, 30.118, 40.013, 50.096, 60.354s.
+
+### Captions and on-screen text — burned 2026-08-06, at native 496×864
+
+**Burned in the Higgsfield sandbox, not on the repo host.** The CDN is blocked here
+(`CONNECT tunnel failed, 403`) so the render cannot be fetched back; the sandbox has
+its own egress and its own ffmpeg, so the burn ran next to the file.
+
+**Final captioned cut, media_id `49e4b34c-2519-410d-bfc2-29bbec7cc8aa`:**
+https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/49e4b34c-2519-410d-bfc2-29bbec7cc8aa.mp4
+496×864, 70.058s, H.264 CRF 20 / preset medium / yuv420p / `+faststart`, audio stream
+copied untouched, 13.1 MB.
+
+**Anton had to be installed into the sandbox first, and this is a trap.** A fresh
+sandbox has **no Anton** — `fc-match Anton` returns *DejaVuSans.ttf*, which is exactly
+the silent substitution that breaks a measured caption fit while every script still
+reports "fits". The repo host has Anton (the session-start hook installs it); **the
+sandbox does not, and nothing warns you.**
+
+- `https://fonts.google.com/download?family=Anton` returns an **HTML page, not a zip** —
+  `unzip` fails and, if the failure is swallowed, the burn proceeds in DejaVu.
+- What works: `https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf`
+  (170 KB, OFL-licensed), copied to `~/.fonts` followed by `fc-cache -f`.
+- **`fc-match Anton` was checked and returned `Anton-Regular.ttf: "Anton" "Regular"`
+  before ffmpeg was invoked.** Do this on every sandbox burn.
+
+Burned at the cut's own **496×864**. No upscale to 720×1280: the delivered file is not
+exactly 9:16 (0.5741 against 0.5625), so forcing it would stretch vertically ~2%. The
+house caption style is defined at 720×1280, so every value was scaled:
+
+| Style value | House (720×1280) | This burn (496×864) |
+|---|---|---|
+| `PlayResX/Y` | 720 / 1280 | **496 / 864** |
+| `Fontsize` | 54 | **36** |
+| `MarginL` / `MarginR` | 58 | **40** |
+| `MarginV` | 150 | **101** |
+| `Outline` / `Shadow` | 3 / 1 | **2 / 1** |
+
+**Captions cover blocks 1–6 only** — cues 1–32 of 37, ending 00:00:59,904. Cues 33–37
+(block 7) were stripped on a burn copy so the disclaimer is not simultaneously a
+caption and a card.
+
+On-screen text was added by `drawtext` in the same ffmpeg pass, not in an NLE:
+
+| Element | Text | Size | y | In / out |
+|---|---|---|---|---|
+| History lower-third | *Presented as history & philosophy* | 20 | 594 | 0:01 → 0:08 |
+| Disclaimer, line 1 | *A dramatized adaptation of a* | 28 | 330 | 1:00 → 1:10 |
+| Disclaimer, line 2 | *classical philosophical text.* | 28 | 370 | 1:00 → 1:10 |
+| Disclaimer, line 3 | *Not medical advice.* | 28 | 410 | 1:00 → 1:10 |
+| Editorial credit | *Written & edited by Joshua Chin* | 20 | 530 | 1:00 → 1:10 |
+
+#### What was actually verified, and what was not
+
+**Nobody has watched this file.** Frames were pulled back and measured; the cut has not
+been viewed end to end, and pacing, performance and whether it *reads* are unassessed.
+
+**Verified by measurement:**
+
+- **Anton is the face on screen, not a substitute** — `fc-match` checked before the burn.
+- **PlayRes is correct** — `PlayResX: 496 / PlayResY: 864` read back out of the generated
+  `.ass`. This is the failure that silently scales Anton to ~4× and throws lines off frame.
+- **Captions render on blocks 1–6 and are absent on block 7, as designed.** Caption-band
+  mean luma, burned against source: t=3s **56.2 vs 44.5**, t=25s **102.9 vs 99.8**, t=45s
+  **187.1 vs 201.0** (darker — black outline over the pale day-arc), t=57s **78.9 vs 72.9**
+  — but t=62s **44.8204 vs 44.8251**, i.e. unchanged. A band that moves on six blocks and
+  is untouched on the seventh is the stripped-cue behaviour working.
+- **The end card renders.** Disclaimer zone at t=65s: mean **88.3 vs 42.5**, a shift far
+  outside re-encode noise.
+
+**Not verified, and one negative result worth recording:**
+
+- **A pixel-difference count cannot test the margins.** Comparing burned against source
+  with `compare -metric AE` returns ~80% of pixels differing *everywhere*, margins
+  included — because CRF-20 re-encoding perturbs nearly every pixel. The test measures
+  the codec, not the captions. **It proves nothing and should not be repeated.** A valid
+  version needs a re-encoded-without-subtitles control at identical settings.
+- **The wrap therefore rests on the libass guarantee, not on this run's pixels.** libass
+  cannot draw outside `MarginL/R`, conditional on PlayRes matching and Anton being
+  present — **both of which were verified above** — and `build_subtitles.js` reported the
+  widest line at **554px against 556px usable**. That is a sound basis, but it is an
+  argument from construction, not an observation.
+
+### Credit spend — reconciled against the transaction log
+
+Balance **753.6 → 655.4 = 98.2 credits**, and the transaction log accounts for every
+one of them:
+
+| Item | | Credits |
+|---|---|---|
+| Style key | `nano_banana_pro`, 1 job | **2.0** |
+| Clips | `seedance_2_0_mini` 480p, 8 jobs − 1 refunded failure | **70.0** |
+| Voice | `seed_audio`, 20 takes at 1.1–1.6 each | **26.2** |
+| Assembly, captions | sandbox + local burn | **0** |
+| **Total** | | **98.2** |
+
+**Two corrections to the repo's cost model, both material at longform scale:**
+
+- **A voice take costs ~1.31 credits, not 0.2 and not 0.8.** The live `get_cost`
+  preflight said **0.2**; `SKILL.md` says **~0.8** from a ch1 v3 balance delta. The
+  billed range here is **1.1–1.6**. The preflight understates by ~6×.
+- **Voice was 27% of this run's bill, not 5%.** The v3 preflight in this document
+  budgeted 5.6 credits for voice and it cost 26.2 — because the *take count*, not the
+  per-take price, is the driver: 20 takes for 7 blocks is **2.9 takes per block**.
+
+**What that does to the longform estimate.** `inner-canon-ch46-longform-v2.md`
+budgets ~108 voice takes at ~0.8 ≈ **86 credits**. At 2.9 takes/block and ~1.31 each
+that is **~410 credits** — nearly five times the figure, and it moves voice from a
+rounding error to a material line item next to ~1,080 for clips. **The longform
+preflight needs updating before anyone commits to it.**
+
+### Superseded takes
+
+Kept as evidence, per `CLAUDE.md`. Durations to 3 d.p.
+
+| Block | Job ID | Speech | Why rejected |
+|---|---|---|---|
+| 1 | `5ca0437a-012e-4105-9df1-547598dd0bbc` | 12.705s | over |
+| 2 | `0fd2668a-fcb6-44c2-b066-520da54c40df` | 7.371s | under |
+| 2 | `e17b833b-750e-4745-b680-749510997bc8` | 7.542s | under — re-roll, identical text |
+| 6 | `640bedb0-79d8-4490-a78d-f929d01ebc05` | 10.549s | over; 1 pause 1.25s |
+| 6 | `c9030d36-ba3c-4b6b-a721-1ddeb328907d` | 11.232s | over; 1 pause 0.91s |
+| 6 | `8eba7204-4db4-47c9-b0a3-e9948d47e7b6` | 7.970s | under — 28 words |
+| 6 | `e8592a96-943d-4a13-bc2e-83f2a2be89c2` | 10.777s | over — 31 words |
+| 6 | `c31c014e-ff77-42f2-91d3-8dd112fa97bb` | **8.480s** | **under by 0.120s** — the near-miss |
+| 6 | `0791f03f-c8e0-4556-9444-d65db1061fdd` | 10.808s | over; **3** pauses, longest 1.24s |
+| 6 | `9d47b473-d9bf-49a8-a273-1e780d9922dc` | **8.611s** | **passed** — rejected for an 11ms margin |
+| 7 | `de6a1398-7ecf-4d57-967e-1d804a791e8a` | 10.415s | over |
+| 7 | `898267e4-5c3b-48b5-bda2-51ba0e682163` | 10.256s | over — re-roll, identical text |
+| 7 | `8da393cb-dbc7-4230-95dc-c5de6ed364fa` | 4.326s | far under — 30 words at 6.94 w/s |
+
+**Superseded clip:** block 6 `95cc9260-2b75-49dd-a261-eee1abd78c9f`, service-side
+failure, refunded.
+
+### Narration changed during the take gate — the document was updated to match
+
+Blocks **2, 6 and 7** are not the text this document shipped with. They were
+rewritten to land in the speech window, and the narration table above now carries
+**what was actually spoken**, because `build_subtitles.js` reads it as the caption
+source and a stale table ships wrong captions.
+
+| Block | Was | Now |
+|---|---|---|
+| 2 | 35 words | **43** — lengthened; the line delivers fast (~4.5–4.8 w/s) |
+| 6 | 34 words, *"came back before dawn"*, *"Ling Shu eighteen — The Night Watch"* | **32** — *"at dawn"*, and the title em-dash split into a full stop |
+| 7 | 34 words, *"and we say plainly, on screen, where…"* | **32** — *"on screen"* dropped |
+
+**The mandated disclaimer string in block 7 is untouched and still leads the block.**
+Block 6 still says *"Ling Shu eighteen"* aloud — that was a compliance choice in this
+cut and it survived all eight rewrites of that block.
 
 ### Reproduction notes
 
@@ -325,10 +628,16 @@ out at **0:08** (block 1). Added by `drawtext` in the same burn pass, not in an 
 **5. End card — 1:00 to 1:10** (block 7). Mandated disclaimer verbatim across three
 centred lines, editorial credit beneath. Both also go in the description at upload.
 
-**6. Music.** Guqin, licensed, ducked ~12–15 dB under the voiceover. **Out from the
-block 6 cut at 1:00**, so the card plays dry. `--music-vol 0.20` (≈ −14 dB) lands in
-range, but the flag mixes one continuous bed with **no dropout window**, so the
-1:00 cut needs a hand mix either way.
+**6. Music.** ⬜ **outstanding — the only unfinished deliverable.** Guqin, licensed,
+ducked ~12–15 dB under the voiceover. **Out from the block 6 cut at 1:00**, so the card
+plays dry. `--music-vol 0.20` (≈ −14 dB) lands in range, but the flag mixes one
+continuous bed with **no dropout window**, so the 1:00 cut needs a hand mix either way.
+This pipeline generates no music and sourcing/licensing stays with the producer.
+
+> **Steps 1–5 ran on 2026-08-06.** ✅ captions checked, ✅ sidecar built and committed,
+> ✅ burned at native 496×864 with Anton verified, ✅ lower-third in at 0:01, ✅ end card
+> 1:00–1:10. See *Captions and on-screen text* in the production record for the measured
+> result and for what was **not** verified.
 
 ## Compliance notes (YouTube)
 
