@@ -6,6 +6,7 @@
 
 **Draft render (496×864, 9:16 vertical, 70.059s, MP4) — assembled 2026-08-06.**
 https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/91305ec5-9756-44d4-b3c2-fb607c40c26b.mp4
+https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/49e4b34c-2519-410d-bfc2-29bbec7cc8aa.mp4
 
 **No captions and no on-screen text on that file by design** — the assembler
 produces neither. Do not upload it as-is; see *Finishing steps*. **Download it**:
