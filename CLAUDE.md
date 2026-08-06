@@ -34,7 +34,7 @@ README.md
 .gitattributes                              # LF everywhere; media and art marked binary
 .claude/
   settings.json                             # Bash + Higgsfield MCP permission lists, SessionStart hook
-  hooks/session-start.sh                    # reinstalls ffmpeg + the Anton font on the ephemeral host
+  hooks/session-start.sh                    # reinstalls ffmpeg, the Anton font and wick on the ephemeral host
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
 output/
   episode-1/inner-canon-ch1-trailer-v3.md   # current reference layout
