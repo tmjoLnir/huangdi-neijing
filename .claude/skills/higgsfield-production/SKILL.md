@@ -45,12 +45,14 @@ the only form produced so far, and the one whose numbers are battle-tested. For 
 **15–20 minute longform episode**, read those steps for the mechanics, then read
 [Longform episodes](#longform-episodes-1520-min), which overrides the aspect
 ratio, block count, voice handling and assembly strategy. **Step 0 is a hard gate
-on both**: nothing generates until the user has seen the balance, the costed
-estimate, and confirmed model and tier.
+on both**: nothing generates until the run's tools are confirmed present on the
+MCP surface and the user has seen the balance, the costed estimate, and confirmed
+model and tier.
 
 | | |
 |---|---|
 | Steps 0–5 | the trailer pipeline, in order |
+| [Tool availability](#tool-availability--check-the-surface-before-you-spend) | step 0's free preflight — the surface moves |
 | [4. Assembly](#4-assembly) | the sandbox assembler that replaced `explainer_video` |
 | [Subtitles](#subtitles) | caption constraints and the guaranteed-fit sidecar |
 | [Longform episodes](#longform-episodes-1520-min) | what changes for a 15–20 min cut |
@@ -63,8 +65,9 @@ Subtitles, Environment caveats and the Compliance gate apply to both cut types.
 
 Never reorder these — each step consumes the previous step's **job ID**.
 
-0. **Model + tier gate** — call `balance`, cost the options, and get the user's
-   choice of clip model and Draft/Full. Nothing generates before this.
+0. **Model + tier gate** — confirm the tools this run needs are still on the MCP
+   surface, then call `balance`, cost the options, and get the user's choice of
+   clip model and Draft/Full. Nothing generates before this.
 1. **Style key** (`generate_image`) — one vertical key image per chapter.
 2. **Clips** (`generate_video`) — one per narration block, style key attached to each.
 3. **Voiceover** (`generate_audio`) — one take per block, narrator preset.
@@ -102,13 +105,18 @@ deliverable, say so and get an explicit yes — the same model at 720p is 25/cli
 (~156/cut) and keeps the draft's look, so it is the natural full-render tier.
 Whichever ships, record the actual resolution at the top of the document.
 
-Before generating anything on a new cut, do all four:
+Before generating anything on a new cut, do all five:
 
-1. Call **`balance`** and state the current credit figure.
-2. Call **`get_cost: true`** on one representative clip in the chosen
+1. **Confirm the run's tools are on the surface** — one free `ToolSearch`, plus
+   the sandbox probe if this cut will be assembled. See
+   [Tool availability](#tool-availability--check-the-surface-before-you-spend)
+   below. It comes first because a missing step-4 tool invalidates a step-0
+   estimate the user has already approved.
+2. Call **`balance`** and state the current credit figure.
+3. Call **`get_cost: true`** on one representative clip in the chosen
    configuration. Prices move; never quote this file's numbers as live.
-3. State the **cost per clip and cost for the whole cut**, and name the default.
-4. Confirm **model** and **Draft/Full** with the user, and wait. The default
+4. State the **cost per clip and cost for the whole cut**, and name the default.
+5. Confirm **model** and **Draft/Full** with the user, and wait. The default
    makes this a confirmation, not an open question — but it is still a gate, and
    a chapter that wants a different model gets the shortlist below.
 
@@ -119,6 +127,102 @@ cut using a model this repo has little history with: generate **one** clip, chec
 the returned dimensions and the house look against the style key, and only then
 generate the rest. Write what actually happened into that cut's reproduction
 notes.
+
+### Tool availability — check the surface before you spend
+
+**This has already happened once: `explainer_video` vanished from the MCP surface
+on 2026-08-04**, with no deprecation shim, no fallback assembler and no warning.
+It was simply not there when assembly was reached. Assume any tool below can go
+the same way, and note where the damage lands: **the credits are spent in steps
+1–3, and the tool that goes missing may be step 4's.** Six blocks of clips and
+takes is ~66 credits that then cannot be assembled, refunded, or carried to
+another pipeline — and a longform run puts ~1,145 credits behind the same bet.
+
+The check is free and takes one call. Run it *before* the cost preflight, so a
+missing tool is found before the user approves a spend that cannot complete.
+
+**The Higgsfield tools are deferred in this harness** — listed by name, schemas
+loaded on demand — so the check is a `ToolSearch` for the exact names:
+
+```
+ToolSearch({ max_results: 8, query:
+  "select:mcp__higgsfield__balance,mcp__higgsfield__generate_image," +
+  "mcp__higgsfield__generate_video,mcp__higgsfield__generate_audio," +
+  "mcp__higgsfield__sandbox_exec,mcp__higgsfield__media_upload," +
+  "mcp__higgsfield__media_confirm,mcp__higgsfield__job_display" })
+```
+
+**A name that comes back with no `<function>` block is not on the surface.** That
+is the entire signal — nothing announces a removal. Two things that look like
+evidence and are not: an entry in `.claude/settings.json`'s allow-list (a
+permission is not a liveness signal — it grants a call that may have nothing left
+to answer it), and an appearance in an older cut's production record (that is
+history, and the record deliberately keeps superseded entries).
+
+| Tool | Needed for | If it is gone |
+|---|---|---|
+| `balance` | step 0 itself | **stop** — the whole gate rests on a live figure |
+| `generate_image` | step 1 style key | **stop** if the cut needs a new key; a cut reusing the chapter head can continue |
+| `generate_video` | step 2 clips | **stop** — this is the pipeline |
+| `generate_audio` | step 3 takes | **stop** |
+| `sandbox_exec` | step 4 assembly | **stop before step 1** — this is the `explainer_video` failure exactly; nothing else assembles a cut, and v3's service-free `ffmpeg` fallback also needs a shell |
+| `media_upload` + `media_confirm` | step 4 export | **stop before step 1** — the sandbox is ephemeral, so a render that cannot be exported is lost the moment the call returns |
+| `job_display` / `jobs_wait` / `show_generation_by_ids` | polling | degrade, don't stop — the generate call returns its own job ID |
+| `models_explore` | role and duration checks | degrade — the step-0 shortlist covers the house models |
+| `upscale_video`, `reframe` | longform finishing | not a generation-time blocker; check before *promising* a finishing pass |
+
+**Verified 2026-08-07: all eight names above resolve, and `explainer_video` still
+does not.** That is a snapshot like the price table, not a standing fact — re-run
+the check, never quote this line.
+
+**A schema is not a working service.** This proves the tool is on the surface, not
+that the account is authenticated, in credit, or that the backend is healthy. The
+gate is three free probes that escalate, which is why they sit together: tool
+availability (needs no account state), then `balance` (proves the account
+answers), then `get_cost` (proves the model is priced and accepted).
+
+#### The assembler is a script now, so availability has two layers
+
+`assemble_final.sh` is **not** an MCP tool — it ships inside the sandbox image
+under `$HF_WORKFLOWS/faceless-channel-video/scripts/`. `sandbox_exec` resolving
+therefore says nothing about the assembler being present, and a workflow-bundle
+update can move, rename or re-flag that script exactly the way the tool was
+removed. Probe it in the same preflight, free, in one call:
+
+```
+sandbox_exec({ command:
+  "ls -l $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh " +
+  "      $HF_WORKFLOWS/faceless-channel-video/scripts/narrator/speech_metrics.sh && " +
+  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh --help | head -40" })
+```
+
+**Read the `--help`, don't just confirm the file exists** — it is also how a
+*flag* change is caught. `--subs` was removed from that script in the same week as
+the tool, and [step 4](#4-assembly)'s flag table is transcribed from one run of one
+version. Where the help text disagrees with this file, the help text is right and
+this file is stale: fix it before assembling.
+
+`speech_metrics.sh` is on the same list because [step 3](#3-voiceover) sends you to
+it to measure a take against the assembler's own trim. Without it, take durations
+are back to being eyeballed — and the window is 1.4s wide.
+
+#### When something is missing
+
+1. **Stop before generating.** Do not start step 1 hoping the tool comes back.
+2. **Name the tool and say what it blocks.** The user's decision is whether to
+   wait, re-scope the cut, or take another path, and they cannot make it from
+   "assembly failed".
+3. **Do not substitute silently.** Swapping the clip model, hand-rolling an
+   `ffmpeg` assembly, or dropping a deliverable to route around a missing tool is
+   a change to the cut, not a workaround — it goes to the user the same way a
+   model change does. `output/episode-1/inner-canon-ch1-trailer-v3.md` carries a
+   service-free `ffmpeg` **Fallback** for precisely this case; it is a documented
+   option to offer, not a default to take.
+4. **Write it down.** A tool that disappears is a pipeline change, not a session
+   incident: record it in the cut's reproduction notes with the date, and update
+   this file. The 2026-08-04 banner at the top is what that looks like done
+   properly — and it is why the next cut did not rediscover the loss at assembly
+   time.
 
 ### Draft pass vs Full render
 
@@ -637,6 +741,11 @@ We borrow that one script; we do **not** adopt the `faceless-channel-video`
 workflow around it. Its scriptwriting, style and preset rules are a different
 house style and do not govern this series — `CLAUDE.md` still does.
 
+**Confirm the script and its flags back in
+[step 0](#tool-availability--check-the-surface-before-you-spend), not here.**
+Reaching this step means the clips and takes are already paid for; the probe costs
+nothing and is worthless once the spend has happened.
+
 ### The sandbox is ephemeral — this changes the shape of the call
 
 The sandbox is discarded ~10 seconds after a call returns, and files do not
@@ -1029,9 +1138,11 @@ before a full run**, because it's ~110 clips to get wrong.
 
 ### Preflight — this is ~19× a trailer
 
-Run the step-0 gate and multiply by ~114 blocks before anything else. At the
-2026-07-31 snapshot prices, the model choice is the difference between a cut you
-can afford and one you cannot:
+Run the step-0 gate and multiply by ~114 blocks before anything else. **That
+includes the tool-availability check** — the same single call, now standing in
+front of the ~1,145-credit floor below rather than a trailer's ~66. At the 2026-07-31
+snapshot prices, the model choice is the difference between a cut you can afford
+and one you cannot:
 
 | Clip model / tier | Credits/clip | ~114 blocks | vs 942 balance |
 |---|---|---|---|
