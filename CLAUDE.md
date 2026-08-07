@@ -48,8 +48,7 @@ assets/
   wise-Qi-2.png                             # Dr-Qi style key art
   witty-Lei.png                             # Lei-Gong style key art
 docs/
-  Emperors Inner Canon Series Blueprint.md  # 80-chapter index, Top-20 slate, compliance audit
-  Emperors_Inner_Canon_Publish_Sequence.md  # what order to publish in (≠ chapter order)
+  Chronicle of Balance Top20 Chapter Slate.md  # 162-chapter index, Top-20 slate, compliance audit
 scripts/
   build_subtitles.js                        # node scripts/build_subtitles.js <cut-document>.md
   check_caption_fit.js                      # node scripts/check_caption_fit.js <cut-document>.md
