@@ -25,7 +25,8 @@ the other. Add a pointer, not a second copy.
 
 ## Structure
 
-One folder per chapter, one markdown file per cut. The current tree is:
+One folder per book, one folder per chapter inside it, one markdown file per cut.
+The current tree is:
 
 ```
 CLAUDE.md
@@ -37,13 +38,13 @@ README.md
   hooks/session-start.sh                    # reinstalls ffmpeg, the Anton font and wick on the ephemeral host
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
 output/
-  suwen/                                          # 素問 Basic Questions — chapters 1-81
-    ch1/inner-canon-suwen1-trailer-v5.md          # current reference layout
-    ch1/inner-canon-suwen1-longform-v3.md         # 18-min script + plan; pre-render
-    ch1/inner-canon-suwen1-translation-v4.md
-  lingshu/                                        # 靈樞 Spiritual Pivot — chapters 1-81
-    ch28/inner-canon-lingshu28-longform-v1.md     # slate rank 1, publish slot 1
-    ch18/inner-canon-lingshu18-longform-v2.md     # legacy `episode-46`; see the mapping below
+  lingshu/                                          # 靈樞 Spiritual Pivot — chapters 1-81
+    ch28/inner-canon-lingshu28-trailer-v1.md        # current reference layout; pre-render
+    ch28/inner-canon-lingshu28-longform-v1.md       # slate rank 1, publish slot 1; pre-render
+    ch28/inner-canon-lingshu28-translation-v1.md
+  # suwen/ appears when the first 素問 chapter is produced — the repo holds none
+  # right now. Everything under output/ is currently pre-render, so there are no
+  # .srt/.vtt sidecars in the tree either.
   # every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
   # pre-render cut has none yet — build them once the voice takes exist.
@@ -76,29 +77,25 @@ inside it. Suwen 4/Lingshu 4 and Suwen 11/Lingshu 11 are already-produced pairs
 with the same problem.
 
 The rule is structural — a folder you cannot file into wrongly — rather than a
-warning, because the warning has already been written three times and the
-numbering still went wrong:
+warning, because the warning was written into three separate documents and the
+numbering still went wrong. Two folders were named off a series-blueprint index
+instead of off the received text:
 
-- **`output/episode-46/` holds Ling Shu 18** (營衛生會), not chapter 46. "46" was
-  the index of a series-blueprint doc no longer in `docs/`, whose Ling Shu
-  entries all ran `slate index − 35`. Meanwhile **Lingshu 46** (五變) is a real
-  chapter, ranked 19 on the slate at publish slot 18 — so the folder name is not
-  just wrong, it is occupying the name a scheduled chapter needs.
-- The chapter-28 and chapter-46 documents each open with a hand-written prose
-  warning that their number is ambiguous or wrong. Three such warnings across two
-  folders is the symptom; the book folder is the fix, and new cuts should not
-  need the warning at all.
+- **`output/episode-46/` held Ling Shu 18** (營衛生會), not chapter 46 — that
+  blueprint's Ling Shu entries all ran `slate index − 35`. Meanwhile **Lingshu 46**
+  (五變) is a real chapter, ranked 19 on the slate at publish slot 18, so the
+  folder name was not merely wrong: it was occupying the name a scheduled chapter
+  needs.
+- **`output/episode-6/` held Su Wen 8**, by the same index.
 
-**Legacy folders, and what they actually are.** These three predate the
-convention and are migrated with `git mv`. Until that lands, this table is the
-map — read it before trusting any `episode-<N>` path in this file, in `SKILL.md`,
-or inside a cut document:
-
-| Legacy path | Actually | New path |
-|---|---|---|
-| `output/episode-1/` | Suwen 1 — 上古天真論 | `output/suwen/ch1/` |
-| `output/episode-28/` | Lingshu 28 — 口問 | `output/lingshu/ch28/` |
-| `output/episode-46/` | **Ling Shu 18** — 營衛生會 (not chapter 46) | `output/lingshu/ch18/` |
+**The migration is done — no `episode-<N>` folder remains.**
+`output/episode-28/` became `output/lingshu/ch28/` by `git mv`, with the book
+added to each filename and every cross-reference inside the three documents
+updated. `output/episode-1/` (Suwen 1), `output/episode-6/` (Su Wen 8) and
+`output/episode-46/` (Ling Shu 18) were **deleted from the repo** rather than
+migrated, so that content now lives only in git history. Treat any `episode-<N>`
+path quoted in an old commit message, an old PR, or an archived document as dead
+— do not recreate one to match it.
 
 **The sweep glob gains a level**: `node scripts/check_caption_fit.js
 output/*/ch*/*-v*.md`. Both scripts take paths and hold no folder assumptions of
@@ -118,18 +115,29 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/suwen/ch1/inner-canon-suwen1-trailer-v5.md` is the reference.
+  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the reference for the shape; see the caveat below on what it cannot show you.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
 When adding a new trailer or episode document, follow this same layout so production records stay reproducible.
-`output/suwen/ch1/inner-canon-suwen1-trailer-v5.md` is the current reference — the
-most recent cut on the permanent voice cast and on `seedance_2_0_mini`, and the
-only one taken end-to-end through the sandbox assembler. It carries two sections
-worth reusing: a **credit spend** breakdown reconciled against the preflight
-estimate, and an **Assembly** record giving the delivered geometry and the flags
-the run actually used. Add a **voice measurement** table as well on any cut that
-measures a voice for the first time.
+`output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the current reference
+— it carries the full section order above, including the source-script mapping.
+
+**It is a layout reference only, and the repo currently has no other kind.**
+Every document under `output/` is pre-render, so nothing in the tree shows a
+*filled* production record: no job IDs, no **credit spend** reconciled against
+the preflight estimate, no **Assembly** record of delivered geometry and flags.
+The one cut that had all three — the chapter 1 trailer v5, the only cut ever taken
+end-to-end through the sandbox assembler — was deleted from `output/` on
+2026-08-08. **Its measured numbers survive in `SKILL.md`**, which is where they
+were always operative: the credit deltas in step 0, the 496×864 delivered geometry
+and the `background: true` failure in step 4, the re-measured voice rates in
+step 3. Read those there, not from a cut document.
+
+**The next cut that renders re-establishes the worked example.** Give it a filled
+production record, a credit-spend table reconciled against its preflight, and an
+Assembly record — and add a **voice measurement** table if it measures a voice for
+the first time.
 
 ## Core Cast (recurring)
 
@@ -170,7 +178,7 @@ Measure any new voice on one take, and write the result into the skill's table, 
 ## Writing conventions
 
 - **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
-- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/suwen/ch1/inner-canon-suwen1-trailer-v5.md`.
+- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
 - Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — six blocks is 60s, eight is 80s.
 - **Every deliverable ships captioned**, in the **anton** font, with every subtitle wrapping on screen and readable across the whole video. The `.srt`/`.vtt` sidecars are **tracked, required deliverables** — build them with `node scripts/build_subtitles.js <cut-document>.md` and commit them with the cut. Captions are burned **after** assembly, as their own step; the assembler produces none. Why the sidecar guarantees the wrap, and the cue-timing drift currently open against it: see the skill's **Subtitles** section.

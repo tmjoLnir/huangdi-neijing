@@ -30,15 +30,28 @@ before generating anything.
 >   false` went from a cost saving to a correctness requirement — see
 >   [step 2](#2-clips).
 >
-> **One cut has now been through this path end-to-end** — chapter 1 trailer v5,
-> assembled 2026-08-04 (`output/episode-1/inner-canon-ch1-trailer-v5.md`). The
-> [step 3](#3-voiceover) rates are re-measured from that run and are no longer
-> estimates; the rest of this file is still only one run old, so treat the second
-> cut as confirmation rather than routine.
+> **One cut has been through this path end-to-end** — chapter 1 trailer v5,
+> assembled 2026-08-04. The [step 3](#3-voiceover) rates are re-measured from that
+> run and are no longer estimates; the rest of this file is still only one run old,
+> so treat the second cut as confirmation rather than routine.
+>
+> **That cut's document was deleted from `output/` on 2026-08-08**, so this file is
+> now the only surviving record of what the run measured. Everything it taught is
+> written into the steps below — the credit deltas in [step 0](#0-cost-preflight),
+> the voice rates in [step 3](#3-voiceover), the delivered geometry and the
+> `background: true` failure in [step 4](#4-assembly). Do not go looking for the
+> cut document; it exists only in git history.
 
-`output/episode-1/inner-canon-ch1-trailer-v3.md` is the reference document —
-match its section order on any new cut. Note that `episode-<N>` is the **chapter number of the file name of the input script**, not a sequential index, so the folders are not consecutive and
-gaps are expected.
+`output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the reference document
+— match its section order on any new cut. It is **pre-render**, so it shows the
+layout but not a filled production record; the numbers you would have read there
+are in this file instead.
+
+**Paths and filenames are `CLAUDE.md` § Structure's call, not this file's.** In
+short: `output/<book>/ch<N>/`, where `<book>` is `suwen` or `lingshu` and `<N>` is
+the chapter's number *within that book*. Both halves of the canon run to
+eighty-one separately-numbered chapters, so the book is never optional — it goes
+in the filename too. Folders are not consecutive and gaps are expected.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
 the only form produced so far, and the one whose numbers are battle-tested. For a
@@ -80,8 +93,9 @@ Never reorder these — each step consumes the previous step's **job ID**.
 Log the run's actual credit spend in the production record as you go. **The
 chapter 1 trailer v3 run is the repo's measured balance delta** — 938.2 → 862.6 =
 75.6 credits for 7 clips and 7 takes — so it is the single historical figure
-available to check an estimate against. See its *Credit spend* section in
-`output/episode-1/inner-canon-ch1-trailer-v3.md`.
+available to check an estimate against. **Its cut document is gone from `output/`,
+so the figure lives here now**; the next rendered cut should log its own spend and
+give the repo a second data point.
 
 **That delta is also where the per-take price comes from.** Seven Draft-tier clips
 account for 70 of the 75.6, the style key was reused at 0, and no subtitles were
@@ -215,9 +229,9 @@ are back to being eyeballed — and the window is 1.4s wide.
 3. **Do not substitute silently.** Swapping the clip model, hand-rolling an
    `ffmpeg` assembly, or dropping a deliverable to route around a missing tool is
    a change to the cut, not a workaround — it goes to the user the same way a
-   model change does. `output/episode-1/inner-canon-ch1-trailer-v3.md` carries a
-   service-free `ffmpeg` **Fallback** for precisely this case; it is a documented
-   option to offer, not a default to take.
+   model change does. A service-free `ffmpeg` **Fallback** for precisely this case
+   was documented in the chapter 1 trailer v3, since deleted — it is an option to
+   reconstruct and offer, not a default to take.
 4. **Write it down.** A tool that disappears is a pipeline change, not a session
    incident: record it in the cut's reproduction notes with the date, and update
    this file. The 2026-08-04 banner at the top is what that looks like done
@@ -421,9 +435,10 @@ re-picked per chapter:
 | **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.19 words/sec** | **37–41 words** | 38 words @ 9.06s (1 take) |
 | **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | — | *re-measure at length* |
 
-**Rates re-measured 2026-08-04 from the chapter 1 trailer v5 run**
-(`output/episode-1/inner-canon-ch1-trailer-v5.md`) — the first cut assembled
-end-to-end on `assemble_final.sh`, and so the first whose figures come from the
+**Rates re-measured 2026-08-04 from the chapter 1 trailer v5 run** (whose document
+has since been deleted from `output/` — this table is the surviving copy) — the
+first cut assembled end-to-end on `assemble_final.sh`, and so the first whose
+figures come from the
 assembler's own gate rather than from an estimate. Each is words of *shipped*
 narration over the gate's measured speech, pooled per voice. `Draft to` is
 `rate × 8.6` to `rate × 10.0`, rounded inwards so both edges clear.
@@ -837,8 +852,8 @@ getting right before you reach this step.
 
 ## 5. The document
 
-New version, new file — `inner-canon-ch<N>-trailer-v<M>.md` or
-`inner-canon-ch<N>-longform-v<M>.md`, both under `output/episode-<N>/`. Never
+New version, new file — `inner-canon-<book><N>-trailer-v<M>.md` or
+`inner-canon-<book><N>-longform-v<M>.md`, both under `output/<book>/ch<N>/`. Never
 overwrite a prior version (`CLAUDE.md` § Git conventions): its production record
 is the reproduction evidence for the next cut.
 
@@ -878,7 +893,7 @@ disagree, `CLAUDE.md` is correct and this list needs updating:
    caption band, the end card's exact in/out timecodes and text, and where the
    music drops out. Never write it as a generic recipe — block numbering and
    timecodes differ between versions of the same chapter, and that is where the
-   mistakes land. `output/episode-1/inner-canon-ch1-trailer-v3.md` is the
+   mistakes land. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the
    reference.
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
@@ -997,7 +1012,7 @@ untouched — never re-render video for a caption problem.
 ```
 node scripts/check_caption_fit.js <doc>.md                   # 9:16, the hard case
 node scripts/check_caption_fit.js <doc>.md --format 16:9
-node scripts/check_caption_fit.js output/episode-*/*-v*.md   # sweep every cut
+node scripts/check_caption_fit.js output/*/ch*/*-v*.md       # sweep every cut
 ```
 
 It measures **every clause** in the narration table against the two-line budget
@@ -1022,7 +1037,7 @@ Its non-zero exit no longer means "this cut will overflow."
 ### Build the sidecar — `build_subtitles.js`
 
 ```
-node scripts/build_subtitles.js output/episode-1/inner-canon-ch1-trailer-v3.md
+node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
 ```
 
@@ -1130,7 +1145,7 @@ notes. Where this section contradicts steps 0–5, this section wins.
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
 | Doc format | narration table + shot list | SOUND / VISUAL / CHARACTER blocks, timecodes per act |
-| File | `inner-canon-ch<N>-trailer-v<M>.md` | `inner-canon-ch<N>-longform-v<M>.md` |
+| File | `inner-canon-<book><N>-trailer-v<M>.md` | `inner-canon-<book><N>-longform-v<M>.md` |
 
 The 16:9 landscape default is an inference — CLAUDE.md mandates 9:16 only for
 trailers, and longform is the YouTube main-feed cut. **Confirm with the user
@@ -1345,7 +1360,7 @@ expand to reach 120.
 Set by `.gitignore`, which postdates most of this pipeline's runs:
 
 - **Renders are gitignored** (`renders/`, `*.mp4`, audio). Download them to
-  `output/episode-<N>/renders/`; never commit the binary, never `git add -f` it.
+  `output/<book>/ch<N>/renders/`; never commit the binary, never `git add -f` it.
 - **Subtitle sidecars (`.srt`/`.vtt`) are tracked** and deliberately exempted
   from `.gitignore` — see [Subtitles](#subtitles) for how they are built and why
   burned-in captions do not satisfy the requirement.

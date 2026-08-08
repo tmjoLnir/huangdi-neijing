@@ -16,10 +16,10 @@ moment it is known.
 **Cite the chapter on screen as *Lingshu 28*.** Su Wen 28 is a different chapter
 (通評虛實論). Both halves of the canon run to eighty-one chapters and are
 numbered separately, so a bare "Chapter 28" is ambiguous by construction — see
-the numbering warning in `inner-canon-ch28-translation-v1.md`.
+the numbering warning in `inner-canon-lingshu28-translation-v1.md`.
 
-Source translation: `inner-canon-ch28-translation-v1.md`. Companion longform:
-`inner-canon-ch28-longform-v1.md`, whose Act I and Act V this previews.
+Source translation: `inner-canon-lingshu28-translation-v1.md`. Companion longform:
+`inner-canon-lingshu28-longform-v1.md`, whose Act I and Act V this previews.
 
 **First cut on this chapter, so there is no thesis to avoid repeating** — unlike
 the Chapter 1 folder, where five trailers each had to sell a different claim.
@@ -142,7 +142,7 @@ exactly the wrong place to trust a generative model. See *Finishing steps* 5.
 
 ## Source-script mapping
 
-Sections are those of `inner-canon-ch28-translation-v1.md`.
+Sections are those of `inner-canon-lingshu28-translation-v1.md`.
 
 | Translation § | Passage | Blocks |
 |---|---|---|
@@ -315,8 +315,8 @@ cues are timed from take durations that do not exist. Build and commit them with
 the render, and regenerate after any narration or take change.
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-trailer-v1.md
-node scripts/build_subtitles.js  output/episode-28/inner-canon-ch28-trailer-v1.md
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
+node scripts/build_subtitles.js  output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
 ```
 
 9:16 is the hard case — roughly half the caption room of the longform frame — so
@@ -357,7 +357,7 @@ directory: run them from the repo root, or pass an absolute path.**
 costs a re-take afterwards.
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-trailer-v1.md
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
 ```
 
 **This document exits 0 as written — verified 2026-08-07.** It prints one report
@@ -384,7 +384,7 @@ The vertical cut is the only place this string is visible to the checker.
 record above.
 
 ```
-node scripts/build_subtitles.js output/episode-28/inner-canon-ch28-trailer-v1.md
+node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
 ```
 
 Commit the `.srt`/`.vtt` with the cut — they are tracked, required deliverables.
@@ -415,7 +415,7 @@ by `drawtext` in the burn pass, not in an NLE.
 which is the default. Add 欠 噦 唏 振寒 噫 嚏 嚲 泣涕 太息 涎下 耳鳴 自齧舌 in the
 same `drawtext` pass, held across **0:40 to 0:50**, arriving in sequence rather
 than all at once. **Verify every glyph against
-`inner-canon-ch28-translation-v1.md` before export.** ffmpeg needs a CJK-capable
+`inner-canon-lingshu28-translation-v1.md` before export.** ffmpeg needs a CJK-capable
 face here; Anton has no Chinese coverage and will render tofu boxes silently.
 
 **6. End card — 1:00 to 1:10** (block 7). Mandated disclaimer verbatim across
