@@ -834,15 +834,25 @@ rediscovering:
   rows 0–5: 192.24 / 192.76), matching the adjacent interior within ~1–2 units.
   **There are no black bars to crop.**
 - **The delivered file is ~2% wider than true 9:16.** 480×854 is 0.5620
-  (essentially 9:16); 496×864 is 0.5741. **Never force it to 720×1280** — that
-  stretches the picture vertically by 2.1%. Burn at the cut's own dimensions;
-  `ffprobe` the file rather than assuming.
+  (essentially 9:16); 496×864 is 0.5741. **Scale it to 720×1280 anyway** — see
+  below.
 
-**496×864 is fine as a draft deliverable** and needs no correction. What it must
-not do is get resampled to the nominal 720×1280 on the way through the caption
-burn. The sidecar itself is unaffected: `build_subtitles.js` writes style values
-in PlayRes space, so libass scales font and margins with the frame and the
-measured fit holds at either geometry.
+**496×864 is fine as a draft deliverable**, and **scaling it to a true 9:16
+720×1280 is the house call** (set 2026-08-08). The 2.1% vertical stretch that
+costs is accepted: it is imperceptible, and it buys a frame the vertical platforms
+take without letterboxing or cropping a cut that is 2% off their aspect. Do not
+preserve 496×864 into the deliverable to avoid it.
+
+**Scale before burning, not after** — `scale=720:1280` first in the `-vf` chain,
+then `subtitles=`. Two reasons: captions are drawn at native 720×1280 instead of
+being stretched with the picture, and the PlayRes the sidecar's printed command
+writes into the `.ass` then matches the frame exactly rather than approximately.
+`build_subtitles.js` prints the command in that order already.
+
+The sidecar is correct either way — `build_subtitles.js` writes style values in
+PlayRes space, so libass scales font and margins with whatever frame it is given
+and the measured fit holds at both geometries. The scale is about the picture and
+the platform, not about the captions.
 
 **No `--subs`.** Passing it is a hard error: `--subs was removed. Captions are the
 subtitles skill's job: assemble first, then run it on the clean voice takes +
@@ -1026,8 +1036,9 @@ The budget itself is pure geometry:
 - **A clause width, not a word count** — **~22 characters per line at 9:16
   720×1280**, ~50 at 16:9 1280×720, two lines max either way. Both scripts compute
   it from frame width, margins and Anton's advance widths, and print it on every
-  run. The figures scale with the frame, so they hold at the delivered geometry
-  too — see [step 4](#delivered-geometry--measured-496864-on-the-draft-tier).
+  run. These are the numbers the burn actually uses, because the cut is scaled to
+  720×1280 before captions go on — see
+  [step 4](#delivered-geometry--measured-496864-on-the-draft-tier).
 - **9:16 is the hard case.** A 720-wide vertical frame gives captions roughly half
   the room of the 1280-wide longform frame, so a phrase that is fine in 16:9 can
   overflow in 9:16. Judge wrapping on the vertical cut.
