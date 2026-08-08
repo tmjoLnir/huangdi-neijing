@@ -620,6 +620,13 @@ because it is the one most easily overstated:
   that is acceptable house look is an editorial call nobody has made yet, and it is
   exactly the sort of thing the draft pass exists to surface.
 
+**The two off-spec blocks have their own analysis.** Block 3's cartouche count and
+block 8's plate are written up in
+**`inner-canon-lingshu28-trailer-render-review.md`**, beside this file — what the
+gates check, why neither defect surfaced, which blocks have and have not been viewed,
+and which luma statistic actually detects an overlay on a given background. Read it
+before the next cut's draft pass; it is a pipeline finding rather than a chapter one.
+
 **Findings that contradict or extend `SKILL.md`, and should be folded back into it:**
 
 1. **`seed_audio` can ship padded takes.** Block 5 returned file 9.870s against
