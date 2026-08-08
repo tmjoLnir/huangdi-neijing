@@ -42,6 +42,7 @@ const usableWidth = (fmt) => (fmt.width - 2 * fmt.marginX) * SAFETY;
 // close enough to pre-wrap sensibly, and libass does the authoritative wrap.
 const NARROW = "iljtfrI.,;:'\"!|()[]{}`";
 const WIDE = "MWmw@%";
+const DEFAULT_CHAR_WIDTH = 0.45; // lowercase and everything else
 
 function charWidth(ch) {
   if (ch === " ") return 0.24;
@@ -49,7 +50,7 @@ function charWidth(ch) {
   if (WIDE.includes(ch)) return 0.62;
   if (ch >= "A" && ch <= "Z") return 0.52;
   if (ch >= "0" && ch <= "9") return 0.5;
-  return 0.45; // lowercase and everything else
+  return DEFAULT_CHAR_WIDTH;
 }
 
 function textWidth(str, fontSize) {
@@ -57,6 +58,13 @@ function textWidth(str, fontSize) {
   for (const ch of str) w += charWidth(ch) * fontSize;
   return w;
 }
+
+// Approximate characters per line, for the human-readable report only — the real
+// budget is the pixel width above. Lives here so both scripts quote one number:
+// this was inlined in build_subtitles.js with its own copy of 0.45, which is
+// exactly the drift this module exists to prevent.
+const lineBudgetChars = (fmt) =>
+  Math.floor(usableWidth(fmt) / (DEFAULT_CHAR_WIDTH * fmt.fontSize));
 
 // ── Document parsing ─────────────────────────────────────────
 // Narration table rows: | 1 | The fear | For most of history, ... |
@@ -99,7 +107,9 @@ module.exports = {
   BLOCK_SECONDS,
   MAX_LINES,
   SAFETY,
+  DEFAULT_CHAR_WIDTH,
   usableWidth,
+  lineBudgetChars,
   charWidth,
   textWidth,
   parseNarration,

@@ -42,12 +42,11 @@ output/
     ch28/inner-canon-lingshu28-trailer-v1.md        # current reference layout; pre-render
     ch28/inner-canon-lingshu28-longform-v1.md       # slate rank 1, publish slot 1; pre-render
     ch28/inner-canon-lingshu28-translation-v1.md
-  # suwen/ appears when the first 素問 chapter is produced — the repo holds none
-  # right now. Everything under output/ is currently pre-render, so there are no
-  # .srt/.vtt sidecars in the tree either.
-  # every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
+  # suwen/ appears when the first 素問 chapter is produced — the repo holds none.
+  # Every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
-  # pre-render cut has none yet — build them once the voice takes exist.
+  # pre-render cut has none yet — build them once the voice takes exist. Every
+  # cut in the tree is pre-render today, which is why none appear above.
 assets/
   emperor-Fan.png                           # Fan-di style key art
   wise-Qi-2.png                             # Dr-Qi style key art
@@ -63,7 +62,7 @@ scripts/
 - `output/` — **two book folders, one chapter folder inside each**: `output/suwen/ch<N>/` and `output/lingshu/ch<N>/`. **`<N>` is the chapter's number within its own book, as the received text numbers it** — never a slate rank, a publish slot, or a sequential episode index. The book folder is what makes the number mean anything; see *Suwen and Lingshu are numbered separately* below, which is not a style note but the reason this folder exists. The chapters produced are the ones chosen off the Top-20 slate in `docs/`, so gaps in both folders are expected and are not missing work. **Documents carry the book in the filename too**, because they get quoted by basename — in commit messages, in review, and throughout `SKILL.md` — where the path is not there to disambiguate them. Trailers are `inner-canon-<book><N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-<book><N>-longform-v<M>.md` (15-20 min), translations are `inner-canon-<book><N>-translation-v<M>.md`. Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-<book><N>-trailer-script-review.md`. `<book>` is `suwen` or `lingshu` — lowercase, no separator before the number, e.g. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
 - `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
-- `scripts/` — `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which flags narration clauses that will overflow `explainer_video`'s burned-in captions. **Run `check_caption_fit.js` before generating voice takes** — it checks a different failure than `build_subtitles.js` does, and a document can pass the sidecar build and still overflow on the assembled video.
+- `scripts/` — `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which measures every narration clause against the two-line caption budget. **Run `check_caption_fit.js` before generating voice takes** — a clause over the budget is split across three or four cues, which is caption churn on screen, and rewording is free before a take is recorded. The sidecar guarantees the wrap either way, so read the report as a readability signal rather than a render failure; the skill's **Subtitles** section explains why its exit code is not a gate.
 
 ### Suwen and Lingshu are numbered separately
 
@@ -130,9 +129,9 @@ the preflight estimate, no **Assembly** record of delivered geometry and flags.
 The one cut that had all three — the chapter 1 trailer v5, the only cut ever taken
 end-to-end through the sandbox assembler — was deleted from `output/` on
 2026-08-08. **Its measured numbers survive in `SKILL.md`**, which is where they
-were always operative: the credit deltas in step 0, the 496×864 delivered geometry
-and the `background: true` failure in step 4, the re-measured voice rates in
-step 3. Read those there, not from a cut document.
+were always operative: the credit deltas in step 0, the re-measured voice rates in
+step 3, and — in step 4 — the 496×864 delivered geometry and the `background:
+true` failure that cost the run. Read those there, not from a cut document.
 
 **The next cut that renders re-establishes the worked example.** Give it a filled
 production record, a credit-spend table reconciled against its preflight, and an
@@ -171,7 +170,7 @@ Two constraints bind every script written for these voices, and the skill holds 
 - **A take must fill its fixed 10s block, within a window the assembler enforces at both edges.** The window is pipeline geometry and holds for every voice; a take outside it is a hard error that stops the assembly, not something the tool absorbs. The word count that produces it is voice-specific and does **not** transfer between voices — take both the window and the word counts from the skill's step-3 table, never from another cut's document.
 - **`speech_rate` is not a duration lever.** Word count and punctuation are the only controls on take length.
 
-> **The window changed on 2026-08-04** when Higgsfield removed the `explainer_video` assembler, and it moved by more than two seconds. **Every cut written before that date is sized to the old window and will fail the new assembler.** Re-time a cut's narration before re-rendering it; do not assume an existing document is a safe model to copy. The skill's step-3 and step-4 hold what changed.
+> **The window changed on 2026-08-04** when Higgsfield removed the server-side assembler, and it moved by more than two seconds — from 6–8s to 8.6–10.0s. **Every cut written before that date is sized to the old window and will fail the current assembler.** Re-time a cut's narration before re-rendering it; do not assume an existing document is a safe model to copy. The skill's step-3 and step-4 hold what changed.
 
 Measure any new voice on one take, and write the result into the skill's table, before writing a script to it.
 
@@ -226,7 +225,7 @@ edit/upload time.** The fourth, music, it still cannot *generate* — but it can
   for clips, `generate_audio` for voiceover. Every generated asset's job ID goes
   into the document's production record so the cut can be reproduced.
 - **Final assembly is a shell script in a remote sandbox, not a service call.**
-  Higgsfield removed the `explainer_video` assembler on 2026-08-04; assembly now
+  Higgsfield removed the server-side assembler on 2026-08-04; assembly now
   runs `assemble_final.sh` under `sandbox_exec`. Two policy consequences: there is
   **no assembly job ID to record**, so the production record captures the flags,
   manifest and exported `media_id` instead; and the sandbox is **ephemeral**, so a

@@ -13,23 +13,38 @@
 const fs = require("fs");
 const path = require("path");
 const {
-  FORMATS,
   BLOCK_SECONDS,
   MAX_LINES,
   usableWidth,
+  lineBudgetChars,
   textWidth,
   parseNarration,
   parseArgs,
 } = require("./lib/caption_metrics");
 
 // Production record: - **Voiceover** (...): block 1 `uuid` (8.1s), block 2 `uuid` (5.0s), ...
+//
+// A record keeps superseded takes (CLAUDE.md), so more than one line can carry
+// this shape. Lines marked superseded are skipped outright; if several still
+// remain the first wins — as before — but it says so rather than picking
+// silently, because timing a sidecar off rejected takes is invisible in the
+// output.
 function parseDurations(md) {
-  const vo = md.split("\n").find((l) => /\*\*Voiceover\*\*/.test(l));
-  if (!vo) return {};
+  const candidates = md
+    .split("\n")
+    .filter((l) => /\*\*Voiceover\*\*/.test(l) && !/superseded/i.test(l));
+  if (!candidates.length) return {};
+  if (candidates.length > 1) {
+    console.error(
+      `  WARNING: ${candidates.length} un-superseded **Voiceover** lines found; using the first.`
+    );
+  }
   const durations = {};
   const re = /block\s+(\d+)\s+`[^`]+`\s*\((\d+(?:\.\d+)?)s\)/g;
   let m;
-  while ((m = re.exec(vo)) !== null) durations[Number(m[1])] = Number(m[2]);
+  while ((m = re.exec(candidates[0])) !== null) {
+    durations[Number(m[1])] = Number(m[2]);
+  }
   return durations;
 }
 
@@ -134,9 +149,14 @@ function timeCues(blocks, durations, usable, fontSize) {
 
 // ── Output ───────────────────────────────────────────────────
 const pad = (n, w = 2) => String(n).padStart(w, "0");
+// Round to whole milliseconds FIRST, then decompose. Rounding the fractional
+// part on its own lets it reach 1000 without carrying into seconds, which emits
+// a four-digit field ("00:00:09,1000") that is not a valid SRT timestamp — cue
+// boundaries are proportional splits of float durations, so it is reachable.
 function stamp(sec, sep) {
-  const ms = Math.round((sec - Math.floor(sec)) * 1000);
-  const s = Math.floor(sec);
+  const totalMs = Math.max(0, Math.round(sec * 1000));
+  const ms = totalMs % 1000;
+  const s = (totalMs - ms) / 1000;
   return `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}${sep}${pad(ms, 3)}`;
 }
 
@@ -202,10 +222,14 @@ function burnCommand(srtPath, fmt) {
     `  | sed 's/^PlayResX: .*/PlayResX: ${fmt.width}/; s/^PlayResY: .*/PlayResY: ${fmt.height}/' \\`,
     `  > ${assPath}`,
     "",
-    `# 2. Burn. The cut must be ${fmt.width}x${fmt.height} at this point — prepend`,
-    `#    scale=${fmt.width}:${fmt.height}, to the -vf chain when burning a lower-res draft.`,
+    `# 2. Scale to ${fmt.width}x${fmt.height}, then burn — in that order.`,
+    `#    The assembler's output follows the source clips, so it is close to but not`,
+    `#    exactly ${fmt.width}x${fmt.height} (a 480p draft delivered 496x864, ~2% wider than`,
+    "#    true 9:16). House call: take the ~2% stretch and ship a true 9:16 frame the",
+    "#    vertical platforms accept without letterboxing. Scaling first also draws the",
+    `#    captions at native ${fmt.width}x${fmt.height} and makes step 1's PlayRes exact.`,
     "ffmpeg -i <cut>.mp4 \\",
-    `  -vf "subtitles=${assPath}:force_style='${style}'" \\`,
+    `  -vf "scale=${fmt.width}:${fmt.height},subtitles=${assPath}:force_style='${style}'" \\`,
     "  -c:a copy <cut>-subtitled.mp4",
   ].join("\n");
 }
@@ -238,7 +262,7 @@ function main() {
   fs.writeFileSync(`${base}.srt`, toSrt(cues));
   fs.writeFileSync(`${base}.vtt`, toVtt(cues));
 
-  const budget = Math.floor(usable / (0.45 * fmt.fontSize));
+  const budget = lineBudgetChars(fmt);
   const missing = blocks.filter((b) => durations[b.block] === undefined);
   const widest = Math.max(...cues.flatMap((c) => c.lines.map((l) => textWidth(l, fmt.fontSize))));
 
