@@ -26,7 +26,10 @@ Prior stages, kept for reproduction and superseded as deliverables: assembly
 `130c2638-…` (496×864, no text); captions only `0a013c99-…`; captions + card
 `04409d47-…`.
 
-**Still outstanding:** block 3's twelve cartouche glyphs, and the licensed guqin bed.
+**Still outstanding:** the licensed guqin bed, and **two open render defects** —
+block 3 shows ~36 cartouches where the script says twelve (glyphs deliberately not
+added, 2026-08-08), and block 8's plate needed a scrim to make the disclaimer legible.
+Both want regenerating before any full-tier render; neither blocks this draft.
 
 **Delivered geometry: 496×864** — recorded from the render, not the target. Two
 things differ from the ch1 v5 run this cut was planned against, and both are new
@@ -617,6 +620,13 @@ because it is the one most easily overstated:
   that is acceptable house look is an editorial call nobody has made yet, and it is
   exactly the sort of thing the draft pass exists to surface.
 
+**The two off-spec blocks have their own analysis.** Block 3's cartouche count and
+block 8's plate are written up in
+**`inner-canon-lingshu28-trailer-render-review.md`**, beside this file — what the
+gates check, why neither defect surfaced, which blocks have and have not been viewed,
+and which luma statistic actually detects an overlay on a given background. Read it
+before the next cut's draft pass; it is a pipeline finding rather than a chapter one.
+
 **Findings that contradict or extend `SKILL.md`, and should be folded back into it:**
 
 1. **`seed_audio` can ship padded takes.** Block 5 returned file 9.870s against
@@ -790,7 +800,74 @@ does, because the 3px black border is the darkest thing in an otherwise light ba
 On exactly 1–8s. **Pick the statistic to match the background**: `YAVG` discriminated
 the end card against a dark plate and was useless here; `YMIN` is the reverse.
 
-**5. Block 3's twelve cartouches**, if rendered empty — which is the default. Add
+**5. Block 3's twelve cartouches — NOT DONE, by decision, 2026-08-08.** The glyph
+work is verified and ready (below); it is deliberately not applied, and **the cut
+ships without on-screen glyphs.** Regenerating block 3 (~10 credits) was offered and
+declined. **Treat this as an open defect, not a closed step.**
+
+The reason the glyphs were not simply added: **the rendered block 3 does not show
+twelve cartouches.** It shows a *grid* — measured at roughly 6–7 columns by ~6 rows, on the
+order of **35–40 cells** — rather than twelve arriving one after another down the
+vertical frame. Confirmed by eye at t=26s and by column/row luma profiling of the
+frame.
+
+**This is a factual-accuracy defect, not a styling one, and drawing glyphs would
+entrench it.** Block 3's narration says *"Twelve things a body does"*; blocks 2, 4
+and 5 also say twelve; the source says 凡此十二邪者 and §15 recapitulates twelve. A
+viewer who counts sees ~36. Putting twelve glyphs into twelve cells of a 36-cell grid
+leaves two dozen conspicuously empty and still shows the wrong count — labelling
+twelve of thirty-six announces the mismatch rather than hiding it. **The fix is to
+regenerate block 3 to the shot list (~10 credits), then add the glyphs** — the same
+call already recorded for block 8's plate.
+
+**What shipping without glyphs costs, stated plainly.** Unlabelled cartouches are
+generic marks, so nothing on screen makes a *false* claim, and the narration carries
+the count correctly. But the picture under the word *twelve* shows roughly thirty-six
+countable objects, and the compliance notes below list "the cartouches must number
+twelve" as a historical-accuracy requirement of this cut. **That requirement is
+currently unmet.** It is a low-severity, non-assertive mismatch on the lowest-exposure
+surface of a chapter the slate rates Very Low — which is why it is shippable — but it
+is unmet, and it should be fixed before any full-tier render rather than carried
+forward.
+
+**Every automated gate passed this clip too** — dimensions, ≥9.5s, no audio stream,
+no head or tail freeze. Nothing in the pipeline counts objects against a shot list.
+That is now **two of eight blocks** that rendered off-spec in ways only looking
+caught (see block 8), which is the strongest argument in this cut's record for
+viewing a draft rather than trusting its gates.
+
+**The glyph content is verified and ready to apply the moment block 3 is correct.**
+Checked against `inner-canon-lingshu28-translation-v2.md` line 588–589, which lists
+the twelve as asked, in order:
+
+| # | § | Glyph | Gloss | Agent |
+|---|---|---|---|---|
+| 1 | §2 | 欠 | yawn | qi, and the hour |
+| 2 | §3 | 噦 | hiccup | grain and cold |
+| 3 | §4 | 唏 | catching sob | two quantities and their rates |
+| 4 | §5 | 振寒 | shiver | the cold |
+| 5 | §6 | 噫 | belch | the cold, again |
+| 6 | §7 | 嚏 | sneeze | yang qi |
+| 7 | §8 | 嚲 | limpness | a chain of conditions, no one at the end |
+| 8 | §9 | **泣涕** | weeping | **主 — a ruler** |
+| 9 | §10 | **太息** | long sigh | **憂思 — worry and brooding** |
+| 10 | §11 | 涎下 | drooling | the worms |
+| 11 | §12 | 耳鳴 | tinnitus | an empty stomach |
+| 12 | §13 | 自齧舌 | tongue-biting | qi, arriving at the wrong time |
+
+**The two-with-an-agent check is confirmed at source**, which is what block 5's
+dimming depends on: §9 is *"AGENT: 主 — a ruler. This is the hinge of the whole
+chapter"*, and §10 is *"AGENT: 憂思… **With §9 it forms the only pair in the
+chapter** where something a person is doing causes something the person's body then
+does."* So the two left lit in block 5 must be **泣涕 and 太息**. Getting the other
+ten lit inverts the cut's argument.
+
+**A CJK face is present in the sandbox and no install is needed** — WenQuanYi Zen Hei
+at `/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc`, plus Unifont. Anton must **not**
+be used for these: it has no Chinese coverage and renders tofu boxes silently, which
+is the failure this step has always warned about.
+
+Original instruction, retained for when block 3 is regenerated: add
 欠 噦 唏 振寒 噫 嚏 嚲 泣涕 太息 涎下 耳鳴 自齧舌 in the same `drawtext` pass, held
 across **0:20 to 0:30**, arriving in sequence rather than all at once. **Verify
 every glyph against `inner-canon-lingshu28-translation-v2.md` before export.** ffmpeg
@@ -936,7 +1013,10 @@ time.
   assumed.
 - **Historical accuracy** — four risks. (1) Cited on screen as **Lingshu 28**, never
   a bare "Chapter 28". (2) The count is twelve, not the slate's eleven; the
-  cartouches must number twelve and match the translation file. (3) Block 7's
+  cartouches must number twelve and match the translation file — **this one is
+  currently UNMET: the rendered block 3 shows ~36 cartouches, and the cut ships
+  unlabelled by decision on 2026-08-08. Narration and script are correct; the picture
+  is not. See *Finishing steps* 5.** (3) Block 7's
   "administration" is Su Wen 8 and is deliberately not named on screen; if it is ever
   named, cite **Su Wen 8**, never "chapter 6". (4) The ten-versus-two split is a fact
   about the Chinese grammar, tabulated in the translation file, and must not drift
