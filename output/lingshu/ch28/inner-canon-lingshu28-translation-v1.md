@@ -20,8 +20,10 @@ translation.
 bilingual page, captured 2026-07-08, 5 pp.), and the 原文 below is transcribed
 from it. `ctext.org`, `zh.wikisource.org` and `8bei8.com` are all **unreachable
 from the repo host** — the agent proxy denies them at CONNECT — so a PDF supplied
-by hand is now the standing route into this repo, as recorded in
-`inner-canon-ch1-translation-v4.md` and `inner-canon-ch6-translation-v1.md`.
+by hand is now the standing route into this repo. It was recorded the same way in
+the chapter 1 and chapter 6 translations (`inner-canon-ch1-translation-v4.md`,
+`inner-canon-ch6-translation-v1.md`), **both since removed from the repo** — this
+document is now the only place the route is written down.
 
 The PDF also carries a facing English translation. **It was read and then set
 aside**: the rendering below is made from the Chinese, and where the two differ
@@ -51,8 +53,9 @@ The two halves of the canon are numbered separately and both run to eighty-one
 chapters, so **an unqualified "Chapter 28" on screen is ambiguous by
 construction** and points a checking viewer at the wrong text roughly half the
 time. **Cite it on screen as *Lingshu 28*, or as *Spiritual Pivot, chapter
-28*.** Keep `ch28` for the folder and the file names, which follow the input
-script (`Chapt_LS28__why_we_yawn.pdf`).
+28*.** The folder and file names carry the book for the same reason —
+`output/lingshu/ch28/`, `inner-canon-lingshu28-*.md`, per `CLAUDE.md` § Structure.
+The input script was `Chapt_LS28__why_we_yawn.pdf`.
 
 ### Style
 
@@ -334,8 +337,9 @@ Second, **行陰用力** is ambiguous and the reading matters. It can mean *exer
 oneself in the yin [parts, i.e. moving the lower body]*, and it can mean
 *sexual exertion*; commentators have taken both. The neutral reading is used
 here and in the episode, on the same principle applied to 作強 in
-`inner-canon-ch6-translation-v1.md`: where two readings are defensible, take the
-one the words best support and do not stage the other.
+`inner-canon-ch6-translation-v1.md` (since removed from the repo): where two
+readings are defensible, take the one the words best support and do not stage the
+other.
 
 This is also the most machine-like answer in the chapter — a four-link chain
 where each link is stated as a conditional. Empty stomach → empty vessels →

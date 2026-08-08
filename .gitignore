@@ -9,7 +9,7 @@
 # Final MP4s from Higgsfield are CDN downloads archived locally, never
 # committed — a single longform episode can run to hundreds of megabytes
 # and would live in the history forever.
-# Convention: download renders into output/episode-<N>/renders/
+# Convention: download renders into output/<book>/ch<N>/renders/
 renders/
 *.mp4
 *.mov

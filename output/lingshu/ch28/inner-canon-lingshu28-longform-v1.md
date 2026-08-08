@@ -14,10 +14,10 @@ assumption. It is ~108 clips to get wrong.
 entirely (通評虛實論). Both halves of the canon run to eighty-one chapters and are
 numbered separately, so a bare "Chapter 28" is ambiguous by construction and
 sends a checking viewer to the wrong text about half the time. See the numbering
-warning in `inner-canon-ch28-translation-v1.md`.
+warning in `inner-canon-lingshu28-translation-v1.md`.
 
-Source translation: `inner-canon-ch28-translation-v1.md`. Companion trailer:
-`inner-canon-ch28-trailer-v1.md`, which previews the cold open and Act I.
+Source translation: `inner-canon-lingshu28-translation-v1.md`. Companion trailer:
+`inner-canon-lingshu28-trailer-v1.md`, which previews the cold open and Act I.
 
 **Slate position.** This is rank **1** of the twenty in `docs/Chronicle of Balance
 Top20 Chapter Slate.md`, and **slot 1** of the publish sequence — the channel's
@@ -614,7 +614,7 @@ citation, the countable grid, and the four characters the whole chapter turns on
 
 ## Source mapping — translation § → blocks
 
-Sections are those of `inner-canon-ch28-translation-v1.md`.
+Sections are those of `inner-canon-lingshu28-translation-v1.md`.
 
 | Translation § | Passage | Blocks |
 |---|---|---|
@@ -895,8 +895,8 @@ Sidecar only; `assemble_final.sh` rejects `--subs` outright. **Build with
 twice the room of the vertical trailer, so a 9:16 build would over-split every cue:
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-longform-v1.md --format 16:9
-node scripts/build_subtitles.js  output/episode-28/inner-canon-ch28-longform-v1.md --format 16:9
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md --format 16:9
+node scripts/build_subtitles.js  output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md --format 16:9
 ```
 
 **No `.srt`/`.vtt` ships with this document yet, by design** — the cues are timed
@@ -951,7 +951,7 @@ absolute path.**
 point and costs a re-take afterwards.
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-longform-v1.md --format 16:9
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md --format 16:9
 ```
 
 **This document exits 0 as written — verified 2026-08-07, every clause fits.**
@@ -972,7 +972,7 @@ it costs a re-take.
 in the record above.
 
 ```
-node scripts/build_subtitles.js output/episode-28/inner-canon-ch28-longform-v1.md --format 16:9
+node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md --format 16:9
 ```
 
 On a **copy** of the `.srt`, delete the cues covering **block 108** (everything
@@ -1001,7 +1001,7 @@ plates** — which is the default — their Chinese text is added here, in the s
 `drawtext` pass, at blocks **7, 10, 16, 33, 44, 49, 66, 71, 90, 93 and 96**, each
 held for its full 10s window. Timecodes are `(block − 1) × 10s`: 1:00, 1:30, 2:30,
 5:20, 7:10, 8:00, 10:50, 11:40, 14:50, 15:20, 15:50. **Verify every glyph against
-`inner-canon-ch28-translation-v1.md` before export**, and note that ffmpeg needs a
+`inner-canon-lingshu28-translation-v1.md` before export**, and note that ffmpeg needs a
 CJK-capable face here — Anton has no Chinese coverage and renders tofu boxes
 silently.
 
