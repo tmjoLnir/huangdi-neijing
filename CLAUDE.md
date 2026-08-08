@@ -37,9 +37,13 @@ README.md
   hooks/session-start.sh                    # reinstalls ffmpeg, the Anton font and wick on the ephemeral host
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
 output/
-  episode-1/inner-canon-ch1-trailer-v3.md   # current reference layout
-  episode-1/assemble-ch1-trailer-v3.sh      # v3's service-free ffmpeg assembly
-  episode-1/inner-canon-ch1-longform-v1.md  # 18-min script + plan; pre-render
+  suwen/                                          # 素問 Basic Questions — chapters 1-81
+    ch1/inner-canon-suwen1-trailer-v5.md          # current reference layout
+    ch1/inner-canon-suwen1-longform-v3.md         # 18-min script + plan; pre-render
+    ch1/inner-canon-suwen1-translation-v4.md
+  lingshu/                                        # 靈樞 Spiritual Pivot — chapters 1-81
+    ch28/inner-canon-lingshu28-longform-v1.md     # slate rank 1, publish slot 1
+    ch18/inner-canon-lingshu18-longform-v2.md     # legacy `episode-46`; see the mapping below
   # every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
   # pre-render cut has none yet — build them once the voice takes exist.
@@ -55,10 +59,56 @@ scripts/
   lib/caption_metrics.js                    # frame geometry + Anton metrics, shared by both
 ```
 
-- `output/` — one `episode-<N>/` folder per chapter. **`<N>` is the chapter number of the file name of the input script, not a sequential episode index** — the folders are the chapters chosen off the Top-20 slate in `docs/`, so gaps are expected and are not missing work. Trailers are `inner-canon-ch<N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-ch<N>-longform-v<M>.md` (15-20 min), translations are `inner-canon-ch<N>-translation-v<M>.md`. Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-ch<N>-trailer-script-review.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
+- `output/` — **two book folders, one chapter folder inside each**: `output/suwen/ch<N>/` and `output/lingshu/ch<N>/`. **`<N>` is the chapter's number within its own book, as the received text numbers it** — never a slate rank, a publish slot, or a sequential episode index. The book folder is what makes the number mean anything; see *Suwen and Lingshu are numbered separately* below, which is not a style note but the reason this folder exists. The chapters produced are the ones chosen off the Top-20 slate in `docs/`, so gaps in both folders are expected and are not missing work. **Documents carry the book in the filename too**, because they get quoted by basename — in commit messages, in review, and throughout `SKILL.md` — where the path is not there to disambiguate them. Trailers are `inner-canon-<book><N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-<book><N>-longform-v<M>.md` (15-20 min), translations are `inner-canon-<book><N>-translation-v<M>.md`. Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-<book><N>-trailer-script-review.md`. `<book>` is `suwen` or `lingshu` — lowercase, no separator before the number, e.g. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
 - `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
 - `scripts/` — `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which flags narration clauses that will overflow `explainer_video`'s burned-in captions. **Run `check_caption_fit.js` before generating voice takes** — it checks a different failure than `build_subtitles.js` does, and a document can pass the sidecar build and still overflow on the assembled video.
+
+### Suwen and Lingshu are numbered separately
+
+**The Inner Canon is two books of eighty-one chapters each, numbered
+independently, so a bare chapter number is ambiguous by construction.** Suwen 28
+(通評虛實論) and Lingshu 28 (口問) are different chapters. So are Suwen 12 and
+Lingshu 12 — and that pair is live, not hypothetical: the Top-20 slate schedules
+**Lingshu 12 at publish slot 7 and Suwen 12 at slot 9**. Under a single flat
+`episode-<N>` tree those two collide on the folder *and* on every filename
+inside it. Suwen 4/Lingshu 4 and Suwen 11/Lingshu 11 are already-produced pairs
+with the same problem.
+
+The rule is structural — a folder you cannot file into wrongly — rather than a
+warning, because the warning has already been written three times and the
+numbering still went wrong:
+
+- **`output/episode-46/` holds Ling Shu 18** (營衛生會), not chapter 46. "46" was
+  the index of a series-blueprint doc no longer in `docs/`, whose Ling Shu
+  entries all ran `slate index − 35`. Meanwhile **Lingshu 46** (五變) is a real
+  chapter, ranked 19 on the slate at publish slot 18 — so the folder name is not
+  just wrong, it is occupying the name a scheduled chapter needs.
+- The chapter-28 and chapter-46 documents each open with a hand-written prose
+  warning that their number is ambiguous or wrong. Three such warnings across two
+  folders is the symptom; the book folder is the fix, and new cuts should not
+  need the warning at all.
+
+**Legacy folders, and what they actually are.** These three predate the
+convention and are migrated with `git mv`. Until that lands, this table is the
+map — read it before trusting any `episode-<N>` path in this file, in `SKILL.md`,
+or inside a cut document:
+
+| Legacy path | Actually | New path |
+|---|---|---|
+| `output/episode-1/` | Suwen 1 — 上古天真論 | `output/suwen/ch1/` |
+| `output/episode-28/` | Lingshu 28 — 口問 | `output/lingshu/ch28/` |
+| `output/episode-46/` | **Ling Shu 18** — 營衛生會 (not chapter 46) | `output/lingshu/ch18/` |
+
+**The sweep glob gains a level**: `node scripts/check_caption_fit.js
+output/*/ch*/*-v*.md`. Both scripts take paths and hold no folder assumptions of
+their own, so nothing in `scripts/` changes except usage comments.
+
+**Cite the book, on screen and in speech — never a bare chapter number.**
+*Lingshu 28*, *Ling Shu 18*, *Suwen 1*, or the Chinese title. A bare "Chapter 28"
+sends a checking viewer to the wrong text about half the time, and citation
+accuracy is the channel's stated differentiator. The per-cut compliance notes
+already record this as *citation accuracy*; keep recording it.
 
 Each production document contains, in order:
   - The cut's title, the chapter's Chinese title, and the cut's short name.
@@ -68,17 +118,18 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/episode-1/inner-canon-ch1-trailer-v3.md` is the reference.
+  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/suwen/ch1/inner-canon-suwen1-trailer-v5.md` is the reference.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
 When adding a new trailer or episode document, follow this same layout so production records stay reproducible.
-`output/episode-1/inner-canon-ch1-trailer-v3.md` is the current reference — the
-most recent cut on the permanent voice cast and on `seedance_2_0_mini`, and it
-carries two sections worth reusing: a **credit spend** breakdown reconciled
-against the preflight estimate, and a **Fallback** giving a service-free `ffmpeg`
-assembly for when `explainer_video` is unavailable. Add a **voice measurement**
-table as well on any cut that measures a voice for the first time.
+`output/suwen/ch1/inner-canon-suwen1-trailer-v5.md` is the current reference — the
+most recent cut on the permanent voice cast and on `seedance_2_0_mini`, and the
+only one taken end-to-end through the sandbox assembler. It carries two sections
+worth reusing: a **credit spend** breakdown reconciled against the preflight
+estimate, and an **Assembly** record giving the delivered geometry and the flags
+the run actually used. Add a **voice measurement** table as well on any cut that
+measures a voice for the first time.
 
 ## Core Cast (recurring)
 
@@ -119,7 +170,7 @@ Measure any new voice on one take, and write the result into the skill's table, 
 ## Writing conventions
 
 - **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
-- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/episode-1/inner-canon-ch1-trailer-v3.md`.
+- **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/suwen/ch1/inner-canon-suwen1-trailer-v5.md`.
 - Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
 - Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — six blocks is 60s, eight is 80s.
 - **Every deliverable ships captioned**, in the **anton** font, with every subtitle wrapping on screen and readable across the whole video. The `.srt`/`.vtt` sidecars are **tracked, required deliverables** — build them with `node scripts/build_subtitles.js <cut-document>.md` and commit them with the cut. Captions are burned **after** assembly, as their own step; the assembler produces none. Why the sidecar guarantees the wrap, and the cue-timing drift currently open against it: see the skill's **Subtitles** section.
@@ -182,7 +233,7 @@ edit/upload time.** The fourth, music, it still cannot *generate* — but it can
   step 1.
 - **What lands in git**: rendered media never does — it is gitignored
   (`renders/`, `*.mp4`, audio), and renders are downloaded into
-  `output/episode-<N>/renders/`. Subtitle sidecars (`.srt`/`.vtt`) are small text,
+  `output/<book>/ch<N>/renders/`. Subtitle sidecars (`.srt`/`.vtt`) are small text,
   are required deliverables, and *are* tracked. CDN links expire, so archive any
   final MP4 worth keeping by hand.
 - **The CDN is often unreachable from the repo host**, so a cut frequently cannot
