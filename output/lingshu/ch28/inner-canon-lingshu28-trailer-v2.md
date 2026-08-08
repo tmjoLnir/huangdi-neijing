@@ -605,12 +605,20 @@ because it is the one most easily overstated:
   zero WARNs; the finished file decode-validated at 496×864 / 80.064s; the burn
   verified for font substitution via libass's `fontselect` log; **one frame of the
   captioned cut extracted at t=14.2s and actually inspected** — see *Captions*.
-- **Three frames are the extent of the visual verification** — t=14.2s for the
-  captions, t=75s for the end card, t=5s for the lower-third against a caption.
+- **Six of eight blocks have now been inspected** (updated 2026-08-08) — t=5s
+  (lower-third, block 1), t=14.2s (captions, block 2), t=26s (block 3), t=41–49.5s
+  (block 5), t=50.3–59.5s (block 6), t=75s (end card, block 8). **Blocks 4 and 7
+  remain unviewed.** Measurements and verdicts are in
+  `inner-canon-lingshu28-trailer-render-review.md`. In short: **block 6 is on spec** —
+  the diagram genuinely dissolves and redraws into a centred seated figure, L/R
+  symmetry 53%→87% — and **block 5's staging is correct**, dimming to exactly two lit
+  cartouches at the bottom of frame; its only fault is the ~30-cell count it shares
+  with block 3. Block 6 also confirms Dr-Qi on the cast sheet: **blue cheongsam, open
+  bamboo scroll, motionless**.
   **Looking is what caught the block 8 plate defect**, which every automated gate had
-  passed; the measurements only explained it afterwards. It confirms the captions
-  burn correctly, that the card is legible, that the lower-third sits clear of the
-  caption band, and that block 2 shows a figure in the gold robe. It does
+  passed; the measurements only explained it afterwards. Inspection confirms the
+  captions burn correctly, the card is legible, the lower-third sits clear of the
+  caption band, and block 2 shows a figure in the gold robe. It does
   **not** cover: the house look across the cut, the character likenesses against the
   cast sheet, whether the block 4 → 6 diagram reads as *reorganising*, whether shot 3
   actually shows twelve cartouches, or whether shot 5 dims the correct ten. **All of
@@ -874,10 +882,16 @@ every glyph against `inner-canon-lingshu28-translation-v2.md` before export.** f
 needs a CJK-capable face here; Anton has no Chinese coverage and renders tofu boxes
 silently.
 
-**If block 5 dims ten of the twelve** as the shot list calls for, the two left lit
-must be **泣涕 and 太息** — weeping and the long sigh, the two riddles with an
-author. Getting the wrong two lit inverts the cut's argument, so check this against
-the agent table in the translation file before export.
+**Block 5's dimming was checked on 2026-08-08 and its staging is correct** — it dims
+down to **exactly two lit cartouches near the bottom of the frame**, which is what the
+shot list asks for. It inherits block 3's wrong cell count and nothing else.
+
+**Which two are lit is undetermined in the render, and cannot be otherwise**: the
+cartouches are unlabelled, so no cell is a named riddle until glyphs are added. **The
+requirement therefore binds this glyph pass, not the clip.** When glyphs are added,
+the two left lit must be **泣涕 and 太息** — weeping and the long sigh, the two
+riddles with an author. Getting the wrong two lit inverts the cut's argument, so check
+against the agent table in the translation file before export.
 
 **6. End card — DONE 2026-08-08.** 1:10 to 1:20 (block 8), output
 `04409d47-bee0-490c-9048-d55a898d3946`. Mandated disclaimer verbatim across three

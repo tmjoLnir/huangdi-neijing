@@ -7,9 +7,15 @@ the draft render (`seedance_2_0_mini` @ 480p, 8 blocks, assembled and finished).
 
 > A dramatized adaptation of a classical philosophical text. Not medical advice.
 
-**Status: findings recorded, no re-render.** Regenerating the two off-spec blocks was
-offered and declined on 2026-08-08. Both defects stay open and are logged in the
-cut's own production record; this file is the analysis behind them.
+**Status: findings recorded, no re-render.** Regenerating the off-spec blocks was
+offered and declined on 2026-08-08. The defects stay open and are logged in the cut's
+own production record; this file is the analysis behind them.
+
+**Updated 2026-08-08** after inspecting blocks 5 and 6, which the first version of this
+review named as the two most worth checking. **Block 6 is on spec** and block 5 is
+correct apart from the count it shares with block 3 — so the earlier inference that
+the uninspected blocks were probably compromised **did not hold**, and this file now
+says so. Six of eight blocks have been viewed; blocks 4 and 7 remain unknown.
 
 **Why this file exists.** The per-cut record says *what happened*. This says *what the
 pipeline failed to notice*, which is a property of the pipeline rather than of this
@@ -90,35 +96,71 @@ but it does mean **the shot list is enforced by a human or not at all**.
 
 ---
 
-## The uncomfortable inference
+## Block-by-block status
 
-**Four of eight blocks were ever looked at. Two of those four were off-spec.**
+**Six of eight blocks inspected as of 2026-08-08.** Blocks 5 and 6 were checked
+after the first version of this review flagged them as the two that mattered most.
 
 | Block | Viewed | Verdict |
 |---|---|---|
 | 1 — empty floor | yes, t=5s | on spec |
 | 2 — Fan-di, fan snapped open | yes, t=14.2s | on spec (gold robe, figure present) |
-| 3 — twelve cartouches | yes, t=26s | **off spec** |
+| 3 — twelve cartouches | yes, t=26s | **off spec — count** |
 | 4 — Dr-Qi, circuit diagram | **no** | unknown |
-| 5 — ten of twelve dim out | **no** | unknown |
-| 6 — diagram reorganises | **no** | unknown |
+| 5 — ten of twelve dim out | yes, t=41–49.5s | **partly off spec — count only** |
+| 6 — diagram reorganises | yes, t=50.3–59.5s | **on spec** |
 | 7 — split hall | **no** | unknown |
-| 8 — black plate | yes, t=75s | **off spec** |
+| 8 — black plate | yes, t=75s | **off spec — colour** |
 
-A 50% defect rate among inspected blocks is not evidence that the uninspected four
-are fine. **Blocks 5 and 6 are the ones to check first**, and for a specific reason:
+### Block 5 — the staging is right, the count is wrong
 
-- **Block 5** must dim ten cartouches and leave exactly **泣涕 and 太息** lit. Those
-  are the only two riddles in the chapter with an agent (translation file §9 and §10),
-  and they are the whole argument of the cut. Since block 3's cartouche count is
-  already wrong, block 5's dimming is unlikely to be right either — and getting the
-  wrong two lit **inverts the cut's thesis** rather than merely looking untidy.
-- **Block 6** must show the diagram *reorganising* from a circuit into a centre. That
-  transformation is the load-bearing image of the whole trailer. It has never been
-  seen moving.
+**The beat works.** Frame luma falls monotonically **181.6 → 128.9** across 40–50s and
+then plateaus from t=48 — the signature of "ten dim out one by one, then hold" rather
+than a fade. At t=49 the frame shows nearly all cartouches dimmed and **exactly two
+still glowing, near the bottom of the frame**, which is precisely what the shot list
+asks for.
 
-Neither was checked, because nothing prompted a check. That is the same reason the
-other two defects survived to the finished file.
+**The count is wrong the same way block 3's is** — a grid of ~30 rather than twelve.
+Blocks 3 and 5 share the cartouche motif and share the defect, which is consistent
+rather than a second independent failure.
+
+**Which two are lit cannot be determined from the render, and that is not a defect.**
+The cartouches are unlabelled by design, so no cell corresponds to a named riddle
+until glyphs are added. The requirement that the two survivors be **泣涕 and 太息**
+therefore binds the *glyph pass*, not this clip — see the cut's *Finishing steps* 5.
+The staging it depends on (two left lit, at the bottom) is correct and ready.
+
+### Block 6 — on spec, and it is the shot the trailer rests on
+
+The load-bearing image works. Measured across 50–60s:
+
+| | t=50.3 | t=54 | t=59.5 |
+|---|---|---|---|
+| ink pixels | 10,602 | 4,520 | 11,285 |
+| L/R symmetry | 53% | 44% | **87%** |
+| ink centroid x (centre = 360) | 397 | 257 | **341** |
+
+**Ink mass halves and then rebuilds** — a genuine dissolve-and-redraw, not a drift or
+a pan. The end state is markedly more symmetrical than the start and settles within
+19px of frame centre.
+
+Confirmed by eye at t=59.5: **a single seated figure at the exact centre, a luminous
+line rising from the body to the head, and the composition radially organised around
+it.** Dr-Qi stands still at the side — **blue cheongsam, open bamboo scroll**, which
+also confirms cast-sheet compliance on the character the cut leans on hardest.
+
+### What the two checks changed
+
+The first version of this review inferred from a 50% defect rate that the uninspected
+blocks were likely compromised. **That inference was too pessimistic.** Block 6 — the
+most complex thing asked of the model, and the shot the argument depends on — came
+back correct, and block 5's only fault is the count it inherits from sharing block 3's
+motif.
+
+**The defect is narrower than it looked: it is the cartouche-grid motif, not the
+generation as a whole.** Two of three failures (blocks 3 and 5) are one motif rendered
+once and reused; the third (block 8) is an unrelated plate-colour miss. Blocks 4 and 7
+remain unviewed, and block 4 shares the diagram motif that block 6 got right.
 
 ---
 
@@ -136,10 +178,15 @@ render, and both cost time on this cut.
 | `YMIN` | overlays on a **light** ground (the lower-third: 40→8→83 across its 1–8s window) | dark grounds, where the floor is already near 0 |
 
 **Verify a frame transfer with a checksum.** The CDN is blocked from the repo host by
-org egress policy, so inspecting a frame means base64 through the sandbox. Three
-transfers silently corrupted mid-string and only failed at decode. Print
-`md5sum` alongside the base64 and compare after decoding — a corrupted frame that
-half-renders is worse than one that fails outright.
+org egress policy, so inspecting a frame means base64 through the sandbox. **Four
+transfers corrupted mid-string** across this review. Print `md5sum` alongside the
+base64 and compare after decoding — a corrupted frame that half-renders is worse than
+one that fails outright, because it invites a confident wrong reading of the picture.
+
+**The checksum earned its place on the block 6 check**, where an 8 KB composite
+arrived corrupt and was rejected before it was looked at. Keep frames **under ~4 KB**
+(≈124–132px wide); every transfer at that size succeeded, and every larger one failed.
+One frame per call, never a composite.
 
 **Structure can be measured, not just eyeballed.** Block 3's count was confirmed by
 column/row luma profiling of the frame in the sandbox (`PIL`, available there), which
@@ -155,11 +202,17 @@ transferring an image at all.
    gate cannot see — a count, a colour, a transformation — and check that one thing.
    It is cheap at draft tier and the only stage where a re-render is 10 credits rather
    than a re-cut.
-2. **View blocks 5 and 6 before this chapter goes further**, for the reasons above.
-   Free, and block 5 carries the cut's argument.
-3. **If this chapter goes to full tier, regenerate blocks 3 and 8** (~20 credits at
-   draft, ~50 at full). That fixes the count, retires the scrim currently holding up
-   the compliance card, and removes both open defects.
+2. ~~View blocks 5 and 6 before this chapter goes further.~~ **Done 2026-08-08** —
+   block 6 on spec, block 5 correct except for the count it shares with block 3.
+   **Blocks 4 and 7 remain unviewed** and are the only unknowns left; both are free to
+   check, and block 4 shares the diagram motif block 6 got right, so it is the likelier
+   of the two to be fine.
+3. **If this chapter goes to full tier, regenerate blocks 3, 5 and 8.** Blocks 3 and 5
+   share the cartouche motif and must be regenerated *together* or they will disagree
+   with each other on screen — block 5 re-uses block 3's grid, so fixing one alone
+   makes the twelve-count appear and then vanish. Block 8 is independent. That fixes
+   the count, retires the scrim currently holding up the compliance card, and clears
+   every known defect.
 4. **Do not read the draft's clean gate record as a clean render.** It was clean, and
    two blocks were still wrong.
 
