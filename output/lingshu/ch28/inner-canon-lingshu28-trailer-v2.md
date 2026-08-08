@@ -15,18 +15,18 @@ this cut actually returns.
 **Cite the chapter on screen as *Lingshu 28*.** Su Wen 28 is a different chapter
 (通評虛實論). Both halves of the canon run to eighty-one chapters and are numbered
 separately, so a bare "Chapter 28" is ambiguous by construction — see the
-numbering warning in `inner-canon-ch28-translation-v2.md`.
+numbering warning in `inner-canon-lingshu28-translation-v2.md`.
 
-Source translation: **`inner-canon-ch28-translation-v2.md`** — the v2 rendering,
+Source translation: **`inner-canon-lingshu28-translation-v2.md`** — the v2 rendering,
 which tracks the grammatical agent of every answer. That is this cut's whole hook.
-Companion longform: `inner-canon-ch28-longform-v2.md`, whose cold open and Act III
+Companion longform: `inner-canon-lingshu28-longform-v2.md`, whose cold open and Act III
 turn this previews.
 
 > A dramatized adaptation of a classical philosophical text. Not medical advice.
 
 ## This is the second trailer on this chapter, and no thesis is repeated
 
-`inner-canon-ch28-trailer-v1.md` is **not superseded**. Both remain; the editor
+`inner-canon-lingshu28-trailer-v1.md` is **not superseded**. Both remain; the editor
 picks. The Chapter 1 folder already works this way across five trailers.
 
 | | Runtime | Sells |
@@ -150,7 +150,7 @@ steps* 5.
 
 ## Source-script mapping
 
-Sections are those of `inner-canon-ch28-translation-v2.md`.
+Sections are those of `inner-canon-lingshu28-translation-v2.md`.
 
 | Translation § | Passage | Blocks |
 |---|---|---|
@@ -174,13 +174,18 @@ of Balance Top20 Chapter Slate.md` describes the chapter as *"eleven rapid-fire
 questions"*. **The text says twelve** — 凡此十二邪者 — and §15 recapitulates twelve.
 Blocks 2, 3, 4 and 5 all say twelve, and shot 3 shows twelve cartouches.
 
-**Block 7's cross-chapter claim must be checked before it ships.** The
-"administration where every act has an officer" is Su Wen 8 《靈蘭祕典論》, which is
-this repo's own `output/episode-6/`, and the description is accurate to
-`inner-canon-ch6-translation-v1.md`. **If it is ever named on screen, cite it as Su
-Wen 8**, never as "chapter 6" — that folder follows an edition numbering it 篇第六,
-while Su Wen 6 in the received recension is a different chapter (陰陽離合論). Block
-7 as written does not name it, which is the safer option for a trailer.
+**Block 7's cross-chapter claim can no longer be checked inside this repo.** The
+"administration where every act has an officer" is Su Wen 8 《靈蘭祕典論》. That
+description was written against this repo's own `inner-canon-ch6-translation-v1.md`
+under the old `output/episode-6/` folder, which the layout migration **deleted
+rather than migrated** — it survives only in git history. Re-verify against the
+classical text, or against the deleted file at `3398436^`, before it ships.
+
+**If it is ever named on screen, cite it as Su Wen 8**, never as "chapter 6" — that
+deleted folder followed an edition numbering it 篇第六, while Su Wen 6 in the
+received recension is a different chapter (陰陽離合論). Block 7 as written does not
+name it, which is the safer option for a trailer and is now also the option that
+needs no verification.
 
 **Dramatic material not in the source, flagged as invention:** the inquiry, the
 charges, the hearing set and the high seat. **The classical text has no scene at
@@ -326,8 +331,8 @@ cues are timed from take durations that do not exist. Build and commit them with
 the render, and regenerate after any narration or take change.
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-trailer-v2.md
-node scripts/build_subtitles.js  output/episode-28/inner-canon-ch28-trailer-v2.md
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
+node scripts/build_subtitles.js  output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 ```
 
 9:16 is the hard case — roughly half the caption room of the longform frame — so
@@ -369,7 +374,7 @@ run them from the repo root, or pass an absolute path.**
 costs a re-take afterwards.
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-trailer-v2.md
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 ```
 
 **This document exits 0 as written — verified 2026-08-07.** It prints one report
@@ -388,7 +393,7 @@ keep them in frame. Fix at script stage anyway.
 record above.
 
 ```
-node scripts/build_subtitles.js output/episode-28/inner-canon-ch28-trailer-v2.md
+node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 ```
 
 Commit the `.srt`/`.vtt` with the cut — they are tracked, required deliverables. On
@@ -417,7 +422,7 @@ the returned frame (y=594 at 496×864). Sits clear above the caption band. Added
 **5. Block 3's twelve cartouches**, if rendered empty — which is the default. Add
 欠 噦 唏 振寒 噫 嚏 嚲 泣涕 太息 涎下 耳鳴 自齧舌 in the same `drawtext` pass, held
 across **0:20 to 0:30**, arriving in sequence rather than all at once. **Verify
-every glyph against `inner-canon-ch28-translation-v2.md` before export.** ffmpeg
+every glyph against `inner-canon-lingshu28-translation-v2.md` before export.** ffmpeg
 needs a CJK-capable face here; Anton has no Chinese coverage and renders tofu boxes
 silently.
 
