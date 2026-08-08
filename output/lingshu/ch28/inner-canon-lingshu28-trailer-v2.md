@@ -11,10 +11,16 @@
 the MP4 by hand if it is worth keeping** (renders are gitignored and are not in this
 repo). It cannot be fetched from the repo host — see *Reproduction notes*.
 
-**Not yet captioned, and not yet visually verified — see *Captions* and
-*Reproduction notes*.** The sidecar is built and committed; the burn, the
-lower-third, the cartouche glyphs and the end card are the hand steps in
-*Finishing steps* below.
+**Captioned deliverable (blocks 1–7 burned, 720×1280):**
+<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/0a013c99-37ba-4dcc-a636-7f2cbd371b25.mp4>
+— `media_id` `0a013c99-37ba-4dcc-a636-7f2cbd371b25`. **This is the current best
+deliverable.** Scaled to a true 9:16 720×1280 and captioned in Anton.
+
+**Still outstanding, all hand steps:** the history lower-third, block 3's twelve
+cartouche glyphs, the end-card text over block 8, the editorial credit, and the
+licensed guqin bed. Block 8 is currently a bare black plate with **no text on it**
+— its caption cues were deliberately stripped from the burn so the disclaimer is
+not simultaneously a caption and a card, and the card text has not been added yet.
 
 **Delivered geometry: 496×864** — recorded from the render, not the target. Two
 things differ from the ch1 v5 run this cut was planned against, and both are new
@@ -531,9 +537,45 @@ reported per-block speech starts:
 | 5 | 40.68s (0.68 into block) | 00:00:40,681 | 0.001 |
 | 8 | 70.62s (0.62 into block) | 00:01:10,619 | 0.001 |
 
-**Burned: no.** The `.srt`/`.vtt` are committed; the burn is a hand step in
-*Finishing steps*, and **nobody has seen the captions on screen** — the 555px fit is
-a measurement of the sidecar, not of the render.
+**Burned: yes, 2026-08-08**, after the render, as its own step. Output
+`0a013c99-37ba-4dcc-a636-7f2cbd371b25`, **720×1280, 80.064s, audio stream copied
+through untouched** (`-c:a copy`, aac).
+
+| | |
+|---|---|
+| Source | the 496×864 assembly, `130c2638-…` |
+| Filter chain | `scale=720:1280,subtitles=…` — **scale first**, per the house call |
+| Subtitle file | blocks 1–7 only: 36 of 41 cues, last cue ends `00:01:09,703` |
+| PlayRes | re-targeted `384×288` → **720×1280** before burning |
+| Style | Anton, `Fontsize` 54, `MarginL/R` 58, `MarginV` 150, `Outline/Shadow` 3/1, `Alignment` 2 |
+
+**The font was verified as actually used, not merely installed.** This is the
+failure the skill warns is invisible: libass substitutes a wider face silently and
+`build_subtitles.js` still reports the line as fitting. Two checks, both required:
+
+- `fc-match Anton` → `Anton-Regular.ttf: "Anton" "Regular"`, and the burn command
+  **refuses to run** if that grep fails.
+- libass's own selection log at `-loglevel verbose`:
+  `fontselect: (Anton, 400, 0) -> Anton-Regular, 0, Anton-Regular`. **This is the
+  authoritative check** — it is the renderer reporting which file it opened. Grep
+  `fontselect` on every future burn rather than trusting `fc-match` alone.
+
+**Where the burn had to run, and why it is not the repo host.** The repo host has
+Anton (session-start hook) but **cannot reach the CDN**; the sandbox reaches the CDN
+but ships **Metropolis and Montserrat, not Anton**. Burning in the sandbox as-shipped
+would have silently produced a substituted font. Anton was therefore installed into
+the sandbox from the **same source the hook uses** —
+`raw.githubusercontent.com/google/fonts/main/ofl/anton/Anton-Regular.ttf` — into
+`$HOME/.local/share/fonts`, with `fc-cache` and `fontsdir=` both set. **Any future
+burn faces this same split and must repeat the font install.**
+
+**Visually verified — this one actually was looked at.** A frame was extracted at
+**t=14.2s** and the caption band inspected: cue 9 (`00:00:13,429 → 00:00:14,869`,
+*"Twelve counts of / insubordination,"*) renders as two centred lines, white with a
+black outline, in Anton's condensed face, well inside the side margins and clear of
+the frame edge. Right text, right time, correct wrap. **That is one frame, not the
+whole cut** — the other 35 cues are verified by measurement and by this frame's
+agreement with the sidecar, not by watching.
 
 9:16 is the hard case — roughly half the caption room of the longform frame — so
 judge wrapping here, not on the landscape cut.
@@ -543,22 +585,27 @@ judge wrapping here, not on the landscape cut.
 **What actually ran, and what did not.** The honest line on verification first,
 because it is the one most easily overstated:
 
-- **Nobody has watched this cut. It has not been visually verified.** The CDN is
-  blocked from the repo host by **organisation egress policy** — the agent proxy
-  reports `connect_rejected: gateway answered 403 to CONNECT` for
-  `d8j0ntlcm91z4.cloudfront.net:443`, and its own README says to report such denials
-  rather than retry them. Every check below ran either on job metadata or inside the
-  sandbox, next to the file.
+- **Nobody has watched this cut end to end.** The CDN is blocked from the repo host
+  by **organisation egress policy** — the agent proxy reports `connect_rejected:
+  gateway answered 403 to CONNECT` for `d8j0ntlcm91z4.cloudfront.net:443`, and its
+  own README says to report such denials rather than retry them. Every check below
+  ran on job metadata, inside the sandbox, or on a single extracted frame.
 - **Checks that did run:** all 8 clips probed for dimensions, duration, absence of
   an audio stream, and head/tail freeze; all 16 voice takes measured with the
   sanctioned `speech_metrics.sh`; the assembler's own gates and asserts passed with
-  zero WARNs; the finished file decode-validated at 496×864 / 80.064s.
-- **Checks that did not run:** nobody looked at the picture. The house look, the
-  character likenesses against the cast sheet, whether the block 4 → 6 diagram
-  actually reads as *reorganising*, and whether the twelve cartouches number twelve
-  are all **unverified**. **The captions have not been burned**, so their on-screen
-  wrap is unverified too — the sidecar's measured 555px/556px fit is a
-  pre-render number, not a look at the frame.
+  zero WARNs; the finished file decode-validated at 496×864 / 80.064s; the burn
+  verified for font substitution via libass's `fontselect` log; **one frame of the
+  captioned cut extracted at t=14.2s and actually inspected** — see *Captions*.
+- **A single frame is the extent of the visual verification.** It confirms the
+  captions burn correctly and that block 2 shows a figure in the gold robe. It does
+  **not** cover: the house look across the cut, the character likenesses against the
+  cast sheet, whether the block 4 → 6 diagram reads as *reorganising*, whether shot 3
+  actually shows twelve cartouches, or whether shot 5 dims the correct ten. **All of
+  those remain unverified and need a human viewing.**
+- **One observation from that frame, offered as a note rather than a finding:** the
+  render reads as clean flat cel-style illustration more than as *ink-wash*. Whether
+  that is acceptable house look is an editorial call nobody has made yet, and it is
+  exactly the sort of thing the draft pass exists to surface.
 
 **Findings that contradict or extend `SKILL.md`, and should be folded back into it:**
 
@@ -645,7 +692,13 @@ a **copy** of the `.srt`, delete the cues covering **block 8** (everything from
 `00:01:10`) so the disclaimer is not simultaneously a caption and a card. The burn
 copy is blocks 1–7, ending at 1:10.
 
-**3. Burn**, after assembly, on the finished MP4. Run `ffmpeg -version` and
+**3. Burn — DONE 2026-08-08.** Output `0a013c99-37ba-4dcc-a636-7f2cbd371b25`,
+720×1280, blocks 1–7. Font use verified via libass `fontselect`, and one frame
+inspected. Full record in *Captions* above; the procedure below is retained because
+it must be repeated on any re-render, **including the font install** — the sandbox
+where the burn has to happen does not ship Anton.
+
+Run `ffmpeg -version` and
 `fc-match Anton` **before** starting — the session-start hook installs both, and a
 missing Anton substitutes a wider font silently while `build_subtitles.js` still
 reports the line as fitting. Convert the `.srt` to `.ass` and **re-target
