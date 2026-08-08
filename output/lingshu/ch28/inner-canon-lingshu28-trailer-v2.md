@@ -11,16 +11,22 @@
 the MP4 by hand if it is worth keeping** (renders are gitignored and are not in this
 repo). It cannot be fetched from the repo host — see *Reproduction notes*.
 
-**Captioned deliverable (blocks 1–7 burned, 720×1280):**
-<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/0a013c99-37ba-4dcc-a636-7f2cbd371b25.mp4>
-— `media_id` `0a013c99-37ba-4dcc-a636-7f2cbd371b25`. **This is the current best
-deliverable.** Scaled to a true 9:16 720×1280 and captioned in Anton.
+**Current deliverable — 720×1280, all on-screen text bar the cartouche glyphs:**
+<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/64d9ea0a-8ba9-40f0-b6f4-e7e33dd6c460.mp4>
+— `media_id` `64d9ea0a-8ba9-40f0-b6f4-e7e33dd6c460`. Captions (blocks 1–7), history
+lower-third (0:01–0:08), end card and editorial credit (1:10–1:20).
 
-**Still outstanding, all hand steps:** the history lower-third, block 3's twelve
-cartouche glyphs, the end-card text over block 8, the editorial credit, and the
-licensed guqin bed. Block 8 is currently a bare black plate with **no text on it**
-— its caption cues were deliberately stripped from the burn so the disclaimer is
-not simultaneously a caption and a card, and the card text has not been added yet.
+**Built in a single pass from the assembly, not by stacking on the previous
+deliverable.** Scale, captions, scrim, card and lower-third are one filter chain, so
+the shipped file is **two encode generations** from the assembler rather than four.
+Re-running the whole finishing pass is one command and costs nothing, so prefer that
+over adding another layer to an already-encoded cut.
+
+Prior stages, kept for reproduction and superseded as deliverables: assembly
+`130c2638-…` (496×864, no text); captions only `0a013c99-…`; captions + card
+`04409d47-…`.
+
+**Still outstanding:** block 3's twelve cartouche glyphs, and the licensed guqin bed.
 
 **Delivered geometry: 496×864** — recorded from the render, not the target. Two
 things differ from the ch1 v5 run this cut was planned against, and both are new
@@ -596,8 +602,12 @@ because it is the one most easily overstated:
   zero WARNs; the finished file decode-validated at 496×864 / 80.064s; the burn
   verified for font substitution via libass's `fontselect` log; **one frame of the
   captioned cut extracted at t=14.2s and actually inspected** — see *Captions*.
-- **A single frame is the extent of the visual verification.** It confirms the
-  captions burn correctly and that block 2 shows a figure in the gold robe. It does
+- **Three frames are the extent of the visual verification** — t=14.2s for the
+  captions, t=75s for the end card, t=5s for the lower-third against a caption.
+  **Looking is what caught the block 8 plate defect**, which every automated gate had
+  passed; the measurements only explained it afterwards. It confirms the captions
+  burn correctly, that the card is legible, that the lower-third sits clear of the
+  caption band, and that block 2 shows a figure in the gold robe. It does
   **not** cover: the house look across the cut, the character likenesses against the
   cast sheet, whether the block 4 → 6 diagram reads as *reorganising*, whether shot 3
   actually shows twelve cartouches, or whether shot 5 dims the correct ten. **All of
@@ -630,6 +640,35 @@ because it is the one most easily overstated:
    Wrapping it across lines silently falls back to "assume a full 10s" for every
    block. Hit and corrected during this run.
 7. **Assembly wall time at 8-block scale: 47s.** First such measurement in the repo.
+8. **Block 8 did not render as specified, and it was only caught by looking.** The
+   shot list asks for "black plate, faint ink-grain texture". `seedance_2_0_mini`
+   returned a **bright mottled texture** — measured mean luma 57 across the frame,
+   ranging 37–82. Every automated gate passed it: correct dimensions, ≥9.5s, no
+   audio stream, no head or tail freeze. Nothing in the pipeline objects to a plate
+   being the wrong colour. **White end-card text drawn onto it was partly
+   illegible**, which is a compliance defect on the one card that must be readable.
+   Fixed for free with a `drawbox` scrim rather than a 10-credit regeneration — but
+   **if this cut goes to full tier, regenerate block 8 to the shot list** rather
+   than relying on the scrim.
+9. **A 60s ceiling on `sandbox_exec`, not the 120s the schema allows.** An
+   80s 720×1280 `libx264 -preset medium -crf 18` encode plus download ran ~50s and
+   the transport call timed out at 60s despite `timeout_seconds: 120`. **The upload
+   had already completed** — the object was on the CDN and decoded clean — so the
+   work was not lost, but only because it was chained ahead of the timeout. Verify
+   before re-running anything expensive after a timeout, and prefer a faster preset
+   for full-length re-encodes. **`-preset veryfast -crf 17` runs the same 80s job in
+   23.7s** against `medium`'s ~50s, which is the setting to use for a finishing pass.
+10. **Finishing passes should rebuild from the assembly, not stack.** Burning
+    captions, then the card, then the lower-third as separate passes would put four
+    x264 generations in the deliverable. The whole chain — scale, subtitles, scrim,
+    card, lower-third — is one filter graph and one command, so the shipped file is
+    two generations from the assembler. It costs nothing to re-run, so treat the
+    finishing pass as idempotent and re-derive it rather than layering.
+11. **Choose the luma statistic to match the background.** `YAVG` proved the end card
+    against a dark plate and was blind to the lower-third against a bright floor;
+    `YMIN` proved the lower-third and would be useless on the plate. `YMAX` was
+    useless on both — a single grain pixel pins it to 255. Getting this wrong looks
+    exactly like a missing overlay.
 
 **Other notes:**
 
@@ -645,10 +684,12 @@ because it is the one most easily overstated:
 ## Deliverables the assembler cannot produce
 
 - **History lower-third** — *"Presented as history & philosophy"*, small, on screen
-  within the first 10 seconds. Block 1.
-- **End disclaimer card** — mandated string verbatim, over block 8.
+  within the first 10 seconds. Block 1. **Burned in 2026-08-08, on at 0:01–0:08.**
+- **End disclaimer card** — mandated string verbatim, over block 8. **Burned in
+  2026-08-08, 1:10–1:20.**
 - **Human editorial credit** — *"Written & edited by Joshua Chin"* on the end card
-  and in the description.
+  and in the description. **On the card as of 2026-08-08**; still to be added to the
+  description at upload.
 - **Music** — licensed guqin only; the assembler can mix a bed you supply but
   generates none.
 
@@ -729,10 +770,25 @@ ffmpeg -i <the-496x864-render>.mp4 \
 
 **Use the blocks-1–7 copy of the `.srt` here** (step 2), not the committed one.
 
-**4. History lower-third** — *"Presented as history & philosophy"*, in at 0:01, out
-at 0:08, over block 1's empty floor. At 720×1280 the design y is ≈880; scale it to
-the returned frame (y=594 at 496×864). Sits clear above the caption band. Added by
-`drawtext` in the burn pass, not in an NLE.
+**4. History lower-third — DONE 2026-08-08.** *"Presented as history & philosophy"*,
+Anton 30, `y=880`, centred, in at 0:01 and out at 0:08 over block 1's empty floor.
+Measured 387px against 624px usable. Added by `drawtext` in the burn pass, not in an
+NLE, with the same `borderw=3:bordercolor=black@0.9` the card uses — block 1 is a
+lit parchment floor and white-on-light needs the border.
+
+**Verified on screen**: at t=5 the lower-third and caption cue 4 are both present and
+clearly separated, the lower-third sitting well above the caption band as designed.
+
+**The 1s–8s gate was verified by measurement, because luma average cannot see it** —
+block 1 is bright (mean ~137–143), so white glyphs do not move `YAVG` at all. `YMIN`
+does, because the 3px black border is the darkest thing in an otherwise light band:
+
+| t | 0.2 | 0.8 | **1.2** | **3** | **5** | **7.8** | 8.3 | 9 |
+|---|---|---|---|---|---|---|---|---|
+| YMIN | 40 | 44 | **8** | **8** | **8** | **8** | 83 | 87 |
+
+On exactly 1–8s. **Pick the statistic to match the background**: `YAVG` discriminated
+the end card against a dark plate and was useless here; `YMIN` is the reverse.
 
 **5. Block 3's twelve cartouches**, if rendered empty — which is the default. Add
 欠 噦 唏 振寒 噫 嚏 嚲 泣涕 太息 涎下 耳鳴 自齧舌 in the same `drawtext` pass, held
@@ -746,10 +802,37 @@ must be **泣涕 and 太息** — weeping and the long sigh, the two riddles wit
 author. Getting the wrong two lit inverts the cut's argument, so check this against
 the agent table in the translation file before export.
 
-**6. End card — 1:10 to 1:20** (block 8). Mandated disclaimer verbatim across three
-centred lines, editorial credit beneath. ffmpeg 6.1 has no `text_align`, so
-multi-line centred text needs one `drawtext` filter per line. Both also go in the
-description at upload.
+**6. End card — DONE 2026-08-08.** 1:10 to 1:20 (block 8), output
+`04409d47-bee0-490c-9048-d55a898d3946`. Mandated disclaimer verbatim across three
+centred lines, editorial credit beneath, burned onto the captioned cut. Both also
+go in the description at upload.
+
+Line breaks — they reconcatenate to the mandated string **exactly**, which is the
+only acceptable way to split a compliance string across lines:
+
+```
+A dramatized adaptation of a      Anton 52, y=500
+classical philosophical text.     Anton 52, y=570
+Not medical advice.               Anton 52, y=640
+Written & edited by Joshua Chin   Anton 30, y=748
+```
+
+Sized against `scripts/lib/caption_metrics.js` rather than guessed: at 52 the widest
+line measures **568px against 624px usable** (720 frame − 2×48 margin). ffmpeg 6.1
+has no `text_align`, so each line is its own `drawtext` with `x=(w-text_w)/2`;
+`-filter_script` avoids shell-escaping the `&` and the `:` separators.
+
+**A scrim is required and is not cosmetic — see the reproduction note on block 8.**
+The first attempt drew white text straight onto the clip and the disclaimer was
+partly illegible. The shipped filter lays `drawbox …color=black@0.74:t=fill` over
+the full frame for `between(t,70,80)` first, then the text with
+`borderw=3:bordercolor=black@0.9`. Measured after: plate **21–23**, glyphs **108**,
+credit **68** — about a 5× ratio. Before the scrim the brightest plate area was
+**82** against dimmest text **78**, i.e. no contrast at all in places.
+
+**Blocks 1–7 are untouched by this pass** — the `enable=` guard confines every
+filter to 70–80s, verified by sampling t=69 and the t=14 caption band before and
+after.
 
 **7. Music.** Guqin, licensed, ducked ~12–15 dB under the voiceover. **Out across
 block 3** — the twelve-cartouche sequence is the cut's only fast passage and plays
@@ -791,7 +874,14 @@ time.
 - **Disclaimer** — repo string verbatim: blockquoted above, at the head of block 8's
   narration, on screen as the end card, and in the description. Block 8 is extended
   past the mandated string to clear the 8.6s floor; **the mandated sentence itself is
-  unaltered**.
+  unaltered**. **The end card is now burned in and visually verified legible**
+  (2026-08-08) — it is split across three lines that reconcatenate to the mandated
+  string exactly, and the first attempt was rejected as partly illegible against
+  block 8's plate. Narrator reads it over the same block, so the compliance signal is
+  doubled.
+- **Human editorial credit** — *"Written & edited by Joshua Chin"* is **on the end
+  card as of 2026-08-08**, beneath the disclaimer. Still to be added to the
+  description at upload.
 - **Health content stays philosophical narrative** — no dosage, regimen, diagnosis
   or benefit claim in the cut. **The chapter's needling prescriptions are excluded
   entirely** — every riddle in the source closes with one, and not one appears in this
@@ -838,6 +928,12 @@ time.
   inquiry*), which is dramatisation and not instruction, and block 6 reports the
   chapter's claim rather than asserting it. **No compliance hedge rests on a
   character voice.**
+- **History lower-third is on screen and verified** — *"Presented as history &
+  philosophy"*, 0:01–0:08, inside the mandated first ten seconds, over an empty floor
+  with no figure in it. This is the frame that tells a scrolling viewer what the
+  channel is claiming to be before any classical mechanism is spoken, so its timing
+  is a compliance property rather than a design one; the gate was measured, not
+  assumed.
 - **Historical accuracy** — four risks. (1) Cited on screen as **Lingshu 28**, never
   a bare "Chapter 28". (2) The count is twelve, not the slate's eleven; the
   cartouches must number twelve and match the translation file. (3) Block 7's
