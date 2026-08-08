@@ -1,15 +1,19 @@
-// Flags narration clauses that will overflow explainer_video's BURNED-IN captions.
+// Flags narration clauses too wide for the two-line caption budget.
 //
 //   node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
 //   node scripts/check_caption_fit.js <doc>.md --format 16:9
 //   node scripts/check_caption_fit.js output/*/ch*/*-v*.md          # sweep every cut
 //
 // Originally this checked the server-burned caption path, which failed
-// differently from the sidecar build_subtitles.js produces. That path went away
-// with explainer_video on 2026-08-04, so the overflow it guarded can no longer
-// happen. What remains is a readability check on the writing: a clause needing
-// three or four cues to fit is caption churn on screen even when it wraps
-// correctly. See .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
+// differently from the sidecar build_subtitles.js produces. That path was removed
+// on 2026-08-04, so the overflow it guarded can no longer happen. What remains is
+// a readability check on the writing: a clause needing three or four cues to fit
+// is caption churn on screen even when it wraps correctly.
+// See .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
+//
+// Exits non-zero on an overflowing clause OR on a document with no narration
+// table. Translation documents have no table, so a whole-repo sweep always exits
+// non-zero — read the report, not the status.
 
 const fs = require("fs");
 const {
