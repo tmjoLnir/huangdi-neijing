@@ -1,3 +1,50 @@
-This repo uses a combination of claude code and higgsfield MCP to develop scripts and videos for materials adapted from Huangdi Neijing. 
+# The Emperor's Inner Canon
 
-Video assets like character cast, style and storyline construction were created, written and edited by Joshua Chin, supported by the above tools, and are proprietary in this repo.
+Production documents for a dramatized documentary series adapting the **Huangdi
+Neijing** (黄帝内经, *The Emperor's Inner Canon*), the foundational classical text
+of Chinese medicine. This repo holds scripts, storyboards and production records —
+not rendered media, which is gitignored.
+
+> A dramatized adaptation of a classical philosophical text. Not medical advice.
+
+Video assets — character cast, style and storyline construction — were created,
+written and edited by **Joshua Chin**, supported by Claude Code and the Higgsfield
+MCP, and are proprietary in this repo.
+
+## Layout
+
+```
+output/<book>/ch<N>/     production documents, one folder per chapter
+assets/                  character style-key art
+docs/                    chapter slate, publish sequence, compliance audit
+scripts/                 subtitle sidecar builder + caption-fit checker
+```
+
+`<book>` is `suwen` or `lingshu`, and `<N>` is the chapter's number **within that
+book**. The canon is two books of eighty-one separately-numbered chapters, so
+Suwen 28 and Lingshu 28 are different chapters and a bare chapter number is
+ambiguous — hence the book folder, and the book in every filename.
+
+## Scripts
+
+Both take document paths and hold no folder assumptions of their own.
+
+```
+node scripts/check_caption_fit.js <cut>.md          # readability check, before recording takes
+node scripts/build_subtitles.js  <cut>.md           # writes <cut>.srt and <cut>.vtt
+node scripts/check_caption_fit.js output/*/ch*/*-v*.md   # sweep every cut
+```
+
+Add `--format 16:9` for longform; the default is the 9:16 trailer frame. The
+sweep always exits non-zero because translation documents carry no narration
+table — read the report, not the status.
+
+## Where the rules live
+
+- **`CLAUDE.md`** — policy: the cast, the compliance rules, the production-document
+  layout, what ships as a deliverable, git conventions.
+- **`.claude/skills/higgsfield-production/SKILL.md`** — procedure and measurements:
+  order of operations, model names and parameters, prices, per-voice words/second,
+  block geometry, and the failure modes that have already cost a paid re-render.
+
+Read both before generating anything.

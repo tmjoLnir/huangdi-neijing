@@ -42,12 +42,11 @@ output/
     ch28/inner-canon-lingshu28-trailer-v1.md        # current reference layout; pre-render
     ch28/inner-canon-lingshu28-longform-v1.md       # slate rank 1, publish slot 1; pre-render
     ch28/inner-canon-lingshu28-translation-v1.md
-  # suwen/ appears when the first 素問 chapter is produced — the repo holds none
-  # right now. Everything under output/ is currently pre-render, so there are no
-  # .srt/.vtt sidecars in the tree either.
-  # every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
+  # suwen/ appears when the first 素問 chapter is produced — the repo holds none.
+  # Every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
-  # pre-render cut has none yet — build them once the voice takes exist.
+  # pre-render cut has none yet — build them once the voice takes exist. Every
+  # cut in the tree is pre-render today, which is why none appear above.
 assets/
   emperor-Fan.png                           # Fan-di style key art
   wise-Qi-2.png                             # Dr-Qi style key art

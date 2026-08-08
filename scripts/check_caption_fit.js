@@ -19,6 +19,7 @@ const fs = require("fs");
 const {
   MAX_LINES,
   usableWidth,
+  lineBudgetChars,
   textWidth,
   parseNarration,
   clauses,
@@ -60,7 +61,10 @@ function main() {
   let failures = 0;
   let unparsed = 0;
 
-  console.log(`${fmt.label} — ${Math.round(usable)}px/line, ${MAX_LINES} lines max, ${Math.round(cap)}px budget`);
+  console.log(
+    `${fmt.label} — ${Math.round(usable)}px/line (~${lineBudgetChars(fmt)} chars), ` +
+      `${MAX_LINES} lines max, ${Math.round(cap)}px budget`
+  );
 
   for (const doc of docs) {
     const blocks = parseNarration(fs.readFileSync(doc, "utf8"));

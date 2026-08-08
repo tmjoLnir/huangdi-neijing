@@ -30,7 +30,7 @@ before generating anything.
 >   false` went from a cost saving to a correctness requirement — see
 >   [step 2](#2-clips).
 >
-> **One cut has been through this path end-to-end** — chapter 1 trailer v5,
+> **One cut has been through this path end-to-end** — Suwen 1 trailer v5,
 > assembled 2026-08-04. The [step 3](#3-voiceover) rates are re-measured from that
 > run and are no longer estimates; the rest of this file is still only one run old,
 > so treat the second cut as confirmation rather than routine.
@@ -92,7 +92,7 @@ Never reorder these — each step consumes the previous step's **job ID**.
    manual deliverables and runtime levers.
 
 Log the run's actual credit spend in the production record as you go. **The
-chapter 1 trailer v3 run is the repo's measured balance delta** — 938.2 → 862.6 =
+Suwen 1 trailer v3 run is the repo's measured balance delta** — 938.2 → 862.6 =
 75.6 credits for 7 clips and 7 takes — so it is the single historical figure
 available to check an estimate against. **Its cut document is gone from `output/`,
 so the figure lives here now**; the next rendered cut should log its own spend and
@@ -103,6 +103,13 @@ account for 70 of the 75.6, the style key was reused at 0, and no subtitles were
 burned — so the seven voice takes are the remaining **5.6, or ~0.8 credits each**.
 Budget voice at 0.8. A `get_cost` preflight returning 1 credit for a take is
 rounding up to a whole-credit floor rather than reporting the billed rate.
+
+**The second run, v5, spent ~80 from a starting balance of 862.6** — 70 for the
+same seven Draft clips, 0 for a reused style key, and ~10 across roughly thirteen
+voice takes including calibration. Roughly 8 of that ~10 was block 5 alone. Both
+runs are recorded here because neither cut document survives, and two figures make
+the ~0.8/take rate a measurement rather than a single division. Balance after v5
+was therefore **~782**, unread since.
 
 ## 0. Model + tier gate — cost it, then confirm
 
@@ -230,7 +237,7 @@ are back to being eyeballed — and the window is 1.4s wide.
    `ffmpeg` assembly, or dropping a deliverable to route around a missing tool is
    a change to the cut, not a workaround — it goes to the user the same way a
    model change does. A service-free `ffmpeg` **Fallback** for precisely this case
-   was documented in the chapter 1 trailer v3, since deleted — it is an option to
+   was documented in the Suwen 1 trailer v3, since deleted — it is an option to
    reconstruct and offer, not a default to take.
 4. **Write it down.** A tool that disappears is a pipeline change, not a session
    incident: record it in the cut's reproduction notes with the date, and update
@@ -325,7 +332,7 @@ true and a stray soundtrack is no longer merely wasted money.
 Chain from the current head rather than starting a new look:
 
 ```
-4b6f7106-67da-4d1a-a553-c58ba90ac43f   ch1 (splitting scroll + seven-and-eight arcs)  ← current head
+4b6f7106-67da-4d1a-a553-c58ba90ac43f   Suwen 1 (splitting scroll + seven-and-eight arcs)  ← current head
 ```
 
 The head is itself the end of a chain reaching back to a group shot built from
@@ -343,7 +350,7 @@ generate_image({ params: {
   model: "nano_banana_pro",
   aspect_ratio: "9:16",
   prompt: "<three-character series key, new chapter motif>",
-  medias: [{ role: "image", value: "4b6f7106-67da-4d1a-a553-c58ba90ac43f" }]  // ch1 key (current head): job ID, never a URL
+  medias: [{ role: "image", value: "4b6f7106-67da-4d1a-a553-c58ba90ac43f" }]  // Suwen 1 key (current head): job ID, never a URL
 }})
 ```
 
@@ -425,7 +432,7 @@ whole run rather than the block:
 
 Model `seed_audio`, `voice_type: "preset"`, `speech_rate: 55` — that rate is
 what fits a line inside a fixed 10s block. **The full cast is cast permanently**
-(CLAUDE.md, as of chapter 1); all four are `preset` voices and none may be
+(CLAUDE.md, as of Suwen 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
 | Role | Voice | `voice_id` | Measured rate | Draft to | Observed in-window |
@@ -435,7 +442,7 @@ re-picked per chapter:
 | **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.19 words/sec** | **37–41 words** | 38 words @ 9.06s (1 take) |
 | **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | — | *re-measure at length* |
 
-**Rates re-measured 2026-08-04 from the chapter 1 trailer v5 run** (whose document
+**Rates re-measured 2026-08-04 from the Suwen 1 trailer v5 run** (whose document
 has since been deleted from `output/` — this table is the surviving copy) — the
 first cut assembled end-to-end on `assemble_final.sh`, and so the first whose
 figures come from the
@@ -460,8 +467,11 @@ against the number, never eyeballed** — the gate does not round in your favour
 Zane has only been measured on a 5-word line (2.3–2.6s), where pause overhead
 dominates and no reliable words/sec can be derived — **measure him on a
 full-length line before writing him one.** v5 kept him deliberately silent for
-exactly this reason; longform v3 gives him two full blocks and cannot ship until
-he is measured.
+exactly this reason. **`output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md`
+now carries the exposure**: it writes Lei-Gong several full speaking blocks at
+34–39 words — provisional counts derived from nothing, and its own cast table
+marks him UNMEASURED. That cut cannot go to takes until he is measured, and the
+measurement is one ~0.8-credit take against a ~1,145-credit run.
 
 **Two of the three doubts about the old columns are now settled, and the third got
 worse:**
@@ -527,7 +537,7 @@ measured 4.15–4.19 words/sec, Xavier and Vesper need **36–37 words** to clea
 
 **The old second way out is now closed.** Letting a take run short and centred —
 a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
-chapter 1's block 3 — is a **hard assembler error** under the new floor:
+Suwen 1's block 3 — is a **hard assembler error** under the new floor:
 `voice N carries 2.6s of speech; required 8.6–10.0s`. The assembler will not
 build the cut. There is no flag to permit it; `--clip-seconds` moves the whole
 window rather than widening it, because the window is always exactly 1.4s wide
@@ -537,14 +547,14 @@ So a short character beat now costs a structural decision, not a note in the
 record. The options, in the order worth trying:
 
 - **Write the character a real paragraph** — a reframe or a monologue that earns
-  its 36–41 words. Chapter 1 v5 did this twice: Xavier cleared at 40 words → 9.64s
+  its 36–41 words. Suwen 1 v5 did this twice: Xavier cleared at 40 words → 9.64s
   on the first roll, Vesper at 38 words → 9.06s only after four rejected takes.
 - **Fold the beat into a neighbouring block** so one voice carries the full window
   and the interjection lives inside it. This changes the block count, so it
   reaches the cost preflight.
 - **Cut the beat.**
 
-Any cut carrying a deliberate short take — chapter 1 does — cannot be reassembled
+Any cut carrying a deliberate short take — Suwen 1 does — cannot be reassembled
 on this path without rewriting that block first.
 
 A cut is never re-voiced retroactively unless someone decides to, in which case
@@ -626,9 +636,9 @@ centring**, which the assembler's own note calls inaudible. The pressure has
 inverted — the writing problem is now finding enough content to fill a block, not
 trimming to fit one.
 
-### Sentence structure beats word count — the ch1 lesson
+### Sentence structure beats word count — the Suwen 1 lesson
 
-Chapter 1 sized every line off a measured words/second figure and **still** put a
+Suwen 1 sized every line off a measured words/second figure and **still** put a
 take at 10.78s, over the window. The cause was not the word count:
 
 | Block | Words | Structure | Delivered |
@@ -643,7 +653,7 @@ and add dramatic pauses**, and a linear words/second extrapolation from a short
 measurement line will not predict it. Block 8 showed the same effect inverted: 11
 words across two sentences came back at 4.95s against a 2.9s linear prediction.
 
-### …and the other extreme runs long too — the ch1 v3 measurement
+### …and the other extreme runs long too — the Suwen 1 v3 measurement
 
 Breaking sentences up is not a free lever. The v3 trailer was written in short
 sentences *specifically* to pass the caption check, and every take came in high.
@@ -651,9 +661,9 @@ Isolating sentence count against a near-fixed word count, same voice, same rate:
 
 | Take | Words | Sentences | Delivered |
 |---|---|---|---|
-| ch1 v1 block 1 | 24 | 2 | 6.53s |
-| ch1 v3 block 6 | 24 | 3 | **7.08s** |
-| ch1 v3 block 5 | 23 | 4 | **7.98s** |
+| Suwen 1 v1 block 1 | 24 | 2 | 6.53s |
+| Suwen 1 v3 block 6 | 24 | 3 | **7.08s** |
+| Suwen 1 v3 block 5 | 23 | 4 | **7.98s** |
 
 **Each additional sentence boundary costs roughly 0.55–0.7s**, and over the range
 a 10s block allows, that dominates the word count. v3 shipped one take at 8.14s
@@ -792,7 +802,7 @@ sandbox_exec({ command:                              // foreground — see below
 ### `background: true` lost a whole run — use it only at longform scale
 
 **Run a trailer-scale assembly in the foreground.** A 7-block assembly finishes
-inside the 120s foreground budget comfortably, and the chapter 1 v5 run proved
+inside the 120s foreground budget comfortably, and the Suwen 1 v5 run proved
 what the alternative costs: with `background: true` the transport call timed out,
 the sandbox was reclaimed, and the finished render was gone with it — clips and
 takes already paid for, nothing to export. The sandbox is discarded ~10 seconds
@@ -825,7 +835,7 @@ handled for you. Draft and full tier both just work.
 
 #### Delivered geometry — measured 496×864 on the draft tier
 
-The chapter 1 v5 run assembled 480×854 draft clips and delivered **496×864,
+The Suwen 1 v5 run assembled 480×854 draft clips and delivered **496×864,
 70.059s**. Two things were established by measurement and are worth not
 rediscovering:
 
@@ -1172,16 +1182,19 @@ Both scripts share their geometry, Anton metrics and narration-table parser via
 
 ## Longform episodes (15–20 min)
 
-Untested — no longform cut exists in `output/` yet. The mechanics below are
-derived from the tool constraints and the trailer runs, so treat the first
-episode as a pilot and write what actually happened into its reproduction
-notes. Where this section contradicts steps 0–5, this section wins.
+Untested — **no longform cut has been rendered.** One longform *document* exists
+(`output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md`, 108 blocks,
+pre-render), so the scripting side has been exercised and the pipeline side has
+not. The mechanics below are derived from the tool constraints and the trailer
+runs, so treat the first episode as a pilot and write what actually happened into
+its reproduction notes. Where this section contradicts steps 0–5, this section
+wins.
 
 ### What changes
 
 | | Trailer | Longform |
 |---|---|---|
-| Runtime | 30-90 sec (60s and 80s cuts exist) | 17–19 min target (15 floor, 20 ceiling) |
+| Runtime | 30-90 sec (60s and 70s cuts have been written) | 17–19 min target (15 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
@@ -1200,12 +1213,17 @@ front of the ~1,145-credit floor below rather than a trailer's ~66. At the 2026-
 snapshot prices, the model choice is the difference between a cut you can afford
 and one you cannot:
 
-| Clip model / tier | Credits/clip | ~114 blocks | vs 942 balance |
+The balance column below is anchored to **~782 credits**, the figure implied by
+the last two recorded runs (938.2 → 862.6 on v3, then ~80 on v5). It has not been
+re-read since. **Call `balance` and recompute** — this column is arithmetic on a
+stale number, not a live figure.
+
+| Clip model / tier | Credits/clip | ~114 blocks | vs ~782 balance |
 |---|---|---|---|
 | `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,145** | over budget |
-| `seedance_2_0_mini` 720p (default, full) | 25 | ~2,855 | ~3× balance |
-| `gemini_omni` 720p | 30 | ~3,425 | ~3.6× balance |
-| `seedance_2_0` 1080p | 90 | ~10,265 | ~11× balance |
+| `seedance_2_0_mini` 720p (default, full) | 25 | ~2,855 | ~3.6× balance |
+| `gemini_omni` 720p | 30 | ~3,425 | ~4.4× balance |
+| `seedance_2_0` 1080p | 90 | ~10,265 | ~13× balance |
 
 **A full-length episode does not currently fit in the credit balance at any
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision

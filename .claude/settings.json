@@ -7,6 +7,16 @@
       "Bash(git commit:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git switch:*)",
+      "Bash(git mv:*)",
+      "Bash(git fetch:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git ls-files:*)",
+      "Bash(git ls-tree:*)",
       "Bash(cat:*)",
       "Bash(ls:*)",
       "mcp__higgsfield__balance",
@@ -15,6 +25,8 @@
       "mcp__higgsfield__generate_video",
       "mcp__higgsfield__generate_audio",
       "mcp__higgsfield__job_display",
+      "mcp__higgsfield__jobs_wait",
+      "mcp__higgsfield__show_generation_by_ids",
       "mcp__higgsfield__reframe",
       "mcp__higgsfield__upscale_video",
       "mcp__higgsfield__media_upload",
@@ -25,14 +37,16 @@
       "Bash(npm uninstall *)",
       "Bash(yarn add *)",
       "Bash(pip install *)",
-      "Bash(rm *)",
-      "Bash(rmdir *)"
+      "Bash(rm *)"
     ],
     "ask": [
       "Bash(curl *)",
       "Bash(wget *)",
       "Bash(ssh *)",
-      "Bash(scp *)"
+      "Bash(scp *)",
+      "Bash(git push:*)",
+      "Bash(git clean:*)",
+      "Bash(rmdir *)"
     ]
   },
   "hooks": {
