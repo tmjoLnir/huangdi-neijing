@@ -11,16 +11,16 @@
 the MP4 by hand if it is worth keeping** (renders are gitignored and are not in this
 repo). It cannot be fetched from the repo host — see *Reproduction notes*.
 
-**Captioned deliverable (blocks 1–7 burned, 720×1280):**
-<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/0a013c99-37ba-4dcc-a636-7f2cbd371b25.mp4>
-— `media_id` `0a013c99-37ba-4dcc-a636-7f2cbd371b25`. **This is the current best
-deliverable.** Scaled to a true 9:16 720×1280 and captioned in Anton.
+**Current deliverable — captioned + end card, 720×1280:**
+<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/04409d47-bee0-490c-9048-d55a898d3946.mp4>
+— `media_id` `04409d47-bee0-490c-9048-d55a898d3946`. Captions on blocks 1–7, end
+card over block 8, editorial credit on the card.
+
+Prior stages, kept for reproduction: assembly `130c2638-…` (496×864, uncaptioned);
+captioned-only `0a013c99-…` (720×1280, no card).
 
 **Still outstanding, all hand steps:** the history lower-third, block 3's twelve
-cartouche glyphs, the end-card text over block 8, the editorial credit, and the
-licensed guqin bed. Block 8 is currently a bare black plate with **no text on it**
-— its caption cues were deliberately stripped from the burn so the disclaimer is
-not simultaneously a caption and a card, and the card text has not been added yet.
+cartouche glyphs, and the licensed guqin bed.
 
 **Delivered geometry: 496×864** — recorded from the render, not the target. Two
 things differ from the ch1 v5 run this cut was planned against, and both are new
@@ -596,8 +596,11 @@ because it is the one most easily overstated:
   zero WARNs; the finished file decode-validated at 496×864 / 80.064s; the burn
   verified for font substitution via libass's `fontselect` log; **one frame of the
   captioned cut extracted at t=14.2s and actually inspected** — see *Captions*.
-- **A single frame is the extent of the visual verification.** It confirms the
-  captions burn correctly and that block 2 shows a figure in the gold robe. It does
+- **Two frames are the extent of the visual verification** — t=14.2s for the
+  captions and t=75s for the end card. **Looking is what caught the block 8 plate
+  defect**, which every automated gate had passed; the measurements only explained
+  it afterwards. It confirms the captions burn correctly, that the card is legible,
+  and that block 2 shows a figure in the gold robe. It does
   **not** cover: the house look across the cut, the character likenesses against the
   cast sheet, whether the block 4 → 6 diagram reads as *reorganising*, whether shot 3
   actually shows twelve cartouches, or whether shot 5 dims the correct ten. **All of
@@ -630,6 +633,23 @@ because it is the one most easily overstated:
    Wrapping it across lines silently falls back to "assume a full 10s" for every
    block. Hit and corrected during this run.
 7. **Assembly wall time at 8-block scale: 47s.** First such measurement in the repo.
+8. **Block 8 did not render as specified, and it was only caught by looking.** The
+   shot list asks for "black plate, faint ink-grain texture". `seedance_2_0_mini`
+   returned a **bright mottled texture** — measured mean luma 57 across the frame,
+   ranging 37–82. Every automated gate passed it: correct dimensions, ≥9.5s, no
+   audio stream, no head or tail freeze. Nothing in the pipeline objects to a plate
+   being the wrong colour. **White end-card text drawn onto it was partly
+   illegible**, which is a compliance defect on the one card that must be readable.
+   Fixed for free with a `drawbox` scrim rather than a 10-credit regeneration — but
+   **if this cut goes to full tier, regenerate block 8 to the shot list** rather
+   than relying on the scrim.
+9. **A 60s ceiling on `sandbox_exec`, not the 120s the schema allows.** An
+   80s 720×1280 `libx264 -preset medium -crf 18` encode plus download ran ~50s and
+   the transport call timed out at 60s despite `timeout_seconds: 120`. **The upload
+   had already completed** — the object was on the CDN and decoded clean — so the
+   work was not lost, but only because it was chained ahead of the timeout. Verify
+   before re-running anything expensive after a timeout, and prefer a faster preset
+   for full-length re-encodes.
 
 **Other notes:**
 
@@ -746,10 +766,37 @@ must be **泣涕 and 太息** — weeping and the long sigh, the two riddles wit
 author. Getting the wrong two lit inverts the cut's argument, so check this against
 the agent table in the translation file before export.
 
-**6. End card — 1:10 to 1:20** (block 8). Mandated disclaimer verbatim across three
-centred lines, editorial credit beneath. ffmpeg 6.1 has no `text_align`, so
-multi-line centred text needs one `drawtext` filter per line. Both also go in the
-description at upload.
+**6. End card — DONE 2026-08-08.** 1:10 to 1:20 (block 8), output
+`04409d47-bee0-490c-9048-d55a898d3946`. Mandated disclaimer verbatim across three
+centred lines, editorial credit beneath, burned onto the captioned cut. Both also
+go in the description at upload.
+
+Line breaks — they reconcatenate to the mandated string **exactly**, which is the
+only acceptable way to split a compliance string across lines:
+
+```
+A dramatized adaptation of a      Anton 52, y=500
+classical philosophical text.     Anton 52, y=570
+Not medical advice.               Anton 52, y=640
+Written & edited by Joshua Chin   Anton 30, y=748
+```
+
+Sized against `scripts/lib/caption_metrics.js` rather than guessed: at 52 the widest
+line measures **568px against 624px usable** (720 frame − 2×48 margin). ffmpeg 6.1
+has no `text_align`, so each line is its own `drawtext` with `x=(w-text_w)/2`;
+`-filter_script` avoids shell-escaping the `&` and the `:` separators.
+
+**A scrim is required and is not cosmetic — see the reproduction note on block 8.**
+The first attempt drew white text straight onto the clip and the disclaimer was
+partly illegible. The shipped filter lays `drawbox …color=black@0.74:t=fill` over
+the full frame for `between(t,70,80)` first, then the text with
+`borderw=3:bordercolor=black@0.9`. Measured after: plate **21–23**, glyphs **108**,
+credit **68** — about a 5× ratio. Before the scrim the brightest plate area was
+**82** against dimmest text **78**, i.e. no contrast at all in places.
+
+**Blocks 1–7 are untouched by this pass** — the `enable=` guard confines every
+filter to 70–80s, verified by sampling t=69 and the t=14 caption band before and
+after.
 
 **7. Music.** Guqin, licensed, ducked ~12–15 dB under the voiceover. **Out across
 block 3** — the twelve-cartouche sequence is the cut's only fast passage and plays
@@ -791,7 +838,14 @@ time.
 - **Disclaimer** — repo string verbatim: blockquoted above, at the head of block 8's
   narration, on screen as the end card, and in the description. Block 8 is extended
   past the mandated string to clear the 8.6s floor; **the mandated sentence itself is
-  unaltered**.
+  unaltered**. **The end card is now burned in and visually verified legible**
+  (2026-08-08) — it is split across three lines that reconcatenate to the mandated
+  string exactly, and the first attempt was rejected as partly illegible against
+  block 8's plate. Narrator reads it over the same block, so the compliance signal is
+  doubled.
+- **Human editorial credit** — *"Written & edited by Joshua Chin"* is **on the end
+  card as of 2026-08-08**, beneath the disclaimer. Still to be added to the
+  description at upload.
 - **Health content stays philosophical narrative** — no dosage, regimen, diagnosis
   or benefit claim in the cut. **The chapter's needling prescriptions are excluded
   entirely** — every riddle in the source closes with one, and not one appears in this
