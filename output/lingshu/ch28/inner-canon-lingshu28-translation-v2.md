@@ -11,7 +11,7 @@ Inquiry": twelve things a body does that nobody ordered it to do.
 
 ## Why there is a second translation
 
-**v1 is not superseded and is not wrong.** `inner-canon-ch28-translation-v1.md`
+**v1 is not superseded and is not wrong.** `inner-canon-lingshu28-translation-v1.md`
 renders this chapter plainly, for a cut whose argument was about *the frame* — an
 emperor clearing a room to ask what is not in the classics. This rendering serves
 a different cut, and it is made on a different principle.
@@ -72,8 +72,10 @@ This is **Lingshu 28** — the twenty-eighth chapter of the 靈樞, the *Spiritu
 Pivot*. It is **not Su Wen 28** (通評虛實論), a different chapter entirely. Both
 halves of the canon run to eighty-one chapters and are numbered separately, so an
 unqualified "Chapter 28" is ambiguous by construction. **Cite it on screen as
-*Lingshu 28*.** Keep `ch28` for the folder and file names, which follow the input
-script.
+*Lingshu 28*, or as *Spiritual Pivot, chapter 28*.** The folder and file names
+carry the book for the same reason — `output/lingshu/ch28/`,
+`inner-canon-lingshu28-*.md`, per `CLAUDE.md` § Structure. The input script was
+`Chapt_LS28__why_we_yawn.pdf`.
 
 ### Conventions
 
@@ -365,9 +367,9 @@ the second of two collisions that would reduce the twelve to ten.
 
 Second, **行陰用力** is ambiguous: *exerting oneself in the yin [parts, i.e.
 moving the lower body]*, or *sexual exertion*. Commentators take both. The neutral
-reading is used here and in the episode, on the principle applied to 作強 in
-`inner-canon-ch6-translation-v1.md` — where two readings are defensible, take the
-one the words best support and do not stage the other.
+reading is used here and in the episode, on the principle applied to 作強 in this
+repo's Su Wen 8 translation (since removed from the repo) — where two readings are
+defensible, take the one the words best support and do not stage the other.
 
 ---
 
@@ -662,20 +664,26 @@ the supplied English.**
 Every riddle, with the grammatical subject of its answer. **This is the v2 cut's
 entire spine, and it is checkable against the Chinese above.**
 
-| No. | Riddle | § | Subject of the answer | Has an author? |
+> **The first column reads `Riddle NN`, not a bare number, and that is
+> deliberate.** A table whose first cell is a bare integer has the same shape as a
+> narration row, so `parseNarration` would read this table as a cut's narration and
+> both caption scripts would report it. The prefix removes the collision. Apply the
+> same rule to any numbered table added to a document under `output/`.
+
+| Riddle | Character | § | Subject of the answer | Has an author? |
 |---|---|---|---|---|
-| 1 | 欠 yawn | §2 | defensive qi; the hour | no |
-| 2 | 噦 hiccup | §3 | grain qi, old cold qi | no |
-| 3 | 唏 catching sob | §4 | yin qi and yang qi, and their rates | no |
-| 4 | 振寒 shiver | §5 | cold qi, lodging as a guest | no |
-| 5 | 噫 belch | §6 | cold qi, lodging as a guest | no |
-| 6 | 嚏 sneeze | §7 | yang qi, harmonious and abundant | no |
-| 7 | 嚲 limpness | §8 | an empty stomach, then a chain of conditions | no |
-| 8 | 泣涕 weeping | §9 | **悲哀愁憂 — sorrow, grief, care, worry** | **yes** |
-| 9 | 太息 long sigh | §10 | **憂思 — worry and brooding** | **yes** |
-| 10 | 涎下 drooling | §11 | heat, then the worms | no |
-| 11 | 耳鳴 tinnitus | §12 | an empty stomach | no |
-| 12 | 自齧舌 tongue-biting | §13 | qi, arriving out of turn | no |
+| Riddle 1 | 欠 yawn | §2 | defensive qi; the hour | no |
+| Riddle 2 | 噦 hiccup | §3 | grain qi, old cold qi | no |
+| Riddle 3 | 唏 catching sob | §4 | yin qi and yang qi, and their rates | no |
+| Riddle 4 | 振寒 shiver | §5 | cold qi, lodging as a guest | no |
+| Riddle 5 | 噫 belch | §6 | cold qi, lodging as a guest | no |
+| Riddle 6 | 嚏 sneeze | §7 | yang qi, harmonious and abundant | no |
+| Riddle 7 | 嚲 limpness | §8 | an empty stomach, then a chain of conditions | no |
+| Riddle 8 | 泣涕 weeping | §9 | **悲哀愁憂 — sorrow, grief, care, worry** | **yes** |
+| Riddle 9 | 太息 long sigh | §10 | **憂思 — worry and brooding** | **yes** |
+| Riddle 10 | 涎下 drooling | §11 | heat, then the worms | no |
+| Riddle 11 | 耳鳴 tinnitus | §12 | an empty stomach | no |
+| Riddle 12 | 自齧舌 tongue-biting | §13 | qi, arriving out of turn | no |
 
 **Ten with no author. Two with one. Both of the two are about feeling.**
 
@@ -712,12 +720,14 @@ above:
    (腎主為欠, 肺主為噦) onto riddles that had none. The chapter is being pulled
    toward a governed body by the canon around it.
 
-5. **The other canon chapter is the comparison, and this repo has already made
-   it.** Su Wen 8 《靈蘭祕典論》 — produced here as `output/episode-6/` — builds the
+5. **The other canon chapter is the comparison.** Su Wen 8 《靈蘭祕典論》 builds the
    entire body as a government of twelve offices where nothing happens without an
    officer. **The same canon says a body is an administration and describes twelve
-   daily events no administration touches.** Cite it on screen as **Su Wen 8**;
-   see the numbering warning in `inner-canon-ch6-translation-v1.md`.
+   daily events no administration touches.** Cite it on screen as **Su Wen 8**,
+   never "chapter 6" — Su Wen 6 in the received recension is a different chapter
+   (陰陽離合論). This repo produced that cut and then **deleted it in the layout
+   migration**, so it is no longer available to check against and survives only in
+   git history; verify any claim about it against the classical text.
 
 6. **The chapter preserves its own disagreements.** 一曰 — *another says* —
    appears in §6, §7 and §15, unadjudicated each time.

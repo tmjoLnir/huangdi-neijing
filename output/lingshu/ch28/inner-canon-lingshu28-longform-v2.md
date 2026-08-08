@@ -14,12 +14,12 @@ assumption. It is ~114 clips to get wrong.
 entirely (通評虛實論). Both halves of the canon run to eighty-one chapters and are
 numbered separately, so a bare "Chapter 28" sends a checking viewer to the wrong
 text about half the time. See the numbering warning in
-`inner-canon-ch28-translation-v2.md`.
+`inner-canon-lingshu28-translation-v2.md`.
 
-Source translation: **`inner-canon-ch28-translation-v2.md`** — the v2 rendering,
+Source translation: **`inner-canon-lingshu28-translation-v2.md`** — the v2 rendering,
 not v1. The two differ in principle and must not be mixed inside one document; v2
 tracks the grammatical agent of every answer, which is this cut's entire spine.
-Companion trailer: `inner-canon-ch28-trailer-v2.md`.
+Companion trailer: `inner-canon-lingshu28-trailer-v2.md`.
 
 **Slate position.** Rank **1** of the twenty in `docs/Chronicle of Balance Top20
 Chapter Slate.md`, and **slot 1** of the publish sequence — the channel's first
@@ -30,7 +30,7 @@ assumption with margin.
 
 ## This is the second cut of this chapter, and it sells a different thesis
 
-`inner-canon-ch28-longform-v1.md` is **not superseded**. Both remain; the editor
+`inner-canon-lingshu28-longform-v1.md` is **not superseded**. Both remain; the editor
 picks. The Chapter 1 folder already works this way across five trailers, and the
 rule there applies here: **no thesis is repeated.**
 
@@ -74,9 +74,9 @@ Four things follow, and they are the episode:
 1. **A body that is mostly ungoverned** is a genuinely radical thing for this
    canon to describe, and it is described without a god, a curse, an ancestor or a
    moral fault anywhere in it.
-2. **The same canon says the opposite.** Su Wen 8 — produced in this repo as
-   `output/episode-6/` — builds the body as a government of twelve offices where
-   nothing happens without an officer. One canon, two bodies.
+2. **The same canon says the opposite.** Su Wen 8 《靈蘭祕典論》 builds the body as
+   a government of twelve offices where nothing happens without an officer. One
+   canon, two bodies.
 3. **The unifying claim does not fit its own list.** 皆為不足 says all twelve are
    cases of something missing; §7 explained the sneeze by qi being harmonious and
    abundant. Nobody notices.
@@ -598,7 +598,7 @@ it: the citation, the hinge, and the countable grid.
 
 ## Source mapping — translation § → blocks
 
-Sections are those of **`inner-canon-ch28-translation-v2.md`**.
+Sections are those of **`inner-canon-lingshu28-translation-v2.md`**.
 
 | Translation § | Passage | Blocks |
 |---|---|---|
@@ -670,12 +670,20 @@ file: §3's 噦 is **hiccup**, not "sighs"; §8's 嚲 is **limpness**, not "droo
 The supplied English in the source PDF makes both errors, and either one reduces
 the twelve to eleven on screen while the card still says 十二.
 
-**One cross-chapter claim, and it must be checked before it ships.** Block 100
-describes Su Wen 8 《靈蘭祕典論》 — twelve offices, a sovereign, a chancellor, a
-general. That is this repo's own `output/episode-6/`, and the description above is
-accurate to `inner-canon-ch6-translation-v1.md`. **Cite it on screen as Su Wen 8**,
-never as "chapter 6": the edition that repo folder follows numbers it 篇第六, but
-Su Wen 6 in the received recension is a different chapter entirely (陰陽離合論).
+**One cross-chapter claim, and it can no longer be checked inside this repo.**
+Block 100 describes Su Wen 8 《靈蘭祕典論》 — twelve offices, a sovereign, a
+chancellor, a general. That description was written against this repo's own
+`inner-canon-ch6-translation-v1.md`, under the old `output/episode-6/` folder —
+and the layout migration **deleted that cut rather than migrating it**, so it now
+exists only in git history. **Re-verify block 100 against the classical text, or
+against the deleted file at `3398436^`, before it ships**; do not treat it as
+checked merely because it once was.
+
+**Cite it on screen as Su Wen 8**, never as "chapter 6": the edition that deleted
+folder followed numbered it 篇第六, but Su Wen 6 in the received recension is a
+different chapter entirely (陰陽離合論). Under the current convention it would live
+at `output/suwen/ch8/`, and that collision is precisely why the convention
+changed.
 
 **Dramatic material not in the source, flagged as invention:** the inquiry, the
 hearing set, the charges and their withdrawal; the interrupted proclamation (11);
@@ -888,8 +896,8 @@ Sidecar only; `assemble_final.sh` rejects `--subs` outright. **Build with
 `--format 16:9`**:
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-longform-v2.md --format 16:9
-node scripts/build_subtitles.js  output/episode-28/inner-canon-ch28-longform-v2.md --format 16:9
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-longform-v2.md --format 16:9
+node scripts/build_subtitles.js  output/lingshu/ch28/inner-canon-lingshu28-longform-v2.md --format 16:9
 ```
 
 **No `.srt`/`.vtt` ships with this document yet, by design** — the cues are timed
@@ -939,7 +947,7 @@ path.**
 point and costs a re-take afterwards.
 
 ```
-node scripts/check_caption_fit.js output/episode-28/inner-canon-ch28-longform-v2.md --format 16:9
+node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-longform-v2.md --format 16:9
 ```
 
 **This document exits 0 as written — verified 2026-08-07, every clause fits.** Note
@@ -958,7 +966,7 @@ libass margins keep them in frame. Fix at script stage anyway.
 the record above.
 
 ```
-node scripts/build_subtitles.js output/episode-28/inner-canon-ch28-longform-v2.md --format 16:9
+node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-longform-v2.md --format 16:9
 ```
 
 On a **copy** of the `.srt`, delete the cues covering **block 114** (everything
@@ -985,7 +993,7 @@ lower-third clear of the caption band or move it to the upper third. Added by
 default — their Chinese text is added here, in the same `drawtext` pass, at the
 timecodes in the card table above: 0:50, 1:40, 2:40, 6:10, 7:40, 8:00, 11:40,
 12:10, 13:10, 15:20 and 15:50, each held for its full 10s window. **Verify every
-glyph against `inner-canon-ch28-translation-v2.md` before export.** ffmpeg needs a
+glyph against `inner-canon-lingshu28-translation-v2.md` before export.** ffmpeg needs a
 CJK-capable face — Anton has no Chinese coverage and renders tofu boxes silently.
 
 **Two cards need special handling.** Block 71 (11:40) is the hinge and should be
