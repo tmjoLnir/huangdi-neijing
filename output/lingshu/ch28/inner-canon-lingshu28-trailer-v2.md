@@ -605,16 +605,17 @@ because it is the one most easily overstated:
   zero WARNs; the finished file decode-validated at 496×864 / 80.064s; the burn
   verified for font substitution via libass's `fontselect` log; **one frame of the
   captioned cut extracted at t=14.2s and actually inspected** — see *Captions*.
-- **Six of eight blocks have now been inspected** (updated 2026-08-08) — t=5s
-  (lower-third, block 1), t=14.2s (captions, block 2), t=26s (block 3), t=41–49.5s
-  (block 5), t=50.3–59.5s (block 6), t=75s (end card, block 8). **Blocks 4 and 7
-  remain unviewed.** Measurements and verdicts are in
-  `inner-canon-lingshu28-trailer-render-review.md`. In short: **block 6 is on spec** —
-  the diagram genuinely dissolves and redraws into a centred seated figure, L/R
-  symmetry 53%→87% — and **block 5's staging is correct**, dimming to exactly two lit
-  cartouches at the bottom of frame; its only fault is the ~30-cell count it shares
-  with block 3. Block 6 also confirms Dr-Qi on the cast sheet: **blue cheongsam, open
-  bamboo scroll, motionless**.
+- **All eight blocks have now been inspected** (completed 2026-08-08), each by
+  measurement plus at least one viewed frame. Per-block evidence is in
+  **`inner-canon-lingshu28-trailer-block-audit.md`**. Result: **six of eight on spec**,
+  with two defects that are not independent — blocks 3 and 5 share one motif and one
+  fault (the ~36-cell count), and block 8's plate colour is a single unrelated miss.
+  Block 6, the shot the argument rests on, is correct: the diagram genuinely dissolves
+  and redraws into a centred seated figure, L/R symmetry 53%→87%. Block 5's staging is
+  correct too, dimming to exactly two lit cartouches at the bottom of frame. Dr-Qi is
+  cast-sheet compliant in both her blocks — **blue cheongsam, open bamboo scroll,
+  motionless** — and **no figure is staged in the empty floor in any block**, which was
+  the cut's stated safety margin.
   **Looking is what caught the block 8 plate defect**, which every automated gate had
   passed; the measurements only explained it afterwards. Inspection confirms the
   captions burn correctly, the card is legible, the lower-third sits clear of the
