@@ -11,16 +11,22 @@
 the MP4 by hand if it is worth keeping** (renders are gitignored and are not in this
 repo). It cannot be fetched from the repo host — see *Reproduction notes*.
 
-**Current deliverable — captioned + end card, 720×1280:**
-<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/04409d47-bee0-490c-9048-d55a898d3946.mp4>
-— `media_id` `04409d47-bee0-490c-9048-d55a898d3946`. Captions on blocks 1–7, end
-card over block 8, editorial credit on the card.
+**Current deliverable — 720×1280, all on-screen text bar the cartouche glyphs:**
+<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/64d9ea0a-8ba9-40f0-b6f4-e7e33dd6c460.mp4>
+— `media_id` `64d9ea0a-8ba9-40f0-b6f4-e7e33dd6c460`. Captions (blocks 1–7), history
+lower-third (0:01–0:08), end card and editorial credit (1:10–1:20).
 
-Prior stages, kept for reproduction: assembly `130c2638-…` (496×864, uncaptioned);
-captioned-only `0a013c99-…` (720×1280, no card).
+**Built in a single pass from the assembly, not by stacking on the previous
+deliverable.** Scale, captions, scrim, card and lower-third are one filter chain, so
+the shipped file is **two encode generations** from the assembler rather than four.
+Re-running the whole finishing pass is one command and costs nothing, so prefer that
+over adding another layer to an already-encoded cut.
 
-**Still outstanding, all hand steps:** the history lower-third, block 3's twelve
-cartouche glyphs, and the licensed guqin bed.
+Prior stages, kept for reproduction and superseded as deliverables: assembly
+`130c2638-…` (496×864, no text); captions only `0a013c99-…`; captions + card
+`04409d47-…`.
+
+**Still outstanding:** block 3's twelve cartouche glyphs, and the licensed guqin bed.
 
 **Delivered geometry: 496×864** — recorded from the render, not the target. Two
 things differ from the ch1 v5 run this cut was planned against, and both are new
@@ -596,11 +602,12 @@ because it is the one most easily overstated:
   zero WARNs; the finished file decode-validated at 496×864 / 80.064s; the burn
   verified for font substitution via libass's `fontselect` log; **one frame of the
   captioned cut extracted at t=14.2s and actually inspected** — see *Captions*.
-- **Two frames are the extent of the visual verification** — t=14.2s for the
-  captions and t=75s for the end card. **Looking is what caught the block 8 plate
-  defect**, which every automated gate had passed; the measurements only explained
-  it afterwards. It confirms the captions burn correctly, that the card is legible,
-  and that block 2 shows a figure in the gold robe. It does
+- **Three frames are the extent of the visual verification** — t=14.2s for the
+  captions, t=75s for the end card, t=5s for the lower-third against a caption.
+  **Looking is what caught the block 8 plate defect**, which every automated gate had
+  passed; the measurements only explained it afterwards. It confirms the captions
+  burn correctly, that the card is legible, that the lower-third sits clear of the
+  caption band, and that block 2 shows a figure in the gold robe. It does
   **not** cover: the house look across the cut, the character likenesses against the
   cast sheet, whether the block 4 → 6 diagram reads as *reorganising*, whether shot 3
   actually shows twelve cartouches, or whether shot 5 dims the correct ten. **All of
@@ -649,7 +656,19 @@ because it is the one most easily overstated:
    had already completed** — the object was on the CDN and decoded clean — so the
    work was not lost, but only because it was chained ahead of the timeout. Verify
    before re-running anything expensive after a timeout, and prefer a faster preset
-   for full-length re-encodes.
+   for full-length re-encodes. **`-preset veryfast -crf 17` runs the same 80s job in
+   23.7s** against `medium`'s ~50s, which is the setting to use for a finishing pass.
+10. **Finishing passes should rebuild from the assembly, not stack.** Burning
+    captions, then the card, then the lower-third as separate passes would put four
+    x264 generations in the deliverable. The whole chain — scale, subtitles, scrim,
+    card, lower-third — is one filter graph and one command, so the shipped file is
+    two generations from the assembler. It costs nothing to re-run, so treat the
+    finishing pass as idempotent and re-derive it rather than layering.
+11. **Choose the luma statistic to match the background.** `YAVG` proved the end card
+    against a dark plate and was blind to the lower-third against a bright floor;
+    `YMIN` proved the lower-third and would be useless on the plate. `YMAX` was
+    useless on both — a single grain pixel pins it to 255. Getting this wrong looks
+    exactly like a missing overlay.
 
 **Other notes:**
 
@@ -665,10 +684,12 @@ because it is the one most easily overstated:
 ## Deliverables the assembler cannot produce
 
 - **History lower-third** — *"Presented as history & philosophy"*, small, on screen
-  within the first 10 seconds. Block 1.
-- **End disclaimer card** — mandated string verbatim, over block 8.
+  within the first 10 seconds. Block 1. **Burned in 2026-08-08, on at 0:01–0:08.**
+- **End disclaimer card** — mandated string verbatim, over block 8. **Burned in
+  2026-08-08, 1:10–1:20.**
 - **Human editorial credit** — *"Written & edited by Joshua Chin"* on the end card
-  and in the description.
+  and in the description. **On the card as of 2026-08-08**; still to be added to the
+  description at upload.
 - **Music** — licensed guqin only; the assembler can mix a bed you supply but
   generates none.
 
@@ -749,10 +770,25 @@ ffmpeg -i <the-496x864-render>.mp4 \
 
 **Use the blocks-1–7 copy of the `.srt` here** (step 2), not the committed one.
 
-**4. History lower-third** — *"Presented as history & philosophy"*, in at 0:01, out
-at 0:08, over block 1's empty floor. At 720×1280 the design y is ≈880; scale it to
-the returned frame (y=594 at 496×864). Sits clear above the caption band. Added by
-`drawtext` in the burn pass, not in an NLE.
+**4. History lower-third — DONE 2026-08-08.** *"Presented as history & philosophy"*,
+Anton 30, `y=880`, centred, in at 0:01 and out at 0:08 over block 1's empty floor.
+Measured 387px against 624px usable. Added by `drawtext` in the burn pass, not in an
+NLE, with the same `borderw=3:bordercolor=black@0.9` the card uses — block 1 is a
+lit parchment floor and white-on-light needs the border.
+
+**Verified on screen**: at t=5 the lower-third and caption cue 4 are both present and
+clearly separated, the lower-third sitting well above the caption band as designed.
+
+**The 1s–8s gate was verified by measurement, because luma average cannot see it** —
+block 1 is bright (mean ~137–143), so white glyphs do not move `YAVG` at all. `YMIN`
+does, because the 3px black border is the darkest thing in an otherwise light band:
+
+| t | 0.2 | 0.8 | **1.2** | **3** | **5** | **7.8** | 8.3 | 9 |
+|---|---|---|---|---|---|---|---|---|
+| YMIN | 40 | 44 | **8** | **8** | **8** | **8** | 83 | 87 |
+
+On exactly 1–8s. **Pick the statistic to match the background**: `YAVG` discriminated
+the end card against a dark plate and was useless here; `YMIN` is the reverse.
 
 **5. Block 3's twelve cartouches**, if rendered empty — which is the default. Add
 欠 噦 唏 振寒 噫 嚏 嚲 泣涕 太息 涎下 耳鳴 自齧舌 in the same `drawtext` pass, held
@@ -892,6 +928,12 @@ time.
   inquiry*), which is dramatisation and not instruction, and block 6 reports the
   chapter's claim rather than asserting it. **No compliance hedge rests on a
   character voice.**
+- **History lower-third is on screen and verified** — *"Presented as history &
+  philosophy"*, 0:01–0:08, inside the mandated first ten seconds, over an empty floor
+  with no figure in it. This is the frame that tells a scrolling viewer what the
+  channel is claiming to be before any classical mechanism is spoken, so its timing
+  is a compliance property rather than a design one; the gate was measured, not
+  assumed.
 - **Historical accuracy** — four risks. (1) Cited on screen as **Lingshu 28**, never
   a bare "Chapter 28". (2) The count is twelve, not the slate's eleven; the
   cartouches must number twelve and match the translation file. (3) Block 7's
