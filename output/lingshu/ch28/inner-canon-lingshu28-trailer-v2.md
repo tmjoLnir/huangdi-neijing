@@ -2,15 +2,31 @@
 
 **口問篇第二十八 · Twelve Small Rebellions**
 
-**Not rendered. Script and production plan only — nothing generated, no credits
-spent, the step-0 gate has not been run.** Target on render: **9:16 vertical**,
-`seedance_2_0_mini`, 8 blocks × 10s = **80.0s**, MP4.
+**Rendered 2026-08-08 — draft tier.** `seedance_2_0_mini` @ 480p, 8 blocks × 10s,
+**delivered 496×864, 80.064s, 24fps, MP4**.
 
-**Record the actual returned resolution here on render, not the target.** The ch1
-v5 run returned **496×864** from 480×854 clips — the assembler *rescales* rather
-than passing clip geometry through, and 496×864 is not exactly 9:16 (0.5741
-against 0.5625). Every caption and overlay value downstream derives from whatever
-this cut actually returns.
+**Final render:**
+<https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/130c2638-1ab5-413a-8ace-294890dc5ccc.mp4>
+— `media_id` `130c2638-1ab5-413a-8ace-294890dc5ccc`. **This link expires; archive
+the MP4 by hand if it is worth keeping** (renders are gitignored and are not in this
+repo). It cannot be fetched from the repo host — see *Reproduction notes*.
+
+**Not yet captioned, and not yet visually verified — see *Captions* and
+*Reproduction notes*.** The sidecar is built and committed; the burn, the
+lower-third, the cartouche glyphs and the end card are the hand steps in
+*Finishing steps* below.
+
+**Delivered geometry: 496×864** — recorded from the render, not the target. Two
+things differ from the ch1 v5 run this cut was planned against, and both are new
+measurements:
+
+- **The clips themselves came back 496×864**, not the 480×854 that run reported.
+  So on this cut the assembler passed clip geometry straight through and did *not*
+  rescale — its `[1/3]` line declares `8 blocks -> 496x864` from 496×864 sources.
+  The delivered 496×864 is therefore the same number by a different route, and the
+  skill's "the assembler rescales" note is not what happened here.
+- 496×864 is **0.5741**, ~2% wider than true 9:16 (0.5625). The house call stands:
+  `scale=720:1280` before burning, accepting the 2.1% stretch.
 
 **Cite the chapter on screen as *Lingshu 28*.** Su Wen 28 is a different chapter
 (通評虛實論). Both halves of the canon run to eighty-one chapters and are numbered
@@ -51,7 +67,7 @@ fourth would leak into the caption text.
 | 4 | Dr-Qi (Vesper) — no defendant | Then your inquiry has a difficulty in it. You have twelve offences and no offender at all. Qi moves out at dawn, and in at midnight, the way water goes downhill, and it is obeying nobody whatsoever. |
 | 5 | Arthur (V.O.) — ten of twelve | That answer holds for ten of the twelve. Ten acts with no author anywhere in them. Then the chapter reaches the eleventh, and does something it has not done once, in ten straight answers. |
 | 6 | Dr-Qi (Vesper) — the ruler | The heart is the ruler of the five zang and the six fu. Grief moves it, and every organ shakes, and the tears come out. Suddenly there is somebody at the wheel, and it turns out to be you. |
-| 7 | Arthur (V.O.) — the withhold / title | One book, two bodies. One of them an administration, where every act has an officer answerable for it, the other weather on a schedule. The Emperor's Inner Canon. Lingshu twenty-eight: Twelve Small Rebellions. |
+| 7 | Arthur (V.O.) — the withhold / title | One book, two bodies. One an administration, where every act has an officer. The other weather. The Emperor's Inner Canon. Lingshu twenty-eight: Twelve Small Rebellions. |
 | 8 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. We present the Inner Canon as history and philosophy, and we mark plainly, in every episode, where the evidence does not support it. |
 
 Cast: Arthur, Xavier, Vesper — `seed_audio` presets at `speech_rate` 55.
@@ -64,9 +80,18 @@ run — **not** copied from another cut's per-block column, including v1's:
 
 | Voice | Blocks | Words | Budget |
 |---|---|---|---|
-| Arthur | 1, 3, 5, 7, 8 | 33, 33, 34, 33, 34 | 32–36 |
+| Arthur | 1, 3, 5, 7, 8 | 33, 33, 34, **25**, 34 | 32–36 |
 | Xavier (Fan-di) | 2 | 37 | 36–41 |
 | Vesper (Dr-Qi) | 4, 6 | 37, 39 | 37–41 |
+
+**Block 7 is 25 words and deliberately below Arthur's budget — that is a measured
+outcome, not an oversight.** At 33 words it returned 12.751s and 12.251s on two
+consecutive rolls, ~2.6 words/sec against Arthur's 3.65. The cause is the block's
+own content: it is the title block, and Arthur gives the colon in *Lingshu
+twenty-eight:* and the two short title sentences an announcer's pauses that no
+other block in the cut provokes. The budget column above is derived from ordinary
+narration and does not describe a title drop. See the reproduction notes for all
+seven takes.
 
 Counts are machine-generated from the parsed narration table, dropping tokens that
 contain no letter or digit — a spaced em-dash is not a word, and counting it as one
@@ -196,53 +221,73 @@ distribution is a fact about the Chinese and is tabulated in the translation fil
 
 ## Production record (Higgsfield)
 
-**Status: script only. Nothing generated. The step-0 gate has not been run.** The
-figures below are a planning preflight, not a priced gate — call `balance` and
-`get_cost: true` live before spending anything.
+**Status: rendered at draft tier 2026-08-08.** Step-0 gate run and cleared; model
+and tier confirmed by the user before anything generated.
 
-### Preflight
+### Credit spend — actual against preflight
 
-Last recorded balance: **862.6** (after the ch1 v5 run, 2026-08-04). The ch1 v3 run
-is the repo's only measured delta: **75.6 credits** against a ~74 estimate, for 7
-clips and 7 takes.
+**Balance 655.4 → 552.0 = 103.4 credits.** The preflight said ~86. The gap is
+entirely in voice, and it is a lesson about the preflight rather than about the
+cut:
 
-| Item | Draft 480p | Full 720p |
-|---|---|---|
-| 8 clips (`seedance_2_0_mini`, 10s, 9:16) | 80 | 200 |
-| Style key — **new chapter motif, not a reuse** | 2 | — |
-| 8 voice takes @ ~0.8 | ~6.4 | reused |
-| Captions | 0 — sidecar, burned locally, never at assembly | 0 |
-| **Total** | **~88** | **~200** |
+| Item | Live `get_cost` | Count | Expected | Actual |
+|---|---|---|---|---|
+| Clips `seedance_2_0_mini` 480p 10s 9:16 | 10.0 | 8 | 80 | 80 |
+| Style key `nano_banana_pro` 1k 9:16 | 2.0 | 1 | 2 | 2 |
+| Voice takes `seed_audio` | **0.5** | **16** | 8 | **~21.4** |
+| Assembly, captions | free | — | 0 | 0 |
+| | | | **~90** | **103.4** |
 
-**Ten credits more than v1 at draft tier**, for one extra block. If both trailers
-are wanted, that is ~166 draft credits for the pair against a 862.6 balance —
-affordable, unlike either longform.
+**Clips and the style key priced exactly. Voice did not, and the preflight is why.**
+`get_cost` was called on a 13-word string and returned `credits_exact: 0.5`. Every
+shipped line is 25–39 words, and the implied rate across the 16 takes actually
+generated is **~1.34 credits each** — nearly 3× the quoted figure and well above
+the 0.8 the skill budgets from the ch1 balance-delta method.
 
-**Budget re-takes on top.** On ch1 v5 a single block took fourteen takes and ~11
-credits.
+**So `seed_audio` bills by length, and a short probe string under-prices the run.**
+Cost a *representative-length* line, not a convenient one. On this cut the error was
+~13 credits and harmless; across a ~110-block longform the same mistake mis-states
+the voice bill by ~100 credits.
 
-### Step-0 gate — outstanding
+**Balance after this run: 552.0.** Note this is also the first live balance read
+since the repo's records drifted: the document had 862.6 and `SKILL.md` inferred
+~782, but the actual figure at step 0 was **655.4**.
 
-Not run. Nothing generates until `balance` has been called, `get_cost: true` has
-priced one representative clip in the chosen configuration, and the user has
-confirmed **model and Draft/Full**. `seedance_2_0_mini` at 480p is the house
-default and makes this a confirmation rather than an open question — but it is
-still a gate.
+### Step-0 gate — run and cleared
 
-**Keep the draft pass.** This cut is doing two things the folder has not: an empty
-symmetrical hall as a hero shot, and a diagram that must *reorganise* between
-blocks 4 and 6 to carry the whole argument. Neither has been seen moving.
+All five preflight steps completed before any spend:
 
-### Style key — new, and it needs generating
+1. **Tool availability** — all eight names resolved via `ToolSearch`;
+   `assemble_final.sh` and `narrator/speech_metrics.sh` both present in the sandbox,
+   and `--help` read rather than merely confirmed to exist.
+2. **`balance`** — 655.4.
+3. **`get_cost: true`** — clip 10.0, style key 2.0, voice take 0.5 (see the caveat
+   above).
+4. Cost per clip and for the whole cut stated, house default named.
+5. **User confirmed** `seedance_2_0_mini` at 480p Draft.
 
-Chain from the current head rather than starting a new look:
+**Two flag findings from reading the `--help`, neither in `SKILL.md`'s table:**
+`--song` (song mode, clips-only manifest) and `--stepped N` (animate-on-twos).
+Neither applies to this cut. `--subs` still refuses with exit 2, as documented.
+
+**The draft pass was kept**, and it earned its place: this cut opens on an empty
+symmetrical hall and turns on a diagram that reorganises between blocks 4 and 6,
+neither of which had been seen moving.
+
+### Style key — generated
 
 ```
-4b6f7106-67da-4d1a-a553-c58ba90ac43f   ch1 (splitting scroll + seven-and-eight arcs)  ← current head
+4b6f7106-67da-4d1a-a553-c58ba90ac43f   Suwen 1 (splitting scroll + seven-and-eight arcs)   ← previous head
+        └── 8e7e7549-cb5a-4970-afa7-b00b7e1442d4   Lingshu 28 (hearing + twelve tally slots)   ← THIS CUT
 ```
 
-Pass that **job ID** as the reference and swap only the chapter motif.
-`nano_banana_pro` (served by `nano_banana_2`), 9:16 768×1376.
+**Job ID `8e7e7549-cb5a-4970-afa7-b00b7e1442d4`.** `nano_banana_pro` (served by
+`nano_banana_2`), 9:16, **returned 768×1376** as targeted, `resolution` defaulted to
+`1k`. Chained off the Suwen 1 head by job ID as `medias[{role:"image"}]`; the
+service echoed the role back as `image` exactly as the skill predicts.
+
+**Promote this to `SKILL.md` step 1 as the new head only if this cut ships.** It is
+recorded here either way.
 
 **Motif for this cut:** the three-character series key arranged as a hearing — one
 figure seated high, one standing to the side, one sitting on the floor with a
@@ -259,11 +304,47 @@ sibling derived from this key** — generate the vertical one here first.
 
 ### Clips
 
-Not generated. Model and tier from the step-0 gate. 10s, style key attached to
-every clip, `aspect_ratio: "9:16"` **and** "vertical 9:16 portrait framing" written
-into every prompt text — the double declaration has held on this model across three
-cuts, and a full set of clips has previously come back in the wrong orientation
-without it.
+**Generated 2026-08-08. `seedance_2_0_mini`, Draft tier, `resolution: "480p"`,
+`duration: 10`, `aspect_ratio: "9:16"`, `generate_audio: false`, style key
+`8e7e7549-…` attached to every clip as `image_references`.**
+
+**Every clip returned 496×864, 10.042s, no audio stream, no head freeze, no tail
+freeze** — checked against the assembler's own gates before assembly was attempted.
+
+| Blk | Shot | Job ID |
+|---|---|---|
+| 1 | empty floor, push down | `e58d179d-12cc-41f7-a94c-806f5ffc078d` |
+| 2 | Fan-di, fan snapped open | `4886ee15-1f65-47b7-8046-3a0e75b833de` |
+| 3 | twelve cartouches arriving | `ae307e3e-a5aa-46eb-b1c3-05366281564d` |
+| 4 | Dr-Qi still, circuit diagram | `04456c79-33e5-4662-af45-9a8be6c462b7` |
+| 5 | ten of twelve dim out | `bbfc2179-3741-4454-a213-fe920b6fcea6` |
+| 6 | diagram reorganises to centre | `33261ff9-4e8a-49a4-88e4-60babe43a3b5` |
+| 7 | split hall, ranked vs empty | `83aac99f-48e2-4c54-9232-9e95b4a43ab2` |
+| 8 | black plate, drifting grain | `7c8e3694-cd60-49d4-b00e-1178e3c60686` |
+
+**Not one clip was regenerated.** No preset swap was offered on any of the eight —
+pre-declining `IN THE DARK` on every call, including the lamplit and black blocks,
+appears to have absorbed it as the skill predicts.
+
+**Two model defaults will silently cost 2.5× if not passed explicitly**, and this is
+worth carrying into every future cut: `seedance_2_0_mini` defaults `resolution` to
+**720p** and `duration` to **5s**. A draft-tier call that omits them is billed at
+full tier and returns clips that fail the assembler's 9.5s floor.
+
+**The double aspect-ratio declaration held again** — `aspect_ratio: "9:16"` plus
+"vertical 9:16 portrait framing" in every prompt text. Block 1 was generated alone
+and its dimensions checked before the other seven were submitted.
+
+- **`generate_audio: false` on every clip.** Verified on the output, not just the
+  request: `ffprobe -select_streams a:0` returned empty for all eight. A correctness
+  requirement, not a saving — `assemble_final.sh` mixes clip audio in at 0.12 under
+  the voice rather than discarding it.
+- **No legal vocabulary in any prompt** — no *gavel*, *court*, *trial*, *sentence*.
+  The hearing is carried by staging alone. Block 2's fan gesture was written as "sweeps
+  it down through the air in a sharp emphatic gesture".
+- **Blocks 1, 4 and 8 were the frozen-frame risks** — an empty room, a motionless
+  physician, a plain black plate. Each was given explicit continuous motion, and all
+  three passed both freeze probes.
 
 - **`generate_audio: false` on every clip.** A correctness requirement, not a
   saving: `assemble_final.sh` mixes clip audio in at 0.12 **under** the voice rather
@@ -289,8 +370,8 @@ without it.
 
 ### Voiceover
 
-Not generated. `seed_audio`, `voice_type: "preset"`, `speech_rate` 55, one take per
-block, **one speaker per block** — verified: no block above contains two voices.
+**Generated 2026-08-08.** `seed_audio`, `voice_type: "preset"`, `speech_rate` 55, one
+take per block, **one speaker per block** — verified: no block contains two voices.
 
 | Role | Preset | `voice_id` |
 |---|---|---|
@@ -298,58 +379,221 @@ block, **one speaker per block** — verified: no block above contains two voice
 | Fan-di | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` |
 | Dr-Qi | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` |
 
+**Kept takes.** `speech` is `speech_metrics.sh`'s measured figure — the number the
+assembler gates, to three decimals. Gate is **8.600–10.000s**.
+
+| Blk | Voice | Job ID | File | **Speech** | Margin | Pauses |
+|---|---|---|---|---|---|---|
+| 1 | Arthur | `a4de44b7-d1b6-409e-9a2c-da9b61ed11e4` | 8.659 | **8.659** | +0.059 | 0 |
+| 2 | Xavier | `12c72b4b-b410-4153-9224-09ff4abdf615` | 8.992 | **8.992** | +0.392 | 0 |
+| 3 | Arthur | `8c6b122d-5da5-41ef-8be2-2ee0af67a14b` | 9.599 | **9.599** | +0.999 | 0 |
+| 4 | Vesper | `0a538c7f-fb99-4c6c-b158-bbe69b205170` | 9.635 | **9.635** | +1.035 | 0 |
+| 5 | Arthur | `6ea201ab-0225-4b01-b60e-c368116d2713` | **9.870** | **8.639** | +0.039 | 0 |
+| 6 | Vesper | `397679cc-af47-43c1-854c-a3f67c2e1904` | 8.720 | **8.720** | +0.120 | 0 |
+| 7 | Arthur | `b27d21ef-59bf-42d8-bcf5-5456c782ce8c` | 9.405 | **9.405** | +0.805 | 0 |
+| 8 | Arthur | `782c9921-9775-40e7-8aba-abf770401a8a` | 8.762 | **8.762** | +0.162 | 0 |
+
+- **Voiceover** (`seed_audio`, preset, `speech_rate` 55 — measured **speech**, not file length): block 1 `a4de44b7-d1b6-409e-9a2c-da9b61ed11e4` (8.659s), block 2 `12c72b4b-b410-4153-9224-09ff4abdf615` (8.992s), block 3 `8c6b122d-5da5-41ef-8be2-2ee0af67a14b` (9.599s), block 4 `0a538c7f-fb99-4c6c-b158-bbe69b205170` (9.635s), block 5 `6ea201ab-0225-4b01-b60e-c368116d2713` (8.639s), block 6 `397679cc-af47-43c1-854c-a3f67c2e1904` (8.720s), block 7 `b27d21ef-59bf-42d8-bcf5-5456c782ce8c` (9.405s), block 8 `782c9921-9775-40e7-8aba-abf770401a8a` (8.762s).
+
+**`build_subtitles.js` parses that record from a single physical line**, so it must
+stay on one line however long it gets — wrapping it across lines makes the script
+silently fall back to "assume a full 10s" for *every* block, which is a warning in
+its output but a real 0.5–0.7s timing error in the sidecar. Verified here: the
+wrapped first draft produced exactly that warning.
+
+**That line feeds `build_subtitles.js`, and it deliberately carries speech rather
+than file duration.** The script centres each cue as `(10 − duration) / 2`, which
+is the right formula for whichever number it is handed; handing it speech makes it
+agree with the assembler exactly. **Block 5 is the block that proves it matters** —
+see below.
+
+**Block 5 is the first recorded `seed_audio` take where file ≠ speech.** It carries
+**1.231s of trailing silence** (file 9.870, speech ends 8.639). `SKILL.md`'s
+Subtitles section records the opposite finding from the ch1 v5 run — `file ==
+speech` with zero padding on all seven kept takes — and concludes the sidecar's cue
+drift "computes to 0.00s" on `seed_audio`. **That is no longer universally true.**
+Left uncorrected, block 5's captions would lead its voice by
+`(9.870 − 8.639) / 2 = 0.616s`. The fix is `SKILL.md`'s own option 1: the
+**speech** column above is what goes into the sidecar, not the file column.
+
+**Three takes were measured within 0.2s of the floor and were checked against the
+number, never eyeballed** — blocks 1 (+0.059), 5 (+0.039) and 6 (+0.120).
+`speech_metrics.sh` defaults to `NOISE="-45"` and `d=0.25`, byte-identical to
+`assemble_final.sh` line 197, so these are true passes rather than measurement
+luck. Verified by reading both scripts, not assumed.
+
+**Superseded takes — kept as evidence, per `CLAUDE.md`.** 14 takes generated, 8 kept.
+
+| Blk | Job ID | Words | Speech | Why superseded |
+|---|---|---|---|---|
+| 2 | `59388358-6f38-41fd-bf8d-bd0fc00be4f0` | 37 | 8.248 | under floor by 0.352 |
+| 7 | `f3547530-aa13-4796-b8e2-0c79f619b927` | 33 | 12.751 | over ceiling by 2.751 |
+| 7 | `14c76e63-b428-4a1a-9786-acdce62a18a3` | 33 | 12.251 | over by 2.251; 0.92s internal pause |
+| 7 | `00dbedfe-2682-4dfc-8ed1-6b076b84f367` | 25 | 10.182 | over by 0.182 |
+| 7 | `5cd41712-7bf7-4ec3-acf7-7f619b1d9310` | 28 | 8.206 | under by 0.394 |
+| 7 | `904f6a13-539f-4488-8cc8-6e1090832c59` | 25 | 7.414 | under by 1.186 |
+| 7 | `58e0753a-f7a7-48e0-804a-83a285e184f5` | 25 | **9.532 — in window** | rejected anyway: 1.18s internal pause would trip the pausey WARN |
+| 8 | `14c085d3-eb76-481d-9446-e32999868d12` | 34 | 6.853 | under by 1.747 |
+
+**Block 7 cost seven of those fourteen takes and forced the only rewrite in the
+cut.** It is the clearest measurement this repo has of the bimodality `SKILL.md`
+describes, because the same block was rolled at four different word counts:
+
+| Words | Speech | Implied rate |
+|---|---|---|
+| 33 | 12.751 | 2.59 w/s |
+| 33 | 12.251 | 2.69 w/s |
+| 25 | 10.182 | 2.46 w/s |
+| 28 | **8.206** | **3.41 w/s** |
+| 25 | 7.414 | 3.37 w/s |
+| 25 | 9.532 | 2.62 w/s |
+| 25 | **9.405 — kept** | 2.66 w/s |
+
+**The 28-word take came back 2.0s shorter than the 25-word one.** Word count is not
+a control at this granularity: the block sits in a slow mode near **2.6 w/s** and a
+fast mode near **3.4 w/s**, and *no* word count clears 8.6–10.0s in both — 8.6s at
+3.4 w/s needs 29 words, 10.0s at 2.6 w/s allows 26. The windows do not overlap.
+25 words was chosen to centre the *dominant* mode (5 of 7 rolls landed slow), and
+the block was then rolled until one hit. **Budget re-rolls for a title block; do
+not try to solve it by re-counting words.**
+
+**The slow mode is caused by content, not chance.** Block 7 is the only block that
+speaks a colon-led title (*Lingshu twenty-eight: Twelve Small Rebellions*), and
+Arthur gives it announcer pauses. Every other block in the cut landed on its first
+roll except 2 and 8, which took one re-roll each.
+
 Record per block: job ID, file duration **and** the assembler's measured speech
-figure, **to three decimal places**. They differ, and the second is the one that was
-gated. A ch1 v5 take logged as "8.50s pass" was 8.497s — 0.103s under the floor —
-and stopped the assembly. A take within ~0.2s of either edge is checked against the
-number, never eyeballed.
+figure, **to three decimal places**. They differ — block 5 above proves it on
+`seed_audio` — and the second is the one that was gated. A ch1 v5 take logged as
+"8.50s pass" was 8.497s — 0.103s under the floor — and stopped the assembly. A take
+within ~0.2s of either edge is checked against the number, never eyeballed.
 
-### Assembly
+### Assembly — completed 2026-08-08, first run, no retries
 
-`sandbox_exec` → `assemble_final.sh`, 8 blocks, `--manifest pairs.txt`. There is
-**no assembly job ID to record** — capture the flags, the manifest and the exported
-`media_id` instead.
+There is **no assembly job ID**. What makes the run repeatable:
 
-- **Run it foreground.** ch1 v5 lost a whole run to `background: true` when the
-  transport call timed out and the sandbox was reclaimed with nothing on disk. An
-  8-block assembly should finish inside the 120s foreground budget, but it is one
-  block longer than anything measured — **watch the wall time and record it**, since
-  it is the only data point the longform will have.
-- **Download, assemble and export go in ONE chained command.** The sandbox is
-  discarded ~10 seconds after the call returns: call `media_upload` first, append
-  `curl -f -X PUT --upload-file` to the same command, and `media_confirm` only after
-  HTTP 200.
-- **No `--subs`** — passing it is a hard error. Captions are a separate step.
-- **Name files `blockNN.mp4` / `voiceNN.wav`** and keep the numbers aligned; the
-  script cross-checks each pair and calls a mismatch "the #1 cause of audio on the
-  wrong block". Do not reach for `--allow-mismatch` to silence the assert.
+| | |
+|---|---|
+| Command | `sandbox_exec` → `assemble_final.sh`, **foreground** |
+| Flags | `--out work/output/final.mp4 --blocks 8 --manifest pairs.txt` |
+| Not passed | `--clip-seconds` (default 10), `--music`, `--sfx-vol` (default 0.12), `--subs` (hard error), `--allow-mismatch` |
+| Manifest | 8 lines, `work/blocks/blockNN.mp4 work/voices/voiceNN.wav`, NN 01–08 aligned |
+| Delivered | **496×864, 80.064s, 24.0fps**, asserted `8 × 10s = 80s` within ±1s, decode-validated |
+| Mix | voice 1.0, clip SFX 0.12, no music bed, final loudnorm −16 LUFS |
+| **Wall time** | **47 seconds** |
+| Exported | `media_id` `130c2638-1ab5-413a-8ace-294890dc5ccc` |
+| Assembler sidecar | `final.mp4.assembly.json` written by the script; a poster frame `final_poster.jpg` also produced |
+
+**Zero WARNs.** No pausey take, no static head, no frozen tail, no pair mismatch.
+`narration present in all 8 windows`. Nothing was accepted-rather-than-fixed, so
+there is nothing in this run to carry forward as a known defect.
+
+**47 seconds is the repo's first assembly-scale measurement**, and it is the number
+the longform plan had none of. Extrapolating naively, ~110 blocks is roughly 10–11
+minutes — **far outside the 120s foreground budget**, which confirms the skill's
+judgement that longform must go background with polling at least every 60s. Note
+the extrapolation is naive: 16 downloads were a real share of these 47s, and a
+longform run is ~240 downloads, so the true figure is likely worse than linear.
+
+- **Ran foreground**, per the skill. It finished in 47s against a 120s budget, so
+  the ch1 v5 `background: true` failure mode was never in play.
+- **Download, assemble and export were one chained command.** `media_upload` was
+  called *before* the assembling command and the `curl -f -X PUT` appended to the
+  same shell invocation; `media_confirm` only after the PUT returned OK.
+- **Voice levels were matched per block** by the script (−16.2…−20.2 dB in,
+  −20.9…−22.6 dB out) — logged here because it is the assembler's own normalisation
+  and not something this cut configured.
 
 ### Captions
 
-Sidecar only. **No `.srt`/`.vtt` ships with this document yet, by design** — the
-cues are timed from take durations that do not exist. Build and commit them with
-the render, and regenerate after any narration or take change.
+**Sidecar built and committed** — `inner-canon-lingshu28-trailer-v2.srt` and
+`.vtt`, 41 cues, widest line **555px against a 556px usable width** at 9:16.
 
 ```
 node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 node scripts/build_subtitles.js  output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 ```
 
+`check_caption_fit.js` **exits 0**, reporting only the known block-8 disclaimer
+exception. Re-run after the block 7 rewrite, not just before it.
+
+**Cue timing is exact on this cut, not approximate.** `SKILL.md` warns that a
+sidecar built on this path is only approximately timed because
+`build_subtitles.js` centres on file duration while the assembler centres on
+detected speech. That drift is real here — block 5 carries 1.231s of padding — and
+it was removed by putting **speech** in the `Voiceover` bullet record rather than file
+length, which is `SKILL.md`'s own option 1. Verified against the assembler's
+reported per-block speech starts:
+
+| Blk | Assembler speech start | Sidecar first cue | Δ |
+|---|---|---|---|
+| 1 | 0.67s | 00:00:00,670 | 0.000 |
+| 5 | 40.68s (0.68 into block) | 00:00:40,681 | 0.001 |
+| 8 | 70.62s (0.62 into block) | 00:01:10,619 | 0.001 |
+
+**Burned: no.** The `.srt`/`.vtt` are committed; the burn is a hand step in
+*Finishing steps*, and **nobody has seen the captions on screen** — the 555px fit is
+a measurement of the sidecar, not of the render.
+
 9:16 is the hard case — roughly half the caption room of the longform frame — so
 judge wrapping here, not on the landscape cut.
 
 ### Reproduction notes
 
-- **Nothing has been generated.** No job IDs, no spend, no assembly. The step-0
-  gate is outstanding and is a hard gate.
-- **The style key is new**, and its motif differs from trailer v1's. Record its job
-  ID here and promote it to `SKILL.md` step 1 if this is the cut that ships.
-- **Zane is unmeasured at length** and is deliberately absent.
-- **8 blocks is one more than anything this repo has assembled.** Record the
-  assembly wall time; the longform's act-scale plan has no measurement to work from.
-- **The CDN is normally blocked from the repo host.** The sandbox has its own
-  network access and can probe the render next to where it was built — but **a probe
-  is not a viewing**. Say which checks actually ran.
+**What actually ran, and what did not.** The honest line on verification first,
+because it is the one most easily overstated:
+
+- **Nobody has watched this cut. It has not been visually verified.** The CDN is
+  blocked from the repo host by **organisation egress policy** — the agent proxy
+  reports `connect_rejected: gateway answered 403 to CONNECT` for
+  `d8j0ntlcm91z4.cloudfront.net:443`, and its own README says to report such denials
+  rather than retry them. Every check below ran either on job metadata or inside the
+  sandbox, next to the file.
+- **Checks that did run:** all 8 clips probed for dimensions, duration, absence of
+  an audio stream, and head/tail freeze; all 16 voice takes measured with the
+  sanctioned `speech_metrics.sh`; the assembler's own gates and asserts passed with
+  zero WARNs; the finished file decode-validated at 496×864 / 80.064s.
+- **Checks that did not run:** nobody looked at the picture. The house look, the
+  character likenesses against the cast sheet, whether the block 4 → 6 diagram
+  actually reads as *reorganising*, and whether the twelve cartouches number twelve
+  are all **unverified**. **The captions have not been burned**, so their on-screen
+  wrap is unverified too — the sidecar's measured 555px/556px fit is a
+  pre-render number, not a look at the frame.
+
+**Findings that contradict or extend `SKILL.md`, and should be folded back into it:**
+
+1. **`seed_audio` can ship padded takes.** Block 5 returned file 9.870s against
+   speech 8.639s. `SKILL.md`'s Subtitles section records `file == speech` on all
+   seven ch1 v5 takes and concludes the sidecar drift "computes to 0.00s" on this
+   provider. **Not universally true** — that block alone would have led its captions
+   by 0.616s. Recording *speech* in the `Voiceover` bullet line fixes it, and the
+   resulting sidecar matches the assembler to within 1ms on every block (cue 1 at
+   00:00:00,670 against the assembler's 0.67s; block 5 at 40.681 against 40.68).
+2. **Clips arrived 496×864 and the assembler did not rescale.** ch1 v5 recorded
+   480×854 clips rescaled to 496×864. Here the source clips were already 496×864 and
+   were passed through. Same delivered geometry, different mechanism.
+3. **`get_cost` on a short probe string under-prices `seed_audio` by ~3×.** 0.5
+   quoted on 13 words; ~1.34 actual on 25–39-word lines. Cost a representative line.
+4. **`seedance_2_0_mini` defaults to 720p and 5s.** Both must be passed explicitly
+   for a draft; omitting them bills full tier *and* fails the 9.5s clip floor.
+5. **`speech_metrics.sh` and `assemble_final.sh` use identical detection** —
+   `noise=-45dB:d=0.25` in both. Verified by reading both scripts. This is what makes
+   a +0.039s margin (block 5) a real pass rather than a gamble.
+6. **`build_subtitles.js` parses the `Voiceover` bullet record from one physical line.**
+   Wrapping it across lines silently falls back to "assume a full 10s" for every
+   block. Hit and corrected during this run.
+7. **Assembly wall time at 8-block scale: 47s.** First such measurement in the repo.
+
+**Other notes:**
+
+- **The style key is new** (`8e7e7549-…`), motif differs from trailer v1's. Promote
+  to `SKILL.md` step 1 as the new head only if this cut ships.
+- **The narration changed during production.** Block 7 was rewritten from 33 words
+  to 25 after two rolls at ~12.5s. The document's narration table carries the
+  **shipped** line; the original is preserved in the superseded-takes discussion
+  above. `check_caption_fit.js` was re-run after the rewrite and still exits 0.
+- **Zane is unmeasured at length** and remains deliberately absent, as planned.
+- **Nothing was regenerated among the clips** — 8 generated, 8 kept.
 
 ## Deliverables the assembler cannot produce
 
@@ -409,10 +653,28 @@ reports the line as fitting. Convert the `.srt` to `.ass` and **re-target
 converter hardcodes 384×288, which scales every style value by roughly 4.4× on a
 720-tall frame and runs the lines off frame.
 
-**If the assembler returns 496×864 as it did on ch1 v5, burn native and scale the
-style** — do not add `scale=720:1280`, which introduces a 2.1% vertical stretch, and
-do not crop, because the assembler rescales rather than pads. At 496×864 the scaled
-values were `Fontsize` 36, `MarginL/R` 40, `MarginV` 101, `Outline/Shadow` 2/1.
+**This cut delivered 496×864, so scale to 720×1280 and burn at 720×1280 — in that
+order.** That is the house call as of 2026-08-08 and it **supersedes the
+burn-native advice this document carried before the render**: the 2.1% vertical
+stretch is accepted in exchange for a true 9:16 frame the vertical platforms take
+without letterboxing. Scaling first also draws the captions at native 720×1280 and
+makes the PlayRes re-target exact rather than approximate.
+
+`build_subtitles.js` prints both commands in the correct order on every run — use
+its output rather than retyping. For this cut they are:
+
+```
+mkdir -p output/lingshu/ch28/renders
+ffmpeg -i output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.srt -f ass - \
+  | sed 's/^PlayResX: .*/PlayResX: 720/; s/^PlayResY: .*/PlayResY: 1280/' \
+  > output/lingshu/ch28/renders/inner-canon-lingshu28-trailer-v2.ass
+
+ffmpeg -i <the-496x864-render>.mp4 \
+  -vf "scale=720:1280,subtitles=output/lingshu/ch28/renders/inner-canon-lingshu28-trailer-v2.ass:force_style='FontName=Anton,Fontsize=54,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,Alignment=2,MarginL=58,MarginR=58,MarginV=150,WrapStyle=0'" \
+  -c:a copy <cut>-subtitled.mp4
+```
+
+**Use the blocks-1–7 copy of the `.srt` here** (step 2), not the committed one.
 
 **4. History lower-third** — *"Presented as history & philosophy"*, in at 0:01, out
 at 0:08, over block 1's empty floor. At 720×1280 the design y is ≈880; scale it to
@@ -448,6 +710,30 @@ dropout window, so the block-3 gap requires a hand mix either way.
 Audited at script stage against the narration **and** the shot list, per the
 compliance gate — a non-compliant clip is a paid re-render. The slate rates this
 chapter **Very Low**, and the trailer is the lowest-exposure surface on it.
+
+**Re-audited at production stage, 2026-08-08, because block 7's line changed after
+the original audit.** Two bullets below rest on block 7 — the withheld-verdict
+framing and the Su Wen 8 citation risk — so both were re-checked against the
+shipped 25-word line:
+
+> One book, two bodies. One an administration, where every act has an officer. The
+> other weather. The Emperor's Inner Canon. Lingshu twenty-eight: Twelve Small
+> Rebellions.
+
+**Every compliance-bearing element survives the rewrite.** The *two bodies* framing
+is intact and still refuses to declare either account correct; the administration /
+weather contrast is intact; **Lingshu twenty-eight** is still spoken, so the
+citation-accuracy requirement is met and no bare "Chapter 28" appears; and Su Wen 8
+is still **not named on screen**, which was the safer option and the one needing no
+verification. What the rewrite dropped — *"answerable for it"*, *"on a schedule"* —
+is descriptive colour carrying no compliance load.
+
+**The prompt-stage audit ran on all eight clip prompts before generating**, per the
+gate. No prompt contained legal vocabulary, restraint or bound-figure imagery, a
+figure standing in the empty floor, bodies, injury, or falling figures. **No clip
+was rejected and no preset swap was offered**, so no prompt needed re-cutting —
+the first cut in this repo where the compliance gate cost nothing at generation
+time.
 
 - **Disclaimer** — repo string verbatim: blockquoted above, at the head of block 8's
   narration, on screen as the end card, and in the description. Block 8 is extended
