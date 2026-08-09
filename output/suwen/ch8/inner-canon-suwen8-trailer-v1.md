@@ -6,15 +6,40 @@
 `seedance_2_0_mini` 480p. Assembled at **496×864**, delivered captioned at a true
 9:16 **720×1280**, h264 + aac.
 
-| Deliverable | `media_id` |
-|---|---|
-| **Final captioned cut** — captions, history lower-third, end card | **`e873c77e-5743-458f-ac40-0c2514aa9c4f`** |
-| Assembly master — pre-caption, pre-text | `f73eb944-2b94-47d7-a34a-ee3c8a0473c0` |
-| Verification contact sheet — 7 frames | `4f95c604-a225-4cd3-a9db-8d2316b02d76` |
+### Download links
 
-**CDN links expire — archive the final MP4 by hand.** It could not be downloaded
-to the repo host (403 at CONNECT, as on every prior cut), so it is not in
-`output/suwen/ch8/renders/`.
+**⚠ These expire. Download the final MP4 and archive it by hand.**
+
+**FINAL CAPTIONED CUT — this is the deliverable:**
+
+```
+https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/e873c77e-5743-458f-ac40-0c2514aa9c4f.mp4
+```
+
+| Deliverable | `media_id` | Size | URL |
+|---|---|---|---|
+| **Final captioned cut** — captions, history lower-third, end card | **`e873c77e-5743-458f-ac40-0c2514aa9c4f`** | 13,908,401 B | `…/e873c77e-5743-458f-ac40-0c2514aa9c4f.mp4` |
+| Assembly master — pre-caption, pre-text | `f73eb944-2b94-47d7-a34a-ee3c8a0473c0` | 12,274,096 B | `…/f73eb944-2b94-47d7-a34a-ee3c8a0473c0.mp4` |
+| Verification contact sheet — 7 frames | `4f95c604-a225-4cd3-a9db-8d2316b02d76` | 232,037 B | `…/4f95c604-a225-4cd3-a9db-8d2316b02d76.jpg` |
+
+All three share the prefix
+`https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/`.
+
+**Verified serving 2026-08-09**: HTTP 200/206 with byte counts matching the upload
+exactly, probed from the sandbox.
+
+**They cannot be fetched from the repo host, and the reason is the proxy, not the
+CDN.** `curl` there returns `CONNECT tunnel failed, response 403` — the egress
+policy refuses the CONNECT to `*.cloudfront.net` before any request reaches
+CloudFront. Two practical consequences, both previously recorded loosely as "the
+CDN is blocked":
+
+- **The links are good; only this host is blind.** Open them from a normal browser
+  or any machine outside the sandbox and they download.
+- **The render is therefore NOT in `output/suwen/ch8/renders/`** and cannot be put
+  there from a session on this host. `renders/` is gitignored anyway, so this costs
+  the repo nothing — but it does mean **the archive step is manual and nobody but
+  you can do it.**
 
 **This cut has been assembled, burned and probed. Nobody has watched it.** See
 *Reproduction notes* for exactly which checks ran.

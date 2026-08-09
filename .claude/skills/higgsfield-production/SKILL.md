@@ -1455,6 +1455,20 @@ expand to reach 120.
   document** and verify at the job-metadata level instead — all clips at the
   expected dimensions, every take inside its window, assembly completed — then
   record the CDN URL for manual download. Those links expire.
+
+  **Record the full URL, not the `media_id`.** Established the hard way on the
+  Suwen 8 trailer: the production record listed `media_id`s only, and the user
+  came back with *"the download link is missing"* — correctly, because a
+  `media_id` is not a link and the one person who can archive the render is the
+  one who cannot be handed a UUID. The record's deliverables table needs the
+  **whole `https://…` URL**, and it is worth one free `sandbox_exec` probe
+  (`curl -I`) to confirm each one serves before writing it down.
+
+  **Say which layer refused, too.** `curl` from the repo host returns
+  `CONNECT tunnel failed, response 403` — that is the **egress proxy** refusing
+  the CONNECT, not CloudFront denying the object. The distinction matters when
+  reporting: the links are perfectly good from any normal machine, and writing
+  "the CDN 403s" implies a broken artifact when the artifact is fine.
 - **The sandbox is not behind that egress policy, and this is newly useful.**
   `sandbox_exec` has its own internet access and its own ffmpeg — it has to, since
   it downloads every clip and take to assemble them. So a check that was
