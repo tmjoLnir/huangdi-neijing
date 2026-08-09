@@ -1,6 +1,6 @@
 ---
 name: higgsfield-production
-description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfield — style key, per-block clips, narrator voiceover, sandbox assembly, captions, and the production record. Use whenever generating or re-rendering a 30-90 sec vertical trailer or a 15-20 min longform episode for this repo, adding a new chapter under output/, or debugging a Higgsfield job (wrong aspect ratio, preset swap prompts, expired CDN links, blocked uploads, a tool missing from the MCP surface, or an assemble_final.sh speech-window error).
+description: Produce a cut of *The Emperor's Inner Canon* end-to-end on Higgsfield — style key, per-block clips, narrator voiceover, sandbox assembly, captions, and the production record. Use whenever generating or re-rendering a 30-90 sec vertical trailer or a 11:30-20 min longform episode for this repo, adding a new chapter under output/, or debugging a Higgsfield job (wrong aspect ratio, preset swap prompts, expired CDN links, blocked uploads, a tool missing from the MCP surface, or an assemble_final.sh speech-window error).
 ---
 
 # Higgsfield production pipeline
@@ -57,7 +57,7 @@ in the filename too. Folders are not consecutive and gaps are expected.
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
 the only form produced so far, and the one whose numbers are battle-tested. For a
 **15–20 minute longform episode**, read those steps for the mechanics, then read
-[Longform episodes](#longform-episodes-1520-min), which overrides the aspect
+[Longform episodes](#longform-episodes), which overrides the aspect
 ratio, block count, voice handling and assembly strategy. **Step 0 is a hard gate
 on both**: nothing generates until the run's tools are confirmed present on the
 MCP surface and the user has seen the balance, the costed estimate, and confirmed
@@ -69,7 +69,7 @@ model and tier.
 | [Tool availability](#tool-availability--check-the-surface-before-you-spend) | step 0's free preflight — the surface moves |
 | [4. Assembly](#4-assembly) | the sandbox assembler, its flags and its gates |
 | [Subtitles](#subtitles) | caption constraints and the guaranteed-fit sidecar |
-| [Longform episodes](#longform-episodes-1520-min) | what changes for a 15–20 min cut |
+| [Longform episodes](#longform-episodes) | what changes for a 11:30–20 min cut |
 | [Environment caveats](#environment-caveats) | blocked uploads/CDN, what lands in git |
 | [Compliance gate](#compliance-gate-before-generating) | run on prompts, before generating |
 
@@ -1194,7 +1194,7 @@ wins.
 
 | | Trailer | Longform |
 |---|---|---|
-| Runtime | 30-90 sec (60s and 70s cuts have been written) | 17–19 min target (15 floor, 20 ceiling) |
+| Runtime | 30-90 sec (60s and 70s cuts have been written) | 11:30–20 min target (11:30 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
