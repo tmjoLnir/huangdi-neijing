@@ -2,9 +2,22 @@
 
 **素問·靈蘭祕典論第八 · The Twelve Offices**
 
-**Not rendered. Script and production plan only — nothing generated, no credits
-spent, the step-0 gate has not been run.** Target on render: **9:16 vertical
-720×1280**, `seedance_2_0_mini`, 7 blocks × 10s = **70.0s**, MP4.
+**RENDERED — draft tier, 2026-08-09.** 7 blocks × 10s = **70.059s**, MP4,
+`seedance_2_0_mini` 480p. Assembled at **496×864**, delivered captioned at a true
+9:16 **720×1280**, h264 + aac.
+
+| Deliverable | `media_id` |
+|---|---|
+| **Final captioned cut** — captions, history lower-third, end card | **`e873c77e-5743-458f-ac40-0c2514aa9c4f`** |
+| Assembly master — pre-caption, pre-text | `f73eb944-2b94-47d7-a34a-ee3c8a0473c0` |
+| Verification contact sheet — 7 frames | `4f95c604-a225-4cd3-a9db-8d2316b02d76` |
+
+**CDN links expire — archive the final MP4 by hand.** It could not be downloaded
+to the repo host (403 at CONNECT, as on every prior cut), so it is not in
+`output/suwen/ch8/renders/`.
+
+**This cut has been assembled, burned and probed. Nobody has watched it.** See
+*Reproduction notes* for exactly which checks ran.
 
 > A dramatized adaptation of a classical philosophical text. Not medical advice.
 
@@ -56,12 +69,12 @@ text-free except blocks 3 and 7.
 | Block | Beat | Narration |
 |---|---|---|
 | 1 | Arthur (V.O.) — the hook | Rank your organs. Decide which matters most, and which one you could lose. Two thousand years ago, an emperor asked a physician that question, and what he got back was a government. |
-| 2 | Fan-di (Xavier) — the question | I want a ranking — every court has one, every ministry has one. Tell me all my organs are equally precious, and I will know you have never cut a budget. Which is noble, and which is base? |
+| 2 | Fan-di (Xavier) — the question | I want a ranking — every court has one, every ministry has one. Tell me my organs are all equally precious, and I will know you have never once had to cut a budget. Which of them is noble, and which of them is base? |
 | 3 | Dr-Qi (Vesper) — the answer | The heart is the office of the sovereign. The lung is the chancellor. The liver is the general. Twelve organs, twelve posts, and not one of them can be spared. That is the whole of your ranking. |
-| 4 | Arthur (V.O.) — the scale | A granary. A general. An envoy who carries joy. A district office that stores water. Eleven titles for twelve organs, and one ministry with a name, a job, and no building at all. |
-| 5 | Lei-Gong (Zane) — the missing office | I checked the list twice, and I will say what nobody else will. This council has no seat for the brain. Not a junior post. Nothing at all. It is simply not in the government. |
+| 4 | Arthur (V.O.) — the scale | A granary and a general. An envoy who carries joy and a district office that stores water. Eleven titles for twelve organs and one ministry with a name and no building. |
+| 5 | Lei-Gong (Zane) — the missing office | I have checked this list twice, and I will now say the part nobody else will. This council has no seat for the brain. Not a junior post, not a clerkship, not a single line of it. The brain is simply not in this government, at any rank at all. |
 | 6 | Arthur (V.O.) — the turn | Then the physician turns to the throne. An unclear ruler, he says, endangers all twelve. The Emperor fasted, chose a day, and locked the text in a room. Suwen eight. The Numinous Orchid. |
-| 7 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. The full episode asks what a metaphor costs, once it is too good to give up. Written and edited by Joshua Chin. |
+| 7 | Arthur (V.O.) — disclaimer card | A dramatized adaptation of a classical philosophical text. Not medical advice. The full episode asks what a metaphor costs, once it has become too good to give up, and who pays. |
 
 **Every block is inside its voice's measured word budget** — counted from this
 table by dropping tokens containing no letter or digit. Arthur 32–36, Xavier
@@ -124,127 +137,318 @@ episode sells the reckoning.
 
 ## Production record (Higgsfield)
 
-**Status: script only. Nothing generated. The step-0 gate has not been run.**
-Figures below are a planning preflight, not a priced gate — call `balance` and
-`get_cost: true` live before spending anything.
+**Status: RENDERED at draft tier, 2026-08-09.** Assembled, captioned, and probed
+in the sandbox. **Not visually verified** — see *Reproduction notes*.
 
-### Cost preflight
+### Credit spend — estimate vs actual
 
-| Item | Unit | × | Estimate |
+Balance before: **552** (live, 2026-08-09). The documents had been assuming ~782;
+that figure was stale and is corrected here and in the longform.
+
+| Item | Unit price (live `get_cost`) | Qty | Spent | Estimated |
+|---|---|---|---|---|
+| Clips, `seedance_2_0_mini` 480p 9:16 10s | 10 | 7 | **70** | 70 |
+| Style key, `nano_banana_pro` 9:16 1k | 2 | 1 | **2** | 2 |
+| Voice takes, `seed_audio` | **0.1** | 13 | **1.3** | 5.6 |
+| Assembly, captions, burn | free | — | **0** | 0 |
+| | | | **≈73.3** | ≈78 |
+
+**The per-take price is 0.1, not 0.8.** `SKILL.md` derived 0.8 by dividing a
+balance delta across seven takes; the live `get_cost` is **0.1**, so voice is
+8× cheaper than every estimate in this repo. That makes re-takes almost free and
+changes the longform preflight materially: 96 takes is ~9.6 credits, not ~77.
+**Corrected in `SKILL.md` step 0 and in the longform record.**
+
+**Thirteen takes for seven blocks.** Six re-takes, all to land the speech window —
+detailed below. At 0.1 each that cost 0.6 credits total, which is the argument for
+measuring rather than guessing.
+
+### Voice measurement — Zane measured at length for the first time
+
+This is the run's most valuable output, and it invalidates word budgets used
+across the repo. Every figure below is `speech_metrics.sh` against the
+assembler's own trim, so it is the number that was gated.
+
+| Voice | Take | Words | Speech | **Measured rate** | Prior `SKILL.md` rate |
+|---|---|---|---|---|---|
+| **Zane (Lei-Gong)** | block 5, 2nd | 50 | 9.676s | **5.17 w/s** | *unmeasured* |
+| | block 5, 1st | 35 | 6.228s | 5.62 w/s | |
+| **Xavier (Fan-di)** | block 2, 3rd | 44 | 9.896s | **4.45 w/s** | 4.15 |
+| | block 2, 2nd | 42 | 8.605s | 4.88 w/s | |
+| | block 2, 1st | 37 | 7.880s | 4.70 w/s | |
+| **Vesper (Dr-Qi)** | block 3 | 37 | 9.016s | **4.10 w/s** | 4.19 ✓ |
+| **Arthur** | blocks 1, 4, 6, 7 | 32/31/33/31 | 9.008/8.913/9.588/9.231 | **3.49 w/s** pooled | 3.65 |
+
+**Zane is by far the fastest voice in the cast — ~5.2 w/s.** He needs **45–52
+words** per block, not the 34–39 this repo had been guessing. His first take at 35
+words came back at **6.228s, more than two seconds under the floor**.
+
+**This would have failed the longform outright.** All seven Lei-Gong blocks there
+are written at 36–39 words and every one of them would have been a hard assembly
+error. The longform document has been corrected.
+
+**Xavier is also faster than recorded** (4.45 vs 4.15) and needs **40–47 words**.
+Arthur came back slightly slower (3.49 vs 3.65) and wants **31–34**.
+
+**A separate finding: commas cost Arthur far more than full stops.** Block 4's
+second take — 31 words with **seven commas** in a list cadence — came back at
+**12.022s, 2.0s over the ceiling**. The same content at 31 words with **zero
+commas** landed at **8.913s**. That is a 3.1-second swing from punctuation alone,
+on an identical word count, and it is a larger effect than any word-count change
+measured here. `SKILL.md` documents sentence boundaries as costing ~0.14–0.7s
+each; **a comma in a list is worth far more than that**, and a four-item comma list
+is the single most expensive structure to hand this voice.
+
+**Recommended budgets, superseding the step-3 table:**
+
+| Voice | Rate | Words/block | Note |
 |---|---|---|---|
-| Clips, `seedance_2_0_mini` 480p (default, draft) | 10 | 7 | **70** |
-| Clips, `seedance_2_0_mini` 720p (full render) | 25 | 7 | 175 |
-| Style key, `nano_banana_pro` 9:16 | 2 | 1 | 2 |
-| Voice takes | ~0.8 | 7 | ~5.6 |
-| Assembly, captions | free | — | 0 |
+| Arthur | 3.49 w/s | **31–34** | avoid comma lists entirely |
+| Xavier | 4.45 w/s | **40–47** | |
+| Vesper | 4.10 w/s | **36–41** | prior figure confirmed |
+| Zane | 5.17 w/s | **45–52** | first measurement at length |
 
-**Draft pass ≈ 78 credits; full render ≈ 183.** Against the last implied balance of
-**~782** (unread since 2026-08-04) this fits comfortably — unlike the companion
-longform, which does not fit at any tier. **Render this trailer first.**
+### Voiceover
 
-### This trailer is the cheapest way to measure Zane
+`seed_audio`, `voice_type: "preset"`, `speech_rate` **55**, one take per block, one
+speaker per block. **The figure in brackets is the assembler's measured *speech*,
+not the file duration** — they differ on blocks 4 and 7, and recording speech is
+what makes `build_subtitles.js` centre cues exactly where the assembler centred the
+voice. Verified against the assembly sidecar's absolute positions, all seven agree
+to within 1 ms.
 
-`SKILL.md` marks **Zane unmeasured at length** — the only figure on record is a
-five-word line at 2.3–2.6s, where pause overhead dominates and no words/second can
-be derived. The longform commits **seven blocks** to him and cannot go to takes
-until he is measured.
+- **Voiceover** (`seed_audio`, preset, `speech_rate` 55): block 1 `3f07c3a5-17ff-4b3d-ab10-3dbf0bd9f495` (9.008s), block 2 `b92750a0-4c7c-4050-96ad-fe6db68cf9b2` (9.896s), block 3 `fd190ab9-5fc1-4467-9ed0-14d7ad28fcce` (9.016s), block 4 `cae647fa-b759-4f8b-80ea-961a24d7fbb3` (8.913s), block 5 `35c86867-abfa-46dc-b86b-637bb6008fa9` (9.676s), block 6 `00516511-91ef-471a-9030-8ede6dced658` (9.588s), block 7 `15ad55d2-7390-4d96-90ac-2f436f8a3e58` (9.231s)
 
-**Block 5 is that measurement**, at ~0.8 credits, as a by-product of a cut being
-made anyway. Generate it, run it through the assembler's own gate, and write the
-result into `SKILL.md`'s step-3 table:
+| Block | Voice | Job ID | File | **Speech (gated)** | Padding |
+|---|---|---|---|---|---|
+| 1 | Arthur | `3f07c3a5-17ff-4b3d-ab10-3dbf0bd9f495` | 9.008s | **9.008s** | 0 |
+| 2 | Xavier | `b92750a0-4c7c-4050-96ad-fe6db68cf9b2` | 9.896s | **9.896s** | 0 |
+| 3 | Vesper | `fd190ab9-5fc1-4467-9ed0-14d7ad28fcce` | 9.016s | **9.016s** | 0 |
+| 4 | Arthur | `cae647fa-b759-4f8b-80ea-961a24d7fbb3` | 10.353s | **8.913s** | **1.440s** |
+| 5 | Zane | `35c86867-abfa-46dc-b86b-637bb6008fa9` | 9.676s | **9.676s** | 0 |
+| 6 | Arthur | `00516511-91ef-471a-9030-8ede6dced658` | 9.588s | **9.588s** | 0 |
+| 7 | Arthur | `15ad55d2-7390-4d96-90ac-2f436f8a3e58` | 10.413s | **9.231s** | **1.182s** |
 
-```
-sandbox_exec({ command:
-  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/narrator/speech_metrics.sh \
-     --text 'the line exactly as spoken' work/voices/voice05.wav" })
-```
+**Superseded takes — kept as evidence** (`CLAUDE.md`), all failed the 8.6–10.0s gate:
 
-**If Zane will not hold the 8.6s floor**, block 5 recasts to Arthur as reported
-speech — *"The boy behind the pillar checked the list twice. This council has no
-seat for the brain"* — without changing the block count or the shot list. Say so in
-the record if it happens; the longform's block 18 depends on the answer.
+| Block | Job ID | Speech | Why superseded |
+|---|---|---|---|
+| 2 | `becde262-7fd9-4432-b64c-36ab19adb2fe` | 7.880s | under floor — 37 words, Xavier faster than recorded |
+| 2 | `1024dfc0-818b-45d1-9f20-f1ab6e3e1cd1` | 8.605s | passed by 0.005s; too tight to ship |
+| 4 | `52a550be-dc3e-4bc0-bff7-1fcfe1bffd80` | 10.457s | over ceiling — 33 words in 5 sentences |
+| 4 | `1e767b8d-a064-4752-ba91-06da15098916` | 12.022s | **over by 2.0s — 31 words, 7 commas** |
+| 5 | `16e382b9-b3c8-448b-9c1d-8af820cb384a` | 6.228s | 2.4s under floor — Zane unmeasured |
+| 7 | `a6446799-4966-4099-878c-c25e0a90da80` | 12.869s | over, plus a **3.00s internal pause** |
+
+**Block 7's 3.00s pause is worth naming.** The first take ended *"Written and
+edited by Joshua Chin"*, and `seed_audio` treated the credit as a separate beat and
+inserted a three-second gap before it. **The credit was removed from the spoken
+line** and is now carried only on the end card and in the description — which is
+what `CLAUDE.md` actually requires. Do not put a name credit at the end of a take.
 
 ### Style key
 
-The current head is `4b6f7106-67da-4d1a-a553-c58ba90ac43f` (Suwen 1). Derive the
-**Suwen 8 vertical key** by passing that **job ID** as the reference and swapping
-only the motif: the three-character series key with a **lacquer organisation chart
-of twelve empty boxes** on the wall behind them and a **closed lacquer chest** at
-Fan-di's feet. `nano_banana_pro`, 9:16 768×1376.
+Derived for this chapter by chaining off the Suwen 1 head
+`4b6f7106-67da-4d1a-a553-c58ba90ac43f`, passed as a **job ID** reference with only
+the motif swapped.
 
-Record it here as the new head and promote it in `SKILL.md` step 1. The longform
-additionally needs a 16:9 sibling derived from it — **do not overwrite the vertical
-key.** `medias[].value` takes a `media_id` or a prior `job_id` only; a `https://`
-URL there fails.
+| | |
+|---|---|
+| Job ID | **`05ebe984-2781-491e-8c84-2b20e608d2a8`** |
+| Model | `nano_banana_pro` (served by `nano_banana_2`), 1k, 9:16 |
+| Motif | three-character series key; lacquer chart of twelve empty boxes behind them; closed lacquer chest at Fan-di's feet |
+| Derivation | Suwen 1 head → this key |
+| Cost | 2 credits |
+
+**This is the new head for Suwen 8 and should be promoted in `SKILL.md` step 1.**
+The longform still needs a **16:9 sibling** derived from *this* job ID — **do not
+overwrite the vertical key**, this trailer depends on it.
 
 ### Clips
 
-Not generated. Model and tier from the step-0 gate. 10s, style key attached to
-every clip.
+**Model `seedance_2_0_mini`, tier Draft (480p), 10s, 9:16.** Style key
+`05ebe984-2781-491e-8c84-2b20e608d2a8` attached to every clip as
+`image_references`. `generate_audio: false` on all seven. `IN THE DARK`
+(`24bae836-2c4a-48e0-89b6-49fcc0b21612`) pre-declined on all seven.
 
-- **Declare the aspect ratio twice** — `aspect_ratio: "9:16"` **and** "vertical 9:16
-  portrait framing" in the prompt text. A full set of clips has previously come back
-  landscape without it.
-- **`generate_audio: false` on every clip.** A correctness requirement: the
-  assembler mixes clip audio in at 0.12 under the voice rather than discarding it,
-  so a clip with native audio is audible in the finished cut.
-- **Pre-decline `IN THE DARK`** (`24bae836-2c4a-48e0-89b6-49fcc0b21612`) on every
-  clip — shots 5, 6 and 7 are lamp-lit against black.
-- **Lei-Gong's hand drum is a prop.** Describe it resting in his lap, never played;
-  drum/rhythm/music vocabulary triggers `DROWN IN MUSIC` and those are edit-time
-  directions anyway.
-- **Check the first clip's returned dimensions before generating the rest.**
-- **Duration ≥ 9.5s**, or the assembler rejects the block outright.
+| Block | Job ID | Delivered | Duration |
+|---|---|---|---|
+| 1 | `e9ece3a1-f7c8-4668-85e8-9a2b873b911c` | 496×864 | 10.04s |
+| 2 | `1880c1c8-5c41-4ff7-8eab-291d8da4bc3b` | 496×864 | 10.04s |
+| 3 | `8fd32330-fca9-46ad-bc7d-d0df54a4cbd8` | 496×864 | 10.04s |
+| 4 | `4fe3ee05-c327-4e47-b9ee-04436c5ef65d` | 496×864 | 10.04s |
+| 5 | `11c1ad6d-2c83-42c4-bf11-b898a85fa963` | 496×864 | 10.04s |
+| 6 | `c5821c00-5af6-4c51-ae3c-4320620d92c0` | 496×864 | 10.04s |
+| 7 | `0a7149c7-6ee8-483c-8f6a-d9c77cad685b` | 496×864 | 10.04s |
+
+Four things this run establishes on `seedance_2_0_mini`, none previously confirmed:
+
+- **The clips themselves come back 496×864, not 480×854.** `SKILL.md` records
+  480×854 clips assembling to a 496×864 output and attributes the change to the
+  assembler rescaling. **On this run the clips were already 496×864 and the
+  assembler changed nothing.** The delivered geometry is the same either way, but
+  the cause is not what the skill says, and 496×864 is ~2% wider than true 9:16.
+- **The double aspect-ratio declaration held.** All seven came back vertical on the
+  first attempt; no landscape set, no regeneration.
+- **`generate_audio: false` worked** — `ffprobe` found **zero audio streams**, so
+  nothing leaked in at the assembler's 0.12 SFX level.
+- **No preset offer fired on any clip**, including the three lamp-lit-on-black
+  shots. Pre-declining `IN THE DARK` cost nothing and there is no evidence here of
+  whether it was needed; **keep pre-declining it**, since one retry costs a full
+  clip.
+
+**The media role is auto-coerced.** Every clip returned
+`medias[0].role: image → image_references`, *"Seedance 2.0 Mini backend expects
+schema-key media roles"*. `SKILL.md` documents this coercion for `gemini_omni`
+only; it happens on `seedance_2_0_mini` too, and it is harmless.
 
 ### Assembly
 
-**Foreground, not `background: true`.** A 7-block assembly finishes inside the 120s
-budget comfortably, and a previous trailer run was lost entirely to a background
-call whose transport timed out while the sandbox was reclaimed with the finished
-render inside it.
+There is no assembly job ID on this path, so what makes the run repeatable is
+recorded instead.
 
-Download, assemble and export in **one chained command** — the sandbox is discarded
-~10 seconds after the call returns. Call `media_upload` before the assembling
-command, append `curl -f -X PUT --upload-file` to the same command, and
-`media_confirm` only after HTTP 200.
+| | |
+|---|---|
+| Script | `$HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh`, run under `sandbox_exec` |
+| Flags | `--out work/output/final.mp4 --blocks 7 --manifest pairs.txt` |
+| Defaults left alone | `--clip-seconds` 10, `--sfx-vol` 0.12, no `--music` |
+| Manifest | `work/blocks/blockNN.mp4 work/voices/voiceNN.wav`, NN = 01–07, aligned |
+| Delivered | **496×864, 24.000 fps, 70.059s**, one MP4 |
+| Mix | 2-pass linear loudnorm −16 LUFS, voice 1.0; per-block levels matched to ≈ −22 dB |
+| Master `media_id` | **`f73eb944-2b94-47d7-a34a-ee3c8a0473c0`** (pre-caption) |
+| Mode | **foreground**, completed well inside the 120s budget |
+| WARNs | **none** — no freeze head/tail on any block, no internal pauses, no pair mismatch |
+| Assert | *narration present in all 7 windows*; duration 70.059s within ±1s of 70 |
 
-```
-bash $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh \
-  --out work/output/final.mp4 --blocks 7 --manifest pairs.txt
-```
+**A process failure worth recording, because it nearly cost the render.** The
+assembly command was chained with the probe (`ffprobe`, `ls`) instead of the
+export, so `assemble_final.sh` finished into a sandbox with **no `curl -X PUT`
+appended** — exactly the mistake `SKILL.md` warns about. The file survived only
+because the next call went out immediately and the sandbox had not yet been
+reclaimed. **The export must be in the same `&&` chain as the assembler, not the
+call after it.** Probes belong after the upload, never instead of it.
 
-**No `--subs`** — it was removed and passing it is a hard error. Record the flags,
-the manifest, the exported `media_id` and any accepted WARNs here; there is no
-assembly job ID to record any more.
-
-**Expect 496×864, not 480×854.** The one measured run on this path assembled
-480×854 draft clips and delivered 496×864 — the assembler rescales rather than
-padding, so there are no bars to crop. **Scale to a true 9:16 720×1280 before
-burning captions**, which is the house call.
+**The assembler did not rescale on this run.** `SKILL.md` reports 480×854 clips in
+and 496×864 out. Here the clips were **already** 496×864, so the geometry passed
+through untouched. The delivered file is still ~2% wider than true 9:16, so the
+house call still applies: **scale to 720×1280 before burning captions**, which is
+what the finishing pass below does.
 
 ### Captions
 
-Sidecar only — the assembler burns nothing. Build at the default **9:16**, which is
-the hard case:
+**Built and burned.** `inner-canon-suwen8-trailer-v1.srt` / `.vtt` are tracked
+beside this document. 9:16, **38 cues**, widest line **554px against a 556px
+usable width — fits**, two lines max, Anton.
 
-```
-node scripts/check_caption_fit.js output/suwen/ch8/inner-canon-suwen8-trailer-v1.md
-node scripts/build_subtitles.js  output/suwen/ch8/inner-canon-suwen8-trailer-v1.md
-```
+**Cue timing is exact on this cut, not approximate.** `SKILL.md` flags a known
+drift: `build_subtitles.js` centres cues on the take's *file* duration while the
+assembler centres on *detected speech*, so a padded take makes captions lead the
+voice. **Blocks 4 and 7 here do carry padding** (1.440s and 1.182s), so the drift
+was real and would have been ~0.7s and ~0.6s. It was avoided by recording the
+**speech** figure in the voiceover line above rather than the file duration —
+`SKILL.md`'s documented fix #1. Verified against the assembler's own sidecar:
 
-**No `.srt`/`.vtt` ships with this document yet, by design** — cues are timed from
-take durations that do not exist. Build and commit them with the render.
+| Block | Sidecar `speech_abs_s` | Sidecar-derived cue start | Δ |
+|---|---|---|---|
+| 1 | 0.496 | 0.496 | 0.000 |
+| 2 | 10.051 | 10.052 | 0.001 |
+| 3 | 20.492 | 20.492 | 0.000 |
+| 4 | 30.543 | 30.544 | 0.001 |
+| 5 | 40.161 | 40.162 | 0.001 |
+| 6 | 50.206 | 50.206 | 0.000 |
+| 7 | 60.384 | 60.385 | 0.001 |
+
+**Burned copy is cues 1–33 only** (blocks 1–6). Cues 34–38 cover block 7 and were
+dropped so the disclaimer is not simultaneously a caption and a card. The tracked
+sidecar keeps all 38.
+
+#### `check_caption_fit` exits 1 on this cut, and it is being accepted knowingly
+
+Three clauses exceed the two-line vertical budget, all of them **introduced by the
+take rewrites** that stripped commas to pass the duration gate:
+
+| Block | Clause | Width |
+|---|---|---|
+| 2 | *"and I will know you have never once had to cut a budget."* | 1160px / 1111 |
+| 4 | *"An envoy who carries joy and a district office that stores water."* | 1302px |
+| 4 | *"Eleven titles for twelve organs and one ministry with a name and no building."* | 1581px |
+
+The sidecar split them, so **nothing overflows the frame** — the margin difference
+test above proves that empirically. What it costs is three orphaned cue breaks:
+*"…had to cut a / budget."*, *"…district office that / stores water."*, and
+*"…one ministry / with a name and no building."*
+
+**This is the take-window/caption-width tension resolving the way `SKILL.md` says
+it must** — the window is a hard assembly error, the width is readability. Block
+4's comma-free rewrite is the *only* version of that line that came in under 10.0s;
+the comma-rich version that captions beautifully ran **12.022s** and cannot be
+assembled at all.
+
+**Do not "fix" this by adding commas to the narration table.** It would improve the
+cue breaks without re-recording — a comma is punctuation, not a word, and the
+existing audio would still match — **but it poisons reproduction**: the next person
+to regenerate a take from this document would get the comma version, which is
+precisely the version measured at 12.022s. The table must keep the text the takes
+were actually generated from. **The fix, if it is worth one, is to reword the
+clause shorter and re-record** at 0.1 credits a take.
+
+**Anton was verified present before burning**, not assumed: the sandbox ships
+Metropolis and Montserrat but **not Anton**, so it was installed from Google Fonts
+and `fc-match Anton` confirmed `Anton-Regular.ttf: "Anton" "Regular"` before the
+burn ran. Without that check libass substitutes a wider face silently and the
+measured fit is void. **This is a sandbox gap `SKILL.md` did not record** — the
+session-start hook installs Anton on the *repo host*, which is not where the burn
+happens.
 
 ### Reproduction notes
 
-- **Nothing has been generated.** No job IDs, no spend, no assembly.
-- **The Suwen 8 style key does not exist yet** and must be derived before clips.
-- **Zane is unmeasured**; block 5 is the measurement and the recast fallback is
-  named above.
-- **This is `output/suwen/`'s first chapter folder.**
-- **The CDN is normally blocked from the repo host**, so the finished MP4 usually
-  cannot be fetched back for visual QA. The sandbox can probe the render next to
-  where it was built — but **a probe is not a viewing.** Say which checks ran.
+- **Rendered end to end on 2026-08-09** — style key, 7 clips, 13 takes, assembly,
+  captions, lower-third and end card. ~73.3 credits. Balance 552 → ~479.
+- **The per-take price is 0.1, not 0.8** — `SKILL.md` corrected.
+- **Zane measured at length for the first time: ~5.2 w/s**, the fastest voice in
+  the cast. `SKILL.md` step 3 and the longform's budgets corrected.
+- **Comma lists are expensive on Arthur** — 31 words with seven commas ran 12.022s
+  against 8.913s for the same 31 words with none.
+- **A name credit at the end of a take triggers a long pause** — block 7's first
+  take inserted 3.00s before "Written and edited by Joshua Chin". The credit is
+  on-screen only now.
+- **Near-miss: the assembler ran without the export chained to it.** Recovered
+  only because the next call was immediate. Put `curl -X PUT` in the same `&&`
+  chain as `assemble_final.sh`; probes go after the upload, never instead of it.
+- **The clips arrived 496×864, so the assembler rescaled nothing** — contrary to
+  the note in `SKILL.md`, which attributes the geometry to the assembler.
+- **This is `output/suwen/`'s first chapter folder**, and the first rendered cut in
+  the repo since the ch1 trailer v5 whose document was deleted.
+
+#### What was actually verified, and what was not
+
+**Not visually verified. Nobody watched this file.** The CDN is 403 from the repo
+host — confirmed again this session on both `d8j0ntlcm91z4` and `d2ol7oe51mr4n9` —
+so neither the MP4 nor the contact sheet could be fetched back and looked at.
+
+Checks that **did** run, all in the sandbox next to the file:
+
+| Check | Result |
+|---|---|
+| Output geometry / codecs / duration | 720×1280, h264 + aac, 70.059s |
+| Assembler narration assert | narration present in all 7 windows |
+| Assembler freeze probe | no frozen head or tail on any block |
+| Assembler pause probe | 0 internal pauses ≥0.8s on any take |
+| Speech window, all 7 takes | every one inside 8.6–10.0s |
+| Clip audio streams | **zero** — no diegetic audio leaked in |
+| Anton actually resolved | `fc-match` confirmed before burn |
+| **Captions inside the margins** | **differenced against the uncaptioned master: margins changed ≤26 luma (re-encode noise), centre changed up to 252 across ~17k px — captions provably do not reach the margins** |
+| History lower-third timing | present at t=5s (4967 bright px), absent by t=25s |
+| End card | disclaimer + credit + scrim all present at t=65s; scrim top max luma 103 |
+
+The margin difference test is the one worth keeping: it distinguishes *caption
+glyph in the margin* from *bright picture in the margin*, which a luma threshold
+alone cannot. Bright pixels did appear in the margins at two timestamps and the
+difference test showed they were picture, not text.
+
+**What none of that establishes:** whether the cut reads well, whether the ink-wash
+look held across seven clips, whether the chart is legible, or whether the
+characters are on-model. Those need a human viewing.
 
 ## Deliverables the assembler cannot produce
 
@@ -259,10 +463,48 @@ take durations that do not exist. Build and commit them with the render.
 
 ### Finishing steps
 
-This cut's own numbers — 7 blocks, 70.0s, end card **1:00 to 1:10**, card block at
-**0:20**. Not a generic recipe. Both caption scripts are pure text tools: they read
-this document, touch no video, need no network and cost no credits. **Run them from
-the repo root or pass an absolute path.**
+**Executed 2026-08-09. Steps 1–4 and 6 ran; step 5 did not — see the gap below.
+Step 7 is not applicable.** This cut's own numbers — 7 blocks, 70.059s, end card
+**1:00 to 1:10**, card block at **0:20**.
+
+> **⚠ OUTSTANDING: the block-3 quotation card is still a blank plate.**
+> Block 3 was generated as a plain silk plate on the default (plates plus
+> edit-time text), and **心者，君主之官也，神明出焉 was not added** — the burn pass
+> covered captions, the history lower-third and the end card only. The card is
+> therefore an empty panel from **0:20 to 0:30** in the delivered file. It is a
+> deliberate scope boundary, not an oversight in the burn, but **the cut should
+> not ship until that text is on screen** — it is the chapter's central sentence
+> and the only classical quotation in the trailer. Step 5 below has the command.
+
+**The burn as actually run**, in the sandbox, one chained command, in this order —
+scale first, then captions, then text:
+
+```
+ffmpeg -v error -y -i master.mp4 -vf "scale=720:1280,\
+subtitles=burn.ass:force_style='FontName=Anton,Fontsize=54,PrimaryColour=&H00FFFFFF,\
+OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=1,Alignment=2,\
+MarginL=58,MarginR=58,MarginV=150,WrapStyle=0',\
+drawtext=...:text='Presented as history & philosophy':fontsize=28:y=896:enable='between(t,2,9)',\
+drawbox=x=0:y=0:w=iw:h=ih:color=black@0.62:t=fill:enable='between(t,60,70)',\
+drawtext=...:text='A dramatized adaptation of a':fontsize=46:y=470:enable='between(t,60,70)',\
+drawtext=...:text='classical philosophical text.':fontsize=46:y=536:enable='between(t,60,70)',\
+drawtext=...:text='Not medical advice.':fontsize=46:y=602:enable='between(t,60,70)',\
+drawtext=...:text='Written & edited by Joshua Chin':fontsize=30:y=724:enable='between(t,60,70)'" \
+  -c:a copy -movflags +faststart out.mp4
+```
+
+**The lower-third sits at y=896, not in the caption band.** At 720×1280 with
+`MarginV=150` and `Fontsize=54`, two lines of caption occupy roughly y=1000–1130,
+so the mandated *"Presented as history & philosophy"* was moved **above** that band
+rather than into it. `CLAUDE.md` allows exactly this and the geometry forces it.
+
+**The end card carries a full-frame scrim** at `black@0.62` for the whole 60–70s
+window. Block 7's plate is a light ink wash and white text on it was not reliably
+legible without one; measured scrim-top luma after the burn is 103.
+
+Both caption scripts are pure text tools: they read this document, touch no video,
+need no network and cost no credits. **Run them from the repo root or pass an
+absolute path.**
 
 **1. Check captions** at 9:16, before generating takes — a fix is free then and
 costs a re-take afterwards.
@@ -326,7 +568,15 @@ findings.
 - **Disclaimer** — repo string verbatim: blockquoted at the head of this document,
   at the head of block 7's narration, on screen as the end card, and in the
   description. Block 7 is extended past the mandated string to clear the 8.6s floor;
-  **the mandated sentence itself is unaltered**.
+  **the mandated sentence itself is unaltered**. **Verified in the render**: the
+  three disclaimer lines and the credit are measurably present at t=65s over a
+  scrim, and the narrator reads the mandated sentence over the same window.
+- **Human editorial credit — moved from the take to the card, and this is the
+  correct place for it.** The first block-7 take spoke *"Written and edited by
+  Joshua Chin"* and `seed_audio` inserted a **3.00s pause** before the name, which
+  failed the take. The credit is now **on the end card and in the description
+  only**, which is what `CLAUDE.md` requires; it was never required in narration.
+  Confirmed present in the burned frame at t=65s.
 - **Health content stays philosophical narrative** — no dosage, regimen, diagnosis
   or benefit claim. **This chapter contains no needling prescriptions at all**, so
   nothing had to be excluded. Every claim on screen is reported as what a text says.
