@@ -178,7 +178,7 @@ Measure any new voice on one take, and write the result into the skill's table, 
 
 - **Production-episode script format**: markdown with **SOUND / VISUAL / CHARACTER** blocks, dialogue as blockquotes, approximate timecodes per act, ON-SCREEN TEXT blocks for classical quotations (rendered as translation, optionally with the ancient script).
 - **Trailer format**: a narration table (block / beat / narration line) broken into fixed 10-second blocks, followed by a numbered shot list keyed to the same blocks, then the production record. See `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md`.
-- Target runtime ~17–19 min per production episode; production notes include levers to cut to 15 or stretch to 20.
+- Target runtime ~11:30–20 min per production episode; production notes include levers to cut to 11:30 or stretch to 20.
 - Target runtime 30-90 sec per trailer. The pipeline assembles fixed 10s windows, so write to whole blocks — six blocks is 60s, eight is 80s.
 - **Every deliverable ships captioned**, in the **anton** font, with every subtitle wrapping on screen and readable across the whole video. The `.srt`/`.vtt` sidecars are **tracked, required deliverables** — build them with `node scripts/build_subtitles.js <cut-document>.md` and commit them with the cut. Captions are burned **after** assembly, as their own step; the assembler produces none. Why the sidecar guarantees the wrap, and the cue-timing drift currently open against it: see the skill's **Subtitles** section.
 
