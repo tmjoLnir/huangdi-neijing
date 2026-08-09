@@ -98,11 +98,23 @@ available to check an estimate against. **Its cut document is gone from `output/
 so the figure lives here now**; the next rendered cut should log its own spend and
 give the repo a second data point.
 
-**That delta is also where the per-take price comes from.** Seven Draft-tier clips
-account for 70 of the 75.6, the style key was reused at 0, and no subtitles were
-burned — so the seven voice takes are the remaining **5.6, or ~0.8 credits each**.
-Budget voice at 0.8. A `get_cost` preflight returning 1 credit for a take is
-rounding up to a whole-credit floor rather than reporting the billed rate.
+> **⚠ The per-take price is 0.1, not 0.8. Corrected 2026-08-09.**
+> The 0.8 figure below was *derived* by dividing a balance delta across seven
+> takes, and it was wrong by 8×. A live `get_cost` on `seed_audio` returns
+> **`{"credits": 0.1, "credits_exact": 0.1}`**. **Budget voice at 0.1.**
+>
+> This changes the shape of a preflight rather than its total. Voice was never the
+> bill — but at 0.1 a re-take is essentially free, so **there is no reason to ship a
+> take that sits near either edge of the window**, and no reason to guess a word
+> count instead of measuring one. The Suwen 8 trailer spent **13 takes on 7 blocks
+> for 1.3 credits** and that was the cheapest part of the run by an order of
+> magnitude. It also cuts a longform's voice line from ~91 credits to ~10.
+
+**The old derivation, kept because the arithmetic is still the only check on the
+clip price.** Seven Draft-tier clips account for 70 of the 75.6, the style key was
+reused at 0, and no subtitles were burned — leaving 5.6 across seven takes. Since
+takes actually cost 0.7 of that, **~4.9 credits of that delta are unexplained** and
+the clip price is the only figure in it worth trusting.
 
 **The second run, v5, spent ~80 from a starting balance of 862.6** — 70 for the
 same seven Draft clips, 0 for a reused style key, and ~10 across roughly thirteen
@@ -437,10 +449,25 @@ re-picked per chapter:
 
 | Role | Voice | `voice_id` | Measured rate | Draft to | Observed in-window |
 |---|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.65 words/sec** | **32–36 words** | 31–39 words @ 8.66–9.97s (5 takes) |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.15 words/sec** | **36–41 words** | 40 words @ 9.64s (1 take) |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.19 words/sec** | **37–41 words** | 38 words @ 9.06s (1 take) |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | *short-line only* | — | *re-measure at length* |
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.50 words/sec** | **31–34 words** | 31–33 words @ 8.91–9.59s (Suwen 8 v1, 4 takes) |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.53 words/sec** | **40–44 words** | 44 words @ 9.90s; 42 @ 8.61s; 37 @ 7.88s (under) |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.15 words/sec** | **37–41 words** | 37 words @ 9.02s; 38 @ 9.06s (2 takes, 2 runs) |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.34 words/sec** | **47–52 words** | 50 words @ 9.68s; 35 @ 6.23s (2.4s under) |
+
+> **⚠ Updated 2026-08-09 from the Suwen 8 trailer v1 run** — the second cut taken
+> end to end on `assemble_final.sh`, and the first with all four voices speaking.
+> Rates are pooled across both runs. Three of the four moved, and two moved enough
+> to fail a script written to the old table:
+>
+> - **Zane is measured at last, and he is the fastest voice in the cast — 5.34
+>   w/s.** He needs **47–52 words**, not the 34–39 this repo had been guessing from
+>   nothing. A 35-word line came back at **6.23s, 2.4s under the floor.** Any
+>   existing document writing Lei-Gong at ~35 words is a guaranteed hard failure and
+>   must be re-sized before it goes to takes.
+> - **Xavier is faster than recorded** (4.53 vs 4.15) and now wants **40–44 words**;
+>   37 words came back under the floor.
+> - **Arthur is slower** (3.50 vs 3.65) and wants **31–34**.
+> - **Vesper is confirmed** at ~4.15 across two runs and two cuts. Unchanged.
 
 **Rates re-measured 2026-08-04 from the Suwen 1 trailer v5 run** (whose document
 has since been deleted from `output/` — this table is the surviving copy) — the
@@ -691,6 +718,32 @@ three tables above was measured against the old window, where the job was to sta
 whole measured range, 5.87s to 8.14s, **now sits below the floor**. The old
 "aim for two to three sentences per block" advice targeted 6.5–7.1s and is
 therefore a recipe for a failing take. It has been removed.
+
+### The comma in a list is the most expensive punctuation there is
+
+**Measured 2026-08-09, Suwen 8 trailer block 4, Arthur, identical word count:**
+
+| Take | Words | Commas | Sentences | Delivered |
+|---|---|---|---|---|
+| 2nd | 31 | **7** (a four-item list) | 2 | **12.022s** |
+| 3rd | 31 | **0** | 3 | **8.913s** |
+
+**A 3.1-second swing from punctuation alone, at a fixed word count** — larger than
+any word-count effect measured anywhere in this file, and more than twice the width
+of the whole window. The first take was a comma list (*"A granary, a general, an
+envoy who carries joy, a district office that stores water"*); the second said the
+same thing with *and* (*"A granary and a general. An envoy who carries joy and a
+district office that stores water"*).
+
+`seed_audio` reads a comma list as an enumeration and puts a beat between every
+item. So the earlier finding that each *sentence* boundary costs ~0.14–0.7s
+understates the risk badly: **a comma inside a list costs far more than a full
+stop does**, and four of them will push a correctly-sized line two seconds past the
+ceiling.
+
+**Practical rule: never hand a voice a comma-separated list of three or more
+items.** Join them with *and*, or break them into separate sentences. If a line
+must enumerate, size it ~20% short and expect to re-roll.
 
 **Reach the window with words, not with sentence boundaries.** That distinction is
 now load-bearing, because the assembler polices the other end:
@@ -1124,6 +1177,22 @@ Two mechanisms make the fit real, and the second is the one that guarantees it:
      font silently when it is missing, which breaks the measured fit while
      `build_subtitles.js` still reports the line as fitting. On the repo host,
      `.claude/hooks/session-start.sh` installs ffmpeg and Anton at session start.
+
+     > **⚠ The sandbox does NOT have Anton, and that is where the burn happens.**
+     > Established 2026-08-09. The session-start hook installs Anton on the **repo
+     > host**, but the CDN is 403 from there, so the assembled MP4 can only be
+     > burned in the **sandbox** — which ships Metropolis and Montserrat and no
+     > Anton. Burning there without installing it first silently substitutes a
+     > wider face and voids every measurement `build_subtitles.js` made.
+     > Install it in the same chained command as the burn, and check:
+     >
+     > ```
+     > mkdir -p ~/.fonts
+     > curl -sSfL -o ~/.fonts/Anton-Regular.ttf \
+     >   https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf
+     > fc-cache -f >/dev/null 2>&1
+     > fc-match Anton    # must print: Anton-Regular.ttf: "Anton" "Regular"
+     > ```
 
    Both failures are invisible to step 1, because step 1 measures the sidecar and
    these corrupt the *render*. A widest-line figure of "fits" says nothing about
