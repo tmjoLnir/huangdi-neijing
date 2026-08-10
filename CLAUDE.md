@@ -40,15 +40,25 @@ README.md
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
   skills/drive-context-memory/SKILL.md      # cross-session memory, held in Google Drive
 output/
+  suwen/                                            # 素問 Basic Questions — chapters 1-81
+    ch8/inner-canon-suwen8-trailer-v1.md            # RENDERED 2026-08-09, draft tier
+    ch8/inner-canon-suwen8-trailer-v1.srt/.vtt      # sidecars, tracked
+    ch8/inner-canon-suwen8-longform-v1.md           # pre-render
+    ch13/inner-canon-suwen13-trailer-v1.md          # pre-render
+    ch13/inner-canon-suwen13-longform-v1.md         # pre-render
   lingshu/                                          # 靈樞 Spiritual Pivot — chapters 1-81
-    ch28/inner-canon-lingshu28-trailer-v1.md        # current reference layout; pre-render
+    ch28/inner-canon-lingshu28-trailer-v1.md        # reference layout; pre-render
+    ch28/inner-canon-lingshu28-trailer-v2.md        # RENDERED 2026-08-08, draft tier
+    ch28/inner-canon-lingshu28-trailer-v2.srt/.vtt  # sidecars, tracked
+    ch28/inner-canon-lingshu28-trailer-block-audit.md
+    ch28/inner-canon-lingshu28-trailer-render-review.md
     ch28/inner-canon-lingshu28-longform-v1.md       # slate rank 1, publish slot 1; pre-render
+    ch28/inner-canon-lingshu28-longform-v2.md       # pre-render
     ch28/inner-canon-lingshu28-translation-v1.md
-  # suwen/ appears when the first 素問 chapter is produced — the repo holds none.
+    ch28/inner-canon-lingshu28-translation-v2.md
   # Every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
-  # pre-render cut has none yet — build them once the voice takes exist. Every
-  # cut in the tree is pre-render today, which is why none appear above.
+  # pre-render cut has none yet — build them once the voice takes exist.
 assets/
   emperor-Fan.png                           # Fan-di style key art
   wise-Qi-2.png                             # Dr-Qi style key art
@@ -124,18 +134,27 @@ When adding a new trailer or episode document, follow this same layout so produc
 `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the current reference
 — it carries the full section order above, including the source-script mapping.
 
-**It is a layout reference only, and the repo currently has no other kind.**
-Every document under `output/` is pre-render, so nothing in the tree shows a
-*filled* production record: no job IDs, no **credit spend** reconciled against
-the preflight estimate, no **Assembly** record of delivered geometry and flags.
-The one cut that had all three — the chapter 1 trailer v5, the only cut ever taken
-end-to-end through the sandbox assembler — was deleted from `output/` on
-2026-08-08. **Its measured numbers survive in `SKILL.md`**, which is where they
-were always operative: the credit deltas in step 0, the re-measured voice rates in
-step 3, and — in step 4 — the 496×864 delivered geometry and the `background:
-true` failure that cost the run. Read those there, not from a cut document.
+**It is a layout reference, but it is pre-render, so it shows an empty
+production record.** For a *filled* one — job IDs, **credit spend** reconciled
+against the preflight estimate, an **Assembly** record of delivered geometry and
+flags — read a cut that actually rendered. Two have:
 
-**The next cut that renders re-establishes the worked example.** Give it a filled
+- **`output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md`** — rendered
+  2026-08-08. Its credit-spend table is the one to read first: 103.4 actual
+  against a ~86 preflight, and it names *why* the estimate was low.
+- **`output/suwen/ch8/inner-canon-suwen8-trailer-v1.md`** — rendered 2026-08-09,
+  and the better model for the deliverables table, because it records **whole
+  download URLs** rather than bare `media_id`s. That distinction was learned by
+  getting it wrong; see the skill's *Environment caveats*.
+
+An earlier cut — the chapter 1 trailer v5, the first taken end-to-end through the
+sandbox assembler — was deleted from `output/` on 2026-08-08. **Its measured
+numbers survive in `SKILL.md`**, which is where they were always operative: the
+credit deltas in step 0, the re-measured voice rates in step 3, and — in step 4 —
+the 496×864 delivered geometry and the `background: true` failure that cost the
+run. Read those there, not from a cut document.
+
+**Every cut that renders extends the worked example.** Give it a filled
 production record, a credit-spend table reconciled against its preflight, and an
 Assembly record — and add a **voice measurement** table if it measures a voice for
 the first time.
