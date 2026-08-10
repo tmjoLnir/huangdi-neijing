@@ -44,9 +44,14 @@ output/
     ch8/inner-canon-suwen8-trailer-v1.md            # RENDERED 2026-08-09, draft tier
     ch8/inner-canon-suwen8-trailer-v1.srt/.vtt      # sidecars, tracked
     ch8/inner-canon-suwen8-longform-v1.md           # pre-render
-    ch13/inner-canon-suwen13-trailer-v1.md          # pre-render
+    ch13/inner-canon-suwen13-trailer-v1.md          # RENDERED 2026-08-10, draft tier
+    ch13/inner-canon-suwen13-trailer-v1.srt/.vtt    # sidecars, tracked
     ch13/inner-canon-suwen13-longform-v1.md         # pre-render
+    ch67/inner-canon-suwen67-trailer-v1.md          # pre-render
+    ch67/inner-canon-suwen67-longform-v1.md         # pre-render
   lingshu/                                          # 靈樞 Spiritual Pivot — chapters 1-81
+    ch8/inner-canon-lingshu8-trailer-v1.md          # pre-render
+    ch8/inner-canon-lingshu8-longform-v1.md         # pre-render
     ch28/inner-canon-lingshu28-trailer-v1.md        # reference layout; pre-render
     ch28/inner-canon-lingshu28-trailer-v2.md        # RENDERED 2026-08-08, draft tier
     ch28/inner-canon-lingshu28-trailer-v2.srt/.vtt  # sidecars, tracked
@@ -74,7 +79,7 @@ scripts/
 
 - `output/` — **two book folders, one chapter folder inside each**: `output/suwen/ch<N>/` and `output/lingshu/ch<N>/`. **`<N>` is the chapter's number within its own book, as the received text numbers it** — never a slate rank, a publish slot, or a sequential episode index. The book folder is what makes the number mean anything; see *Suwen and Lingshu are numbered separately* below, which is not a style note but the reason this folder exists. The chapters produced are the ones chosen off the Top-20 slate in `docs/`, so gaps in both folders are expected and are not missing work. **Documents carry the book in the filename too**, because they get quoted by basename — in commit messages, in review, and throughout `SKILL.md` — where the path is not there to disambiguate them. Trailers are `inner-canon-<book><N>-trailer-v<M>.md` (30-90 sec), longform production documents are `inner-canon-<book><N>-longform-v<M>.md` (11:30-20 min), translations are `inner-canon-<book><N>-translation-v<M>.md`. Where a source script is reviewed against these conventions before production, that review sits beside the cut as `inner-canon-<book><N>-trailer-script-review.md`. `<book>` is `suwen` or `lingshu` — lowercase, no separator before the number, e.g. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md`. Render trailers in 9:16 vertical format; long form in 16:9 landscape format; record the actual resolution/format at the top of each document.
 - `assets/` — character style-key art referenced by every generation job.
-- `docs/` — the series blueprint (full 80-chapter plain-English index, the ranked Top-20 slate that decides which chapter is produced next, and a series-level compliance audit) and the publish sequence. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next.
+- `docs/` — one file, `Chronicle of Balance Top20 Chapter Slate.md`: a 162-chapter index of both books, the ranked **Top-20 slate** that decides which chapter is produced next, a series-level compliance audit, and the **publish sequence**. **Publish order is not chapter order** — the sequence deliberately holds the foundational chapters back, so check it before assuming what ships next. (An earlier series blueprint and a ctext source dump also lived here and were deleted; the blueprint's chapter index was the source of the `episode-<N>` numbering error described below, so do not restore it as a numbering reference.)
 - `scripts/` — `build_subtitles.js`, which generates a cut's `.srt`/`.vtt` sidecar from its own production document, and `check_caption_fit.js`, which measures every narration clause against the two-line caption budget. **Run `check_caption_fit.js` before generating voice takes** — a clause over the budget is split across three or four cues, which is caption churn on screen, and rewording is free before a take is recorded. The sidecar guarantees the wrap either way, so read the report as a readability signal rather than a render failure; the skill's **Subtitles** section explains why its exit code is not a gate. Third is `check_docs_drift.js`, which asserts that *this file* still describes the repository — that the tree above lists every document that exists and nothing that does not, that each file's book and chapter agree with the folder holding it, and that a cut calling itself RENDERED has the sidecars to prove it. **Run it after adding, renaming, moving or rendering anything under `output/`.** It takes no arguments, and unlike the caption check a clean repo really does exit 0, so it is safe to gate on.
 
 ### Suwen and Lingshu are numbered separately

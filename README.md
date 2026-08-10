@@ -34,12 +34,20 @@ Both take document paths and hold no folder assumptions of their own.
 ```
 node scripts/check_caption_fit.js <cut>.md          # readability check, before recording takes
 node scripts/build_subtitles.js  <cut>.md           # writes <cut>.srt and <cut>.vtt
+node scripts/check_docs_drift.js                    # asserts CLAUDE.md still describes this repo
 node scripts/check_caption_fit.js output/*/ch*/*-v*.md   # sweep every cut
 ```
 
 Add `--format 16:9` for longform; the default is the 9:16 trailer frame. The
-sweep always exits non-zero because translation documents carry no narration
-table — read the report, not the status.
+caption sweep always exits non-zero because translation documents carry no
+narration table — read the report, not the status.
+
+**`check_docs_drift.js` is the one worth gating on.** It takes no arguments, and
+a clean repo really does exit 0. Run it after adding, renaming, moving or
+rendering anything under `output/` — it checks that the `CLAUDE.md` tree lists
+every document that exists and none that do not, that each filename's book and
+chapter agree with the folder holding it, and that a cut calling itself RENDERED
+has the sidecars to prove it.
 
 ## Where the rules live
 

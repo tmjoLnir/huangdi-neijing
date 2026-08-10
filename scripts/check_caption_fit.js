@@ -107,11 +107,24 @@ function main() {
   }
 
   if (failures) {
+    // Two fixes this used to suggest are now forbidden by SKILL.md, and both
+    // cost real credits: commas inside a list slow seed_audio badly (a measured
+    // 3.1s swing at fixed word count), and a wide clause is never a reason to
+    // re-record a take, because the sidecar splits it across cues by itself.
     console.log(
-      `\n${failures} overflowing clause(s). Add internal commas and re-record those blocks' takes,`
+      `\n${failures} clause(s) over the two-line budget. Each will be split across three or`
     );
     console.log(
-      "or leave them: the sidecar splits a long clause across cues, so this is readability, not a render failure."
+      "more cues — readable, but churny on screen. This is not a render failure."
+    );
+    console.log(
+      "  To fix: shorten or re-word the clause in the document, before takes are recorded."
+    );
+    console.log(
+      "  Do NOT add commas to break it up — a comma list slows seed_audio badly (SKILL.md,"
+    );
+    console.log(
+      "  'the comma in a list'). Do NOT re-record a take for a caption problem."
     );
   }
   if (unparsed) {
