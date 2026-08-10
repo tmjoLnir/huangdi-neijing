@@ -218,7 +218,7 @@ Four consequences shape every line here, and none is stylistic:
 - **The rates are survivor-biased.** 3.50 w/s is what Arthur's *passing* takes
   delivered; across every recorded attempt on one measured run he averaged **3.04
   w/s**. These counts are sized for his fast mode and will regularly return over
-  the ceiling. Re-roll before rewriting — at 0.1 credits a take that is the cheap
+  the ceiling. Re-roll before rewriting — at ~1.45 credits a take that is the cheap
   move.
 - **Reach the window with words, not full stops.** The assembler warns on internal
   pauses ≥0.8s, so padding a thin line with sentence breaks passes the duration
@@ -1033,8 +1033,11 @@ arithmetic on a stale number.** Call `balance`.
 | `seedance_2_0` 1080p | 90 | ~7,560 | ~16× balance |
 
 Everything else is trivial by comparison: a new **Suwen 13 chapter key is 2**, its
-**16:9 sibling another 2**, and **84 voice takes are ~8.4** — the per-take price is
-**0.1**, measured live on 2026-08-09, not the 0.8 older records assume. Assembly and
+**16:9 sibling another 2**, and **84 voice takes are ~120 for a first pass** — the
+per-take price is **1.3–1.7, measured live on 2026-08-10 on this chapter's own
+lines**, not the 0.1 the Suwen 8 record quoted from a short probe. At the companion
+trailer's 4.7× re-take rate the voice line is **~400–550**, which is no longer a
+rounding error and must appear in the preflight. Assembly and
 captions are **free**.
 
 **Clips are ~99% of the bill, so the model choice is the budget.** Re-takes are
@@ -1152,7 +1155,7 @@ and 80 were shortened to 39 words specifically to move them off it**, because an
 over-ceiling take is a hard error that a re-roll does not reliably rescue.
 
 What remains is floor-adjacent, which is the recoverable direction: a short take is
-fixed by adding words, free in this document and 0.1 credits in a re-take.
+fixed by adding words, free in this document and ~1.45 credits in a re-take.
 
 | Block | Voice | Words | Predicted | Margin above 8.6s floor |
 |---|---|---|---|---|
@@ -1229,8 +1232,15 @@ from take durations that do not exist. Build and commit them with the render.
   under the Yuan and Ming, and was removed from the Imperial Medical Academy in
   **1571**. **Re-confirm before burning** — it is the one date in the episode and a
   wrong date is exactly the failure the citation-accuracy rule exists to prevent.
-- **Voice takes cost 0.1, not 0.8** — 84 takes is ~8.4 credits, so re-takes are
-  cheap and should be budgeted generously.
+- **Voice takes cost 1.3–1.7, not 0.1** — `seed_audio` bills by length, and the 0.1
+  in older records came from a short probe string. 84 takes is **~120 credits for a
+  first pass** and 400–550 at a realistic re-take rate. **Re-takes are cheap against
+  a failed assembly, not free.**
+- **⛔ Arthur's and Vesper's word budgets in this script are the ones the companion
+  trailer disproved.** Arthur measured **~4.4 w/s wanting 38–44 words**, not the
+  3.50 / 31–34 this document is sized to, and a legal 32-word line came back 2.15s
+  under the floor. **All 43 Arthur blocks and 26 Vesper blocks need re-sizing before
+  this cut goes to takes** — see `SKILL.md` step 3, corrected 2026-08-10.
 - **Lessons the Suwen 8 trailer run bought, all applicable here at 12× the scale:**
   put the export `curl` in the same `&&` chain as the assembler; install Anton in
   the sandbox before burning and check `fc-match`; record *speech* rather than file

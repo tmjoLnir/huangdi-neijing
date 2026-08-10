@@ -98,17 +98,34 @@ available to check an estimate against. **Its cut document is gone from `output/
 so the figure lives here now**; the next rendered cut should log its own spend and
 give the repo a second data point.
 
-> **⚠ The per-take price is 0.1, not 0.8. Corrected 2026-08-09.**
-> The 0.8 figure below was *derived* by dividing a balance delta across seven
-> takes, and it was wrong by 8×. A live `get_cost` on `seed_audio` returns
-> **`{"credits": 0.1, "credits_exact": 0.1}`**. **Budget voice at 0.1.**
+> **⚠ `seed_audio` BILLS BY LENGTH. Budget 1.3–1.7 per take. Corrected 2026-08-10.**
+> A real narration line costs **1.3 credits at 34 words and 1.7 at 50** — live
+> `get_cost` on the Suwen 13 trailer's actual text. **This figure has now been got
+> wrong twice in a row and in opposite directions**, so read the history before
+> quoting any of it:
 >
-> This changes the shape of a preflight rather than its total. Voice was never the
-> bill — but at 0.1 a re-take is essentially free, so **there is no reason to ship a
-> take that sits near either edge of the window**, and no reason to guess a word
-> count instead of measuring one. The Suwen 8 trailer spent **13 takes on 7 blocks
-> for 1.3 credits** and that was the cheapest part of the run by an order of
-> magnitude. It also cuts a longform's voice line from ~91 credits to ~10.
+> | Claim | Source | Status |
+> |---|---|---|
+> | 0.8/take | ch1 v3 balance delta ÷ 7 takes | **wrong** — derivation, never priced |
+> | 0.5/take | Lingshu 28 v2 `get_cost` on a **13-word probe** | **wrong** — actual was ~1.34 |
+> | 0.1/take | Suwen 8 `get_cost` on a **short probe** | **wrong by 13–17×** |
+> | **1.3–1.7/take** | Suwen 13 `get_cost` on **the shipped lines** | **use this** |
+>
+> **The Lingshu 28 v2 record already diagnosed this exactly** — *"`seed_audio` bills
+> by length, and a short probe string under-prices the run. Cost a
+> *representative-length* line, not a convenient one."* The very next cut then
+> priced a short probe and wrote 0.1 into this file. **Do not preflight voice on a
+> convenient string.**
+>
+> **Voice is no longer a rounding error on a longform.** At 1.45/take a 96-block
+> episode is **~140 credits for a first pass**, and at a realistic re-take rate
+> **300–500** — not the ~10 this file used to claim. It is still far below the clip
+> bill, but it is now a line item rather than noise.
+>
+> **Re-takes are cheap relative to a failed assembly, not free.** The Suwen 13
+> trailer spent **33 takes on 7 blocks for ~47.7 credits** — a 4.7× re-take rate
+> caused by the word budgets below being wrong, not by service noise. Two variants
+> per block is the working method; twenty are not.
 
 **The old derivation, and why it no longer supports the clip price either.** The
 v3 delta was read as 70 for seven Draft clips plus 5.6 across seven takes, style
@@ -333,8 +350,8 @@ Also duration-incompatible with the fixed 10s block: `veo3_1_lite` (8 credits, b
 4/6/8s only), `seedance1_5` (4/8/12s), `veo3` (no duration control).
 
 Fixed costs per 6-block trailer, independent of clip model: style key **2**
-(`nano_banana_pro`, 1k), voiceover **0.1/take** = 0.6, assembly free. **≈2.6
-credits** — so the clip bill *is* the preflight, and the fixed side rounds to
+(`nano_banana_pro`, 1k), voiceover **~1.45/take** ≈ 8.7 for six blocks, assembly
+free. **≈10.7 credits** — so the clip bill *is* the preflight, and the fixed side rounds to
 nothing.
 
 **The 0.05/voiced-block subtitle charge is gone** — it was the server-burn path's
@@ -359,8 +376,20 @@ true and a stray soundtrack is no longer merely wasted money.
 Chain from the current head rather than starting a new look:
 
 ```
-4b6f7106-67da-4d1a-a553-c58ba90ac43f   Suwen 1 (splitting scroll + seven-and-eight arcs)  ← current head
+4b6f7106-67da-4d1a-a553-c58ba90ac43f   Suwen 1  (splitting scroll + seven-and-eight arcs)  ← NEUTRAL HEAD, chain from this
+05ebe984-2781-491e-8c84-2b20e608d2a8   Suwen 8  (lacquer chart of twelve boxes + closed chest)
+a863a691-6893-4cdd-8ef1-a098c9a426ea   Suwen 13 (divided silk scroll, inked one side, blank the other)
 ```
+
+**Chain new chapters from the Suwen 1 key, not from the most recent one.** This was
+left ambiguous for two cuts running — Suwen 8's record said its key "should be
+promoted to head" and it never was, and Suwen 13 then chained off Suwen 1 anyway.
+**Settled 2026-08-10, and the reason is not inertia:** each chapter key bakes in its
+own chapter's furniture, so chaining Suwen 13 off Suwen 8 would have meant prompting
+away a lacquer chart of twelve boxes. The Suwen 1 key is the neutral three-character
+group shot and is the right parent for an arbitrary new chapter. **Per-chapter keys
+are recorded above as siblings, not as a chain** — add new ones to the list and do
+not move the arrow.
 
 The head is itself the end of a chain reaching back to a group shot built from
 `assets/*.png`; those upstream keys are not recorded here, and they do not need
@@ -464,10 +493,37 @@ re-picked per chapter:
 
 | Role | Voice | `voice_id` | Measured rate | Draft to | Observed in-window |
 |---|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.50 words/sec** | **31–34 words** | 31–33 words @ 8.91–9.59s (Suwen 8 v1, 4 takes) |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.53 words/sec** | **40–44 words** | 44 words @ 9.90s; 42 @ 8.61s; 37 @ 7.88s (under) |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.15 words/sec** | **37–41 words** | 37 words @ 9.02s; 38 @ 9.06s (2 takes, 2 runs) |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.34 words/sec** | **47–52 words** | 50 words @ 9.68s; 35 @ 6.23s (2.4s under) |
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **~4.4 words/sec** | **38–44 words** | 40w @ 9.72s; 38w @ 9.54s; 44w @ 9.43s (Suwen 13). **32w @ 6.45s — 2.15s UNDER** |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.3 words/sec** | **40–44 words** | 41w @ 9.70s first take (Suwen 13); 44w @ 9.90s (Suwen 8) |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **~4.5 words/sec** | **41–43 words** | 41w @ 9.27s (Suwen 13); 40w @ 8.61/8.70/7.92s — at or under the floor |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.24 words/sec** | **47–52 words** | 50w @ 9.54s first take (Suwen 13); 50w @ 9.68s (Suwen 8) |
+
+> **⚠ Arthur and Vesper were re-measured 2026-08-10 on the Suwen 13 trailer and
+> both moved a long way. Arthur's old row was dangerously wrong.**
+>
+> | Voice | Old row | **New row** | Evidence |
+> |---|---|---|---|
+> | Arthur | 3.50 w/s, 31–34 | **~4.4 w/s, 38–44** | 9 takes; a legal 32-word line returned **6.446s** |
+> | Vesper | 4.15 w/s, 37–41 | **~4.5 w/s, 41–43** | 9 takes; 40 words returned 8.61 / 8.70 / **7.92s** |
+> | Xavier | 4.53 w/s, 40–44 | **4.3 w/s, 40–44** — unchanged | landed first take, no re-rolls |
+> | Zane | 5.34 w/s, 47–52 | **5.24 w/s, 47–52** — unchanged | landed first take, no re-rolls |
+>
+> **Arthur is the one that costs runs.** Five of seven Suwen 13 blocks failed the
+> first pass and all five were his or Vesper's. His old row put a 32-word line
+> *mid-range*; it came back **2.15 seconds under the floor**, a hard assembler
+> error. Any document still writing Arthur at 31–34 words should be re-sized before
+> it goes to takes.
+>
+> **These rates are content-dependent and the spread is wide.** Arthur ranged
+> **3.98–4.80 w/s within a single seven-block cut**, on lines of near-identical
+> length. A word count predicts a take only to about ±1.5s. **Generate two variants
+> per block and keep the better one** — at ~1.45 a take that is the cheapest
+> reliable method, and it is what the Suwen 13 run actually did.
+>
+> **The mandated disclaimer block is a special case.** Its two short full-stopped
+> sentences slow `seed_audio` badly: 33 words returned **11.33s, 16.93s and
+> 10.54s** before the trailing clause was cut to 18 words, which landed 9.60s on
+> the first roll. **Budget the block-7 tail at ~18 words, not ~22.**
 
 > **⚠ Updated 2026-08-09 from the Suwen 8 trailer v1 run** — the second cut taken
 > end to end on `assemble_final.sh`, and the first with all four voices speaking.
@@ -542,7 +598,7 @@ keepers plus block 5's fourteen attempts — he ran **3.04 w/s** against a passi
 rate then measured at 3.65, because a block passes on the roll that comes back
 fast. A line drafted at the table rate is sized for the fast mode and will
 regularly come back over the ceiling. v5's block 5 took **fourteen attempts** to
-land one take in the window — which at the corrected 0.1/take is ~1.4 credits, so
+land one take in the window — which at the corrected ~1.45/take is ~20 credits, so
 **re-rolling is cheap and the table is a starting point, not a target.**
 
 **Re-measure with `speech_metrics.sh` before committing a full cut to these
@@ -566,7 +622,7 @@ and who now carries it.
 
 For any voice still marked unmeasured, **generate one take, read its duration,
 and write the measured words/second back into this table** before committing a
-script to it. One take is **0.1 credits**; a mis-sized script is the whole cut.
+script to it. One take is **~1.45 credits**; a mis-sized script is the whole cut.
 Zane is what skipping this costs: ~35-word lines went into two 110-block documents
 on a guess, and the measurement that would have caught it was one take.
 
@@ -1332,11 +1388,13 @@ tier** — even an all-draft pass overruns it. Say so plainly and get a decision
 before starting: top up, cut the runtime, or produce act by act across billing
 periods. Assembly stays free, and **captions are now free too** — the 0.05/voiced
 block charge went with the server-burn path, taking ~11.4 credits off the old
-episode estimate. Voice takes are **0.1 each — about 11 credits for a whole
-episode**, paid once and reused, so clips are essentially the entire bill and the
-model choice *is* the budget. At that price there is no reason to under-generate
-takes on a longform: re-rolling every marginal block across 114 blocks still costs
-less than one clip.
+episode estimate. Voice takes are **~1.45 each — about 140 credits for a whole
+episode**, paid once and reused. Clips still dominate, but voice is now a real line
+item rather than noise: **at the Suwen 13 trailer's 4.7× re-take rate a 114-block
+episode's voice bill is 300–500 credits**, which is 30–50 clips' worth and has to
+appear in the preflight. **Size the script to the corrected step-3 budgets before
+generating any takes** — that re-take rate was caused by wrong word budgets, not by
+service noise, and it is the cheapest thing on this page to avoid.
 
 A **Draft pass matters far more here than on a trailer** — 114 blocks of wrong
 pacing is unrecoverable. Draft the whole episode at 480p, watch it end to end,
