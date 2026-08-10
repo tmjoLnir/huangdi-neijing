@@ -1,6 +1,6 @@
 ---
 name: drive-context-memory
-description: Read and write this project's cross-session context memory, held as immutable snapshots in a Google Drive folder. Use at session start when the work depends on state from an earlier session (what is in flight, where a render was archived, credit spent so far), at session end when something worth keeping was learned, or when debugging the memory itself (folder looks empty, a snapshot reads back with backslashes in it, two sessions overwrote each other, a snapshot became a Google Doc).
+description: Read and write this project's cross-session context memory, held as immutable snapshots in a Google Drive folder. Use at session start when the work depends on state from an earlier session (what is in flight, where a render was archived, credit spent so far), at session end when something worth keeping was learned, when checkpointing a long session against compaction or deciding what to archive off to Drive, or when debugging the memory itself (folder looks empty, a snapshot reads back with backslashes in it, two sessions overwrote each other, a snapshot became a Google Doc).
 ---
 
 # Google Drive context memory
@@ -52,6 +52,11 @@ anything new into it.
 3. **Write** a new snapshot — only if something worth keeping was learned. A
    session that learned nothing should write nothing, or the folder fills with
    identical files and the newest-wins rule starts hiding real history.
+
+"At the end" is the default, not a rule: a long session should write as soon as a
+precise fact becomes final, because a session that compacts before it writes
+loses the precision it was going to record. See
+[Checkpoint on completion](#checkpoint-on-completion-not-on-pressure).
 
 Both ends are yours to run. **No hook can do this** — see
 [Why no hook](#why-no-hook).
@@ -182,6 +187,81 @@ inline as base64 — viable for a snapshot, not for a several-hundred-megabyte M
 Archive those by hand through the Drive UI or a desktop client, and record the
 resulting file ID in the index above. The index is the deliverable here; the
 media is not.
+
+## Context economy — checkpointing a long session
+
+**Archiving to Drive does not free the running session's context window, and
+reading memory back costs more than the file does.** The intuition runs the other
+way, so this is worth stating first: every byte written passes *through* the
+window on its way out, and `download_file_content` returns base64 — measured at
+**1.334×** the file's size (a 3,029-byte snapshot came back as 4,040 characters).
+Archiving more, and reading it back indiscriminately, raises in-session pressure
+rather than relieving it.
+
+What memory does protect against is **compaction loss**, and that is the thing
+actually worth defending. When the window fills, the session does not end — it
+compacts, and the transcript is replaced by a summary. Summaries keep the shape
+of the work and lose its precision: job IDs, URLs, measured balances, the exact
+wording of a decision. Those are unrecoverable afterwards, because the text they
+were in is gone.
+
+So the goal is not to avoid compaction. It is to **be holding nothing precise and
+unwritten when compaction arrives.**
+
+### Checkpoint on completion, not on pressure
+
+Write a snapshot when a fact becomes final — a render returns its IDs, a balance
+is read, a decision is settled — not when the window starts feeling tight. By the
+time it is tight, the checkpoint costs a re-read of the very transcript being
+rescued, and that is the most expensive moment to pay for it. A fact recorded the
+minute it existed costs almost nothing.
+
+This is the one place where writing memory earns its cost back. Everywhere else,
+prefer writing less.
+
+### Pointers, not payloads
+
+A snapshot should say *where a thing is and what state it is in*, never reproduce
+it. The render-archive table is the model: it holds whether an MP4 was archived
+and its Drive file ID, and deliberately does not copy the CDN URLs, because those
+are in the production record that git already tracks. Copying them would double
+the read cost of every future session to store something already durable.
+
+The same rule kills the tempting bad idea of archiving transcripts. A conversation
+is a payload. What is worth keeping out of it is a decision and a reason, and
+those compress to a line.
+
+### Split by topic when it earns it — not before
+
+One snapshot per session is the default because the memory is small: at 3 KB, a
+whole read is about a thousand tokens and selective reading would save nothing
+worth the complexity.
+
+Split into per-topic files — `<ISO8601>-<topic>.md`, newest *per topic* wins —
+when either trigger fires:
+
+- **Size.** A snapshot past roughly **10 KB** costs ~13 KB of base64 to read,
+  and most sessions need one section of it.
+- **Churn.** One section changes every session while another has not changed in
+  a month. The stable one is being rewritten, and re-read, for nothing.
+
+Splitting costs nothing at write time and saves on every subsequent read, but it
+multiplies the files in a folder that cannot be pruned from here — so let a
+trigger fire rather than anticipating one. The `search_files` listing is cheap
+and returns every title at once; only `download_file_content` is priced by size.
+
+### Keep bulk out of the window entirely
+
+- **Never echo a downloaded file back into the conversation** to inspect it.
+  Decode to disk and use shell tools on it — `wc`, `grep`, `head` — so the window
+  sees the answer, not the file.
+- **Renders never come through this path.** `create_file` takes content inline as
+  base64; a several-hundred-megabyte MP4 through a tool call is not a slow
+  archive, it is an impossible one. Upload those through the Drive UI and record
+  only the resulting file ID.
+- **Read one snapshot, not the folder.** Sort titles, download the newest of what
+  you need. Downloading several to compare them is the mistake this whole section
+  is about.
 
 ## Failure modes
 
