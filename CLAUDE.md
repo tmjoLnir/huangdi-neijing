@@ -8,20 +8,21 @@ This is a **video-content-production repository**, not a software project. It ho
 
 ## Which file wins
 
-Two files carry standing instructions, and they divide as follows. **Where both
-touch the same subject, the owner below is normative and the other file points at
-it rather than restating it.**
+Three files carry standing instructions, and they divide as follows. **Where two
+of them touch the same subject, the owner below is normative and the other file
+points at it rather than restating it.**
 
 | | Owns |
 |---|---|
 | **`CLAUDE.md`** (this file) | **Policy** — who the cast is, the compliance rules, the production-document layout, what ships as a deliverable, git conventions |
-| **`.claude/skills/higgsfield-production/SKILL.md`** | **Procedure and measurements** — order of operations, model names and parameters, prices, per-voice words/second, block geometry, the failure modes that have cost a paid re-render |
+| **`.claude/skills/higgsfield-production/SKILL.md`** | **Generation procedure and measurements** — order of operations, model names and parameters, prices, per-voice words/second, block geometry, the failure modes that have cost a paid re-render |
+| **`.claude/skills/drive-context-memory/SKILL.md`** | **Context-memory procedure** — the Drive folder IDs, snapshot naming, the read/write call shapes, and the read path that silently corrupts a snapshot |
 
 Rule of thumb: if it would still be true with a different generation service, it
-belongs here; if it is a number someone measured or a call someone makes to the
-API, it belongs in the skill. Duplicating a rule across both is how they drift —
-several instructions have already gone stale in one copy while staying correct in
-the other. Add a pointer, not a second copy.
+belongs here; if it is a number someone measured or a call someone makes to an
+API, it belongs in the skill that owns that API. Duplicating a rule across files
+is how they drift — several instructions have already gone stale in one copy
+while staying correct in the other. Add a pointer, not a second copy.
 
 ## Structure
 
@@ -37,6 +38,7 @@ README.md
   settings.json                             # Bash + Higgsfield MCP permission lists, SessionStart hook
   hooks/session-start.sh                    # reinstalls ffmpeg, the Anton font and wick on the ephemeral host
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
+  skills/drive-context-memory/SKILL.md      # cross-session memory, held in Google Drive
 output/
   lingshu/                                          # 靈樞 Spiritual Pivot — chapters 1-81
     ch28/inner-canon-lingshu28-trailer-v1.md        # current reference layout; pre-render
@@ -265,6 +267,31 @@ edit/upload time.** The fourth, music, it still cannot *generate* — but it can
   wrong conclusion in this repo. Check `git rev-parse --is-shallow-repository`
   before trusting any history claim, and run `git fetch --unshallow origin` first if
   it says `true`.
+
+## Context memory (Google Drive)
+
+Web sessions run in an ephemeral container rebuilt from the repo each time, so
+the only things that survive a session are what git tracks and what is written
+outside it. A Google Drive folder holds the second kind, as immutable timestamped
+snapshots. **The folder IDs, the call shapes, the naming rule and the failure
+modes are the `drive-context-memory` skill's** — read it before reading or writing
+memory, and note in particular that the obvious read tool corrupts a snapshot
+without erroring.
+
+Two things are policy, and are this file's:
+
+- **Anything reproducible from the repo belongs in the repo.** Job IDs, block
+  plans, compliance notes and a cut's credit spend go in that cut's production
+  record, which is tracked and reviewed. Drive memory is for what `.gitignore`
+  deliberately excludes: the render archive index (MP4s are never committed and
+  CDN links expire), spend accumulated across sessions, and working preferences.
+- **Drive memory never holds policy.** It is not a third copy of this file or of
+  a skill. The two-file split above has already drifted where it was duplicated;
+  a third copy in a folder no review ever opens is worse, because nothing brings
+  it back into agreement. Point at the owner, do not restate it.
+
+Reading and writing memory is reversible, generates nothing and spends no
+credits, so it sits outside the Prompt cleaner gate below.
 
 ## Prompt cleaner
 
