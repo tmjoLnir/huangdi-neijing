@@ -31,7 +31,14 @@
       "mcp__higgsfield__upscale_video",
       "mcp__higgsfield__media_upload",
       "mcp__higgsfield__media_confirm",
-      "mcp__higgsfield__sandbox_exec"
+      "mcp__higgsfield__sandbox_exec",
+      "mcp__Google_Drive__search_files",
+      "mcp__Google_Drive__download_file_content",
+      "mcp__Google_Drive__create_file",
+      "mcp__Google_Drive__copy_file",
+      "mcp__Google_Drive__get_file_metadata",
+      "mcp__Google_Drive__get_file_permissions",
+      "mcp__Google_Drive__list_recent_files"
     ],
     "deny": [
       "Bash(npm uninstall *)",
@@ -46,7 +53,8 @@
       "Bash(scp *)",
       "Bash(git push:*)",
       "Bash(git clean:*)",
-      "Bash(rmdir *)"
+      "Bash(rmdir *)",
+      "mcp__Google_Drive__read_file_content"
     ]
   },
   "hooks": {

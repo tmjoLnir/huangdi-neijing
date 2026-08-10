@@ -11,12 +11,13 @@ defined there and are normative in any conflict. This file holds the call shapes
 the folder IDs, the naming rule and the failure modes — including one that
 silently corrupts a snapshot a little more every session.
 
-This is the third standing-instruction file in the repo. The two-file split in
-`CLAUDE.md` § *Which file wins* has already drifted where it was duplicated, so
-the same discipline applies here with one addition: **Drive memory is not a place
-to keep policy.** A third copy of a rule, sitting in a folder no review ever
-opens, is worse than a second copy in a tracked file. Point at `CLAUDE.md`; do
-not restate it into a snapshot.
+This is the third standing-instruction file in the repo, and `CLAUDE.md` §
+*Which file wins* is the table that divides them. That split has already drifted
+wherever a rule was duplicated, so the same discipline applies here with one
+addition: **Drive memory is not a place to keep policy.** A copy of a rule sitting
+in a folder no review ever opens is worse than one in a tracked file, because
+nothing ever brings it back into agreement. Point at `CLAUDE.md`; do not restate
+it into a snapshot.
 
 > **Why this exists.** Web sessions run in an ephemeral container rebuilt from
 > the repo each time. Whatever is not tracked in git and not written somewhere
@@ -34,12 +35,13 @@ not restate it into a snapshot.
 write by design — see [Snapshots are immutable](#snapshots-are-immutable). One
 subfolder per repo, so other projects share the parent without colliding.
 
-**The connected Drive account is not the Claude account.** Memory lives in
-`daniel.dibraw@gmail.com`'s Drive; the Claude account email is
-`joshua.chin@outlook.sg`. This is the first thing to check when the folder reads
-as empty or a freshly written snapshot cannot be found — the tools resolve
-against whichever account the connector is authenticated as, and no error is
-raised for looking in the wrong Drive. The folder is owner-only
+**The connected Drive account is not the Claude account.** The folder lives in a
+different Google account from the one signed in to Claude, and **this is the first
+thing to check when the folder reads as empty or a freshly written snapshot cannot
+be found** — the tools resolve against whichever account the connector is
+authenticated as, and no error is raised for looking in the wrong Drive. Confirm
+which account is connected before concluding anything is missing; the IDs above
+only resolve inside the right one. The folder is owner-only
 (`get_file_permissions`, verified 2026-08-10); confirm that again before writing
 anything new into it.
 
