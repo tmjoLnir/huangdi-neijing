@@ -5,13 +5,22 @@
 # dependencies to install in the usual sense. What it does need is the two tools
 # the Finishing steps in every cut document depend on, plus one convenience:
 #
-#   ffmpeg  — burns the tracked .srt sidecar onto the downloaded render.
-#             Must be a build with libass; the apt package is.
+#   ffmpeg  — burns the tracked .srt sidecar onto a render, and measures one
+#             locally. Must be a build with libass; the apt package is.
 #   Anton   — the caption font (CLAUDE.md: every deliverable ships captioned in
 #             anton). This matters as much as ffmpeg does. When Anton is
 #             missing, libass silently substitutes a wider default: the burn
 #             still succeeds, build_subtitles.js still reports "fits", and the
 #             overflow only shows up when somebody watches the file.
+#
+#             NOTE: the production burn usually does NOT happen here. The CDN is
+#             403 from this host, so the assembled MP4 is normally burned in the
+#             Higgsfield sandbox, which has ffmpeg but no Anton and which this
+#             hook cannot reach. Install the font there too, in the same chained
+#             command as the burn — see the higgsfield-production skill,
+#             "Subtitles". What this hook buys is a host that can measure and
+#             burn locally when a file *can* be fetched; it is not the guarantee
+#             the render is in the right font.
 #   wick    — browser-grade web access, from the wick-mcp npm package. Unlike
 #             the two above, no deliverable depends on it: it is a research
 #             convenience, and WebFetch still works without it.

@@ -56,7 +56,7 @@ in the filename too. Folders are not consecutive and gaps are expected.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
 the only form produced so far, and the one whose numbers are battle-tested. For a
-**15–20 minute longform episode**, read those steps for the mechanics, then read
+**11:30–20 minute longform episode**, read those steps for the mechanics, then read
 [Longform episodes](#longform-episodes), which overrides the aspect
 ratio, block count, voice handling and assembly strategy. **Step 0 is a hard gate
 on both**: nothing generates until the run's tools are confirmed present on the
@@ -117,11 +117,18 @@ takes actually cost 0.7 of that, **~4.9 credits of that delta are unexplained** 
 the clip price is the only figure in it worth trusting.
 
 **The second run, v5, spent ~80 from a starting balance of 862.6** — 70 for the
-same seven Draft clips, 0 for a reused style key, and ~10 across roughly thirteen
-voice takes including calibration. Roughly 8 of that ~10 was block 5 alone. Both
-runs are recorded here because neither cut document survives, and two figures make
-the ~0.8/take rate a measurement rather than a single division. Balance after v5
-was therefore **~782**, unread since.
+same seven Draft clips and 0 for a reused style key. Its record attributed ~10 to
+roughly thirteen voice takes; **at the corrected 0.1 that is ~1.3**, so ~8.7 of
+that run is unexplained too. Both runs are recorded here because neither cut
+document survives. Balance after v5 was **~782** on the recorded totals, unread
+since — **call `balance`, do not carry this figure.**
+
+**Both deltas have a hole of the same size, which is the actual finding.** ~4.9 on
+v3 and ~8.7 on v5 went somewhere neither record accounts for. Until a run is
+reconciled against a `balance` read taken immediately before and after, treat the
+clip price as the only load-bearing number in a preflight and expect the total to
+come in high — the Lingshu 28 v2 run did exactly that, at 103.4 actual against a
+~86 estimate.
 
 ## 0. Model + tier gate — cost it, then confirm
 
@@ -319,8 +326,9 @@ Also duration-incompatible with the fixed 10s block: `veo3_1_lite` (8 credits, b
 4/6/8s only), `seedance1_5` (4/8/12s), `veo3` (no duration control).
 
 Fixed costs per 6-block trailer, independent of clip model: style key **2**
-(`nano_banana_pro`, 1k), voiceover **0.8/take** = 4.8, assembly free. **≈6.8
-credits.**
+(`nano_banana_pro`, 1k), voiceover **0.1/take** = 0.6, assembly free. **≈2.6
+credits** — so the clip bill *is* the preflight, and the fixed side rounds to
+nothing.
 
 **The 0.05/voiced-block subtitle charge is gone** — it was the server-burn path's
 fee, and captions are now burned locally for free. Budget 0.3 less per 6-block
@@ -491,14 +499,19 @@ written up as "8.50s pass" and carried as a keeper until the assembly stopped on
 it. It is 0.103s under the floor. **A take within ~0.2s of either edge is checked
 against the number, never eyeballed** — the gate does not round in your favour.
 
-Zane has only been measured on a 5-word line (2.3–2.6s), where pause overhead
-dominates and no reliable words/sec can be derived — **measure him on a
-full-length line before writing him one.** v5 kept him deliberately silent for
-exactly this reason. **`output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md`
-now carries the exposure**: it writes Lei-Gong several full speaking blocks at
-34–39 words — provisional counts derived from nothing, and its own cast table
-marks him UNMEASURED. That cut cannot go to takes until he is measured, and the
-measurement is one ~0.8-credit take against a ~1,145-credit run.
+**Zane was measured at length on 2026-08-09 and the guess was badly wrong.** He
+had only ever been run on a 5-word line (2.3–2.6s), where pause overhead dominates
+and no words/sec can be derived; the repo had been writing him at ~35 words on no
+evidence. He is in fact **the fastest voice in the cast at 5.34 w/s** and needs
+**47–52 words**. A 35-word line came back at **6.23s — 2.4s under the floor**, a
+hard assembler error.
+
+> **⚠ Two committed documents are sized to the old guess and will fail.**
+> `output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md` and its `v2` both
+> write Lei-Gong multiple full speaking blocks at **34–39 words**, and both cast
+> tables still read `UNMEASURED`. Those are ~110-block cuts, so this is not a
+> per-line fix at take time — **re-size every Lei-Gong block to 47–52 words before
+> either goes to takes**, and correct the cast tables while doing it.
 
 **Two of the three doubts about the old columns are now settled, and the third got
 worse:**
@@ -515,13 +528,15 @@ worse:**
   **10.23s and 7.79s** on consecutive generations: 2.44s apart, on a window 1.4s
   wide. A word count cannot be a setting when the noise exceeds the target.
 
-**Read the rate as survivor-biased, and budget re-takes accordingly.** 3.65 w/s is
-what Arthur's *passing* takes delivered. Across all 18 Arthur takes whose text and
-duration are both recorded — the four other blocks' keepers plus block 5's fourteen
-attempts — he ran **3.04 w/s**, because a block passes on the roll that comes back
-fast. A line drafted at 3.65 is sized for the fast mode and will regularly come
-back over the ceiling. v5's block 5 took **fourteen attempts and ~11 credits** to
-land one take in the window.
+**Read every rate in the table as survivor-biased, and budget re-takes
+accordingly.** The figures are what *passing* takes delivered. Across all 18 v5
+Arthur takes whose text and duration are both recorded — the four other blocks'
+keepers plus block 5's fourteen attempts — he ran **3.04 w/s** against a passing
+rate then measured at 3.65, because a block passes on the roll that comes back
+fast. A line drafted at the table rate is sized for the fast mode and will
+regularly come back over the ceiling. v5's block 5 took **fourteen attempts** to
+land one take in the window — which at the corrected 0.1/take is ~1.4 credits, so
+**re-rolling is cheap and the table is a starting point, not a target.**
 
 **Re-measure with `speech_metrics.sh` before committing a full cut to these
 numbers** — see the window section below for the call. Treat a first pass at these
@@ -544,7 +559,9 @@ and who now carries it.
 
 For any voice still marked unmeasured, **generate one take, read its duration,
 and write the measured words/second back into this table** before committing a
-script to it. One take is ~0.8 credits; a mis-sized script is six.
+script to it. One take is **0.1 credits**; a mis-sized script is the whole cut.
+Zane is what skipping this costs: ~35-word lines went into two 110-block documents
+on a guess, and the measurement that would have caught it was one take.
 
 ### `speech_rate` is not a duration lever — do not reach for it
 
@@ -558,9 +575,11 @@ take length** — if a take lands short, rewrite the line longer or trade full s
 for commas; do not re-render it at a different rate expecting a different
 duration. All four voices run at `speech_rate` 55.
 
-**Character lines are structurally short, and a block is structurally 10s.** At the
-measured 4.15–4.19 words/sec, Xavier and Vesper need **36–37 words** to clear the
-8.6s floor and cannot pass ~41 — which is a speech, not an interjection.
+**Character lines are structurally short, and a block is structurally 10s.** At
+their measured rates the character voices need **40 words (Xavier), 37 (Vesper)
+and 47 (Zane)** just to clear the 8.6s floor — which is a speech, not an
+interjection. Zane is the sharpest case: the fastest voice in the cast cannot say
+anything shorter than about fifty words and still fill a block.
 
 **The old second way out is now closed.** Letting a take run short and centred —
 a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
@@ -625,8 +644,12 @@ voice, and it moves:
 | | |
 |---|---|
 | Speech per 10s block | **8.6–10.0s — fixed, applies to every voice** |
-| Line length | per voice — **32–36 words Arthur, 36–41 Xavier, 37–41 Vesper** (measured, v5) |
-| Delivery rate | per voice — **3.65 / 4.15 / 4.19 words/sec** for Arthur / Xavier / Vesper |
+| Line length | per voice — **31–34 Arthur, 40–44 Xavier, 37–41 Vesper, 47–52 Zane** |
+| Delivery rate | per voice — **3.50 / 4.53 / 4.15 / 5.34 words/sec** for Arthur / Xavier / Vesper / Zane |
+
+Those are the step-3 table's figures as of the 2026-08-09 re-measurement. **The
+table above is the single copy — if this summary and the table disagree, the table
+is right and this needs updating**, which has already happened once.
 
 **Take the line length from the voice table above, never from another cut's
 document.** A word budget written for one voice undershoots or overshoots another
@@ -650,9 +673,11 @@ generations on identical text, and **v5 measured that spread wider than the
 assembler's own source note claims** — the same 26-word line came back at **10.23s
 and 7.79s**, missing the window at *both* ends rather than only the top. So the old
 reading, that only the upper mode needs a rewrite, does not hold: a re-roll can
-land either side of the window. Re-roll once before rewriting, at ~0.8 credits a
-take — but note the ceiling on that strategy. v5's block 5 alternated re-rolls and
-rewrites for **fourteen takes and ~11 credits** on one block.
+land either side of the window. **Re-roll freely before rewriting** — at 0.1 a take
+the cost is negligible, and v5's worst block took fourteen of them for ~1.4
+credits. The ceiling on the strategy is wall-clock and attention, not money: if two
+or three re-rolls all miss the same way, the line is the problem and no further
+roll will fix it.
 
 ### Dead air is no longer the failure it was
 
@@ -1173,10 +1198,11 @@ Two mechanisms make the fit real, and the second is the one that guarantees it:
      why the printed command is now **two steps**: convert to `.ass` and re-target
      PlayRes to the cut's own resolution first, then burn. The intermediate
      `.ass` goes to `renders/` and is gitignored.
-   - **Anton must be installed** (`fc-match Anton`). libass substitutes a wider
-     font silently when it is missing, which breaks the measured fit while
-     `build_subtitles.js` still reports the line as fitting. On the repo host,
-     `.claude/hooks/session-start.sh` installs ffmpeg and Anton at session start.
+   - **Anton must be installed on the machine that runs the burn** (`fc-match
+     Anton`). libass substitutes a wider font silently when it is missing, which
+     breaks the measured fit while `build_subtitles.js` still reports the line as
+     fitting. `.claude/hooks/session-start.sh` covers the repo host — which is
+     usually *not* where the burn happens:
 
      > **⚠ The sandbox does NOT have Anton, and that is where the burn happens.**
      > Established 2026-08-09. The session-start hook installs Anton on the **repo
@@ -1249,12 +1275,12 @@ assembled.
 Both scripts share their geometry, Anton metrics and narration-table parser via
 `scripts/lib/caption_metrics.js`, so the two can never disagree about what fits.
 
-## Longform episodes (15–20 min)
+## Longform episodes
 
-Untested — **no longform cut has been rendered.** One longform *document* exists
-(`output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md`, 108 blocks,
-pre-render), so the scripting side has been exercised and the pipeline side has
-not. The mechanics below are derived from the tool constraints and the trailer
+**11:30–20 min.** Untested — **no longform cut has been rendered.** Four longform
+*documents* exist (Lingshu 28 v1 and v2, Suwen 8, Suwen 13), all pre-render, so the
+scripting side has been exercised repeatedly and the pipeline side not at all. The
+mechanics below are derived from the tool constraints and the trailer
 runs, so treat the first episode as a pilot and write what actually happened into
 its reproduction notes. Where this section contradicts steps 0–5, this section
 wins.
@@ -1263,7 +1289,7 @@ wins.
 
 | | Trailer | Longform |
 |---|---|---|
-| Runtime | 30-90 sec (60s and 70s cuts have been written) | 11:30–20 min target (11:30 floor, 20 ceiling) |
+| Runtime | 30-90 sec (70s and 80s cuts have rendered) | 11:30–20 min target (11:30 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
 | Blocks | 6 | ~102–114 at 10s |
 | Voices | narrator only | narrator **+ speaking characters** |
@@ -1299,8 +1325,11 @@ tier** — even an all-draft pass overruns it. Say so plainly and get a decision
 before starting: top up, cut the runtime, or produce act by act across billing
 periods. Assembly stays free, and **captions are now free too** — the 0.05/voiced
 block charge went with the server-burn path, taking ~11.4 credits off the old
-episode estimate. Voice takes are ~0.8 each (~91, paid once and reused), so clips
-are essentially the entire bill and the model choice *is* the budget.
+episode estimate. Voice takes are **0.1 each — about 11 credits for a whole
+episode**, paid once and reused, so clips are essentially the entire bill and the
+model choice *is* the budget. At that price there is no reason to under-generate
+takes on a longform: re-rolling every marginal block across 114 blocks still costs
+less than one clip.
 
 A **Draft pass matters far more here than on a trailer** — 114 blocks of wrong
 pacing is unrecoverable. Draft the whole episode at 480p, watch it end to end,
@@ -1362,16 +1391,20 @@ measurement. Word count and sentence structure are the only controls, on dialogu
 as on narration. (An earlier version of this section suggested 60–65 for
 character dialogue. It was wrong.)
 
-Arthur, Xavier and Vesper are measured (§3 table). **Zane is measured only on a
-short line and must be re-measured at length before ~110 takes are committed to
-him** — one unmeasured voice across a 19-minute episode is the most expensive
-version of the take-length mistake. Character lines are also structurally short
-against a 10s block — and **the deliberate short take is no longer available** as
-the second way out, because the assembler hard-rejects anything under 8.6s. Apply
-§3's remaining options **per line**: write the character a real ~40-word
-paragraph, fold the beat into a neighbouring block, or cut it. On an episode with
-~110 blocks of dialogue this is a scripting constraint, not a per-line
-adjustment — it wants deciding before the takes are generated, not after.
+All four are measured (§3 table) — **and Zane's measurement is the one to check a
+longform script against before anything else.** He came in at 5.34 w/s, the
+fastest in the cast, needing **47–52 words** where the repo had been guessing ~35;
+both Lingshu 28 longform documents are still written to the guess and will fail.
+One mis-sized voice across a 19-minute episode is the most expensive version of
+the take-length mistake, and it is already sitting in two committed documents.
+
+Character lines are structurally short against a 10s block — and **the deliberate
+short take is no longer available** as the second way out, because the assembler
+hard-rejects anything under 8.6s. Apply §3's remaining options **per line**: write
+the character a real paragraph at that voice's own word count, fold the beat into
+a neighbouring block, or cut it. On an episode with ~110 blocks of dialogue this is
+a scripting constraint, not a per-line adjustment — it wants deciding before the
+takes are generated, not after.
 
 ### ON-SCREEN TEXT — the one exception to text-free clips
 
@@ -1478,24 +1511,31 @@ expand to reach 120.
   The honest line in the production record is still *assembled and probed, not
   visually verified* — automated checks catch a substituted font or an overflowing
   margin, not whether the cut reads well.
-- **ffmpeg and Anton are installed by a hook, not baked into the image.** The
-  container is ephemeral and rebuilt from the repo each session, so
-  `.claude/hooks/session-start.sh` reinstalls both at session start — see
-  [Subtitles](#subtitles) for why the font matters as much as the binary. Two
-  consequences: the Ubuntu archives are reachable but the **deadsnakes** and
-  **ondrej/php** PPAs are 403 under the egress policy, so `apt-get update` always
-  prints two warnings that are unrelated to this pipeline; and if the hook is
-  ever removed, the burn step still *runs* and still produces a file — just in
-  the wrong font.
+- **ffmpeg and Anton are installed by a hook on the repo host, and the burn does
+  not happen there.** `.claude/hooks/session-start.sh` reinstalls both each
+  session because the container is ephemeral — but the CDN is 403 from this host,
+  so the assembled MP4 usually cannot be fetched back to burn against. **In
+  practice the burn runs in the sandbox, which has ffmpeg but no Anton**, and the
+  hook cannot reach it. Install the font there, in the same chained command as the
+  burn: see [Subtitles](#subtitles) for the four lines that do it.
+
+  **`fc-match Anton` on the repo host therefore proves nothing about the render.**
+  Check the font where the burn runs, not where the hook ran. This is the one
+  substitution that fails silently in both directions — libass swaps in a wider
+  face without erroring, and `build_subtitles.js` still reports the line as
+  fitting.
+
+  The host install still earns its place for local measurement and for any burn
+  that *can* happen here, and one side effect is worth knowing: the Ubuntu
+  archives are reachable but the **deadsnakes** and **ondrej/php** PPAs are 403
+  under the egress policy, so `apt-get update` always prints two warnings
+  unrelated to this pipeline.
 - **The hook is synchronous**, so the session does not start until both tools are
   in place — a cold container pays about a minute of startup for that, and a warm
-  one pays nothing and reports `ffmpeg and Anton already present`. It still costs
-  nothing to run `ffmpeg -version` and `fc-match Anton` **before burning rather
-  than after**, and it is the only check that catches a hook that was removed,
-  edited, or cut short. The hook installs the font before the binary on purpose:
-  an interrupted run then leaves the state that fails loudly with
-  `ffmpeg: not found` rather than the one that quietly burns in a substituted
-  font. Do not reorder it.
+  one pays nothing and reports `ffmpeg, Anton and wick already present`. The hook
+  installs the font before the binary on purpose: an interrupted run then leaves
+  the state that fails loudly with `ffmpeg: not found` rather than the one that
+  quietly burns in a substituted font. Do not reorder it.
 
 ### What lands in git
 
