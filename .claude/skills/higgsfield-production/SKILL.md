@@ -639,10 +639,11 @@ for commas; do not re-render it at a different rate expecting a different
 duration. All four voices run at `speech_rate` 55.
 
 **Character lines are structurally short, and a block is structurally 10s.** At
-their measured rates the character voices need **40 words (Xavier), 37 (Vesper)
-and 47 (Zane)** just to clear the 8.6s floor — which is a speech, not an
-interjection. Zane is the sharpest case: the fastest voice in the cast cannot say
-anything shorter than about fifty words and still fill a block.
+their measured rates every character voice needs **forty words or more** just to
+clear the 8.6s floor — which is a speech, not an interjection. Take the exact
+count from [the step-3 table](#3-voiceover), never from here. Zane is the sharpest
+case: the fastest voice in the cast cannot say anything shorter than about fifty
+words and still fill a block.
 
 **The old second way out is now closed.** Letting a take run short and centred —
 a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
@@ -707,12 +708,14 @@ voice, and it moves:
 | | |
 |---|---|
 | Speech per 10s block | **8.6–10.0s — fixed, applies to every voice** |
-| Line length | per voice — **31–34 Arthur, 40–44 Xavier, 37–41 Vesper, 47–52 Zane** |
-| Delivery rate | per voice — **3.50 / 4.53 / 4.15 / 5.34 words/sec** for Arthur / Xavier / Vesper / Zane |
+| Line length and rate | **per voice — [the step-3 table](#3-voiceover) is the only copy** |
 
-Those are the step-3 table's figures as of the 2026-08-09 re-measurement. **The
-table above is the single copy — if this summary and the table disagree, the table
-is right and this needs updating**, which has already happened once.
+**The word counts are deliberately not repeated here.** A summary of them lived at
+this spot through two re-measurements and went stale on both, the second time
+while carrying a note saying it had already gone stale once. It ended up telling
+you to write Arthur at 31–34 words on the same page where the measurement banner
+said any document doing that must be re-sized. **Numbers that get measured live in
+exactly one place; everything else links to it.**
 
 **Take the line length from the voice table above, never from another cut's
 document.** A word budget written for one voice undershoots or overshoots another
@@ -736,10 +739,12 @@ generations on identical text, and **v5 measured that spread wider than the
 assembler's own source note claims** — the same 26-word line came back at **10.23s
 and 7.79s**, missing the window at *both* ends rather than only the top. So the old
 reading, that only the upper mode needs a rewrite, does not hold: a re-roll can
-land either side of the window. **Re-roll freely before rewriting** — at 0.1 a take
-the cost is negligible, and v5's worst block took fourteen of them for ~1.4
-credits. The ceiling on the strategy is wall-clock and attention, not money: if two
-or three re-rolls all miss the same way, the line is the problem and no further
+land either side of the window. **Generate two variants per block and keep the
+better one — then rewrite rather than re-roll.** At ~1.45 a take, re-rolling is
+cheap against a failed assembly but is not free: the Suwen 13 trailer spent **33
+takes on 7 blocks for ~47.7 credits**, a 4.7× re-take rate, and that run's own
+diagnosis was that the word budgets were wrong rather than the service noisy. If
+two or three re-rolls miss the same way, the line is the problem and no further
 roll will fix it.
 
 ### Dead air is no longer the failure it was

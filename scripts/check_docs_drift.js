@@ -33,8 +33,10 @@
 //                            durations, so they cannot exist before the takes.
 //   4. Annotation match    — the tree's inline "RENDERED" / "pre-render" note
 //                            agrees with what the document itself declares.
-//   5. Script listing      — every script in scripts/ appears in the tree. A
-//                            tool nobody knows about is a tool nobody runs.
+//   5. Script + skill      — every script in scripts/ and every skill under
+//      listing               .claude/skills/ appears in the tree. A tool nobody
+//                            knows about is a tool nobody runs, and a skill the
+//                            tree omits is standing instructions nobody loads.
 //
 // Exits non-zero on any drift, and prints the correction rather than only the
 // complaint — this check is meant to be fixed, not silenced. Unlike
@@ -48,6 +50,7 @@ const REPO = path.resolve(__dirname, "..");
 const CLAUDE_MD = path.join(REPO, "CLAUDE.md");
 const OUTPUT_DIR = path.join(REPO, "output");
 const SCRIPTS_DIR = path.join(REPO, "scripts");
+const SKILLS_DIR = path.join(REPO, ".claude", "skills");
 
 // inner-canon-<book><chapter>-<descriptor>.md — the descriptor is left loose on
 // purpose so audits and reviews (…-trailer-block-audit.md) are recognised as
@@ -175,11 +178,19 @@ function main() {
         fix: `node scripts/build_subtitles.js ${rel}`,
       });
     }
-    if (status === "pre-render" && missing.length === 0) {
+    // A pre-render cut should carry NEITHER sidecar. Testing `missing.length
+    // === 0` only caught the both-present case and let a half-built pair
+    // through — build_subtitles.js writes the two together, so one on its own
+    // means a partial write or a hand-deleted file, which is worth surfacing.
+    if (status === "pre-render" && missing.length < 2) {
+      const present = [".srt", ".vtt"].filter((ext) => fs.existsSync(stem + ext));
       problems.push({
         rel,
-        what: "declares itself pre-render but carries both sidecars",
-        fix: "sidecars come from take durations — update the header if it has in fact rendered",
+        what:
+          missing.length === 0
+            ? "declares itself pre-render but carries both sidecars"
+            : `declares itself pre-render but carries ${present.join(" and ")}`,
+        fix: "sidecars come from take durations — update the header if it has in fact rendered, or remove the stray sidecar",
       });
     }
 
@@ -201,7 +212,11 @@ function main() {
     }
   }
 
-  // ── 5: every script is documented ─────────────────────────────────────
+  // ── 5: every script and every skill is documented ─────────────────────
+  // Skills are checked by path, not basename: they are all called SKILL.md, so
+  // a basename test would pass on any one of them being listed. This gap is not
+  // hypothetical — drive-context-memory was added to the tree by hand, and
+  // nothing would have noticed if it had not been.
   for (const full of walk(SCRIPTS_DIR).filter((f) => f.endsWith(".js"))) {
     const name = path.basename(full);
     if (!tree.includes(name)) {
@@ -209,6 +224,17 @@ function main() {
         rel: path.relative(REPO, full),
         what: "not listed in the CLAUDE.md Structure tree",
         fix: `add "${path.relative(REPO, full)}" to the tree with a one-line note on what it does`,
+      });
+    }
+  }
+  for (const full of walk(SKILLS_DIR).filter((f) => f.endsWith(".md"))) {
+    const rel = path.relative(REPO, full);
+    const treePath = rel.replace(/^\.claude\//, "");
+    if (!tree.includes(treePath)) {
+      problems.push({
+        rel,
+        what: "skill not listed in the CLAUDE.md Structure tree",
+        fix: `add "${treePath}" to the tree, and give it a row in § Which file wins if it carries standing instructions`,
       });
     }
   }
