@@ -110,11 +110,18 @@ give the repo a second data point.
 > for 1.3 credits** and that was the cheapest part of the run by an order of
 > magnitude. It also cuts a longform's voice line from ~91 credits to ~10.
 
-**The old derivation, kept because the arithmetic is still the only check on the
-clip price.** Seven Draft-tier clips account for 70 of the 75.6, the style key was
-reused at 0, and no subtitles were burned — leaving 5.6 across seven takes. Since
-takes actually cost 0.7 of that, **~4.9 credits of that delta are unexplained** and
-the clip price is the only figure in it worth trusting.
+**The old derivation, and why it no longer supports the clip price either.** The
+v3 delta was read as 70 for seven Draft clips plus 5.6 across seven takes, style
+key reused at 0. Takes actually cost 0.7, so **~4.9 credits are unexplained** —
+and the 10/clip figure was never independently measured, it was what remained
+after subtracting a take price that turns out to be 8× too high. Run the same
+subtraction now and seven clips absorb 74.9, or **10.7 each**.
+
+**So 10/clip is a price-list figure, not a measured one.** Treat it as the
+step-0 shortlist's quote and confirm it with a live `get_cost` on the actual
+configuration, which step 0 already requires. What the arithmetic does establish
+is that clips dominate the bill by two orders of magnitude over voice; it does not
+pin the per-clip number to the tenth.
 
 **The second run, v5, spent ~80 from a starting balance of 862.6** — 70 for the
 same seven Draft clips and 0 for a reused style key. Its record attributed ~10 to

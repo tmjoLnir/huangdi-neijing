@@ -18,6 +18,8 @@ output/<book>/ch<N>/     production documents, one folder per chapter
 assets/                  character style-key art
 docs/                    chapter slate, publish sequence, compliance audit
 scripts/                 subtitle sidecar builder + caption-fit checker
+.claude/skills/          the two procedure skills (see below)
+.claude/hooks/           session-start install of ffmpeg, the Anton font and wick
 ```
 
 `<book>` is `suwen` or `lingshu`, and `<N>` is the chapter's number **within that
@@ -41,10 +43,18 @@ table — read the report, not the status.
 
 ## Where the rules live
 
+Three files carry standing instructions, and each owns its subject outright — where
+two touch the same thing, the owner is normative and the others point at it.
+`CLAUDE.md` § *Which file wins* is the authoritative table.
+
 - **`CLAUDE.md`** — policy: the cast, the compliance rules, the production-document
   layout, what ships as a deliverable, git conventions.
-- **`.claude/skills/higgsfield-production/SKILL.md`** — procedure and measurements:
-  order of operations, model names and parameters, prices, per-voice words/second,
-  block geometry, and the failure modes that have already cost a paid re-render.
+- **`.claude/skills/higgsfield-production/SKILL.md`** — generation procedure and
+  measurements: order of operations, model names and parameters, prices, per-voice
+  words/second, block geometry, and the failure modes that have already cost a paid
+  re-render.
+- **`.claude/skills/drive-context-memory/SKILL.md`** — cross-session memory held as
+  immutable snapshots in Google Drive: the folder IDs, the call shapes, and the read
+  path that silently corrupts a snapshot without erroring.
 
-Read both before generating anything.
+Read `CLAUDE.md` and the Higgsfield skill before generating anything.

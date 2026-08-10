@@ -35,7 +35,7 @@ README.md
 .gitignore                                  # renders out, .srt/.vtt deliberately kept in
 .gitattributes                              # LF everywhere; media and art marked binary
 .claude/
-  settings.json                             # Bash + Higgsfield MCP permission lists, SessionStart hook
+  settings.json                             # Bash + Higgsfield + Drive permission lists, SessionStart hook
   hooks/session-start.sh                    # reinstalls ffmpeg, the Anton font and wick on the ephemeral host
   skills/higgsfield-production/SKILL.md     # the house generation pipeline
   skills/drive-context-memory/SKILL.md      # cross-session memory, held in Google Drive
@@ -126,7 +126,7 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the reference for the shape; see the caveat below on what it cannot show you.
+  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. **Model this section on a cut that actually shipped one** — `output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md` or `output/suwen/ch8/inner-canon-suwen8-trailer-v1.md`, whose finishing passes were executed rather than planned. The pre-render v1 shows the section order but has no real timings in it.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
@@ -304,10 +304,10 @@ Two things are policy, and are this file's:
   record, which is tracked and reviewed. Drive memory is for what `.gitignore`
   deliberately excludes: the render archive index (MP4s are never committed and
   CDN links expire), spend accumulated across sessions, and working preferences.
-- **Drive memory never holds policy.** It is not a third copy of this file or of
-  a skill. The two-file split above has already drifted where it was duplicated;
-  a third copy in a folder no review ever opens is worse, because nothing brings
-  it back into agreement. Point at the owner, do not restate it.
+- **Drive memory never holds policy.** It is not a fourth copy of this file or of
+  a skill. The three-file split above has already drifted wherever it was
+  duplicated; another copy in a folder no review ever opens is worse, because
+  nothing brings it back into agreement. Point at the owner, do not restate it.
 
 Reading and writing memory is reversible, generates nothing and spends no
 credits, so it sits outside the Prompt cleaner gate below.
