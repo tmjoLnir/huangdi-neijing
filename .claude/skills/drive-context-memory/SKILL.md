@@ -168,9 +168,10 @@ reviewed. A snapshot holds what git deliberately excludes:
 Snapshot written <ISO8601>. Newest file in this folder wins.
 
 ## Render archive
-<chapter/cut> → <Drive file ID or path>, archived <date>
+<chapter/cut> → <where it actually is>, archived <date>
 # MP4s are gitignored and CDN links expire; this index is the only
-# durable pointer to a finished render.
+# durable pointer to a finished render. Name a place someone can go:
+# a Drive file ID, or a machine and path. "Archived" alone is not a pointer.
 
 ## Credit spend across sessions
 <date> → <cut>, <credits>, running total
@@ -184,9 +185,21 @@ Snapshot written <ISO8601>. Newest file in this folder wins.
 
 **Renders themselves do not go through this tool.** `create_file` takes content
 inline as base64 — viable for a snapshot, not for a several-hundred-megabyte MP4.
-Archive those by hand through the Drive UI or a desktop client, and record the
-resulting file ID in the index above. The index is the deliverable here; the
-media is not.
+Archiving is therefore always a manual act, and **the index is the deliverable
+here; the media is not.**
+
+**Do not assume the archive is in Drive.** In practice it is not: both renders
+archived as of 2026-08-10 live on the operator's local drive, and the connected
+Drive account holds no video at all. Two consequences worth carrying:
+
+- **Record a place, not a status.** A Drive file ID, or a machine and a path.
+  *Archived* on its own is the entry that looks complete and helps nobody once
+  the CDN link has lapsed.
+- **A local archive cannot be verified from here, and is trusted rather than
+  checked.** A session can confirm a Drive file still exists; it can say nothing
+  about a file on a machine it has never touched. When the CDN link expires that
+  local copy becomes the only copy of a paid render, so the index entry is the
+  whole safety net — and a stale one fails silently.
 
 ## Context economy — checkpointing a long session
 
