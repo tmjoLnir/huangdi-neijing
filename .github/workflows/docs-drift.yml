@@ -1,0 +1,49 @@
+# Asserts that CLAUDE.md and README.md still describe this repository, on every
+# pull request into claude/main and on every push to it.
+#
+# Why this exists: check_docs_drift.js was written after three claims in
+# CLAUDE.md were found false at once, and until now the only thing that ran it
+# was somebody remembering to. CLAUDE.md is loaded into every session in full,
+# so a wrong line in it is read far more often than it is written — which makes
+# it exactly the kind of claim worth gating rather than trusting to habit. The
+# drift it catches is also the cheapest possible thing to fix before a merge and
+# among the more annoying afterwards, since the wrong line is by then already
+# being read by every session.
+#
+# check_caption_fit.js is deliberately NOT run here. It exits non-zero on any
+# document with no narration table — every translation, audit and review — so it
+# reports a readability signal rather than a pass/fail and cannot be gated on.
+# check_docs_drift.js takes no arguments and a clean repo really does exit 0.
+#
+# No install step: scripts/ is plain Node stdlib with no package.json, so there
+# is nothing to fetch and no lockfile to cache.
+#
+# Read-only, by design. This workflow reports drift; it never pushes a fix.
+# `node scripts/check_docs_drift.js --fix` applies the mechanical corrections,
+# and it is run by a person who then reads the diff.
+
+name: docs drift
+
+on:
+  pull_request:
+    branches: [claude/main]
+  push:
+    branches: [claude/main]
+
+# A branch that gets three pushes in a minute only needs the last one checked.
+concurrency:
+  group: docs-drift-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/check_docs_drift.js
