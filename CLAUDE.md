@@ -63,6 +63,8 @@ output/
     ch28/inner-canon-lingshu28-longform-v2.md       # pre-render
     ch28/inner-canon-lingshu28-translation-v1.md
     ch28/inner-canon-lingshu28-translation-v2.md
+    ch43/inner-canon-lingshu43-trailer-v1.md        # pre-render
+    ch43/inner-canon-lingshu43-longform-v1.md       # pre-render
   # Every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
   # pre-render cut has none yet — build them once the voice takes exist.
