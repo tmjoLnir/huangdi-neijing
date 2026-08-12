@@ -98,18 +98,37 @@ available to check an estimate against. **Its cut document is gone from `output/
 so the figure lives here now**; the next rendered cut should log its own spend and
 give the repo a second data point.
 
-> **⚠ `seed_audio` BILLS BY LENGTH. Budget 1.3–1.7 per take. Corrected 2026-08-10.**
-> A real narration line costs **1.3 credits at 34 words and 1.7 at 50** — live
-> `get_cost` on the Suwen 13 trailer's actual text. **This figure has now been got
-> wrong twice in a row and in opposite directions**, so read the history before
-> quoting any of it:
+> **⚠ `seed_audio` BILLS BY LENGTH. Budget 1.5 per narrator take, 2.0 for Zane.
+> Re-verified 2026-08-12.** Live `get_cost` on Arthur at `speech_rate: 55`, across
+> the whole usable range:
+>
+> | Words | Credits | Why this length matters |
+> |---|---|---|
+> | 13 | **0.5** | the convenient short probe — reproduces the old wrong answer exactly |
+> | 34 | **1.3** | the 2026-08-10 figure, still correct |
+> | 41 | **1.5** | **mid of Arthur's current 38–44 window — budget on this** |
+> | 50 | **2.0** | top of Zane's 47–52 window |
+>
+> **The top of the range has moved: 50 words was 1.7 on 2026-08-10 and prices at
+> 2.0 today**, ~18% up, while 34 words did not move at all. So the cheap end is
+> stable and the expensive end is drifting — re-price the *long* lines, not the
+> short ones, before a run with character voices in it.
+>
+> **1.45/take is now too low for the current word budgets.** It was derived when
+> Arthur was written at 31–34 words; his re-measured window is **38–44**, which
+> prices at ~1.5, and Zane's 47–52 prices at ~2.0. A six-block all-narrator trailer
+> is **~9 credits of voice**, not 8.7.
+>
+> **This figure has now been got wrong three times, in both directions**, so read
+> the history before quoting any of it:
 >
 > | Claim | Source | Status |
 > |---|---|---|
 > | 0.8/take | ch1 v3 balance delta ÷ 7 takes | **wrong** — derivation, never priced |
-> | 0.5/take | Lingshu 28 v2 `get_cost` on a **13-word probe** | **wrong** — actual was ~1.34 |
-> | 0.1/take | Suwen 8 `get_cost` on a **short probe** | **wrong by 13–17×** |
-> | **1.3–1.7/take** | Suwen 13 `get_cost` on **the shipped lines** | **use this** |
+> | 0.5/take | Lingshu 28 v2 `get_cost` on a **13-word probe** | **wrong** — and 2026-08-12 reproduced 0.5 on 13 words exactly, so the probe was right and the *inference* was wrong |
+> | 0.1/take | Suwen 8 `get_cost` on a **short probe** | **wrong by 13–20×** |
+> | 1.3–1.7/take | Suwen 13 `get_cost` on **the shipped lines** | superseded — top end is 2.0 now |
+> | **1.5 narrator / 2.0 Zane** | 2026-08-12 sweep across 13/34/41/50 words | **use this** |
 >
 > **The Lingshu 28 v2 record already diagnosed this exactly** — *"`seed_audio` bills
 > by length, and a short probe string under-prices the run. Cost a
@@ -117,10 +136,13 @@ give the repo a second data point.
 > priced a short probe and wrote 0.1 into this file. **Do not preflight voice on a
 > convenient string.**
 >
-> **Voice is no longer a rounding error on a longform.** At 1.45/take a 96-block
-> episode is **~140 credits for a first pass**, and at a realistic re-take rate
-> **300–500** — not the ~10 this file used to claim. It is still far below the clip
-> bill, but it is now a line item rather than noise.
+> **Voice is no longer a rounding error on a longform.** At 1.5/take a 114-block
+> episode is **~171 credits for a first pass**, ~340 at the two-variants-per-block
+> working method, and **~800 at the Suwen 13 trailer's observed 4.7× re-take rate**
+> — not the ~10 this file used to claim. It is still below the clip bill, but at
+> the top of that range it exceeds the entire current balance. (Earlier revisions
+> costed this at 96 blocks; the longform preflight below uses 114, and 114 is the
+> figure to carry.)
 >
 > **Re-takes are cheap relative to a failed assembly, not free.** The Suwen 13
 > trailer spent **33 takes on 7 blocks for ~47.7 credits** — a 4.7× re-take rate
@@ -156,9 +178,15 @@ come in high — the Lingshu 28 v2 run did exactly that, at 103.4 actual against
 
 ## 0. Model + tier gate — cost it, then confirm
 
-**Default: `seedance_2_0_mini` at 480p** — set by the user 2026-07-31. 10
-credits/clip, ~66 for a 6-block trailer, and it takes the style key as a true
-`image_references` input, which is the one thing the house look requires.
+**Default: `seedance_2_0_mini` at 480p** — set by the user 2026-07-31, price
+re-verified 2026-08-12. 10 credits/clip, **~71 for a 6-block trailer** (~82.5 with
+the end-card block), and it takes the style key as a true `image_references`
+input, which is the one thing the house look requires.
+
+> **⚠ 480p is the *house* default, not the *model* default.** `seedance_2_0_mini`
+> defaults to **720p** when `resolution` is omitted — so a call that leaves it out
+> silently bills **25/clip instead of 10**, and a six-block trailer costs ~161
+> instead of ~71. Pass `resolution` explicitly on every clip.
 
 This replaces `gemini_omni`, which earlier cuts used. `gemini_omni` is the
 *incumbent*, not the standard, and at 30 credits/clip it costs 3× the default for
@@ -167,7 +195,7 @@ a 720p ceiling. Do not carry it forward out of habit.
 **480p is a step down from the 720×1280 the earlier cuts shipped.** For a draft
 pass that is the point. Before publishing a 480p cut as a final Shorts/Reels
 deliverable, say so and get an explicit yes — the same model at 720p is 25/clip
-(~156/cut) and keeps the draft's look, so it is the natural full-render tier.
+(~161/cut) and keeps the draft's look, so it is the natural full-render tier.
 Whichever ships, record the actual resolution at the top of the document.
 
 Before generating anything on a new cut, do all five:
@@ -200,8 +228,8 @@ surface on 2026-08-04**, with no deprecation shim, no fallback assembler and no
 warning. It was simply not there when assembly was reached. Assume any tool below can go
 the same way, and note where the damage lands: **the credits are spent in steps
 1–3, and the tool that goes missing may be step 4's.** Six blocks of clips and
-takes is ~66 credits that then cannot be assembled, refunded, or carried to
-another pipeline — and a longform run puts ~1,145 credits behind the same bet.
+takes is ~71 credits that then cannot be assembled, refunded, or carried to
+another pipeline — and a longform run puts ~1,140 credits behind the same bet.
 
 The check is free and takes one call. Run it *before* the cost preflight, so a
 missing tool is found before the user approves a spend that cannot complete.
@@ -300,7 +328,7 @@ They are different jobs, not quality settings:
 |---|---|---|
 | Purpose | Prove blocking, pacing, narration-against-picture, and the compliance read | The deliverable |
 | Model | `seedance_2_0_mini` (default) | `seedance_2_0_mini` — same model, so the draft predicts the render |
-| Resolution | **480p** — 10/clip, ~66/cut | **720p** — 25/clip, ~156/cut |
+| Resolution | **480p** — 10/clip, ~71/cut | **720p** — 25/clip, ~161/cut |
 | Subtitles | **`anton`, always** — the draft is the caption check | **`anton`, always** |
 | Output | never published, never linked as the final video | the cut |
 
@@ -319,8 +347,14 @@ trip the safety filter, a shot list nobody has seen moving.
 
 ### Clip model shortlist
 
-Measured 2026-07-31 at 10s / 9:16 / native audio off. **Re-preflight before
-quoting these to anyone** — this is a snapshot, not an API.
+Re-measured **2026-08-12** by live `get_cost` at 10s / 9:16 / native audio off.
+**Re-preflight before quoting these to anyone** — this is a snapshot, not an API.
+
+**Not one clip price moved between 2026-07-31 and 2026-08-12.** Every figure the
+previous snapshot carried came back exact. What changed is *which models exist*:
+five reference-capable models were missing from this table, and one was
+misfiled as unusable. Prices here are stable; **coverage is what goes stale**, so
+re-run `models_explore` — not just `get_cost` — before trusting the shortlist.
 
 The binding constraint is not price. It is the **reference role**:
 
@@ -332,27 +366,65 @@ The binding constraint is not price. It is the **reference role**:
 
 | Model | Ref role | Res | Credits/clip | 6-block cut | Notes |
 |---|---|---|---|---|---|
-| **`seedance_2_0_mini`** | `image_references` | **480p** | **10** | **~66** | **← house default / draft tier** |
-| `seedance_2_0` | `image_references` | 480p fast | 15 | ~96 | draft, better motion |
-| **`seedance_2_0_mini`** | `image_references` | **720p** | **25** | **~156** | **← full-render tier** |
-| `wan2_6` | `image_references` | 720p | 25 | ~156 | stylized/experimental |
-| `gemini_omni` | `image_references` | 720p | **30** | **~186** | incumbent; 720p ceiling |
-| `seedance_2_0` | `image_references` | 720p fast | 35 | ~216 | |
-| `seedance_2_0` | `image_references` | 720p std | 45 | ~276 | |
-| `wan2_6` | `image_references` | 1080p | 40 | ~246 | breaks the 720p house res |
-| `seedance_2_0` | `image_references` | 1080p std | 90 | ~546 | |
-| `cinematic_studio_3_0` | `image` | 480p / 720p | 35 / 50 | ~216 / ~306 | role is `image`, not verified as true reference |
+| **`seedance_2_0_mini`** | `image_references` | **480p** | **10** | **~71** | **← house default / draft tier** |
+| `wan3_0` | `image_references` | 480p | **12.5** | ~86 | cheapest alternative to the default |
+| `seedance_2_0` | `image_references` | 480p fast | 15 | ~101 | draft, better motion |
+| **`seedance_2_0_mini`** | `image_references` | **720p** | **25** | **~161** | **← full-render tier** |
+| `wan2_6` | `image_references` | 720p | 25 | ~161 | stylized/experimental; **no audio-off switch** |
+| `wan3_0` | `image_references` | 720p | 25 | ~161 | |
+| `grok_video_v15` | `image_references` | 480p | 25 | ~161 | declares **no aspect-ratio list** — 9:16 unverified |
+| `gemini_omni` | `image_references` | 720p | **30** | **~191** | incumbent; 720p ceiling; **no audio-off switch** |
+| `seedance_2_5` | `image_references` | 480p | 30 | ~191 | needs `mode: "omni_reference"`; **3× the default** |
+| `seedance_2_0` | `image_references` | 720p fast | 35 | ~221 | |
+| `cinematic_studio_3_0` | `image` | 480p | 35 | ~221 | role is `image`, not verified as true reference |
+| `wan2_6` | `image_references` | 1080p | 40 | ~251 | breaks the 720p house res |
+| `minimax_h3` | `image_references` | **2K only** | 40 | ~251 | no lower tier exists |
+| `seedance_2_0` | `image_references` | 720p std | 45 | ~281 | |
+| `grok_video_v15` | `image_references` | 720p | 45 | ~281 | |
+| `cinematic_studio_3_0` | `image` | 720p | 50 | ~311 | |
+| `wan3_0` | `image_references` | 1080p | 55 | ~341 | |
+| `flux_3_video` | `image_references` | 720p | 55 | ~341 | |
+| `seedance_2_5` | `image_references` | 720p | 65 | ~401 | |
+| `seedance_2_0` | `image_references` | 1080p std | 90 | ~551 | |
+| `flux_3_video` | `image_references` | 1080p | 90 | ~551 | |
+| `cinematic_studio_3_0` | `image` | 1080p | 100 | ~611 | |
+| `seedance_2_0` | `image_references` | 4k std | 220 | ~1,331 | |
+
+**`seedance_2_5` is the service's own recommended default, and it is the wrong
+default for this repo.** The MCP tool description now names it for "general
+text-to-video and multimodal reference consistency" — but at 480p it is 30/clip
+against the house model's 10, for a cut nobody has proven looks better. It needs
+`mode: "omni_reference"` before it reads the style key as a reference at all; on
+the default `mode: "t2v"` the `medias[]` are ignored. Do not adopt it because a
+tool description called it the default.
+
+**`wan3_0` at 12.5 is the only genuinely new budget option** — a true
+`image_references` model 2.5 credits above the house default, with a 1080p tier
+the mini does not have. Untried here; treat it as a one-clip experiment under the
+step-0 "little history" rule, not a swap.
 
 Costed but **not viable here** — they take `start_image` only, so the style key
-would become frame 1 rather than a style reference: `kling3_0` (15), `kling3_0_turbo`
-(15), `minimax_hailuo` (11), `happy_horse_video` (25), `veo3_1` (22), `grok_video_v15`.
-Also duration-incompatible with the fixed 10s block: `veo3_1_lite` (8 credits, but
-4/6/8s only), `seedance1_5` (4/8/12s), `veo3` (no duration control).
+would become frame 1 rather than a style reference: `kling3_0` (15 with
+`sound: "off"`, 20 with sound on), `kling3_0_turbo` (15), `minimax_hailuo` (11),
+`happy_horse_video` (25), `wan2_7` (15), `kling2_6`, `grok_video`.
+
+Also **duration-incompatible** with the fixed 10s block: `veo3_1` (22, and 4/6/8s
+only — so it fails on both counts), `veo3_1_lite` (8, 4/6/8s only), `seedance1_5`
+(4/8/12s), `cinematic_studio_video_v2` (3–12s, and `image` role), `veo3` (no
+duration control at all).
 
 Fixed costs per 6-block trailer, independent of clip model: style key **2**
-(`nano_banana_pro`, 1k), voiceover **~1.45/take** ≈ 8.7 for six blocks, assembly
-free. **≈10.7 credits** — so the clip bill *is* the preflight, and the fixed side rounds to
-nothing.
+(`nano_banana_pro`, 1k — verified), voiceover **~1.5/take** ≈ 9 for six narrator
+blocks, assembly free, captions free. **≈11 credits**, and the `6-block cut`
+column above already includes it. The clip bill still dominates, but 11 is no
+longer a rounding error the way the old ≈10.7-on-a-+6-column arithmetic implied —
+**every row of the old table understated its cut total by exactly 5 credits.**
+
+**That column counts six blocks and does *not* include the end-disclaimer card.**
+`CLAUDE.md` requires the card as its own 10s block carrying its own take, so a cut
+that ships one is **seven** blocks: add one clip price plus ~1.5. At the 480p
+default that is **~82.5, not ~71** — and the historical 7-clip/7-take runs in this
+file are seven blocks for exactly that reason.
 
 **The 0.05/voiced-block subtitle charge is gone** — it was the server-burn path's
 fee, and captions are now burned locally for free. Budget 0.3 less per 6-block
@@ -362,6 +434,21 @@ trailer than the pre-2026-08-04 records show.
 and `cinematic_studio_video*` default `sound: on`, and `wan`/`grok`/`gemini_omni`
 generate audio natively. Pass `generate_audio: false` (or the model's equivalent)
 on every clip.
+
+> **⚠ Two models in the shortlist have no audio-off switch at all. Verified
+> 2026-08-12.** `wan2_6` and `gemini_omni` expose **no** `generate_audio` or
+> `sound` parameter in `models_explore` — there is no "model's equivalent" to
+> pass. Given the LEVEL LAW below, a clip from either **will carry its native
+> audio into the finished cut** and cannot be silenced at generation time. That is
+> a disqualifier for a narrated cut, not a preference: treat both as unusable
+> here until a run proves otherwise, and prefer `wan3_0`, which does expose the
+> flag, over `wan2_6`.
+>
+> **The flag is free on `seedance_*` and only sometimes a saving elsewhere.**
+> Measured: `seedance_2_0_mini` 480p costs **10 either way**, `seedance_2_5` 480p
+> **30 either way** — audio off buys correctness, not credits. But `kling3_0` is
+> **15 with `sound: "off"` against 20 with it on**. So "audio off saves money" is
+> false on the house model and true on Kling; never generalise the direction.
 
 **This is a correctness requirement, not just a saving.** `assemble_final.sh`'s
 LEVEL LAW *keeps* the clips' diegetic audio, ducked under the voice at **0.12**
@@ -598,7 +685,7 @@ keepers plus block 5's fourteen attempts — he ran **3.04 w/s** against a passi
 rate then measured at 3.65, because a block passes on the roll that comes back
 fast. A line drafted at the table rate is sized for the fast mode and will
 regularly come back over the ceiling. v5's block 5 took **fourteen attempts** to
-land one take in the window — which at the corrected ~1.45/take is ~20 credits, so
+land one take in the window — which at the corrected ~1.5/take is ~21 credits, so
 **re-rolling is cheap and the table is a starting point, not a target.**
 
 **Re-measure with `speech_metrics.sh` before committing a full cut to these
@@ -1372,32 +1459,38 @@ before a full run**, because it's ~110 clips to get wrong.
 
 Run the step-0 gate and multiply by ~114 blocks before anything else. **That
 includes the tool-availability check** — the same single call, now standing in
-front of the ~1,145-credit floor below rather than a trailer's ~66. At the 2026-07-31
-snapshot prices, the model choice is the difference between a cut you can afford
-and one you cannot:
+front of the ~1,313-credit floor below rather than a trailer's ~71. At the
+2026-08-12 verified prices, the model choice is the difference between a cut you
+can afford and one you cannot:
 
-The balance column below is anchored to **~782 credits**, the figure implied by
-the last two recorded runs (938.2 → 862.6 on v3, then ~80 on v5). It has not been
-re-read since. **Call `balance` and recompute** — this column is arithmetic on a
-stale number, not a live figure.
+The balance column below is anchored to **343.2 credits, read live 2026-08-12**
+(plan: `ultra`). The previous anchor was ~782, inferred from two old runs and never
+re-read — it was **2.3× too high**, so every multiple in this table used to look
+half as bad as it was. **Call `balance` and recompute anyway**; this is a snapshot
+that decays the moment anything renders.
 
-| Clip model / tier | Credits/clip | ~114 blocks | vs ~782 balance |
+Totals are the whole cut — clips + ~171 of voice (114 takes at ~1.5) + 2 for the
+style key — not clips alone, which is how the old column understated them.
+
+| Clip model / tier | Credits/clip | ~114 blocks, all-in | vs 343.2 balance |
 |---|---|---|---|
-| `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,145** | over budget |
-| `seedance_2_0_mini` 720p (default, full) | 25 | ~2,855 | ~3.6× balance |
-| `gemini_omni` 720p | 30 | ~3,425 | ~4.4× balance |
-| `seedance_2_0` 1080p | 90 | ~10,265 | ~13× balance |
+| `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,313** | **~3.8× balance** |
+| `wan3_0` 480p | 12.5 | ~1,598 | ~4.7× balance |
+| `seedance_2_0_mini` 720p (default, full) | 25 | ~3,023 | ~8.8× balance |
+| `gemini_omni` 720p | 30 | ~3,593 | ~10.5× balance |
+| `seedance_2_0` 1080p | 90 | ~10,433 | ~30× balance |
 
 **A full-length episode does not currently fit in the credit balance at any
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision
 before starting: top up, cut the runtime, or produce act by act across billing
 periods. Assembly stays free, and **captions are now free too** — the 0.05/voiced
 block charge went with the server-burn path, taking ~11.4 credits off the old
-episode estimate. Voice takes are **~1.45 each — about 140 credits for a whole
+episode estimate. Voice takes are **~1.5 each — about 171 credits for a 114-block
 episode**, paid once and reused. Clips still dominate, but voice is now a real line
-item rather than noise: **at the Suwen 13 trailer's 4.7× re-take rate a 114-block
-episode's voice bill is 300–500 credits**, which is 30–50 clips' worth and has to
-appear in the preflight. **Size the script to the corrected step-3 budgets before
+item rather than noise: at the two-variants-per-block working method that is ~340,
+and **at the Suwen 13 trailer's 4.7× re-take rate a 114-block episode's voice bill
+is ~800 credits** — 80 clips' worth at the default tier, and more than twice the
+whole current balance on its own. It has to appear in the preflight. **Size the script to the corrected step-3 budgets before
 generating any takes** — that re-take rate was caused by wrong word budgets, not by
 service noise, and it is the cheapest thing on this page to avoid.
 
