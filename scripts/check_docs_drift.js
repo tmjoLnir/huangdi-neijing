@@ -23,7 +23,9 @@
 //
 //   1. Tree completeness   — every cut document under output/ appears in the
 //                            CLAUDE.md Structure tree, and the tree names no
-//                            document that does not exist.
+//                            document — nor sidecar — that does not exist. The
+//                            sidecar half arrived late and was not cosmetic: the
+//                            --fix note below says what its absence cost.
 //   2. Book/chapter match  — a file's own name agrees with the folder holding
 //                            it. Suwen 28 and Lingshu 28 are different chapters;
 //                            this is the collision the two-book layout exists to
@@ -66,6 +68,13 @@
 //              is finished, not a stub.
 //   applied    a tree entry naming a document that no longer exists (removed —
 //              the filesystem is the source of truth for what exists).
+//   applied    the "<cut>.srt/.vtt" sidecar line beside it — but only when the
+//              cut document is gone too. This one is here because it was missing:
+//              a rendered cut occupies TWO tree lines, --fix removed only the
+//              document line, and the run then reported "No drift remains" over a
+//              CLAUDE.md still naming two deleted files. That is precisely the
+//              silenced-but-incomplete outcome this section exists to rule out,
+//              produced by the tool that promises it.
 //   applied    a tree annotation that disagrees with its document (the document
 //              wins; any prefix on the comment is preserved).
 //
@@ -76,6 +85,10 @@
 //              third bullet is the same silencing.
 //   reported   a book/chapter mismatch (needs a git mv) and a missing or stray
 //              sidecar (needs real take durations, or a corrected header).
+//   reported   a sidecar line whose files are missing while the cut document is
+//              still there. Those sidecars are a build to re-run — check 3 prints
+//              the command — so dropping the line would delete a true statement
+//              about a cut that still needs it.
 //   reported   everything in README.md. Every README claim this script checks is
 //              prose, and prose is not mechanically repairable.
 //
@@ -264,7 +277,9 @@ function applyFix(lines, a) {
     const i = findTreeLine(lines, bounds, a.name);
     if (i === -1) return null;
     lines.splice(i, 1);
-    return `− dropped "${a.name}" from the tree; no such file under output/`;
+    // Phrased for both callers: a document name, and a "<cut>.srt/.vtt" line
+    // that stands for two files.
+    return `− dropped "${a.name}" from the tree; nothing under output/ matches it`;
   }
 
   if (a.kind === "annotate") {
@@ -328,7 +343,8 @@ function collect() {
   const layout = layoutBounds ? blockText(readmeLines, layoutBounds) : null;
 
   const problems = [];
-  const docs = walk(OUTPUT_DIR).filter((f) => f.endsWith(".md"));
+  const allFiles = walk(OUTPUT_DIR);
+  const docs = allFiles.filter((f) => f.endsWith(".md"));
   const skills = walk(SKILLS_DIR).filter((f) => f.endsWith(".md"));
   // A skill's entry point, as opposed to any reference/ material beside it.
   const skillDocs = skills.filter((f) =>
@@ -405,7 +421,9 @@ function collect() {
   }
 
   // ── phantom entries: the tree naming something that does not exist ─────
-  const real = new Set(docs.map((f) => path.basename(f)));
+  // Built from every file under output/, not only the .md documents, because the
+  // tree names the sidecars too.
+  const real = new Set(allFiles.map((f) => path.basename(f)));
   for (const named of tree.match(/inner-canon-[a-z0-9-]+\.md/g) || []) {
     if (!real.has(named)) {
       problems.push({
@@ -415,6 +433,36 @@ function collect() {
         apply: { kind: "remove", name: named },
       });
     }
+  }
+
+  // A rendered cut's two sidecars share one tree line, written
+  // "<cut>.srt/.vtt". Until this loop existed nothing checked them in either
+  // direction — the scan above matches ".md" only — and that gap cost more than
+  // an unnoticed stale line. Deleting a rendered cut left --fix removing the
+  // document line, finding nothing else to say, and printing "No drift remains"
+  // over a tree still naming two files that were gone: exactly the
+  // silenced-but-wrong CLAUDE.md the --fix contract at the top of this file
+  // promises never to produce.
+  //
+  // Whether the line may be auto-removed turns on the cut document. Gone too →
+  // the entry is dead and removing it is the complete correction. Still there →
+  // the sidecars are a build to re-run, not an entry to delist; check 3 above
+  // already prints that command, and splicing the line out here would make
+  // CLAUDE.md less true while silencing nothing.
+  for (const [entry, stem] of tree.matchAll(/(inner-canon-[a-z0-9-]+)\.srt\/\.vtt/g)) {
+    const missing = [".srt", ".vtt"].filter((ext) => !real.has(stem + ext));
+    if (!missing.length) continue;
+    const docGone = !real.has(`${stem}.md`);
+    problems.push({
+      rel: "CLAUDE.md",
+      what: `tree lists "${entry}", but ${missing.join(" and ")} ${
+        missing.length > 1 ? "do" : "does"
+      } not exist under output/`,
+      fix: docGone
+        ? "remove the entry — the cut document it belongs to is gone as well"
+        : "the cut document is still here, so rebuild rather than delist: node scripts/build_subtitles.js <the cut>.md",
+      apply: docGone ? { kind: "remove", name: entry } : null,
+    });
   }
 
   // ── 3 & 4: render status against sidecars, and against the tree note ───
