@@ -46,6 +46,8 @@ output/
     ch8/inner-canon-suwen8-trailer-v1.md            # RENDERED 2026-08-09, draft tier
     ch8/inner-canon-suwen8-trailer-v1.srt/.vtt      # sidecars, tracked
     ch8/inner-canon-suwen8-longform-v1.md           # pre-render
+    ch12/inner-canon-suwen12-trailer-v1.md          # pre-render
+    ch12/inner-canon-suwen12-longform-v1.md         # pre-render
     ch13/inner-canon-suwen13-trailer-v1.md          # RENDERED 2026-08-10, draft tier
     ch13/inner-canon-suwen13-trailer-v1.srt/.vtt    # sidecars, tracked
     ch13/inner-canon-suwen13-longform-v1.md         # pre-render
@@ -71,6 +73,8 @@ output/
     ch43/inner-canon-lingshu43-longform-v1.md       # pre-render
     ch77/inner-canon-lingshu77-trailer-v1.md        # pre-render
     ch77/inner-canon-lingshu77-longform-v1.md       # pre-render
+    ch50/inner-canon-lingshu50-trailer-v1.md        # pre-render
+    ch50/inner-canon-lingshu50-longform-v1.md       # pre-render
   # Every rendered cut also carries <cut>.srt and <cut>.vtt sidecars, tracked.
   # They are built from the take durations in the production record, so a
   # pre-render cut has none yet — build them once the voice takes exist.
