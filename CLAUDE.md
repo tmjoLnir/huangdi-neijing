@@ -46,6 +46,8 @@ output/
     ch8/inner-canon-suwen8-trailer-v1.md            # RENDERED 2026-08-09, draft tier
     ch8/inner-canon-suwen8-trailer-v1.srt/.vtt      # sidecars, tracked
     ch8/inner-canon-suwen8-longform-v1.md           # pre-render
+    ch12/inner-canon-suwen12-trailer-v1.md          # pre-render
+    ch12/inner-canon-suwen12-longform-v1.md         # pre-render
     ch13/inner-canon-suwen13-trailer-v1.md          # RENDERED 2026-08-10, draft tier
     ch13/inner-canon-suwen13-trailer-v1.srt/.vtt    # sidecars, tracked
     ch13/inner-canon-suwen13-longform-v1.md         # pre-render
