@@ -663,15 +663,17 @@ hard assembler error.
 > per-line fix at take time — **re-size every Lei-Gong block to 47–52 words before
 > either goes to takes**, and correct the cast tables while doing it.
 
-**Two of the three doubts about the old columns are now settled, and the third got
-worse:**
+**Of the three doubts about the old columns, one is settled outright, one only for
+the run it was measured on, and the third got worse:**
 
-- **Settled — these are speech rates, and file duration is the same number.** The
-  live hypothesis was that the old figures were taken against raw take length,
-  which would make them understate the true rate. It is wrong: the assembler
-  reported `file == speech` with **zero lead silence** on all seven kept takes, so
-  `seed_audio` ships no padding to trim. (This has a second consequence, in
-  [Subtitles](#subtitles).)
+- **Settled for these figures — they are speech rates.** The live hypothesis was
+  that the old figures were taken against raw take length, which would make them
+  understate the true rate. It is wrong for the takes the rates come from: the
+  assembler reported `file == speech` with **zero lead silence** on all seven of
+  v5's kept takes. **Do not read that as a property of `seed_audio`** — it ships
+  padding on some takes, up to 1.440s, and three later takes carry it. The rates
+  above stand; the general claim that there is no padding to trim does not. (This
+  has a second consequence, in [Subtitles](#subtitles).)
 - **Settled — the word columns are measurements now, not arithmetic.** Every
   figure above comes from a take that cleared the gate.
 - **Worse — the spread is wider than the window.** Identical 26-word text returned
@@ -1380,43 +1382,65 @@ Two mechanisms make the fit real, and the second is the one that guarantees it:
    either — only watching the file, or checking that the margin columns stay at
    background luma, does.
 
-#### ⚠ Cue timing has drifted — `build_subtitles.js` has not been updated
+#### ⚠ Cue timing is only right because the record carries *speech*
 
-Cue timing used to follow the assembler's own rule exactly, so the sidecar lined
-up without manual nudging. **The two rules no longer match.** Both centre the take
-in its block, but on different quantities:
+`build_subtitles.js` centres a block's cues on whatever duration the production
+record hands it; `assemble_final.sh` centres the audio on **detected speech**, with
+the provider's padding trimmed. The script's formula is correct for whatever number
+it is given — so the two agree exactly when the record carries speech, and disagree
+by half the padding when it carries file length:
 
 | | Centres on | Speech starts at |
 |---|---|---|
-| `build_subtitles.js:114` | take **file duration** from the production record | `blockStart + (10 − file_duration) / 2` |
+| `build_subtitles.js:129` | the duration **as written in the record** | `blockStart + (10 − duration) / 2` |
 | `assemble_final.sh` | **detected speech**, padding trimmed | `blockStart + (10 − speech) / 2` |
 
-A take that carries leading and trailing silence has `file_duration > speech`, and
-the sidecar's cues therefore start **early by `(file_duration − speech) / 2`** —
-around 0.3s on a take with 0.6s of total padding, and worse on a heavily padded
-one. Captions would lead the voice slightly, on every block.
+A take with padding has `file > speech`, so a record quoting file length puts that
+block's cues **early by `(file − speech) / 2`** and the captions lead the voice.
 
-**Measured 2026-08-04: on `seed_audio` the two quantities are the same number.**
-All seven of v5's kept takes reported `file == speech` with zero lead silence, so
-the drift computes to **0.00s** and a sidecar built from a `seed_audio` cut's
-durations lines up as it always did. The mismatch in the table above is real in the
-code and would bite on any take that *does* carry padding — an uploaded or
-hand-mixed one — so neither fix below is redundant. But **do not hand-nudge cues on
-a `seed_audio` cut** to correct a drift that was not there.
+> **⚠ `seed_audio` does ship padding — the 2026-08-04 reading did not generalise.**
+> That measurement (all seven of v5's kept takes reporting `file == speech`, so the
+> drift "computes to 0.00s") was true of one seven-take run and was written up here
+> as a property of the provider. It is not. Three of the 22 kept takes across the
+> three cuts rendered since carry padding:
+>
+> | Take | File | Speech | Padding | Cue drift if file were recorded |
+> |---|---|---|---|---|
+> | Suwen 8 block 4 | 10.353s | **8.913s** | 1.440s | **0.720s** |
+> | Suwen 8 block 7 | 10.413s | **9.231s** | 1.182s | 0.591s |
+> | Lingshu 28 v2 block 5 | 9.870s | **8.639s** | 1.231s | 0.615s |
+>
+> Note what padding also does to the gate: Suwen 8 block 4's *file* is 10.353s,
+> past the 10.0s ceiling, and it passed because only its 8.913s of speech is
+> measured. A file-length record would have been wrong about that take twice.
+
+**So correction 1 below is not the optional half of a pair any more — it is the
+house practice, and it is the only reason the shipped sidecars are correctly
+timed.** All three rendered cuts put the assembler's measured speech in their
+voiceover line. Suwen 8's block-4 cue starts at **30.544s**, which is
+`30 + (10 − 8.913) / 2` — not the 30.000s a file-length record would have produced.
+
+**Do not hand-nudge cues.** That instruction survives, for a different reason than
+the one it used to carry: the drift is real, but it is cancelled at the source, and
+nudging on top of a speech-based record double-corrects it.
 
 Two ways to correct it, and the second is authoritative:
 
-1. **Record speech, not file length.** Put the `speech_metrics.sh` figure in the
-   production record's voiceover line and `build_subtitles.js` centres correctly,
-   because its formula is right for whatever number it is given.
-2. **Take the timing from `<out>.mp4.assembly.json`.** The assembler writes each
-   block's measured speech *and* its absolute position in the finished file. That
-   is ground truth, and it is what the sandbox's own caption scripts consume.
+1. **Record speech, not file length.** Put the `speech_metrics.sh` figure — or the
+   assembler's own, from `<out>.mp4.assembly.json` — in the production record's
+   voiceover line. Record **both** numbers in the take table, as Suwen 8 and
+   Lingshu 28 v2 do, so a padded take stays visible rather than merely handled.
+2. **Take the timing from `<out>.mp4.assembly.json`** in the script. The assembler
+   writes each block's measured speech *and* its absolute position in the finished
+   file. That is ground truth, and it is what the sandbox's own caption scripts
+   consume.
 
-**Neither is implemented.** `build_subtitles.js` still reads the duration column
-as written, and nothing yet reads the assembly sidecar. Until one of them lands,
-a sidecar built for a cut assembled on this path is **approximately** timed —
-say so in the production record rather than claiming the old exact alignment.
+**The second is still unimplemented**, so correction 1 is carried entirely by the
+person writing the record: a cut whose voiceover line quotes file length ships
+mistimed captions and nothing in the repo catches it. Until the script reads the
+assembly JSON, **say in the production record which quantity the voiceover line
+carries** — Lingshu 28 v2's *"measured **speech**, not file length"* is the form to
+copy.
 
 `.srt`/`.vtt` are tracked, required deliverables (`CLAUDE.md`), exempted in
 `.gitignore`. Commit them with the cut and **regenerate after any narration or

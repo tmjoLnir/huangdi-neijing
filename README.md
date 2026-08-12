@@ -50,9 +50,10 @@ narration table — read the report, not the status.
 locally too, after adding, renaming, moving or rendering anything under
 `output/` — it checks that the `CLAUDE.md` tree lists every document that exists
 and none that do not, that each filename's book and chapter agree with the folder
-holding it, that a cut calling itself RENDERED has the sidecars to prove it, that
-every script, skill and workflow is documented, and that this file's layout,
-script list and spelled-out counts still agree with what the repo holds.
+holding it, that a cut calling itself RENDERED has the sidecars to prove it and
+that the tree's own `.srt`/`.vtt` lines name files that exist, that every script,
+skill and workflow is documented, and that this file's layout, script list and
+spelled-out counts still agree with what the repo holds.
 
 `--fix` applies the mechanical subset — filing a document into the tree,
 dropping an entry whose file is gone, correcting an annotation the document
