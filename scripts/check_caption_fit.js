@@ -1,6 +1,6 @@
 // Flags narration clauses too wide for the two-line caption budget.
 //
-//   node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
+//   node scripts/check_caption_fit.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 //   node scripts/check_caption_fit.js <doc>.md --format 16:9
 //   node scripts/check_caption_fit.js output/*/ch*/*-v*.md          # sweep every cut
 //
@@ -12,8 +12,10 @@
 // See .claude/skills/higgsfield-production/SKILL.md, "Subtitles".
 //
 // Exits non-zero on an overflowing clause OR on a document with no narration
-// table. Translation documents have no table, so a whole-repo sweep always exits
-// non-zero — read the report, not the status.
+// table. In practice the sweep across output/ always exits non-zero on the first
+// of those: as of 2026-08-13 every document there parses a table, and the run
+// reports ~1,795 over-budget clauses. A flagged clause is caption churn, not a
+// render failure (see below), so read the report, not the status.
 
 const fs = require("fs");
 const {

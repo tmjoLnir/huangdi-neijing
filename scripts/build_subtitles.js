@@ -1,6 +1,6 @@
 // Builds guaranteed-wrapping subtitle sidecars for a cut of The Emperor's Inner Canon.
 //
-//   node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
+//   node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 //   node scripts/build_subtitles.js <doc.md> --format 16:9
 //
 // Reads the cut's own production document — the narration table for the text and

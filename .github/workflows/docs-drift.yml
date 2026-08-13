@@ -11,9 +11,13 @@
 # being read by every session.
 #
 # check_caption_fit.js is deliberately NOT run here. It exits non-zero on any
-# document with no narration table — every translation, audit and review — so it
-# reports a readability signal rather than a pass/fail and cannot be gated on.
-# check_docs_drift.js takes no arguments and a clean repo really does exit 0.
+# clause over the two-line caption budget, and the repo carries ~1,795 of them —
+# they are readability warnings, not render failures, since the sidecar splits a
+# wide clause across cues by itself. It exits non-zero on a document with no
+# narration table too, and does not distinguish the two in the status. Either way
+# it reports a signal rather than a pass/fail and cannot be gated on.
+# check_docs_drift.js requires no arguments (it accepts only --fix, which CI never
+# passes) and a clean repo really does exit 0.
 #
 # No install step: scripts/ is plain Node stdlib with no package.json, so there
 # is nothing to fetch and no lockfile to cache.

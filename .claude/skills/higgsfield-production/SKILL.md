@@ -52,10 +52,11 @@ before generating anything.
 > `background: true` failure in [step 4](#4-assembly). Do not go looking for the
 > cut document; it exists only in git history.
 
-`output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the reference document
-— match its section order on any new cut. It is **pre-render**, so it shows the
-layout but not a filled production record; the numbers you would have read there
-are in this file instead.
+`output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md` is the reference document
+— match its section order on any new cut. It rendered 2026-08-08, so its
+production record is filled: job IDs, a credit-spend table reconciled against the
+preflight, and an Assembly record. `CLAUDE.md` § Structure lists the other three
+rendered cuts and what each one is the best model for.
 
 **Paths and filenames are `CLAUDE.md` § Structure's call, not this file's.** In
 short: `output/<book>/ch<N>/`, where `<book>` is `suwen` or `lingshu` and `<N>` is
@@ -114,19 +115,28 @@ give the repo a second data point.
 > | Words | Credits | Why this length matters |
 > |---|---|---|
 > | 13 | **0.5** | the convenient short probe — reproduces the old wrong answer exactly |
-> | 34 | **1.3** | the 2026-08-10 figure, still correct |
-> | 41 | **1.5** | **mid of Arthur's current 38–44 window — budget on this** |
-> | 50 | **2.0** | top of Zane's 47–52 window |
+> | 34 | **1.3** | brackets the low edge of Arthur's 33–37 window |
+> | 41 | **1.5** | **budget on this — it covers every narrator line and most character ones** |
+> | 50 | **2.0** | inside Zane's 47–54 window |
 >
 > **The top of the range has moved: 50 words was 1.7 on 2026-08-10 and prices at
 > 2.0 today**, ~18% up, while 34 words did not move at all. So the cheap end is
 > stable and the expensive end is drifting — re-price the *long* lines, not the
 > short ones, before a run with character voices in it.
 >
-> **1.45/take is now too low for the current word budgets.** It was derived when
-> Arthur was written at 31–34 words; his re-measured window is **38–44**, which
-> prices at ~1.5, and Zane's 47–52 prices at ~2.0. A six-block all-narrator trailer
-> is **~9 credits of voice**, not 8.7.
+> **⚠ The word windows moved under this table on 2026-08-13** — see the re-pooling
+> banner in [step 3](#3-voiceover). Arthur's window came *down* to 33–37, so a
+> narrator take now sits between the 1.3 and 1.5 rows rather than on the 1.5 row;
+> Zane's went *up* to 47–54, so his top edge is past the 50-word probe. **The
+> prices above are unchanged and were not re-measured with the windows** — 1.5/2.0
+> is now a ceiling rather than a midpoint, which is the safe direction to be wrong
+> in. Re-price at the new mid (35 words) and the new top (54) on the next run's
+> step-0 `get_cost`, and correct this table then.
+>
+> **1.45/take is too low as a budget either way.** It was derived when Arthur was
+> written at 31–34 words and priced against a rate that has since been re-pooled
+> twice. Budget **1.5 narrator / 2.0 Zane**; a six-block all-narrator trailer is
+> **~9 credits of voice**, not 8.7.
 >
 > **This figure has now been got wrong three times, in both directions**, so read
 > the history before quoting any of it:
@@ -472,9 +482,11 @@ true and a stray soundtrack is no longer merely wasted money.
 Chain from the current head rather than starting a new look:
 
 ```
-4b6f7106-67da-4d1a-a553-c58ba90ac43f   Suwen 1  (splitting scroll + seven-and-eight arcs)  ← NEUTRAL HEAD, chain from this
-05ebe984-2781-491e-8c84-2b20e608d2a8   Suwen 8  (lacquer chart of twelve boxes + closed chest)
-a863a691-6893-4cdd-8ef1-a098c9a426ea   Suwen 13 (divided silk scroll, inked one side, blank the other)
+4b6f7106-67da-4d1a-a553-c58ba90ac43f   Suwen 1    (splitting scroll + seven-and-eight arcs)  ← NEUTRAL HEAD, chain from this
+05ebe984-2781-491e-8c84-2b20e608d2a8   Suwen 8    (lacquer chart of twelve boxes + closed chest)
+a863a691-6893-4cdd-8ef1-a098c9a426ea   Suwen 13   (divided silk scroll, inked one side, blank the other)
+8e7e7549-cb5a-4970-afa7-b00b7e1442d4   Lingshu 28 (hearing + twelve tally slots)
+c19aef40-1c85-4a7c-8bd8-b4380b0da353   Lingshu 8  (chain of brushed terms writing itself down a scroll, blank silk above)
 ```
 
 **Chain new chapters from the Suwen 1 key, not from the most recent one.** This was
@@ -491,8 +503,11 @@ The head is itself the end of a chain reaching back to a group shot built from
 `assets/*.png`; those upstream keys are not recorded here, and they do not need
 to be. **The head's job ID is the only input a new key takes** — Higgsfield holds
 the image, so a new chapter derives from the ID above without re-deriving
-anything before it. When a new key is generated, record it here as the new head
-and add its own job ID and motif to that cut's production record.
+anything before it. When a new key is generated, add it to the list above as a
+sibling — **not** as the new head, per the arrow rule — and record its job ID and
+motif in that cut's production record too. The Lingshu 28 and Lingshu 8 keys sat
+in their production records and out of this list for five days for want of that
+second step.
 
 Pass the head's **job ID** as the reference and swap only the chapter
 motif. Model `nano_banana_pro` (served by `nano_banana_2`), 9:16 768×1376.
@@ -587,54 +602,81 @@ what fits a line inside a fixed 10s block. **The full cast is cast permanently**
 (CLAUDE.md, as of Suwen 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
-| Role | Voice | `voice_id` | Measured rate | Draft to | Observed in-window |
+| Role | Voice | `voice_id` | Measured rate | Draft to | Observed spread, all kept takes |
 |---|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **~4.4 words/sec** | **38–44 words** | 40w @ 9.72s; 38w @ 9.54s; 44w @ 9.43s (Suwen 13). **32w @ 6.45s — 2.15s UNDER** |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.3 words/sec** | **40–44 words** | 41w @ 9.70s first take (Suwen 13); 44w @ 9.90s (Suwen 8) |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **~4.5 words/sec** | **41–43 words** | 41w @ 9.27s (Suwen 13); 40w @ 8.61/8.70/7.92s — at or under the floor |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.24 words/sec** | **47–52 words** | 50w @ 9.54s first take (Suwen 13); 50w @ 9.68s (Suwen 8) |
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.77 words/sec** | **33–37 words** | 17 takes, **2.66–4.67 w/s**. 25w @ 9.41s and 44w @ 9.43s both cleared. **32w @ 6.45s (Suwen 13) — 2.15s UNDER** |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.52 words/sec** | **39–45 words** | 4 takes, **4.11–5.25 w/s**. 37w @ 8.99s; 46w @ 8.77s. **37w @ 7.88s (Suwen 8) — under the floor** |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.29 words/sec** | **37–42 words** | 5 takes, **3.84–4.60 w/s**. 37w @ 9.02s; 44w @ 9.56s. **40w @ 7.92s (Suwen 13) — under** |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.45 words/sec** | **47–54 words** | 3 takes, **5.17–5.98 w/s**. 50w @ 9.54s and 9.68s cleared; **50w @ 8.07 / 8.11 / 8.44s (Lingshu 8) — three rolls, all under** |
 
-> **⚠ Arthur and Vesper were re-measured 2026-08-10 on the Suwen 13 trailer and
-> both moved a long way. Arthur's old row was dangerously wrong.**
+> **⚠ Re-pooled 2026-08-13, after the Lingshu 8 trailer v1 render. Every row
+> moved, and Xavier's old row named a word count that could not render.**
 >
-> | Voice | Old row | **New row** | Evidence |
-> |---|---|---|---|
-> | Arthur | 3.50 w/s, 31–34 | **~4.4 w/s, 38–44** | 9 takes; a legal 32-word line returned **6.446s** |
-> | Vesper | 4.15 w/s, 37–41 | **~4.5 w/s, 41–43** | 9 takes; 40 words returned 8.61 / 8.70 / **7.92s** |
-> | Xavier | 4.53 w/s, 40–44 | **4.3 w/s, 40–44** — unchanged | landed first take, no re-rolls |
-> | Zane | 5.34 w/s, 47–52 | **5.24 w/s, 47–52** — unchanged | landed first take, no re-rolls |
+> The rates above are now pooled across **all 29 kept takes from all four rendered
+> cuts** — Lingshu 28 v2, Suwen 8, Suwen 13, Lingshu 8 — as words of *shipped*
+> narration over the gate's measured speech. Earlier rows pooled one or two cuts
+> and each was pulled toward whichever cut it was measured on. `Draft to` is the
+> derivation below, applied to the pooled rate:
 >
-> **Arthur is the one that costs runs.** Five of seven Suwen 13 blocks failed the
-> first pass and all five were his or Vesper's. His old row put a 32-word line
-> *mid-range*; it came back **2.15 seconds under the floor**, a hard assembler
-> error. Any document still writing Arthur at 31–34 words should be re-sized before
-> it goes to takes.
+> | Voice | Takes | Words | Speech | Pooled | `rate × 8.6` … `rate × 10.0` | **Draft to** | Old row |
+> |---|---|---|---|---|---|---|---|
+> | Arthur | 17 | 594 | 157.389s | **3.77** | 32.5 … 37.7 | **33–37** | ~4.4, 38–44 |
+> | Xavier | 4 | 169 | 37.358s | **4.52** | 38.9 … 45.2 | **39–45** | 4.3, 40–44 |
+> | Vesper | 5 | 198 | 46.197s | **4.29** | 36.9 … 42.9 | **37–42** | ~4.5, 41–43 |
+> | Zane | 3 | 154 | 28.239s | **5.45** | 46.9 … 54.5 | **47–54** | 5.24, 47–52 |
 >
-> **These rates are content-dependent and the spread is wide.** Arthur ranged
-> **3.98–4.80 w/s within a single seven-block cut**, on lines of near-identical
-> length. A word count predicts a take only to about ±1.5s. **Generate two variants
-> per block and keep the better one** — at ~1.45 a take that is the cheapest
-> reliable method, and it is what the Suwen 13 run actually did.
+> **Xavier's old row was unrenderable at its own top edge.** 44 words at the 4.3
+> w/s it listed computes to **10.23s** — past the hard 10.0s ceiling — because the
+> row was carried forward by hand instead of being re-derived when the rate moved.
+> Every row above is now derived, not carried. If you change a rate, recompute the
+> window from it in the same edit.
+>
+> **Arthur's spread has outgrown his rate, and this is the finding that matters.**
+> Seventeen kept takes run **2.66 to 4.67 w/s** — a 76% spread, one voice, one
+> `speech_rate`, on lines of comparable length. Both 25 words and 44 words have
+> landed inside the window. **Treat 33–37 as where to start a draft, not as a
+> predictor**; the word count sets the odds and nothing more. Generate two variants
+> per block and keep the better one.
+>
+> **Zane at 50 words is genuinely bimodal — do not read either result as settled.**
+> It cleared at 9.539s on Suwen 13 and 9.676s on Suwen 8, then came back at 8.066,
+> 8.107 and 8.438s on three consecutive Lingshu 8 rolls, all under the floor. The
+> Lingshu 8 record reads that as "50 words is now a measured hard failure"; pooled
+> across three cuts it is not, it is the bottom of his range. Write him at **51–53**
+> if you want margin on both sides.
 >
 > **The mandated disclaimer block is a special case.** Its two short full-stopped
 > sentences slow `seed_audio` badly: 33 words returned **11.33s, 16.93s and
 > 10.54s** before the trailing clause was cut to 18 words, which landed 9.60s on
-> the first roll. **Budget the block-7 tail at ~18 words, not ~22.**
+> the first roll. **Budget the disclaimer-card tail at ~18 words, not ~22.**
 
-> **⚠ Updated 2026-08-09 from the Suwen 8 trailer v1 run** — the second cut taken
-> end to end on `assemble_final.sh`, and the first with all four voices speaking.
-> Rates are pooled across both runs. Three of the four moved, and two moved enough
-> to fail a script written to the old table:
+> **⚠ SUPERSEDED — 2026-08-10, Suwen 13 trailer.** Kept as evidence of how far the
+> rows have moved; the pooled table above replaces every figure in it.
 >
-> - **Zane is measured at last, and he is the fastest voice in the cast — 5.34
->   w/s.** He needs **47–52 words**, not the 34–39 this repo had been guessing from
+> | Voice | Row before | Row after | Evidence |
+> |---|---|---|---|
+> | Arthur | 3.50 w/s, 31–34 | ~4.4 w/s, 38–44 | 9 takes; a legal 32-word line returned **6.446s** |
+> | Vesper | 4.15 w/s, 37–41 | ~4.5 w/s, 41–43 | 9 takes; 40 words returned 8.61 / 8.70 / **7.92s** |
+> | Xavier | 4.53 w/s, 40–44 | 4.3 w/s, 40–44 | landed first take, no re-rolls |
+> | Zane | 5.34 w/s, 47–52 | 5.24 w/s, 47–52 | landed first take, no re-rolls |
+>
+> Five of seven Suwen 13 blocks failed the first pass and all five were Arthur's or
+> Vesper's. That run is why the table is derived from measurement rather than
+> estimate, and why a document written to a superseded row must be re-sized before
+> it goes to takes.
+
+> **⚠ SUPERSEDED — 2026-08-09, Suwen 8 trailer v1**, the first cut with all four
+> voices speaking. Its figures are folded into the pooled table above; read the
+> bullets for what the run established, not for numbers to write to.
+>
+> - **Zane was measured at length here for the first time**, at 5.34 w/s on that
+>   run's evidence, against the **34–39 words** this repo had been guessing from
 >   nothing. A 35-word line came back at **6.23s, 2.4s under the floor.** Any
->   existing document writing Lei-Gong at ~35 words is a guaranteed hard failure and
->   must be re-sized before it goes to takes.
-> - **Xavier is faster than recorded** (4.53 vs 4.15) and now wants **40–44 words**;
->   37 words came back under the floor.
-> - **Arthur is slower** (3.50 vs 3.65) and wants **31–34**.
-> - **Vesper is confirmed** at ~4.15 across two runs and two cuts. Unchanged.
+>   document still writing Lei-Gong at ~35 words is a guaranteed hard failure.
+> - **Xavier measured 4.53 w/s on that run** and 37 words came back under the floor.
+> - **Arthur measured 3.50 w/s on that run** — the low end of the spread the pooled
+>   row above now carries.
+> - **Vesper measured ~4.15 w/s** across the two runs available at the time.
 
 **Rates re-measured 2026-08-04 from the Suwen 1 trailer v5 run** (whose document
 has since been deleted from `output/` — this table is the surviving copy) — the
@@ -661,16 +703,30 @@ against the number, never eyeballed** — the gate does not round in your favour
 **Zane was measured at length on 2026-08-09 and the guess was badly wrong.** He
 had only ever been run on a 5-word line (2.3–2.6s), where pause overhead dominates
 and no words/sec can be derived; the repo had been writing him at ~35 words on no
-evidence. He is in fact **the fastest voice in the cast at 5.34 w/s** and needs
-**47–52 words**. A 35-word line came back at **6.23s — 2.4s under the floor**, a
-hard assembler error.
+evidence. He is in fact **the fastest voice in the cast — 5.45 w/s pooled** — and
+needs **47–54 words**. A 35-word line came back at **6.23s — 2.4s under the
+floor**, a hard assembler error.
 
-> **⚠ Two committed documents are sized to the old guess and will fail.**
-> `output/lingshu/ch28/inner-canon-lingshu28-longform-v1.md` and its `v2` both
-> write Lei-Gong multiple full speaking blocks at **34–39 words**, and both cast
-> tables still read `UNMEASURED`. Those are ~110-block cuts, so this is not a
-> per-line fix at take time — **re-size every Lei-Gong block to 47–52 words before
-> either goes to takes**, and correct the cast tables while doing it.
+> **⚠ Seven committed longform documents are sized to the old guess and will
+> fail.** Each writes Lei-Gong multiple full speaking blocks at **34–39 words**,
+> and each cast table still reads `UNMEASURED`:
+>
+> ```
+> output/lingshu/ch12/inner-canon-lingshu12-longform-v1.md
+> output/lingshu/ch28/inner-canon-lingshu28-longform-v2.md
+> output/lingshu/ch43/inner-canon-lingshu43-longform-v1.md
+> output/lingshu/ch50/inner-canon-lingshu50-longform-v1.md
+> output/suwen/ch8/inner-canon-suwen8-longform-v1.md
+> output/suwen/ch12/inner-canon-suwen12-longform-v1.md
+> output/suwen/ch77/inner-canon-suwen77-longform-v1.md
+> ```
+>
+> These are ~110-block cuts, so this is not a per-line fix at take time —
+> **re-size every Lei-Gong block to 47–54 words before any of them goes to
+> takes**, and correct the cast tables while doing it. Re-derive the list with
+> `grep -l '34–39\|UNMEASURED' output/*/ch*/*longform*.md` rather than trusting
+> this one; it was wrong once already, naming two documents when seven qualified
+> and one of the two had been deleted.
 
 **Of the three doubts about the old columns, one is settled outright, one only for
 the run it was measured on, and the third got worse:**
@@ -720,7 +776,8 @@ and who now carries it.
 
 For any voice still marked unmeasured, **generate one take, read its duration,
 and write the measured words/second back into this table** before committing a
-script to it. One take is **~1.45 credits**; a mis-sized script is the whole cut.
+script to it. One take is **~1.5 credits** (2.0 at Zane's length — see the price
+table in *Order of operations*); a mis-sized script is the whole cut.
 Zane is what skipping this costs: ~35-word lines went into two 110-block documents
 on a guess, and the measurement that would have caught it was one take.
 
@@ -755,8 +812,10 @@ So a short character beat now costs a structural decision, not a note in the
 record. The options, in the order worth trying:
 
 - **Write the character a real paragraph** — a reframe or a monologue that earns
-  its 36–41 words. Suwen 1 v5 did this twice: Xavier cleared at 40 words → 9.64s
-  on the first roll, Vesper at 38 words → 9.06s only after four rejected takes.
+  that voice's own word count from [the step-3 table](#3-voiceover). Never take the
+  figure from here: the count is per-voice and it moves on every re-pooling.
+  Suwen 1 v5 did this twice: Xavier cleared at 40 words → 9.64s on the first roll,
+  Vesper at 38 words → 9.06s only after four rejected takes.
 - **Fold the beat into a neighbouring block** so one voice carries the full window
   and the interjection lives inside it. This changes the block count, so it
   reaches the cost preflight.
@@ -838,7 +897,7 @@ assembler's own source note claims** — the same 26-word line came back at **10
 and 7.79s**, missing the window at *both* ends rather than only the top. So the old
 reading, that only the upper mode needs a rewrite, does not hold: a re-roll can
 land either side of the window. **Generate two variants per block and keep the
-better one — then rewrite rather than re-roll.** At ~1.45 a take, re-rolling is
+better one — then rewrite rather than re-roll.** At ~1.5 a take, re-rolling is
 cheap against a failed assembly but is not free: the Suwen 13 trailer spent **33
 takes on 7 blocks for ~47.7 credits**, a 4.7× re-take rate, and that run's own
 diagnosis was that the word budgets were wrong rather than the service noisy. If
@@ -945,8 +1004,10 @@ now load-bearing, because the assembler polices the other end:
 So the cheap old lever — adding full stops to buy ~0.55–0.7s each — now buys
 duration in exactly the currency the assembler flags. Padding a thin line to 8.6s
 with sentence breaks produces a take that passes the gate and trips the warning.
-**Write ~35 words of actual content in two to three sentences** rather than ~24
-words in five.
+**Write that voice's full word budget as actual content, in two to three
+sentences** — take the count from [the step-3 table](#3-voiceover) — rather than
+padding a thin line out with five. The shape is the point here, not the number:
+content in few sentences, never few words in many.
 
 The measured words/second in the voice table sizes a *first draft*. What lands the
 take in the window is structure:
@@ -1197,7 +1258,7 @@ disagree, `CLAUDE.md` is correct and this list needs updating:
    caption band, the end card's exact in/out timecodes and text, and where the
    music drops out. Never write it as a generic recipe — block numbering and
    timecodes differ between versions of the same chapter, and that is where the
-   mistakes land. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md` is the
+   mistakes land. `output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md` is the
    reference.
 9. **Compliance notes (YouTube)** — one bullet per repo rule.
 10. **Runtime levers** — which blocks drop to reach 0:30, which beats add to
@@ -1324,15 +1385,16 @@ caption churn on screen, not an overflow. `CLAUDE.md` still mandates the check
 before generating takes; read its non-zero exit as *"this will read badly"*, never
 as *"this cut will overflow."*
 
-**Its exit code is not a gate.** The script exits non-zero on any document with no
-narration table, and every chapter folder holds a translation document that has
-none — so the sweep across `output/*/ch*/*-v*.md` always exits 1. Read the report,
-not the status.
+**Its exit code is not a gate.** The script exits non-zero on any over-budget
+clause *or* on any document with no narration table, and it does not distinguish
+them in the status. The sweep across `output/*/ch*/*-v*.md` always exits 1 — as of
+2026-08-13 on the first count alone, ~1,795 clauses across 22 documents, every one
+of which does parse a table. Read the report, not the status.
 
 ### Build the sidecar — `build_subtitles.js`
 
 ```
-node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v1.md
+node scripts/build_subtitles.js output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md
 node scripts/build_subtitles.js <doc>.md --format 16:9      # longform
 ```
 
@@ -1588,11 +1650,12 @@ as on narration. (An earlier version of this section suggested 60–65 for
 character dialogue. It was wrong.)
 
 All four are measured (§3 table) — **and Zane's measurement is the one to check a
-longform script against before anything else.** He came in at 5.34 w/s, the
-fastest in the cast, needing **47–52 words** where the repo had been guessing ~35;
-both Lingshu 28 longform documents are still written to the guess and will fail.
-One mis-sized voice across a 19-minute episode is the most expensive version of
-the take-length mistake, and it is already sitting in two committed documents.
+longform script against before anything else.** He pools at 5.45 w/s, the fastest
+in the cast, needing **47–54 words** where the repo had been guessing ~35; **seven
+committed longform documents are still written to the guess and will fail** — see
+the list in [§3](#3-voiceover). One mis-sized voice across a 19-minute episode is
+the most expensive version of the take-length mistake, and it is already sitting
+in seven committed documents.
 
 Character lines are structurally short against a 10s block — and **the deliberate
 short take is no longer available** as the second way out, because the assembler
