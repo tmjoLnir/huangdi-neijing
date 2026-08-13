@@ -87,6 +87,12 @@ response: it is present and it is tempting, but a snapshot restored from Drive's
 trash or copied forward carries a creation time unrelated to the state it holds.
 The filename is the version; the metadata is not.
 
+**The optional `-pr<N>` segment does not disturb this.** The timestamp is
+fixed-width — `YYYY-MM-DDTHHMMZ`, sixteen characters — so lexical order *is*
+chronological order no matter what follows it. That is also why the segment
+cannot be moved to the front: PR numbers sort as text, which would put `pr9`
+after `pr70` and silently hand the reader a stale snapshot.
+
 ### Read it back with `download_file_content`
 
 **Not `read_file_content`. This is the trap in the whole procedure**, because the
@@ -120,7 +126,7 @@ round-tripping memory, where fidelity is the point.
 
 ```
 create_file(
-  title:        "<ISO8601>-context-memory.md",   # e.g. 2026-08-10T0228Z-context-memory.md
+  title:        "<ISO8601>[-pr<N>]-context-memory.md",   # e.g. 2026-08-13T1400Z-pr71-context-memory.md
   contentMimeType: "text/markdown",
   disableConversionToGoogleType: true,
   parentId:     "1MylpdnUpxrizQoPX4HLKmOTzNpxNf2uP",
@@ -142,6 +148,14 @@ Four things that each break it if omitted:
   "application/vnd.google-apps.folder"` with no content at all, verified working.
 - **A sortable title.** `2026-08-10T0228Z-…`, zero-padded, UTC. A title that
   sorts wrong is a snapshot that will never be read again.
+
+**The `-pr<N>` segment is optional, and it goes after the timestamp.** Include
+it when the session produced exactly one pull request, so a snapshot can be tied
+to the change it accompanied: `2026-08-13T1400Z-pr71-context-memory.md`. Omit it
+otherwise — a session that opened no PR, or one whose snapshot covers several,
+has no single number to name, and inventing one is worse than leaving it out.
+Never lead with it; see [Find the newest](#find-the-newest) for why that breaks
+the sort.
 
 **Carry the previous snapshot forward.** A snapshot is not a diff and not an
 append — it is read *whole* and it replaces its predecessor entirely. Anything
@@ -258,8 +272,8 @@ One snapshot per session is the default because the memory is small: at 3 KB, a
 whole read is about a thousand tokens and selective reading would save nothing
 worth the complexity.
 
-Split into per-topic files — `<ISO8601>-<topic>.md`, newest *per topic* wins —
-when either trigger fires:
+Split into per-topic files — `<ISO8601>[-pr<N>]-<topic>.md`, newest *per topic*
+wins — when either trigger fires:
 
 - **Size.** A snapshot past roughly **10 KB** costs ~13 KB of base64 to read,
   and most sessions need one section of it.
