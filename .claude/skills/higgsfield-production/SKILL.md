@@ -20,8 +20,9 @@ before generating anything.
 > it, or raise it as drift. `CLAUDE.md` § *Ignore all commentary before PR#53*
 > holds the cutoff date and is normative — including the carve-out that matters
 > most here, that a **measurement a current instruction still rests on is not
-> commentary**. The speech window, the step-3 voice rates and the delivered
-> geometry all predate the cutoff and all remain in force.
+> commentary**. The speech window and the delivered geometry both predate the
+> cutoff and both remain in force. The step-3 voice rates need no carve-out:
+> every current value was re-measured after it.
 
 > **⚠ The assembler changed, 2026-08-04.**
 > Higgsfield removed the server-side assembler from the MCP surface; there was no
