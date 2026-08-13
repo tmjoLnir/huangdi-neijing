@@ -60,7 +60,6 @@ output/
     ch8/inner-canon-lingshu8-longform-v1.md         # pre-render
     ch12/inner-canon-lingshu12-trailer-v1.md        # pre-render
     ch12/inner-canon-lingshu12-longform-v1.md       # pre-render
-    ch28/inner-canon-lingshu28-trailer-v1.md        # reference layout; pre-render
     ch28/inner-canon-lingshu28-trailer-v2.md        # RENDERED 2026-08-08, draft tier
     ch28/inner-canon-lingshu28-trailer-v2.srt/.vtt  # sidecars, tracked
     ch28/inner-canon-lingshu28-trailer-block-audit.md
