@@ -24,6 +24,43 @@ API, it belongs in the skill that owns that API. Duplicating a rule across files
 is how they drift — several instructions have already gone stale in one copy
 while staying correct in the other. Add a pointer, not a second copy.
 
+### Ignore all commentary before PR#53
+
+**PR#53 is the cutoff. Commentary in these files that predates it is history:
+do not act on it, do not cite it, and do not raise it as drift.** PR#53 merged
+**2026-08-08** — the day the book-folder migration landed and the day the
+earliest cut still sitting in `output/` rendered, so the boundary is also where
+this repo's present shape begins. Most of what precedes it was written under a
+layout the repo no longer uses, and much of it describes an assembler that no
+longer exists. (The current assembler is slightly older than the cutoff: it
+arrived 2026-08-04. The cutoff is a layout and housekeeping boundary, not the
+pipeline change.)
+
+What accumulates before that line is run archaeology: superseded credit
+derivations, balance figures nobody has re-read, arithmetic reconciling cuts
+whose documents were deleted, and narrative about a pipeline that no longer
+exists. It has been re-audited repeatedly and has never once changed what
+happened next. **This cutoff is normative and lives here; the skills point at
+it rather than restating the date.**
+
+**What the cutoff does not license.** It governs *commentary* — the story
+around a number — not *a measurement a current instruction still rests on*.
+Figures in force today that were taken before PR#53 include the **8.6–10.0s
+speech window** and the **496×864 delivered geometry** (both 2026-08-04), the
+finding that **`speech_rate` is not a duration lever** (2026-08-01), the
+style-key head job ID, and the preset IDs to pre-decline. Those are operative
+because a live rule cites them, not because of when they were measured, and the
+cutoff leaves them untouched. **If an instruction depends on it, it is not
+commentary.**
+
+The per-voice rates and word windows are the ones most often asked about, and
+they need no carve-out at all: every current value was re-measured **after** the
+cutoff, on 2026-08-09 and 2026-08-10. They are in scope by date alone.
+
+Where the two are tangled in one paragraph, split them rather than deleting
+wholesale: keep the number somewhere an instruction can reach it, and drop the
+story around it.
+
 ## Structure
 
 One folder per book, one folder per chapter inside it, one markdown file per cut.
