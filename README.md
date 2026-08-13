@@ -40,9 +40,10 @@ node scripts/check_docs_drift.js --fix              # …and apply the mechanica
 node scripts/check_caption_fit.js output/*/ch*/*-v*.md   # sweep every cut
 ```
 
-Add `--format 16:9` for longform; the default is the 9:16 trailer frame. The
-caption sweep always exits non-zero because translation documents carry no
-narration table — read the report, not the status.
+Add `--format 16:9` for longform; the default is the 9:16 trailer frame — both
+apply to the caption scripts only. The caption sweep always exits non-zero
+because the repo carries clauses over the two-line budget; those are readability
+warnings, not render failures, so read the report, not the status.
 
 **`check_docs_drift.js` is the one worth gating on**, and
 `.github/workflows/docs-drift.yml` now does: it runs on every pull request into
