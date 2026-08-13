@@ -56,7 +56,8 @@ output/
     ch77/inner-canon-suwen77-trailer-v1.md          # pre-render
     ch77/inner-canon-suwen77-longform-v1.md         # pre-render
   lingshu/                                          # 靈樞 Spiritual Pivot — chapters 1-81
-    ch8/inner-canon-lingshu8-trailer-v1.md          # pre-render
+    ch8/inner-canon-lingshu8-trailer-v1.md          # RENDERED 2026-08-13, draft tier
+    ch8/inner-canon-lingshu8-trailer-v1.srt/.vtt    # sidecars, tracked
     ch8/inner-canon-lingshu8-longform-v1.md         # pre-render
     ch12/inner-canon-lingshu12-trailer-v1.md        # pre-render
     ch12/inner-canon-lingshu12-longform-v1.md       # pre-render
