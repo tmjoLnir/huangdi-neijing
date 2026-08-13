@@ -11,6 +11,12 @@ defined there and are normative in any conflict. This file holds the call shapes
 the folder IDs, the naming rule and the failure modes — including one that
 silently corrupts a snapshot a little more every session.
 
+**Ignore all commentary before PR#53** — `CLAUDE.md` § *Ignore all commentary
+before PR#53* holds the cutoff and is normative. Little in this file predates it,
+since the Drive memory postdates PR#53 entirely; the rule is recorded here so all
+three standing-instruction files carry it, not because there is a backlog to
+discount.
+
 This is the third standing-instruction file in the repo, and `CLAUDE.md` §
 *Which file wins* is the table that divides them. That split has already drifted
 wherever a rule was duplicated, so the same discipline applies here with one

@@ -15,6 +15,14 @@ The house pipeline for this repo. Every cut has been produced this way, and the
 failure modes below are ones that already cost a paid re-render, so read them
 before generating anything.
 
+> **Ignore all commentary before PR#53.** This file carries the repo's longest
+> tail of run archaeology, and most of it is now history: do not act on it, cite
+> it, or raise it as drift. `CLAUDE.md` § *Ignore all commentary before PR#53*
+> holds the cutoff date and is normative — including the carve-out that matters
+> most here, that a **measurement a current instruction still rests on is not
+> commentary**. The speech window, the step-3 voice rates and the delivered
+> geometry all predate the cutoff and all remain in force.
+
 > **⚠ The assembler changed, 2026-08-04.**
 > Higgsfield removed the server-side assembler from the MCP surface; there was no
 > deprecation shim and no fallback assembler. Assembly is now a shell script run

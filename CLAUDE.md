@@ -24,6 +24,34 @@ API, it belongs in the skill that owns that API. Duplicating a rule across files
 is how they drift — several instructions have already gone stale in one copy
 while staying correct in the other. Add a pointer, not a second copy.
 
+### Ignore all commentary before PR#53
+
+**PR#53 is the cutoff. Commentary in these files that predates it is history:
+do not act on it, do not cite it, and do not raise it as drift.** PR#53 merged
+**2026-08-08**, the day the book-folder migration landed and the first cut
+rendered on the current assembler — so the boundary is also where this repo's
+present shape begins. Everything before it is a different pipeline being
+described by a different layout.
+
+What accumulates before that line is run archaeology: superseded credit
+derivations, balance figures nobody has re-read, arithmetic reconciling cuts
+whose documents were deleted, and narrative about a pipeline that no longer
+exists. It has been re-audited repeatedly and has never once changed what
+happened next. **This cutoff is normative and lives here; the skills point at
+it rather than restating the date.**
+
+**What the cutoff does not license.** It governs *commentary* — the story
+around a number — not *a measurement a current instruction still rests on*.
+Several figures in force today were taken before PR#53: the 8.6–10.0s speech
+window, the per-voice rates the step-3 table is built from, the 496×864
+delivered geometry. Those are operative because a live rule cites them, not
+because of when they were measured, and the cutoff leaves them untouched. **If
+an instruction depends on it, it is not commentary.**
+
+Where the two are tangled in one paragraph, split them rather than deleting
+wholesale: keep the number somewhere an instruction can reach it, and drop the
+story around it.
+
 ## Structure
 
 One folder per book, one folder per chapter inside it, one markdown file per cut.
