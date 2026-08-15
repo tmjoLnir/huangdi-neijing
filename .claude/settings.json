@@ -3,6 +3,7 @@
     "allow": [
       "Bash(node scripts/build_subtitles.js:*)",
       "Bash(node scripts/check_caption_fit.js:*)",
+      "Bash(node scripts/check_docs_drift.js:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git status:*)",
@@ -41,19 +42,19 @@
       "mcp__Google_Drive__list_recent_files"
     ],
     "deny": [
-      "Bash(npm uninstall *)",
-      "Bash(yarn add *)",
-      "Bash(pip install *)",
-      "Bash(rm *)"
+      "Bash(npm uninstall:*)",
+      "Bash(yarn add:*)",
+      "Bash(pip install:*)",
+      "Bash(rm:*)"
     ],
     "ask": [
-      "Bash(curl *)",
-      "Bash(wget *)",
-      "Bash(ssh *)",
-      "Bash(scp *)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
       "Bash(git push:*)",
       "Bash(git clean:*)",
-      "Bash(rmdir *)",
+      "Bash(rmdir:*)",
       "mcp__Google_Drive__read_file_content"
     ]
   },
