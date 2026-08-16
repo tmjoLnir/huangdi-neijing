@@ -165,18 +165,42 @@ data loss but is really an authoring mistake.
 
 ## Snapshots are immutable
 
-The connector can **create** and **copy**. It cannot update, overwrite, move,
-rename, or delete. Every consequence in this file follows from that one fact:
+**A snapshot's *content* cannot be rewritten.** The connector creates and copies;
+no call writes new bytes into a file that already exists. That much is a property
+of the tool, and the load-bearing consequences follow from it:
 
 - Memory is a **folder of timestamped files**, not a file that gets edited.
 - The **folder ID** is the only stable reference.
-- **Pruning is manual.** Old snapshots accumulate and nothing here can remove
-  them; clear them out from the Drive UI when the folder gets noisy. Keep a few —
-  they are the only history there is, and a bad write is recoverable only by
-  reading the one before it.
-- **`copy_file` pins a known-good snapshot** under a name that will not be
-  overtaken by the newest-wins sort — useful before a risky restructure. Give the
-  copy a title that does *not* start with a timestamp, or it becomes the newest.
+- There is **no merge primitive**, which is why *Carry the previous snapshot
+  forward* above is an authoring instruction rather than something the tool does.
+
+**A snapshot's name, place and existence are another matter, and this file used to
+claim otherwise.** It said the connector "cannot update, overwrite, move, rename,
+or delete". Two of those are wrong:
+
+| | |
+|---|---|
+| `update_file` | retitles and reparents — **rename and move** |
+| `trash_file` | sends a file to Drive's trash — **delete** |
+
+Neither is in `.claude/settings.json`'s allow-list, so both stop and ask before
+touching anything. **Keep it that way, and go on treating snapshots as
+immutable** — that discipline is what keeps newest-wins legible, and a renamed
+snapshot is one that sorts somewhere new. What actually changes:
+
+- **Pruning no longer needs the Drive UI.** `trash_file` prunes from here, as a
+  deliberate approved act rather than housekeeping on the way past. Keep a few
+  regardless: they are the only history there is, and a bad write is recoverable
+  only by reading the one before it.
+- **`copy_file` still pins a known-good snapshot** under a name the newest-wins
+  sort will not overtake — useful before a risky restructure. Give the copy a
+  title that does *not* start with a timestamp, or it becomes the newest.
+  `update_file` can now correct a title that got that wrong, which previously
+  meant living with it.
+
+**Do not read the two new verbs as permission to edit memory in place.** Writing a
+corrected snapshot forward leaves the mistake and the correction both legible;
+retitling the old one to hide it leaves a folder nobody can reason about.
 
 ## What goes in a snapshot
 
@@ -322,15 +346,18 @@ description.
 
 Two sessions that overlap both snapshot from the state each read at *start*, and
 the later timestamp wins whole — the earlier session's facts are silently gone.
-There is no locking and no merge, because there is no update call to build either
-on. Acceptable at one operator; the first thing to revisit if that changes.
+There is no locking and no merge: `update_file` moves and renames but writes no
+content, so there is still no call to build either on. Acceptable at one operator;
+the first thing to revisit if that changes.
 
 ### It reads back with backslashes in it
 
 `read_file_content` was used instead of `download_file_content`. See
 [Read it back](#read-it-back-with-download_file_content). Recover by finding the
-last clean snapshot in the folder and writing a corrected one forward — the
-damaged file cannot be deleted from here.
+last clean snapshot in the folder and writing a corrected one forward. The
+damaged file *can* now be removed with `trash_file` — but write the corrected
+snapshot first and confirm it reads back clean, because the damaged one is still
+the newer of the two until you do.
 
 ### The folder looks empty
 

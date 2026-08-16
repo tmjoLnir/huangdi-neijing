@@ -240,6 +240,30 @@ the returned dimensions and the house look against the style key, and only then
 generate the rest. Write what actually happened into that cut's reproduction
 notes.
 
+### `use_unlim` — the one way a generate call spends nothing
+
+Every `generate_*` takes `use_unlim`, and it decides **which balance pays**: the
+account's free-trial unlimited generations (`true`) or its credits (`false`).
+**Omit it and the server decides** — and if an allowance covers the model, the
+call *submits nothing* and returns `unlim_choice`, which is the question to put to
+the user before spending anything of theirs. Answer by calling again with the same
+params plus the field; the answer is remembered for a few minutes, so a
+seven-block run is asked once rather than seven times.
+
+Two consequences here:
+
+- **`unlim_choice` is neither a failure nor a job.** A call that returns it has
+  generated nothing and cost nothing. Do not retry it as service noise, and do not
+  count that block as done — on a seven-block run this reads as a stalled pipeline
+  rather than as a question.
+- **`use_unlim: true` caps `count` to 1**, so it does not compose with asking for
+  variants in one call. Step 3's two-variants-per-block method is two calls under
+  it.
+
+A rejected opt-in is reported rather than quietly swapped for a charge, so this
+cannot silently spend credits. It can silently *not* generate, which is why it
+belongs in the gate rather than in step 2.
+
 ### Tool availability — check the surface before you spend
 
 **This has already happened once: the server-side assembler vanished from the MCP
@@ -280,11 +304,19 @@ history, and the record deliberately keeps superseded entries).
 | `sandbox_exec` | step 4 assembly | **stop before step 1** — this is the 2026-08-04 failure exactly; nothing else assembles a cut, and a service-free `ffmpeg` fallback would need a shell too |
 | `media_upload` + `media_confirm` | step 4 export | **stop before step 1** — the sandbox is ephemeral, so a render that cannot be exported is lost the moment the call returns |
 | `job_display` / `jobs_wait` / `show_generation_by_ids` | polling | degrade, don't stop — the generate call returns its own job ID |
+| `generate_video_batch` / `generate_audio_batch` | issuing a cut's blocks in one call ([step 2](#submit-a-cuts-blocks-as-one-batch-not-one-call-per-block)) | degrade, don't stop — fall back to one `generate_*` per block. Same jobs, same price, more calls |
 | `models_explore` | role and duration checks | degrade — the step-0 shortlist covers the house models |
 | `upscale_video`, `reframe` | longform finishing | not a generation-time blocker; check before *promising* a finishing pass |
 
-**Verified 2026-08-07: all eight names above resolve.** That is a snapshot like
+**Re-verified 2026-08-16: all eight names above resolve.** That is a snapshot like
 the price table, not a standing fact — re-run the check, never quote this line.
+
+**The `mcp__higgsfield__` prefix is not guaranteed either.** The server has been
+seen reconnecting mid-session under a different prefix, with every tool otherwise
+identical. If the exact names above come back with no `<function>` block, search
+on the bare suffix (`balance`, `sandbox_exec`) before concluding a tool is gone —
+a renamed server and a removed tool look the same through a `select:` query, and
+only one of them is worth stopping a cut for.
 
 **A schema is not a working service.** This proves the tool is on the surface, not
 that the account is authenticated, in credit, or that the backend is healthy. The
@@ -595,6 +627,43 @@ whole run rather than the block:
   warning, so it will not stop a render — but it is the assembler telling you the
   block reads as a still, and the house answer is to regenerate that block.
 
+### Submit a cut's blocks as one batch, not one call per block
+
+`generate_video_batch` takes **1–12 independent requests in one call**, each item
+carrying the same `params` as `generate_video` and its own caller-supplied
+`index`. A whole trailer is one call. It is the same jobs, the same prices and the
+same parameters — including `declined_preset_id`, which stays per item, so the
+`IN THE DARK` pre-decline survives batching unchanged.
+
+**Set `index` to the block number.** The response keeps the index you gave it, so
+block numbering carries through submission, polling and display without being
+re-derived — and `assemble_final.sh` calls a `block03 + voice05` pairing "the #1
+cause of audio on the wrong block". This is the cheapest place to make that
+mistake impossible.
+
+The protocol after submission is fixed, and the last step is the one worth
+getting right:
+
+1. Poll with **`jobs_wait`**, in groups of **at most 12** (`timeout_seconds`
+   default 15, max 15). While `all_terminal` is false, wait the returned
+   `poll_after_seconds` and call again. A permanently failed lookup comes back
+   once and does not block the other jobs.
+2. When every job in the set is terminal, call **`show_generation_by_ids` exactly
+   once**, for up to 60 jobs. **Never** `show_generations`, and never
+   `job_display` per job.
+
+| | Trailer (7 blocks) | Longform (~114 blocks) |
+|---|---|---|
+| `generate_video_batch` calls | **1** | 10 (12, 12, … 6) |
+| `jobs_wait` groups | 1 | 10 |
+| `show_generation_by_ids` calls | 1 | 2 — the 60-job cap, not one per batch |
+
+**`get_cost` is not accepted inside a batch item** — the schema forbids it
+outright. So the step-0 preflight stays exactly as written: one *single*
+`generate_video` with `get_cost: true` on a representative clip, priced and
+confirmed, and only then the batch that actually spends. Batching changes how the
+approved run is issued; it does not move the gate.
+
 ## 3. Voiceover
 
 Model `seed_audio`, `voice_type: "preset"`, `speech_rate: 55` — that rate is
@@ -829,6 +898,17 @@ only the voiceover and assembly are re-paid — the clips are untouched.
 
 One take per block. Record each take's **duration** alongside its job ID — the
 record is how you know a block was comfortable or tight.
+
+**Batch the takes the way step 2 batches the clips.** `generate_audio_batch` takes
+the same 1–12 items with the same `index` convention, and the polling and display
+protocol is identical — see
+[step 2](#submit-a-cuts-blocks-as-one-batch-not-one-call-per-block). Two things
+are specific to voice. Each item carries its own `voice_id` and `voice_type`, so a
+mixed-cast cut still goes out as **one** call rather than one per speaker. And the
+two-variants-per-block method puts 14 takes behind a 7-block trailer, over the
+12-item cap: issue it as **two batches of seven, same indices both times**, so the
+variants stay block-aligned and picking the keeper is a per-index comparison
+rather than a hunt.
 
 ### Write to 8.6–10.0 seconds. This is the most expensive thing to get wrong.
 
@@ -1091,6 +1171,11 @@ mode:
   command, append `curl -f -X PUT --upload-file` to that **same** command, and
   `media_confirm` only after HTTP 200.
 
+**Pass `timeout_seconds: 120` explicitly.** The tool's own default is **60**, not
+the 120s foreground budget this section reasons about — a call that omits it gets
+half the headroom, and the download-plus-assemble chain is the part that uses it.
+120 is the maximum; past that the only option is `background: true`, below.
+
 ```
 sandbox_exec({ command:                              // foreground — see below
   "set -e; mkdir -p work/blocks work/voices work/output; " +
@@ -1101,13 +1186,15 @@ sandbox_exec({ command:                              // foreground — see below
   "chmod +x $HF_WORKFLOWS/faceless-channel-video/scripts/*.sh; " +
   "bash $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh " +
   "  --out work/output/final.mp4 --blocks 6 --manifest pairs.txt && " +
-  "curl -f -X PUT --upload-file work/output/final.mp4 '<upload_url>'" })
+  "curl -f -X PUT --upload-file work/output/final.mp4 '<upload_url>'",
+  timeout_seconds: 120 })                            // NOT the default — default is 60
 ```
 
 ### `background: true` lost a whole run — use it only at longform scale
 
 **Run a trailer-scale assembly in the foreground.** A 7-block assembly finishes
-inside the 120s foreground budget comfortably, and the Suwen 1 v5 run proved
+inside the 120s foreground budget comfortably — *with `timeout_seconds: 120`
+passed; the default 60 is not comfortable* — and the Suwen 1 v5 run proved
 what the alternative costs: with `background: true` the transport call timed out,
 the sandbox was reclaimed, and the finished render was gone with it — clips and
 takes already paid for, nothing to export. The sandbox is discarded ~10 seconds
@@ -1472,14 +1559,15 @@ block's cues **early by `(file − speech) / 2`** and the captions lead the voic
 > **⚠ `seed_audio` does ship padding — the 2026-08-04 reading did not generalise.**
 > That measurement (all seven of v5's kept takes reporting `file == speech`, so the
 > drift "computes to 0.00s") was true of one seven-take run and was written up here
-> as a property of the provider. It is not. Three of the 22 kept takes across the
-> three cuts rendered since carry padding:
+> as a property of the provider. It is not. Four of the 29 kept takes across the
+> four cuts rendered since carry padding:
 >
 > | Take | File | Speech | Padding | Cue drift if file were recorded |
 > |---|---|---|---|---|
 > | Suwen 8 block 4 | 10.353s | **8.913s** | 1.440s | **0.720s** |
 > | Suwen 8 block 7 | 10.413s | **9.231s** | 1.182s | 0.591s |
 > | Lingshu 28 v2 block 5 | 9.870s | **8.639s** | 1.231s | 0.615s |
+> | Lingshu 8 block 5 | 9.673s | **9.024s** | 0.649s | 0.325s |
 >
 > Note what padding also does to the gate: Suwen 8 block 4's *file* is 10.353s,
 > past the 10.0s ceiling, and it passed because only its 8.913s of speech is
@@ -1487,7 +1575,7 @@ block's cues **early by `(file − speech) / 2`** and the captions lead the voic
 
 **So correction 1 below is not the optional half of a pair any more — it is the
 house practice, and it is the only reason the shipped sidecars are correctly
-timed.** All three rendered cuts put the assembler's measured speech in their
+timed.** All four rendered cuts put the assembler's measured speech in their
 voiceover line. Suwen 8's block-4 cue starts at **30.544s**, which is
 `30 + (10 − 8.913) / 2` — not the 30.000s a file-length record would have produced.
 
@@ -1499,8 +1587,9 @@ Two ways to correct it, and the second is authoritative:
 
 1. **Record speech, not file length.** Put the `speech_metrics.sh` figure — or the
    assembler's own, from `<out>.mp4.assembly.json` — in the production record's
-   voiceover line. Record **both** numbers in the take table, as Suwen 8 and
-   Lingshu 28 v2 do, so a padded take stays visible rather than merely handled.
+   voiceover line. Record **both** numbers in the take table, as Suwen 8,
+   Lingshu 28 v2 and Lingshu 8 do, so a padded take stays visible rather than
+   merely handled.
 2. **Take the timing from `<out>.mp4.assembly.json`** in the script. The assembler
    writes each block's measured speech *and* its absolute position in the finished
    file. That is ground truth, and it is what the sandbox's own caption scripts
@@ -1527,9 +1616,13 @@ Both scripts share their geometry, Anton metrics and narration-table parser via
 
 ## Longform episodes
 
-**11:30–20 min.** Untested — **no longform cut has been rendered.** Four longform
-*documents* exist (Lingshu 28 v1 and v2, Suwen 8, Suwen 13), all pre-render, so the
-scripting side has been exercised repeatedly and the pipeline side not at all. The
+**11:30–20 min.** Untested — **no longform cut has been rendered.** Eleven longform
+*documents* exist, all pre-render, so the scripting side has been exercised
+repeatedly and the pipeline side not at all. Re-derive the list rather than
+trusting a count written here — `ls output/*/ch*/*longform*.md` — because this
+line said *four* until 2026-08-16, and one of the four
+(`inner-canon-lingshu28-longform-v1.md`) had been deleted from the repo on
+2026-08-13. The
 mechanics below are derived from the tool constraints and the trailer
 runs, so treat the first episode as a pilot and write what actually happened into
 its reproduction notes. Where this section contradicts steps 0–5, this section
@@ -1541,14 +1634,16 @@ wins.
 |---|---|---|
 | Runtime | 30-90 sec (70s and 80s cuts have rendered) | 11:30–20 min target (11:30 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
-| Blocks | 6 | ~102–114 at 10s |
+| Blocks | **7** — six narration plus the mandated end-card block | ~102–114 at 10s, end card included |
 | Voices | narrator only | narrator **+ speaking characters** |
 | Doc format | narration table + shot list | SOUND / VISUAL / CHARACTER blocks, timecodes per act |
 | File | `inner-canon-<book><N>-trailer-v<M>.md` | `inner-canon-<book><N>-longform-v<M>.md` |
 
-The 16:9 landscape default is an inference — CLAUDE.md mandates 9:16 only for
-trailers, and longform is the YouTube main-feed cut. **Confirm with the user
-before a full run**, because it's ~110 clips to get wrong.
+**16:9 landscape is mandated, not inferred.** `CLAUDE.md` § Structure: *"Render
+trailers in 9:16 vertical format; long form in 16:9 landscape format."* This line
+used to call it an inference and send the user a confirmation question before a
+full run — reopening a decision policy had already settled. Record the actual
+resolution at the top of the document, which that same rule also requires.
 
 ### Preflight — this is ~19× a trailer
 
@@ -1558,22 +1653,25 @@ front of the ~1,313-credit floor below rather than a trailer's ~71. At the
 2026-08-12 verified prices, the model choice is the difference between a cut you
 can afford and one you cannot:
 
-The balance column below is anchored to **343.2 credits, read live 2026-08-12**
-(plan: `ultra`). The previous anchor was ~782, inferred from two old runs and never
-re-read — it was **2.3× too high**, so every multiple in this table used to look
-half as bad as it was. **Call `balance` and recompute anyway**; this is a snapshot
-that decays the moment anything renders.
+The balance column below is anchored to **235.7 credits, read live 2026-08-16**
+(plan: `ultra`). **Call `balance` and recompute anyway**; this is a snapshot that
+decays the moment anything renders — and it has now decayed twice. The anchor was
+first ~782 (inferred from two old runs, never re-read, **2.3× too high**), then
+343.2 (read live 2026-08-12, and **1.46× too high** four days later with nothing
+rendered in between). Both times every multiple in this table read better than the
+truth, and both times in the same direction: an anchor only ever goes stale
+downward.
 
 Totals are the whole cut — clips + ~171 of voice (114 takes at ~1.5) + 2 for the
 style key — not clips alone, which is how the old column understated them.
 
-| Clip model / tier | Credits/clip | ~114 blocks, all-in | vs 343.2 balance |
+| Clip model / tier | Credits/clip | ~114 blocks, all-in | vs 235.7 balance |
 |---|---|---|---|
-| `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,313** | **~3.8× balance** |
-| `wan3_0` 480p | 12.5 | ~1,598 | ~4.7× balance |
-| `seedance_2_0_mini` 720p (default, full) | 25 | ~3,023 | ~8.8× balance |
-| `gemini_omni` 720p | 30 | ~3,593 | ~10.5× balance |
-| `seedance_2_0` 1080p | 90 | ~10,433 | ~30× balance |
+| `seedance_2_0_mini` 480p (default, draft) | 10 | **~1,313** | **~5.6× balance** |
+| `wan3_0` 480p | 12.5 | ~1,598 | ~6.8× balance |
+| `seedance_2_0_mini` 720p (default, full) | 25 | ~3,023 | ~12.8× balance |
+| `gemini_omni` 720p | 30 | ~3,593 | ~15.2× balance |
+| `seedance_2_0` 1080p | 90 | ~10,433 | ~44× balance |
 
 **A full-length episode does not currently fit in the credit balance at any
 tier** — even an all-draft pass overruns it. Say so plainly and get a decision
@@ -1584,8 +1682,8 @@ episode estimate. Voice takes are **~1.5 each — about 171 credits for a 114-bl
 episode**, paid once and reused. Clips still dominate, but voice is now a real line
 item rather than noise: at the two-variants-per-block working method that is ~340,
 and **at the Suwen 13 trailer's 4.7× re-take rate a 114-block episode's voice bill
-is ~800 credits** — 80 clips' worth at the default tier, and more than twice the
-whole current balance on its own. It has to appear in the preflight. **Size the script to the corrected step-3 budgets before
+is ~800 credits** — 80 clips' worth at the default tier, and more than three times
+the whole current balance on its own. It has to appear in the preflight. **Size the script to the corrected step-3 budgets before
 generating any takes** — that re-take rate was caused by wrong word budgets, not by
 service noise, and it is the cheapest thing on this page to avoid.
 
@@ -1730,10 +1828,16 @@ finished 60s cut rather than re-rendering six clips.
 
 ### Runtime levers
 
-CLAUDE.md asks for cut-to-15 / stretch-to-20 levers in the production notes.
-Express them in blocks, since blocks are the unit that actually costs money:
-name which block ranges are droppable to reach 90 blocks, and which beats can
-expand to reach 120.
+CLAUDE.md asks for **cut-to-11:30 / stretch-to-20** levers in the production
+notes. Express them in blocks, since blocks are the unit that actually costs
+money: name which block ranges are droppable to reach **69 blocks** (11:30, the
+policy floor), and which beats can expand to reach **120** (20:00, the ceiling).
+
+**This section said "cut-to-15 / 90 blocks" until 2026-08-16**, which is a floor
+policy never set — 90 blocks is 15:00. It matters because of the size of the
+lever: coming down from the ~114 blocks the preflight above is built on to 69 is
+**45 blocks, nearly 40% of the episode**. That is a structural decision to take
+while scripting, not a trim to find in the edit.
 
 ## Environment caveats
 
