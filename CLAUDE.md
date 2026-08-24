@@ -101,7 +101,8 @@ output/
     ch28/inner-canon-lingshu28-trailer-v2.md        # RENDERED 2026-08-08, draft tier
     ch28/inner-canon-lingshu28-trailer-v2.srt/.vtt  # sidecars, tracked
     ch28/inner-canon-lingshu28-longform-v2.md       # slate rank 1, publish slot 1; pre-render
-    ch28/inner-canon-lingshu28-longform-v3.md       # pre-render
+    ch28/inner-canon-lingshu28-longform-v3.md       # RENDERED 2026-08-24, draft tier
+    ch28/inner-canon-lingshu28-longform-v3.srt/.vtt # sidecars, tracked
     ch43/inner-canon-lingshu43-trailer-v1.md        # pre-render
     ch43/inner-canon-lingshu43-longform-v1.md       # pre-render
     ch50/inner-canon-lingshu50-trailer-v1.md        # pre-render
