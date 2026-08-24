@@ -1539,6 +1539,11 @@ The budget itself is pure geometry:
   overflow in 9:16. Judge wrapping on the vertical cut.
 - **Do not switch fonts to fix wrapping.** `anton` is the most condensed face
   available and `CLAUDE.md` mandates it anyway; anything else makes the fit worse.
+- **Anton has no CJK glyphs, and neither host ships a CJK face.** Any classical
+  quotation burned on screen needs one installed first, or it renders as tofu:
+  `curl -sSfL -o ~/.fonts/NotoSansCJKsc-Regular.otf https://github.com/notofonts/noto-cjk/raw/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf && fc-cache -f`.
+  Romanising is the alternative where the text is an attribution rather than a
+  quotation — Lingshu 28 v3's music credit took that route.
 
 > **⚠ The Anton model in `caption_metrics.js` is ~1.67× too wide — measured
 > 2026-08-24 by burning and reading pixels.** For the widest line in Lingshu 28 v3
@@ -1570,6 +1575,31 @@ ffmpeg -y -v error -f lavfi -i color=black:s=1280x720:d=1 \
   -vf "setpts=PTS+<T>/TB,subtitles=subs.ass:fontsdir=$HOME/.fonts:force_style='…'" \
   -frames:v 1 probe.png
 ```
+
+> **⚠ Never apply a full-frame effect after captions are burned.** On Lingshu 28 v3
+> the end card first darkened the whole frame with `drawbox …color=black@0.62` so
+> the card text would read. The captions are already *in* the pixels by then, so the
+> scrim dimmed them too: the caption band went from **max 255 with 50,537 pixels
+> above 150** to **max 102 with zero**. The narrator's mandated disclaimer was
+> effectively erased, and nothing in the encode warns you.
+>
+> **Use a bounded panel instead.** `drawbox x=64 y=150 w=1152 h=360` stops at y=510,
+> clear of the caption band at 575–665, and the captions measured byte-identical to
+> source afterwards. If you must darken the whole frame, **re-measure the caption
+> band by pixel** before shipping.
+
+> **⚠ `-ss` before `-i` breaks every `enable=` window in a probe frame.** Input
+> seeking resets output timestamps to zero, so `enable='between(t,890,900)'`
+> evaluates **false** and the overlay silently does not render — exit code 0, no
+> warning, and it looks exactly like a malformed filter. Use
+> `ffmpeg -copyts -ss T -i file …` when probing. The full encode has no `-ss` and is
+> unaffected, which is the trap: the probe that is supposed to gate a 15-minute
+> render is the only thing that is wrong.
+
+**Put card text in `textfile=`, not inline `text=`.** `drawtext` needs `&`, `:` and
+`'` escaped inside a filter string, and card copy is full of them. `textfile=`
+takes the bytes as-is. Pair it with `-filter_script:v` and the whole chain stops
+needing shell-level escaping too.
 
 **Confirm the font resolves in whatever machine runs the burn, before burning.**
 The Higgsfield sandbox ships Metropolis and Montserrat, **not Anton**, and libass

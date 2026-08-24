@@ -4,20 +4,24 @@
 
 **RENDERED 2026-08-24, draft tier.** 90 blocks × 10s, asserted by the assembler.
 
-**Final video — captions burned, 1280×720, 900.516s (15:00), 24fps, MP4:**
-`https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/cd3c2c19-f32d-4673-85c8-ea69b9e4f05f.mp4`
+**Final video — captions, history lower-third and end card all burned in.
+1280×720, 900.516s (15:00), 24fps, MP4:**
+`https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/1dc6e41a-e636-4839-885a-8870f33e2e76.mp4`
 
 Assembled from `seedance_2_0_mini` 480p clips at **864×496**, upscaled to 1280×720
 at the caption burn per the house rule in `build_subtitles.js`. Licensed guqin bed
 mixed by the assembler at **−13.50 dB** under the speech. Audio is stream-copied
-through the burn, so the delivered soundtrack is the assembler's own mix untouched.
-**CDN links expire — archive the MP4 by hand.** Job IDs, whole URLs, credit spend
-and assembly flags are in the *Production record* below.
+through every pass, so the delivered soundtrack is the assembler's own mix
+untouched. **CDN links expire — archive the MP4 by hand.** Job IDs, whole URLs,
+credit spend and assembly flags are in the *Production record* below.
+
+**Three of `CLAUDE.md`'s four on-screen requirements are in the file**: captions,
+the history lower-third (0:02–0:09) and the end disclaimer card (14:50–15:00) with
+the editorial credit and the music attribution. What is still hand work is the
+**eleven classical-quotation cards**, which need CJK type — see *Finishing steps*.
 
 > **Not yet publishable, for one reason:** the guqin bed is **CC BY-SA 3.0** and the
-> ShareAlike term is unresolved. See *Deliverables → Music*. Everything else the
-> pipeline owes this cut is delivered; the remaining items are the hand-added
-> on-screen text listed in *Finishing steps*.
+> ShareAlike term is unresolved. See *Deliverables → Music*.
 
 **16:9 landscape is mandated, not inferred.** `CLAUDE.md` § Structure: *"Render
 trailers in 9:16 vertical format; long form in 16:9 landscape format."*
@@ -927,7 +931,8 @@ never enters git.
 
 | Asset | `media_id` / job | URL |
 |---|---|---|
-| **Final deliverable — captions burned** | `cd3c2c19-f32d-4673-85c8-ea69b9e4f05f` | `https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/cd3c2c19-f32d-4673-85c8-ea69b9e4f05f.mp4` |
+| **Final deliverable — captions + lower-third + end card** | `1dc6e41a-e636-4839-885a-8870f33e2e76` | `https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/1dc6e41a-e636-4839-885a-8870f33e2e76.mp4` |
+| *Superseded* — captions only, no on-screen text | `cd3c2c19-f32d-4673-85c8-ea69b9e4f05f` | `https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/cd3c2c19-f32d-4673-85c8-ea69b9e4f05f.mp4` |
 | Assembly output — no captions | `0b2fd755-5c0c-415d-b213-856196b8a91c` | `https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/0b2fd755-5c0c-415d-b213-856196b8a91c.mp4` |
 | Guqin bed, as mixed | `4563e8ad-fa17-4e5a-8407-2fee5913021e` | `https://d2ol7oe51mr4n9.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/4563e8ad-fa17-4e5a-8407-2fee5913021e.mp3` |
 | Landscape style key, 2752×1536 | job `717ea032-0a02-4da8-a161-6d77ef8db5ad` | `https://d8j0ntlcm91z4.cloudfront.net/user_3GfE0DFiVpEUQv4lBzcD4hx2MZE/hf_20260824_003016_717ea032-0a02-4da8-a161-6d77ef8db5ad.png` |
@@ -939,14 +944,28 @@ the egress denial in *Reproduction notes* item 8.
 
 **Final deliverable, measured after the burn:**
 
-| | Assembly output | **Delivered, subtitled** |
-|---|---|---|
-| Geometry | 864×496 | **1280×720** |
-| Duration | 900.517s | **900.516s** (21,601 frames @ 24fps) |
-| Size | 172,565,005 bytes | **271,237,325 bytes** |
-| Video | — | H.264 High, `crf 20`, `yuv420p`, faststart |
-| Audio | — | **AAC 96kHz stereo, stream-copied** — untouched by the burn |
-| Captions | none | **burned, 204 cues, Anton** |
+| | Assembly output | Captions pass | **Delivered** |
+|---|---|---|---|
+| Geometry | 864×496 | 1280×720 | **1280×720** |
+| Duration | 900.517s | 900.516s | **900.516s** (21,601 frames @ 24fps) |
+| Size | 172,565,005 bytes | 271,237,325 bytes | **303,240,736 bytes** |
+| Video | — | `crf 20` | **H.264 High, `crf 18`, `yuv420p`, faststart** |
+| Audio | — | copied | **AAC 96kHz stereo, stream-copied through both passes** |
+| Captions | none | burned, 204 cues, Anton | **burned, 204 cues, Anton** |
+| On-screen text | none | none | **lower-third + end card, Anton** |
+
+**The on-screen text was a second pass over the captioned file, not a re-burn from
+the assembly output.** That makes the delivered video a second-generation H.264
+encode; it was written at `crf 18` from a `crf 20` source, and it avoided
+re-transferring the 24KB sidecar into a fresh sandbox. Re-burning from `0b2fd755`
+in one pass is the cleaner path if this is ever redone.
+
+**The added loss was measured, not assumed.** Comparing the delivered frame against
+the captions-pass frame outside any overlay region gives a mean absolute luma
+difference of **0.63/255 — about 0.25%**, which is the noise floor of the encode.
+That same comparison is what proves the overlays are correctly gated: inside the
+lower-third box the difference is **70.6 at t=5** and **0.95 at t=300**, so the
+lower-third is drawn in its window and nowhere else.
 
 ### Captions — built, burned, and measured in the burned frame
 
@@ -1034,6 +1053,52 @@ the commas fixed the take and produced one wide clause. The sidecar splits it ac
 cues 173–175 and, as the 12:47 row above shows, it renders **two lines at 550px**.
 Per `SKILL.md`: **a wide clause is caption churn, never a re-take.** Recorded, not
 silently accepted.
+
+### On-screen text — lower-third and end card, burned
+
+**A second `ffmpeg` pass over the captioned file**, `drawtext` and `drawbox` only,
+no re-encode of the audio. Zero credits. Text came from `textfile=` rather than
+inline `text=`, which sidesteps escaping `&` and `:` inside a filter string
+entirely — worth doing for any card text.
+
+| | |
+|---|---|
+| History lower-third | Anton 26px white, `box=1:boxcolor=black@0.5:boxborderw=12`, `x=96 y=495`, `enable='between(t,2,9)'` |
+| End card panel | `drawbox x=64 y=150 w=1152 h=360 color=black@0.66`, `enable='between(t,890,900)'` |
+| End card text | five `drawtext` layers, centred with `x=(w-text_w)/2` — see *Deliverables* for the table |
+| Encode | `libx264 -preset veryfast -crf 18 -pix_fmt yuv420p`, audio `-c:a copy` |
+
+**Measured in the rendered frame, same method as the captions:**
+
+| Element | Measured | Against |
+|---|---|---|
+| Lower-third | y 496–521, x 97–450 | clear of the caption band by 64px; left margin matches the caption's 96px |
+| Disclaimer L1 | 964px wide, centred to 2px | inside the 1152px panel with 94px each side |
+| Disclaimer L2 | 328px, centred to 0px | inside |
+| Editorial credit | 379px, centred to 1px | inside |
+| Music credit | 543px | inside |
+
+> **⚠ A full-frame scrim on the end card destroys the burned-in disclaimer caption.
+> Found and fixed before the render, and it would have been a compliance failure.**
+> The first attempt darkened the whole frame with `drawbox …color=black@0.62` so the
+> card text would read. Block 90's plate is not actually dark — mean luminance
+> **102.7**, p95 **232** — so a scrim seemed necessary. But the captions are *already
+> burned in* by that point, so the scrim dims them too: the caption band went from
+> **max 255 with 50,537 pixels above 150** to **max 102 with zero**. The narrator's
+> disclaimer, which `CLAUDE.md` requires on screen, was effectively erased.
+>
+> **The fix is a bounded panel, not a frame scrim.** `y=150 h=360` stops at 510,
+> well above the caption band at 575–665, and the caption measures **byte-identical
+> to the source** afterwards. **Never apply a full-frame effect after captions are
+> burned** — or if you must, re-check the caption band by pixel, because nothing in
+> the encode will warn you.
+
+**Probing `enable=` windows needs `-copyts`.** `ffmpeg -ss T -i file` resets output
+timestamps to zero, so `enable='between(t,890,900)'` is **false** in the extracted
+frame and the overlay silently does not appear — exit code 0, no warning. The first
+probe of both overlays came back empty for exactly this reason and looked like a
+broken filter. `ffmpeg -copyts -ss T -i file` preserves `t`. The full encode has no
+`-ss` and is unaffected, but the probe that gates it is worthless without this.
 
 ### Reproduction notes
 
@@ -1123,10 +1188,11 @@ but every citation in the *Source mapping* section points at a file no working t
 holds. Inherited from v2, not introduced here, and worth resolving before v4:
 either restore it or re-point the mapping at the commit.
 
-**11. Nobody has watched this render.** It was assembled, `ffprobe`d, burned, and
-its captions were measured **by pixel in the rendered frame** — line count, box
-width and all four margins, at five sample times. That is a real check and it is
-reported above as one. **It is not a viewing.** No frame of the video imagery has
+**11. Nobody has watched this render.** It was assembled, `ffprobe`d, burned twice,
+and its captions, lower-third and end card were all measured **by pixel in the
+rendered frame** — line count, box width, margins and caption-band luminance, at
+seven sample times across two passes. Those are real checks and they are reported
+above as such; one of them caught a compliance defect. **None of it is a viewing.** No frame of the video imagery has
 been seen by a human or by me: not the cast, not the tally board, not one of the
 ninety clips. Per `CLAUDE.md`, the visual QA pass is outstanding, and the shot list
 records what was *asked for*, not what was verified as delivered.
@@ -1134,17 +1200,33 @@ records what was *asked for*, not what was verified as delivered.
 ---
 ## Deliverables the assembler cannot produce
 
-Of the four `CLAUDE.md` requires, **two were produced in this run** and two remain
-hand work at edit time.
+The assembler produces none of these. **All but one are now in the delivered
+file** — burned in with `ffmpeg` after assembly, which costs no credits and is
+what `CLAUDE.md` means by *hand-added at edit time*.
 
 | Requirement | Status |
 |---|---|
-| **Captions, burned** | **Done.** Burned into the delivered file — see *Captions* above. |
-| **Music** | **Done at assembly.** `--music bed.mp3`, mixed −13.50 dB under speech. Licence **not cleared** — see below. |
-| **History lower-third** | **Hand work.** *"Presented as history & philosophy"*, small, on screen inside **block 1 (0:00–0:10)**. |
-| **End disclaimer card** | **Hand work.** The mandated string over **block 90 (14:50–15:00)**, which was rendered as a plain dark plate with drifting ink grain for exactly this purpose. |
-| **Human editorial credit** | **Hand work**, on the end card and in the description. |
-| **On-screen classical text, eleven cards** | **Hand work.** None of the eleven carries its Chinese text in the render. |
+| **Captions, burned** | **In the file.** 204 cues, Anton — see *Captions* above. |
+| **Music** | **In the file, mixed at assembly.** `--music bed.mp3` at −13.50 dB under speech. Licence **not cleared** — see below. |
+| **History lower-third** | **In the file.** *"Presented as history & philosophy"*, Anton 26px, boxed, lower-left at x=96, **0:02–0:09** — inside block 1 as required. |
+| **End disclaimer card** | **In the file.** The mandated string over **block 90, 14:50–15:00**, on a dark panel above the caption band. |
+| **Human editorial credit** | **In the file.** *"Written & edited by Joshua Chin"* on the end card. Still needs adding to the **description** at upload. |
+| **On-screen classical text, eleven cards** | **Still hand work** — the only one outstanding. All eleven need CJK type, which the burning environment does not have; see *Finishing steps*. |
+
+**End card layout, as burned** (panel `x=64 y=150 w=1152 h=360`, black at 66%):
+
+| Element | Font | Position | Measured |
+|---|---|---|---|
+| *A dramatized adaptation of a classical philosophical text.* | Anton 42 | centred, y=180 | 964px wide, centred to 2px |
+| *Not medical advice.* | Anton 42 | centred, y=240 | 328px |
+| *Written & edited by Joshua Chin* | Anton 30 | centred, y=350 | 379px |
+| *Guqin: Yangguan Sandie / Zuiyu Changwan* | Anton 20 @85% | centred, y=430 | 543px |
+| *performed by Charlie Huang - CC BY-SA 3.0, via Wikimedia Commons* | Anton 20 @85% | centred, y=458 | — |
+
+**The music credit is romanised deliberately.** Anton carries no CJK glyphs and the
+burning environment has no CJK font, so 陽關三疊 / 醉漁唱晚 would have rendered as
+tofu boxes. The romanisation is a complete attribution on its own; add the Chinese
+titles by hand alongside the eleven quotation cards if you want them on screen.
 
 ### Music — sourced, mixed, licence UNRESOLVED
 
@@ -1180,20 +1262,19 @@ payoff and the end card — run on room tone alone, as scripted.
 ### Finishing steps
 
 Written against **this** cut's timings. Block N spans `(N−1)×10` to `N×10` seconds.
-**Start from the subtitled file** — the caption burn is already done and is not
-repeated here.
+**Start from the delivered file** — captions, the history lower-third and the end
+card are already burned in and are not repeated here. What remains is the CJK text
+and the upload metadata.
 
-**1. Fetch the subtitled render** from the *Delivered media* table above. **Not
+**1. Fetch the delivered render** from the *Delivered media* table above. **Not
 from this host:** the CDN is a 403 policy denial here, verified this run. Any
 machine outside this environment works.
 
-**2. History lower-third** — *"Presented as history & philosophy"*, small, lower
-left, **in at 0:02, out at 0:09**, inside block 1. Required within the first ten
-seconds. Keep it clear of the caption safe area: captions sit bottom-centre with a
-60px bottom margin and reach 1088px wide at most, so anchor the lower-third above
-`y=600` or inset it left of `x=96`.
+**Two safe areas bind everything added from here.** Captions occupy roughly
+**y 575–665**, bottom-centred, up to 1088px wide. The end-card panel occupies
+**y 150–510** for the last ten seconds. Anything new must avoid both.
 
-**3. The eleven quotation cards.** All eleven blocks rendered as plain plates or as
+**2. The eleven quotation cards.** All eleven blocks rendered as plain plates or as
 their own diagram, **with no Chinese text in frame** — generated glyphs are
 unreliable and could not be visually checked from this host. Add each card's text
 by hand, centred, held for the block:
@@ -1219,24 +1300,29 @@ the card text in the upper two-thirds of the frame; the bottom 120px is spoken f
 欠 噦 唏 振寒 噫 嚏 嚲 泣涕 太息 涎下 耳鳴 自齧舌 — because **block 75's payoff
 (12:20–12:30) needs 嚏 to lift out of alignment**. Set 嚏 as its own layer.
 
-**4. Series title card** — block 6 (0:50–1:00) is a plain bloom plate. Add *The
+**To burn these you need a CJK face**, which neither this host nor the Higgsfield
+sandbox has — that is the only reason they were not done in the same pass as the
+lower-third and end card. `Noto Sans CJK SC` is the obvious choice:
+
+```
+curl -sSfL -o ~/.fonts/NotoSansCJKsc-Regular.otf \
+  https://github.com/notofonts/noto-cjk/raw/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf && fc-cache -f
+```
+
+Then the same `drawtext` pattern the end card used — `textfile=` rather than inline
+`text=`, which avoids escaping the punctuation entirely.
+
+**3. Series title card** — block 6 (0:50–1:00) is a plain bloom plate. Add *The
 Emperor's Inner Canon · Twelve Small Rebellions*.
 
-**5. End card — 14:50 to 15:00** (block 90). The mandated disclaimer verbatim:
-*"A dramatized adaptation of a classical philosophical text. Not medical advice."*
-Then, beneath it: *"Written & edited by Joshua Chin"*, and the music credit —
-*"Guqin: 陽關三疊 / 醉漁唱晚 performed by Charlie Huang, CC BY-SA 3.0, via Wikimedia
-Commons"*. The narrator reads the disclaimer over this block, so it is **already
-burned in as a caption**; place the card text above it, not over it.
-
-**6. Description** — the disclaimer string, *Written & edited by Joshua Chin*, the
+**4. Description** — the disclaimer string, *Written & edited by Joshua Chin*, the
 guqin attribution above with a link to the CC BY-SA 3.0 deed, and cite the chapter
 as **Lingshu 28 (靈樞·口問)**, never a bare "Chapter 28".
 
-**7. Upload settings** — general audience, **not** made for kids; tick the
+**5. Upload settings** — general audience, **not** made for kids; tick the
 altered-or-synthetic-content box (the cast is AI-generated).
 
-**8. Before any of this, watch the file.** No frame of this render has been seen —
+**6. Before any of this, watch the file.** No frame of this render has been seen —
 see *Reproduction notes* item 9.
 
 ---
