@@ -45,8 +45,8 @@ it rather than restating the date.**
 
 **What the cutoff does not license.** It governs *commentary* — the story
 around a number — not *a measurement a current instruction still rests on*.
-Figures in force today that were taken before PR#53 include the **8.6–10.0s
-speech window** and the **496×864 delivered geometry** (both 2026-08-04), the
+Figures in force today that were taken before PR#53 include the **speech window**
+and the **496×864 delivered geometry** (both 2026-08-04), the
 finding that **`speech_rate` is not a duration lever** (2026-08-01), the
 style-key head job ID, and the preset IDs to pre-decline. Those are operative
 because a live rule cites them, not because of when they were measured, and the
@@ -101,6 +101,8 @@ output/
     ch28/inner-canon-lingshu28-trailer-v2.md        # RENDERED 2026-08-08, draft tier
     ch28/inner-canon-lingshu28-trailer-v2.srt/.vtt  # sidecars, tracked
     ch28/inner-canon-lingshu28-longform-v2.md       # slate rank 1, publish slot 1; pre-render
+    ch28/inner-canon-lingshu28-longform-v3.md       # RENDERED 2026-08-24, draft tier
+    ch28/inner-canon-lingshu28-longform-v3.srt/.vtt # sidecars, tracked
     ch43/inner-canon-lingshu43-trailer-v1.md        # pre-render
     ch43/inner-canon-lingshu43-longform-v1.md       # pre-render
     ch50/inner-canon-lingshu50-trailer-v1.md        # pre-render
@@ -250,7 +252,7 @@ Two constraints bind every script written for these voices, and the skill holds 
 - **A take must fill its fixed 10s block, within a window the assembler enforces at both edges.** The window is pipeline geometry and holds for every voice; a take outside it is a hard error that stops the assembly, not something the tool absorbs. The word count that produces it is voice-specific and does **not** transfer between voices — take both the window and the word counts from the skill's step-3 table, never from another cut's document.
 - **`speech_rate` is not a duration lever.** Word count and punctuation are the only controls on take length.
 
-> **The window changed on 2026-08-04** when Higgsfield removed the server-side assembler, and it moved by more than two seconds — from 6–8s to 8.6–10.0s. **Every cut written before that date is sized to the old window and will fail the current assembler.** Re-time a cut's narration before re-rendering it; do not assume an existing document is a safe model to copy. The skill's step-3 and step-4 hold what changed.
+> **The window changed on 2026-08-04** when Higgsfield removed the server-side assembler, and it moved by more than two seconds off the old 6–8s. **Every cut written before that date is sized to the old window and will fail the current assembler.** Re-time a cut's narration before re-rendering it; do not assume an existing document is a safe model to copy. **The number itself is the skill's, not this file's** — take it from the step-3 table and nowhere else. This paragraph named a figure until 2026-08-24, it was wrong at both edges, and a 90-block cut was written to it before anyone read the assembler; that is exactly the drift the split above exists to prevent.
 
 Measure any new voice on one take, and write the result into the skill's table, before writing a script to it.
 
