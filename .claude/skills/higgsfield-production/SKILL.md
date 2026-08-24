@@ -30,9 +30,10 @@ before generating anything.
 > in a remote sandbox — [step 4](#4-assembly) has the call. Three consequences
 > reach back into how a cut is *written*, so this was not merely a swapped tool:
 >
-> - **The take window moved from 6–8s to 8.6–10.0s** of *detected speech*, and
->   over-window is now a hard error instead of a pitch-safe speed-up. Every
->   narration line in the repo is now short of the gate — see [step 3](#3-voiceover).
+> - **The take window moved off 6–8s** of *detected speech*, and over-window is now
+>   a hard error instead of a pitch-safe speed-up. **It moved to 7.8–9.5s, not to
+>   8.6–10.0s as this skill said until 2026-08-24** — see [step 3](#3-voiceover) for
+>   the correction and what the wrong number cost.
 > - **Captions are no longer burned at assembly.** The sidecar path is the only
 >   path now, not the preferred one of two — see [Subtitles](#subtitles).
 > - **Clip audio is now mixed in at 0.12, not discarded**, so `generate_audio:
@@ -327,16 +328,23 @@ answers), then `get_cost` (proves the model is priced and accepted).
 #### The assembler is a script now, so availability has two layers
 
 `assemble_final.sh` is **not** an MCP tool — it ships inside the sandbox image
-under `$HF_WORKFLOWS/faceless-channel-video/scripts/`. `sandbox_exec` resolving
-therefore says nothing about the assembler being present, and a workflow-bundle
-update can move, rename or re-flag that script exactly the way the tool was
-removed. Probe it in the same preflight, free, in one call:
+under `$HF_WORKFLOWS/faceless-video/scripts/`. `sandbox_exec` resolving therefore
+says nothing about the assembler being present, and a workflow-bundle update can
+move, rename or re-flag that script exactly the way the tool was removed.
+
+> **⚠ It has already moved once, and the old path is dead.** Until 2026-08-24 both
+> scripts sat under `$HF_WORKFLOWS/faceless-channel-video/scripts/`, with
+> `speech_metrics.sh` in a `narrator/` subdirectory of it. The bundle was
+> re-organised into one directory per workflow and **`ls` on the documented path
+> now fails outright**. When it does, do not guess the new layout —
+> `find / -name 'assemble_final*' 2>/dev/null` finds it in seconds. Probe both
+> scripts in the same preflight, free, in one call:
 
 ```
 sandbox_exec({ command:
-  "ls -l $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh " +
-  "      $HF_WORKFLOWS/faceless-channel-video/scripts/narrator/speech_metrics.sh && " +
-  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh --help | head -40" })
+  "ls -l $HF_WORKFLOWS/faceless-video/scripts/assemble_final.sh " +
+  "      $HF_WORKFLOWS/narrator/scripts/speech_metrics.sh && " +
+  "bash $HF_WORKFLOWS/faceless-video/scripts/assemble_final.sh --help | head -40" })
 ```
 
 **Read the `--help`, don't just confirm the file exists** — it is also how a
@@ -591,15 +599,27 @@ budget a retry for each newly-triggered preset.
 | Preset | ID | Triggered by |
 |---|---|---|
 | IN THE DARK | `24bae836-2c4a-48e0-89b6-49fcc0b21612` | any dim or night-lit scene; the most frequent trigger by far |
-| DROWN IN MUSIC | `f1821f84-945b-4cd1-9085-1f479db0028e` | "rhythm" / "rhythmic" |
+| DROWN IN MUSIC | `f1821f84-945b-4cd1-9085-1f479db0028e` | **temporal sequencing** — see below. Audio words are *not* the main trigger |
 | 3D RENDER | *not recorded* | vocabulary on the NEGATIVE line |
 
 The trigger is **prompt vocabulary anywhere in the request, not just the NEGATIVE
 line and not just darkness** — that was the early reading and a later cut
 disproved it. Pre-decline `IN THE DARK` on every clip; doing so has saved a full
-round of retries on a dark-heavy cut. Handle the rest as they fire, and keep
-audio vocabulary — *drum*, *drone*, *music*, *rhythm* — out of clip prompts
-entirely, since those are edit-time directions anyway.
+round of retries on a dark-heavy cut. Keep audio vocabulary — *drum*, *drone*,
+*music*, *rhythm* — out of clip prompts entirely, since those are edit-time
+directions anyway.
+
+> **⚠ `DROWN IN MUSIC` fires on time, not on sound — corrected 2026-08-24.** It
+> blocked **eight of ninety** clip submissions on the Lingshu 28 v3 longform, and
+> not one of those prompts contained an audio word. The common factor was
+> **temporal-sequencing language**: *"then"*, *"one after another"*, *"in
+> sequence"*, *"beat by beat"* — which reads as a music-video edit instruction.
+> All eight cleared **unchanged** on retry with the `declined_preset_id` above.
+>
+> **At longform scale, pre-decline it as well as `IN THE DARK`.** One id per call
+> means you must choose which to pre-decline; on a 90-block cut the sequencing
+> language is unavoidable — a shot list is a description of things happening in
+> order — so budget the retry rather than rewriting the beat out of the prompt.
 
 Preset offers are a Higgsfield-service behaviour, not a `gemini_omni` one, so
 expect them on any model.
@@ -671,15 +691,41 @@ what fits a line inside a fixed 10s block. **The full cast is cast permanently**
 (CLAUDE.md, as of Suwen 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
-| Role | Voice | `voice_id` | Measured rate | Draft to | Observed spread, all kept takes |
+| Role | Voice | `voice_id` | Measured rate | Draft to | Blocks in sample |
 |---|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.77 words/sec** | **33–37 words** | 17 takes, **2.66–4.67 w/s**. 25w @ 9.41s and 44w @ 9.43s both cleared. **32w @ 6.45s (Suwen 13) — 2.15s UNDER** |
-| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.52 words/sec** | **39–45 words** | 4 takes, **4.11–5.25 w/s**. 37w @ 8.99s; 46w @ 8.77s. **37w @ 7.88s (Suwen 8) — under the floor** |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **4.29 words/sec** | **37–42 words** | 5 takes, **3.84–4.60 w/s**. 37w @ 9.02s; 44w @ 9.56s. **40w @ 7.92s (Suwen 13) — under** |
-| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.45 words/sec** | **47–54 words** | 3 takes, **5.17–5.98 w/s**. 50w @ 9.54s and 9.68s cleared; **50w @ 8.07 / 8.11 / 8.44s (Lingshu 8) — three rolls, all under** |
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.70 words/sec** | **29–35 words** | 41 |
+| **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.34 words/sec** | **34–41 words** | 13 |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **3.91 words/sec** | **31–37 words** | 31 |
+| **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.71 words/sec** | **45–54 words** | 5 |
 
-> **⚠ Re-pooled 2026-08-13, after the Lingshu 8 trailer v1 render. Every row
-> moved, and Xavier's old row named a word count that could not render.**
+> **Re-measured 2026-08-24 on the Lingshu 28 longform v3 run — 90 blocks in one
+> cut, against the corrected 7.8–9.5s window.** `Draft to` is `rate × 7.8` to
+> `rate × 9.5`, rounded inwards. This is three times the sample any previous row
+> rested on, and it is the first table derived from the *real* window rather than
+> from the 8.6–10.0 this skill carried in error, so **every earlier row is
+> superseded by arithmetic as well as by measurement.**
+>
+> **Zane is the only voice the old table had approximately right**, and the only
+> one of the four whose blocks all landed without a rewrite.
+>
+> **Word count is the estimator; `speech_metrics.sh` is the gate.** Twenty of the
+> ninety blocks had word counts outside their voice's band and measured *inside*
+> the window anyway; they were kept. Re-sizing on word count alone would have
+> thrown away good audio. Size the draft from the table, then measure every take
+> and re-size each miss **from its own measured rate** —
+> `words × 8.65 / measured_speech` — not from the pooled rate. That, plus
+> submitting two or three variants at once for any block that had already missed
+> twice, is what converged a 90-block cut.
+>
+> **Run-to-run spread is wider than this skill has ever recorded.** Identical text
+> on one block returned **7.396s, 8.264s, 15.688s and 17.073s** across four rolls —
+> a 9.7s spread on a 1.7s window. The previous worst case here was 2.44s.
+
+> **⚠ SUPERSEDED — re-pooled 2026-08-13, after the Lingshu 8 trailer v1 render.**
+> Replaced by the 2026-08-24 table above, which has three times the sample and is
+> derived from the correct window. **Everything below derives its word counts from
+> `rate × 8.6 … rate × 10.0`, which was never the gate** — read it for the
+> per-voice behaviour it establishes, not for a number to write to.
 >
 > The rates above are now pooled across **all 29 kept takes from all four rendered
 > cuts** — Lingshu 28 v2, Suwen 8, Suwen 13, Lingshu 8 — as words of *shipped*
@@ -864,7 +910,7 @@ duration. All four voices run at `speech_rate` 55.
 
 **Character lines are structurally short, and a block is structurally 10s.** At
 their measured rates every character voice needs **forty words or more** just to
-clear the 8.6s floor — which is a speech, not an interjection. Take the exact
+clear the 7.8s floor — which is a speech, not an interjection. Take the exact
 count from [the step-3 table](#3-voiceover), never from here. Zane is the sharpest
 case: the fastest voice in the cast cannot say anything shorter than about fifty
 words and still fill a block.
@@ -872,7 +918,7 @@ words and still fill a block.
 **The old second way out is now closed.** Letting a take run short and centred —
 a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
 Suwen 1's block 3 — is a **hard assembler error** under the new floor:
-`voice N carries 2.6s of speech; required 8.6–10.0s`. The assembler will not
+`voice N carries 2.6s of speech; required 7.8–9.5s`. The assembler will not
 build the cut. There is no flag to permit it; `--clip-seconds` moves the whole
 window rather than widening it, because the window is always exactly 1.4s wide
 and its ceiling *is* the block length.
@@ -910,15 +956,28 @@ two-variants-per-block method puts 14 takes behind a 7-block trailer, over the
 variants stay block-aligned and picking the keeper is a per-index comparison
 rather than a hunt.
 
-### Write to 8.6–10.0 seconds. This is the most expensive thing to get wrong.
+### Write to 7.8–9.5 seconds. This is the most expensive thing to get wrong.
+
+> **⚠ CORRECTED 2026-08-24, Lingshu 28 longform v3 — this section said 8.6–10.0s
+> for twenty days and it was wrong at both edges.** `assemble_final.sh` computes
+> `SPEECH_MIN = CLIP − 2.2` and `SPEECH_MAX = CLIP − 0.5`, i.e. **7.800–9.500s** at
+> the house 10s block. The script's own comments date it: the floor moved from
+> `CLIP−2.0` to `CLIP−2.2` on **2026-08-04** "with the engine swap to elevenlabs",
+> and the ceiling has been `CLIP−0.5` since **2026-08-01**. The 8.6–10.0 written
+> here was the band that existed *before* 2026-08-01.
+>
+> **The ceiling is the half that did the damage, and it is 0.5s lower than
+> documented.** Lingshu 28 v3 was written to 8.6–10.0 and **first-pass yield was 39
+> of 90** — 224 takes for 90 blocks. Read the gate out of the script, not out of a
+> document, whenever a run starts missing one edge systematically.
 
 **The window is enforced by the assembler, and both edges are hard errors.**
-`assemble_final.sh` computes it from the block length as `CLIP-1.4` to `CLIP`, so
-at the house 10s block it is **8.6–10.0s of detected speech**. Miss it either way
+`assemble_final.sh` computes it from the block length as `CLIP−2.2` to `CLIP−0.5`,
+so at the house 10s block it is **7.8–9.5s of detected speech**. Miss it either way
 and the run stops:
 
 ```
-ERROR: voice 3 (voice03.wav) carries 6.42s of speech; required 8.600–10.000s
+ERROR: voice 3 (voice03.wav) carries 6.42s of speech; required 7.800–9.500s
        — REWRITE and regenerate (never pad, atempo, or trim speech).
 ```
 
@@ -944,7 +1003,7 @@ voice, and it moves:
 
 | | |
 |---|---|
-| Speech per 10s block | **8.6–10.0s — fixed, applies to every voice** |
+| Speech per 10s block | **7.8–9.5s — fixed, applies to every voice** |
 | Line length and rate | **per voice — [the step-3 table](#3-voiceover) is the only copy** |
 
 **The word counts are deliberately not repeated here.** A summary of them lived at
@@ -965,7 +1024,7 @@ trims, so its `speech=` is the number that will be gated:
 
 ```
 sandbox_exec({ command:
-  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/narrator/speech_metrics.sh \
+  "bash $HF_WORKFLOWS/narrator/scripts/speech_metrics.sh \
      --text 'the line exactly as spoken' work/voices/voice01.wav" })
 ```
 
@@ -984,10 +1043,27 @@ diagnosis was that the word budgets were wrong rather than the service noisy. If
 two or three re-rolls miss the same way, the line is the problem and no further
 roll will fix it.
 
+### One-word fragments are the most expensive punctuation of all
+
+**Measured 2026-08-24, Lingshu 28 v3.** A 33-word Arthur line opening *"Stop there.
+Ruler. For ten answers running…"* returned **17.322s** — 7.8s past the ceiling.
+Rewritten as flowing prose at **31 words** with the two fragments removed, it
+returned **8.538s**. Same voice, same `speech_rate`, two fewer words, **8.8 seconds
+of difference from sentence shape alone.** Two other blocks behaved identically
+(*"Read the verb. One yawns."*, *"Not saddened. Shaken."*).
+
+This is the inverse of the *each sentence boundary buys 0.14–0.7s* rule below: a
+boundary around a **one-word fragment** buys **seconds**, because `seed_audio`
+reads an isolated word as a dramatic beat and puts silence on both sides of it.
+
+**So do not reach for a fragment to pad a thin line** — it is the single fastest
+way to overshoot, and it overshoots by a margin no re-roll recovers. It also
+trips the pausey-take warning on the way past.
+
 ### Dead air is no longer the failure it was
 
 The old 6–8s window left 2–4s of silence per block, and this section used to warn
-that 5–6.5s of it "reads as a stall". Under an 8.6–10.0s window that risk is
+that 5–6.5s of it "reads as a stall". Under a 7.8–9.5s window that risk is
 largely designed out: a take at the floor leaves **0.7s of lead and tail after
 centring**, which the assembler's own note calls inaudible. The pressure has
 inverted — the writing problem is now finding enough content to fill a block, not
@@ -1044,7 +1120,7 @@ So the two findings bracket the same curve rather than contradicting each other:
 
 **The curve is still valid; the target on it has moved.** Every duration in the
 three tables above was measured against the old window, where the job was to stay
-*under* 8s. Read them now as a map of how to get *up* to 8.6s — and note that the
+*under* 8s. Read them now as a map of how to get *up* to 7.8s — and note that the
 whole measured range, 5.87s to 8.14s, **now sits below the floor**. The old
 "aim for two to three sentences per block" advice targeted 6.5–7.1s and is
 therefore a recipe for a failing take. It has been removed.
@@ -1082,7 +1158,7 @@ now load-bearing, because the assembler polices the other end:
 > rewrite the line as ONE flowing clause (fewer full stops) and regenerate.`
 
 So the cheap old lever — adding full stops to buy ~0.55–0.7s each — now buys
-duration in exactly the currency the assembler flags. Padding a thin line to 8.6s
+duration in exactly the currency the assembler flags. Padding a thin line to 7.8s
 with sentence breaks produces a take that passes the gate and trips the warning.
 **Write that voice's full word budget as actual content, in two to three
 sentences** — take the count from [the step-3 table](#3-voiceover) — rather than
@@ -1092,11 +1168,10 @@ content in few sentences, never few words in many.
 The measured words/second in the voice table sizes a *first draft*. What lands the
 take in the window is structure:
 
-- **Take is short of 8.6s** → add content. This is now the common case and the
-  only clean fix; the line was written to a window 2.6s narrower than the one it
-  has to fill. Reach for words first, then a single extra sentence boundary, and
+- **Take is short of 7.8s** → add content. Still a common case, though far less so
+  than this skill assumed while it was quoting an 8.6s floor. Reach for words first, then a single extra sentence boundary, and
   stop before the pause warning fires.
-- **Take is over 10.0s** → re-roll once (bimodality accounts for a lot of ceiling
+- **Take is over 9.5s** → re-roll once (bimodality accounts for a lot of ceiling
   misses). If it lands long again and it is one long sentence carrying a
   subordinate clause after an em-dash, break it — that structure alone put a
   32-word line at 10.78s.
@@ -1137,7 +1212,7 @@ caption timing; clause length governs caption width.**
 
 **They no longer conflict in the direction they used to.** The old advice was to
 cut content when a line neared 8s with one wide clause, because punctuation bought
-caption width with duration the take did not have. Under an 8.6s floor the take
+caption width with duration the take did not have. Under a 7.8s floor the take
 usually *needs* that duration, and the sidecar splits wide clauses across cues by
 itself — so write for the take window and let the sidecar handle the width.
 
@@ -1145,11 +1220,11 @@ itself — so write for the take window and let the sidecar handle the width.
 
 **Assembly runs `assemble_final.sh` inside `sandbox_exec`** — a remote Linux
 sandbox with ffmpeg preinstalled. The script ships in every sandbox under
-`$HF_WORKFLOWS/faceless-channel-video/scripts/`. It replaced the server-side
+`$HF_WORKFLOWS/faceless-video/scripts/`. It replaced the server-side
 assembler on 2026-08-04; see the banner at the top of this file for what that
 changed about writing a cut.
 
-We borrow that one script; we do **not** adopt the `faceless-channel-video`
+We borrow that one script; we do **not** adopt the `faceless-video`
 workflow around it. Its scriptwriting, style and preset rules are a different
 house style and do not govern this series — `CLAUDE.md` still does.
 
@@ -1183,14 +1258,23 @@ sandbox_exec({ command:                              // foreground — see below
   "curl -fL '<voice1 url>' -o work/voices/voice01.wav; " +   // …one pair per block
   "printf '%s\\n' 'work/blocks/block01.mp4 work/voices/voice01.wav' " +
   "               'work/blocks/block02.mp4 work/voices/voice02.wav' > pairs.txt; " +
-  "chmod +x $HF_WORKFLOWS/faceless-channel-video/scripts/*.sh; " +
-  "bash $HF_WORKFLOWS/faceless-channel-video/scripts/assemble_final.sh " +
+  "chmod +x $HF_WORKFLOWS/faceless-video/scripts/*.sh; " +
+  "bash $HF_WORKFLOWS/faceless-video/scripts/assemble_final.sh " +
   "  --out work/output/final.mp4 --blocks 6 --manifest pairs.txt && " +
   "curl -f -X PUT --upload-file work/output/final.mp4 '<upload_url>'",
   timeout_seconds: 120 })                            // NOT the default — default is 60
 ```
 
 ### `background: true` lost a whole run — use it only at longform scale
+
+> **⚠ The 120s foreground budget may not exist in your harness — measured
+> 2026-08-24.** On the Lingshu 28 v3 run a `sleep 105` submitted with
+> `timeout_seconds: 120` came back `timed out after 60s`: **the MCP client capped
+> the call at 60s regardless of what the tool was given.** If that is your harness,
+> everything below about "finishes inside the 120s foreground budget" is
+> unreachable and **anything over ~55s must go background and be polled**. Test it
+> once with a `sleep 90` before planning a foreground assembly around 120s — it
+> costs nothing and it is the difference between a plan and a wish.
 
 **Run a trailer-scale assembly in the foreground.** A 7-block assembly finishes
 inside the 120s foreground budget comfortably — *with `timeout_seconds: 120`
@@ -1208,6 +1292,15 @@ sandbox dies under the job exactly as it did above.
 
 The rule of thumb: foreground up to the point where the call would time out;
 background only past it, and only with polling already scheduled.
+
+> **Chain the export into the producing command — do not make it a second call.**
+> Reserve the slot with `media_upload` **before** starting the job, then append
+> `curl -f -X PUT --upload-file <file> '<upload_url>'` to the **same `&&` chain**
+> as the `ffmpeg`, so the render cannot exist in a sandbox that nobody is holding
+> open. Lingshu 28 v3's assembly did not do this — it ended at the `ffprobe` and
+> left a 172MB MP4 between two calls, which is precisely the Suwen 1 v5 loss
+> condition above, survived by timing rather than by design. Its caption burn did
+> do it, and that call was safe by construction. `media_confirm` after HTTP 200.
 
 ### The flags that matter here
 
@@ -1277,8 +1370,8 @@ the sidecar's cue timing lines up without nudging.
 
 | | `assemble_final.sh` |
 |---|---|
-| Take short of window | **hard error** below 8.6s |
-| Take over window | **hard error** above 10.0s |
+| Take short of window | **hard error** below 7.8s |
+| Take over window | **hard error** above 9.5s |
 | Centring | on **detected speech** (padding trimmed), not file length |
 | Clip audio | **kept at 0.12** under the voice |
 | Captions | **not burned** — separate step |
@@ -1446,6 +1539,49 @@ The budget itself is pure geometry:
   overflow in 9:16. Judge wrapping on the vertical cut.
 - **Do not switch fonts to fix wrapping.** `anton` is the most condensed face
   available and `CLAUDE.md` mandates it anyway; anything else makes the fit worse.
+
+> **⚠ The Anton model in `caption_metrics.js` is ~1.67× too wide — measured
+> 2026-08-24 by burning and reading pixels.** For the widest line in Lingshu 28 v3
+> the model computes **1000.6px against a 1001px budget** — reporting the cut as
+> only just fitting. libass renders that same line at **599px**. Measured average
+> advance is **0.216 em**; the model assumes **0.361 em**.
+>
+> **It errs entirely in the safe direction**, so no caption has ever overflowed and
+> nothing is broken. But the real usable width at 16:9 is 1088px, so the line budget
+> could be ~83 characters rather than ~50, or `Fontsize` could rise from 44 to
+> roughly 70 and still hold two lines. At 44, Anton's rendered cap height is **26px
+> on a 720px frame — 3.6%**, against the 5–8% broadcast captioning targets.
+>
+> **Do not re-tune it as part of a cut that is rendering.** The sidecar is built
+> from the current model and gets burned in; changing the metrics re-wraps every
+> cue and invalidates a delivered file. It is its own change: re-derive the budget,
+> rebuild every rendered cut's sidecar, and verify the same way this was caught —
+> burn a frame and measure the box, do not re-read the model.
+
+**Measure the burn, do not trust it.** Rendering cues onto a **black plate** at a
+few sample times and measuring the white bounding box gives line count, box width
+and all four margins for nothing, and it is the only caption check available when
+the CDN is unreachable from the repo host. Measure on black rather than on the
+video — bright frame content lands in the same threshold as the text and inflates
+every number.
+
+```
+ffmpeg -y -v error -f lavfi -i color=black:s=1280x720:d=1 \
+  -vf "setpts=PTS+<T>/TB,subtitles=subs.ass:fontsdir=$HOME/.fonts:force_style='…'" \
+  -frames:v 1 probe.png
+```
+
+**Confirm the font resolves in whatever machine runs the burn, before burning.**
+The Higgsfield sandbox ships Metropolis and Montserrat, **not Anton**, and libass
+substitutes silently — which voids every measurement `build_subtitles.js` made. On
+Lingshu 28 v3 the same cue rendered **2 lines at 26px** with Anton and **3 lines at
+36px** with a deliberately bogus font name; that is what the failure looks like if
+it ever ships. `fc-match Anton` first, and install it if it is missing:
+
+```
+mkdir -p ~/.fonts && curl -sSfL -o ~/.fonts/Anton-Regular.ttf \
+  https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf && fc-cache -f
+```
   Shorten the clause instead.
 
 **A wide clause is not a re-take.** The sidecar splits it across cues by itself,
@@ -1710,6 +1846,16 @@ chapter key (pass its job ID as the reference, change only the framing) and
 attach *that* to every clip. Record it in the production record as its own
 lineage entry — don't overwrite the vertical key, the trailer still needs it.
 
+**Existing landscape sibling — reuse it, don't regenerate:**
+
+| Chapter | Landscape key | Notes |
+|---|---|---|
+| Lingshu 28 | `717ea032-0a02-4da8-a161-6d77ef8db5ad` | `nano_banana_pro` (served by `nano_banana_2`), `aspect_ratio: "16:9"`, **returned 2752×1536**. Derived from the chapter's 9:16 key `8e7e7549-cb5a-4970-afa7-b00b7e1442d4`, so the tally-board motif and all three characters carry over from the rendered trailer. |
+
+Ask for 16:9 and expect **2752×1536** (1.79:1) back, not a 16:9-exact size. The
+service also echoes the media role back coerced to `image_references`, as
+[step 1](#1-style-key) predicts — that is normal, not a rejected reference.
+
 ### Script → blocks
 
 10s is the working block length, so an episode is ~110 fixed windows regardless
@@ -1757,7 +1903,7 @@ in seven committed documents.
 
 Character lines are structurally short against a 10s block — and **the deliberate
 short take is no longer available** as the second way out, because the assembler
-hard-rejects anything under 8.6s. Apply §3's remaining options **per line**: write
+hard-rejects anything under 7.8s. Apply §3's remaining options **per line**: write
 the character a real paragraph at that voice's own word count, fold the beat into
 a neighbouring block, or cut it. On an episode with ~110 blocks of dialogue this is
 a scripting constraint, not a per-line adjustment — it wants deciding before the
@@ -1770,7 +1916,7 @@ That breaks here: `assemble_final.sh` has **no text-overlay parameter** either,
 and the sidecar is built from the narration table — so a classical quotation card
 with no narration over it will produce no text at all.
 
-**The card block still needs a voice take**, and now it must clear 8.6s like any
+**The card block still needs a voice take**, and now it must clear 7.8s like any
 other: a silent quotation card fails the narration-per-window assert
 (`blocks [..] have NO narration in their windows`). Narrate the quotation over its
 own card.
@@ -1865,6 +2011,41 @@ while scripting, not a trim to find in the edit.
   the CONNECT, not CloudFront denying the object. The distinction matters when
   reporting: the links are perfectly good from any normal machine, and writing
   "the CDN 403s" implies a broken artifact when the artifact is fine.
+
+  **It is a policy denial. Do not route around it.** The proxy's own status
+  endpoint (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) logs each refusal as
+  `connect_rejected — gateway answered 403 to CONNECT (policy denial)`, and its
+  README says to report the blocked host rather than retry. Confirmed 2026-08-24
+  for both CDN hosts **and the S3 upload bucket**, so this host can neither
+  download a render nor upload one.
+
+- **Two different CDN hosts, and they are not interchangeable.** Generation
+  results serve from `d8j0ntlcm91z4.cloudfront.net`; uploaded and exported media
+  from `d2ol7oe51mr4n9.cloudfront.net`. Guessing wrong yields a 403 that looks
+  exactly like the egress denial above. Take the URL from the tool result.
+
+- **To get a text file into the sandbox, gzip and base64 it into the command.**
+  With the CDN and S3 both refused from this host there is no shared filesystem
+  and no fetchable URL, but `sandbox_exec` takes a **16,000-character command** —
+  enough for a surprising amount of text. Lingshu 28 v3's 24,433-byte `.srt`
+  compressed to a **13,168-character** argument and went in whole, in one call:
+
+  ```
+  echo '<base64>' | base64 -d | gunzip > subs.srt
+  ```
+
+  Verify the round trip locally first (`base64 -d | gunzip | cmp -`) and check the
+  byte count on the far side. This is the transfer channel for anything this host
+  needs to put in front of the sandbox's `ffmpeg` — and it beats splitting a
+  heredoc across calls, which risks the sandbox being reclaimed between them.
+
+- **The MCP server can reconnect mid-session under a different tool prefix.**
+  On 2026-08-24 every `mcp__higgsfield__*` tool vanished and the same surface
+  returned as `mcp__<uuid>__*`. **The sandbox and everything in `/home/user/` go
+  with it.** Nothing was lost only because the render had already been exported —
+  which is the argument for chaining the upload into the producing command, above.
+  If the tools disappear, re-resolve them by name rather than assuming the service
+  is down.
 - **The sandbox is not behind that egress policy, and this is newly useful.**
   `sandbox_exec` has its own internet access and its own ffmpeg — it has to, since
   it downloads every clip and take to assemble them. So a check that was
@@ -1930,6 +2111,14 @@ non-compliant clip is a paid re-render.
   smoke-covered scroll that cannot be opened, a shut door light cannot pass) and
   it cleared on the first retry. **Carry that kind of meaning with objects and
   brush strokes, never with a person.**
+
+- **A verb implying a body losing its footing is a trigger by itself.** Lingshu 28
+  v3's contagious-yawning beat described *"three figures… each tipping back"* and
+  came back `nsfw` — read as falling bodies, though nothing in the beat is about
+  falling. Re-cut with objects only — *"three brushed ink ovals"* — and it cleared
+  on the first retry. **Watch the verb, not just the subject.** *Tipping*,
+  *slumping*, *buckling*, *going down* all read as injury on a human figure, and a
+  chapter about involuntary movement is full of them.
 
 Then write the per-cut audit into the document's `## Compliance notes (YouTube)`
 section, one bullet per `CLAUDE.md` rule, so the reasoning survives with the cut.
