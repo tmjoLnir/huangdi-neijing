@@ -85,6 +85,7 @@ output/
     ch8/inner-canon-suwen8-longform-v1.md           # superseded by v2; never rendered
     ch8/inner-canon-suwen8-longform-v2.md           # RENDERED 2026-08-26, draft tier
     ch8/inner-canon-suwen8-longform-v2.srt/.vtt     # sidecars, tracked
+    ch8/inner-canon-suwen8-longform-thumbnails-v1.md # 3 proposals; nothing generated
     ch12/inner-canon-suwen12-trailer-v1.md          # pre-render
     ch12/inner-canon-suwen12-longform-v1.md         # pre-render
     ch13/inner-canon-suwen13-trailer-v1.md          # RENDERED 2026-08-10, draft tier
