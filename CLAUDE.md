@@ -82,7 +82,9 @@ output/
   suwen/                                            # 素問 Basic Questions — chapters 1-81
     ch8/inner-canon-suwen8-trailer-v1.md            # RENDERED 2026-08-09, draft tier
     ch8/inner-canon-suwen8-trailer-v1.srt/.vtt      # sidecars, tracked
-    ch8/inner-canon-suwen8-longform-v1.md           # pre-render
+    ch8/inner-canon-suwen8-longform-v1.md           # superseded by v2; never rendered
+    ch8/inner-canon-suwen8-longform-v2.md           # RENDERED 2026-08-26, draft tier
+    ch8/inner-canon-suwen8-longform-v2.srt/.vtt     # sidecars, tracked
     ch12/inner-canon-suwen12-trailer-v1.md          # pre-render
     ch12/inner-canon-suwen12-longform-v1.md         # pre-render
     ch13/inner-canon-suwen13-trailer-v1.md          # RENDERED 2026-08-10, draft tier
@@ -192,8 +194,8 @@ When adding a new trailer or episode document, follow this same layout so produc
 — it carries the full section order above, including the source-script mapping,
 and it rendered, so its production record is filled rather than empty.
 
-**Four cuts have rendered, and they are strongest on different sections.** Read
-whichever matches what you are writing:
+**Six cuts have rendered — four trailers and two longform episodes — and they are
+strongest on different sections.** Read whichever matches what you are writing:
 
 - **`output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md`** — rendered
   2026-08-08. The section order, and the credit-spend table to read first: 103.4
@@ -208,6 +210,18 @@ whichever matches what you are writing:
   2026-08-13, and the best model for the **voiceover** record: per-block file
   length, gated speech and padding in one table, plus the note on why the
   Voiceover bullet must stay one unwrapped line.
+- **`output/lingshu/ch28/inner-canon-lingshu28-longform-v3.md`** — rendered
+  2026-08-24, the **first longform ever assembled** here, and the cut that found
+  the real speech window. Read it for the caption-burn measurements and for the
+  full-frame-scrim mistake that nearly erased a mandated disclaimer.
+- **`output/suwen/ch8/inner-canon-suwen8-longform-v2.md`** — rendered 2026-08-26,
+  and the model for a **longform taken end to end in one pass**: script re-size,
+  96 clips, 96 gated takes, a purpose-built music bed, assembly, caption burn and
+  on-screen text. Read it for three things nothing else records — how to build a
+  **music bed with scripted dropouts** so `--music` produces them, the **backend
+  rate limit** on concurrent submissions and the separate `seed_audio` pool, and a
+  **1.77× re-take rate** achieved by writing every line to the midpoint of its
+  voice's window instead of its edges.
 
 An earlier cut — the chapter 1 trailer v5, the first taken end-to-end through the
 sandbox assembler — was deleted from `output/` on 2026-08-08. **Its measured
