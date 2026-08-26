@@ -678,6 +678,18 @@ getting right:
 | `jobs_wait` groups | 1 | 10 |
 | `show_generation_by_ids` calls | 1 | 2 — the 60-job cap, not one per batch |
 
+> **⚠ The backend rate-limits CONCURRENT submissions — measured 2026-08-26.** A
+> second `generate_video_batch` of 12 issued while 12 were still in flight came
+> back **429 `rate_limit_reached` on every item**. Nothing was created and nothing
+> was charged, but a run that reads 429 as failure will double-submit and pay
+> twice. **Keep one batch of 12 in flight at a time and drain it before the next
+> goes out.**
+>
+> **`seed_audio` has its own separate pool.** A 12-item audio batch went out
+> cleanly while 12 video jobs were running. **Pipeline voice against clips** —
+> submit takes while clips render — which is what kept the Suwen 8 v2 run's
+> wall-clock down. Serialise within each model, parallelise across them.
+
 **`get_cost` is not accepted inside a batch item** — the schema forbids it
 outright. So the step-0 preflight stays exactly as written: one *single*
 `generate_video` with `get_cost: true` on a representative clip, priced and
@@ -707,6 +719,19 @@ re-picked per chapter:
 >
 > **Zane is the only voice the old table had approximately right**, and the only
 > one of the four whose blocks all landed without a rewrite.
+>
+> **⚠ Suwen 8 v2 (2026-08-26, 96 blocks, 170 takes) measured three of the four
+> voices FASTER than this table**, so a script sized to it lands *short*:
+> Arthur **~4.2 w/s** (not 3.70), Vesper **~4.4** (not 3.91), Xavier **~4.4** (not
+> 4.34, and violently bimodal), Zane **~5.5** (confirmed). Arthur written at 29–35
+> words returned 7.1–7.9s repeatedly — inside the band on paper, under the 7.800s
+> floor in fact. **On current evidence draft Arthur and Vesper at ~36–38 words.**
+> That run's re-take rate was **1.77×**, the repo's best, achieved by writing every
+> line to the **midpoint** of its voice's window rather than to an edge, so
+> run-to-run noise has room on both sides. Bimodality there was worse than
+> anything recorded here: one Xavier block returned **6.971s at 38 words and
+> 15.168s at 43 words**, and one Arthur block returned **7.772s and 9.803s on
+> byte-identical text.**
 >
 > **Word count is the estimator; `speech_metrics.sh` is the gate.** Twenty of the
 > ninety blocks had word counts outside their voice's band and measured *inside*
@@ -1310,9 +1335,27 @@ background only past it, and only with polling already scheduled.
 | `--blocks N` | **required** — asserted against the manifest *before* any work, so a dropped pair fails instead of shipping a hole |
 | `--manifest` | one `clip voice` pair per line, block order, `#` comments allowed. Preferred over positional args in production |
 | `--clip-seconds` | block length, default 10. **Moves the speech window with it** — leave it alone |
-| `--music bed.mp3` | optional licensed bed, `--music-vol` default 0.10, clamped ≤0.20 |
+| `--music bed.mp3` | optional licensed bed, `--music-vol` default 0.10, clamped ≤0.20. **Build the bed to the FULL cut length** — see below |
 | `--sfx-vol` | clip diegetic audio level, default 0.12, clamped ≤0.20 |
 | `--allow-mismatch` | overrides the pair-numbering assert. Do not use — see below |
+
+#### The music bed must be built to the full cut length
+
+**`--music` takes a file, and the assembler applies `-stream_loop -1` to it.** A
+bed shorter than the cut **loops back in** — including over a passage the script
+scores to silence. Build it to `N × clip-seconds` and the loop can never fire.
+
+**A bed with silence baked into it produces scripted dropouts exactly**, which
+means `--music` *can* score a cut that goes quiet in the middle. Suwen 8 v2 needed
+music out across Act III and again from Act V to the end card; a 960.026s bed
+against a 960.540s cut delivered both, measured **−91.0 dB** in each dropout
+window and −22.9/−23.9 dB in the two music windows. That cut's v1 document had
+claimed two dropouts "cannot be moved to the assembler's `--music` flag"; they
+can.
+
+**Normalise each source track BEFORE concatenating any silence** (`loudnorm
+I=-20` per source, then concat), or the silent stretches drag the measurement and
+the assembler's own `bed_gain_db` compensates in the wrong direction.
 
 **No `width`/`height`.** Output geometry follows the source clips, so the old rule
 about reading dimensions off the clip jobs rather than pasting 720×1280 is
@@ -1782,9 +1825,10 @@ Both scripts share their geometry, Anton metrics and narration-table parser via
 
 ## Longform episodes
 
-**11:30–20 min.** Untested — **no longform cut has been rendered.** Eleven longform
-*documents* exist, all pre-render, so the scripting side has been exercised
-repeatedly and the pipeline side not at all. Re-derive the list rather than
+**11:30–20 min. Two longform cuts have now rendered** — Lingshu 28 v3
+(2026-08-24, 90 blocks) and Suwen 8 v2 (2026-08-26, 96 blocks) — so this path is
+no longer untested, but it is only two runs old. Read both records before the
+third. Re-derive the pre-render list rather than trusting a count written here. Re-derive the list rather than
 trusting a count written here — `ls output/*/ch*/*longform*.md` — because this
 line said *four* until 2026-08-16, and one of the four
 (`inner-canon-lingshu28-longform-v1.md`) had been deleted from the repo on
@@ -2054,11 +2098,16 @@ while scripting, not a trim to find in the edit.
   from `d2ol7oe51mr4n9.cloudfront.net`. Guessing wrong yields a 403 that looks
   exactly like the egress denial above. Take the URL from the tool result.
 
-- **To get a text file into the sandbox, gzip and base64 it into the command.**
+- **To get a text file into the sandbox, compress and base64 it into the command — and use `bzip2`, not `gzip`.**
   With the CDN and S3 both refused from this host there is no shared filesystem
   and no fetchable URL, but `sandbox_exec` takes a **16,000-character command** —
   enough for a surprising amount of text. Lingshu 28 v3's 24,433-byte `.srt`
   compressed to a **13,168-character** argument and went in whole, in one call:
+  **On Suwen 8 v2's 26,960-byte `.srt` the three compressors ranked
+  `bzip2 -9` 11,844 < `xz -9e` 12,984 < `gzip -9` 14,288 base64 characters.**
+  Only bzip2 left room for the burn script alongside it in the same 16,000-character
+  command — and the command has to carry both, because the sandbox is reclaimed
+  between calls.
 
   ```
   echo '<base64>' | base64 -d | gunzip > subs.srt
