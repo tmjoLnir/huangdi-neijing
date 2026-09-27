@@ -90,7 +90,9 @@ output/
     ch12/inner-canon-suwen12-longform-v1.md         # pre-render
     ch13/inner-canon-suwen13-trailer-v1.md          # RENDERED 2026-08-10, draft tier
     ch13/inner-canon-suwen13-trailer-v1.srt/.vtt    # sidecars, tracked
-    ch13/inner-canon-suwen13-longform-v1.md         # pre-render
+    ch13/inner-canon-suwen13-longform-v1.md         # superseded by v2; never rendered
+    ch13/inner-canon-suwen13-longform-v2.md         # RENDERED 2026-09-27, draft tier
+    ch13/inner-canon-suwen13-longform-v2.srt/.vtt   # sidecars, tracked
     ch67/inner-canon-suwen67-trailer-v1.md          # pre-render
     ch67/inner-canon-suwen67-longform-v1.md         # pre-render
     ch77/inner-canon-suwen77-trailer-v1.md          # pre-render
@@ -195,7 +197,7 @@ When adding a new trailer or episode document, follow this same layout so produc
 — it carries the full section order above, including the source-script mapping,
 and it rendered, so its production record is filled rather than empty.
 
-**Six cuts have rendered — four trailers and two longform episodes — and they are
+**Seven cuts have rendered — four trailers and three longform episodes — and they are
 strongest on different sections.** Read whichever matches what you are writing:
 
 - **`output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md`** — rendered
@@ -223,6 +225,12 @@ strongest on different sections.** Read whichever matches what you are writing:
   rate limit** on concurrent submissions and the separate `seed_audio` pool, and a
   **1.77× re-take rate** achieved by writing every line to the midpoint of its
   voice's window instead of its edges.
+- **`output/suwen/ch13/inner-canon-suwen13-longform-v2.md`** — rendered
+  2026-09-27, the first cut to ship **all eighteen CJK quotation cards burned in**
+  (Noto Serif CJK TC) alongside captions, lower-third, title card and end card.
+  Read it for a voice pace that **drifted in phases within one session** (a 2.65×
+  re-take rate despite midpoint sizing), the first **`ip_detected`** clip outcome,
+  and a clip price that had halved to 5.
 
 An earlier cut — the chapter 1 trailer v5, the first taken end-to-end through the
 sandbox assembler — was deleted from `output/` on 2026-08-08. **Its measured
@@ -296,7 +304,7 @@ Measure any new voice on one take, and write the result into the skill's table, 
 
 Four requirements the assembler cannot produce. **Three are on-screen text,
 added after assembly** — in practice by `drawtext` in the same ffmpeg pass that
-burns the captions, which is how every one of the six rendered cuts shipped them;
+burns the captions, which is how every one of the seven rendered cuts shipped them;
 only the description copy of the credit remains an upload-time step. The fourth,
 music, the assembler still cannot *generate* — but it can *place* a bed you
 supply, so that one may be an assembly step instead:

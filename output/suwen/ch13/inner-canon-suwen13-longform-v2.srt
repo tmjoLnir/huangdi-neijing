@@ -1,0 +1,989 @@
+1
+00:00:00,758 --> 00:00:02,713
+For most of human history the treatment was words.
+
+2
+00:00:02,713 --> 00:00:07,013
+Someone who knew the right ones would stand over you and
+say them aloud, and that was not superstition at all.
+
+3
+00:00:07,013 --> 00:00:09,242
+It was simply the state of the art, for a very long time.
+
+4
+00:00:10,952 --> 00:00:12,221
+It was not a fringe practice.
+
+5
+00:00:12,221 --> 00:00:17,166
+The Chinese state kept a department of ritual healing on the
+imperial medical payroll for about a thousand years,
+
+6
+00:00:17,166 --> 00:00:19,048
+paid from the same purse as its physicians.
+
+7
+00:00:20,503 --> 00:00:24,848
+I have heard that the physicians of high antiquity cured a
+man by shifting his essence and transforming his breath
+
+8
+00:00:24,848 --> 00:00:28,239
+with a single invocation, while my own physicians use
+poisons inside and needles outside,
+
+9
+00:00:28,239 --> 00:00:29,497
+and it works about half the time.
+
+10
+00:00:30,666 --> 00:00:34,667
+Notice what he has actually asked, which is not how
+medicine works but whether it has got worse,
+
+11
+00:00:34,667 --> 00:00:39,084
+an emperor asking his own physician whether the
+profession he pays for has been declining since before his
+
+12
+00:00:39,084 --> 00:00:39,335
+birth.
+
+13
+00:00:40,692 --> 00:00:42,521
+The answer is not the one you are braced for.
+
+14
+00:00:42,521 --> 00:00:46,341
+Nobody in this room is going to tell you that the old
+invocations were stronger than a needle.
+
+15
+00:00:46,341 --> 00:00:49,308
+What changed was not the medicine at all, it was the
+patients themselves.
+
+16
+00:00:50,361 --> 00:00:55,410
+The chapter is Suwen thirteen, from the first half of the
+Yellow Emperor's Inner Canon. Its title is four characters,
+
+17
+00:00:55,410 --> 00:00:59,639
+shift the essence and transform the breath, and that is a
+fairly good working definition of magic.
+
+18
+00:01:00,300 --> 00:01:04,765
+This is The Emperor's Inner Canon, and the episode is
+called When Medicine Stopped Being Magic.
+
+19
+00:01:04,765 --> 00:01:09,701
+The argument is that the moment is real, that it happens in
+this chapter, and that it is not a clean one.
+
+20
+00:01:10,362 --> 00:01:12,926
+Nobody invited me and I am staying. Here is what I am
+listening for.
+
+21
+00:01:12,926 --> 00:01:15,792
+A man is about to explain that the past was better and the
+present is worse,
+
+22
+00:01:15,792 --> 00:01:19,638
+which is the most common thing anybody has ever said
+about anything. I want a mechanism, not a memory.
+
+23
+00:01:20,769 --> 00:01:24,325
+Watch the chapter retire its own inheritance, on the record
+and in front of the throne.
+
+24
+00:01:24,325 --> 00:01:25,920
+Then watch what it reaches for instead,
+
+25
+00:01:25,920 --> 00:01:29,232
+and decide for yourself whether the thing it retired ever
+actually left the room.
+
+26
+00:01:30,854 --> 00:01:33,353
+Here is the sentence you are asking about. In treating
+illness,
+
+27
+00:01:33,353 --> 00:01:37,401
+they had only to shift the essence and transform the breath,
+and it could be done by invocation alone,
+
+28
+00:01:37,401 --> 00:01:39,147
+four characters for method and two for cure.
+
+29
+00:01:40,977 --> 00:01:44,813
+The word is zhuyou. Zhu means to speak aloud to a power,
+and you means the origin.
+
+30
+00:01:44,813 --> 00:01:49,024
+The physician found out where the illness had come from
+and then addressed it by its name.
+
+31
+00:01:50,579 --> 00:01:51,674
+And this was a real office.
+
+32
+00:01:51,674 --> 00:01:56,460
+Incantation had its own department in the imperial medical
+service for about a thousand years, across three dynasties,
+
+33
+00:01:56,460 --> 00:01:59,422
+and the Ming court did not abolish it until the year fifteen
+seventy-one.
+
+34
+00:02:00,975 --> 00:02:05,359
+Then I am funding it. There is a bureau in my medical
+service whose officers are paid to know the right words,
+
+35
+00:02:05,359 --> 00:02:09,025
+and you are about to tell me in front of them that the words
+have stopped working, so go on.
+
+36
+00:02:10,637 --> 00:02:14,936
+I am going to tell you something more awkward than that.
+The practitioner did not fight the illness.
+
+37
+00:02:14,936 --> 00:02:19,363
+He established where it had come from and he said so out
+loud, and the saying was the entire treatment.
+
+38
+00:02:20,892 --> 00:02:25,111
+Hold on to the shape of that, because it is not what people
+assume. The target is not the body.
+
+39
+00:02:25,111 --> 00:02:29,109
+The target is the account of how the illness got there,
+corrected out loud to the patient.
+
+40
+00:02:30,757 --> 00:02:34,296
+First finding, and it is not the one you expect from me. If a
+state pays for something for a thousand years,
+
+41
+00:02:34,296 --> 00:02:37,998
+it is usually because it appears to work often enough to
+keep the receipts coming. I am not going to laugh at it.
+
+42
+00:02:37,998 --> 00:02:39,243
+I want to know which part was working.
+
+43
+00:02:40,741 --> 00:02:42,777
+That is a fair question and it has a real answer.
+
+44
+00:02:42,777 --> 00:02:46,434
+Ritual and expectation and undivided attention have
+measurable effects on a sick person,
+
+45
+00:02:46,434 --> 00:02:49,259
+and this has been studied carefully and is not seriously in
+dispute.
+
+46
+00:02:50,919 --> 00:02:55,914
+What they move is how illness is experienced. Reported
+pain and nausea and exhaustion can shift on ritual alone,
+
+47
+00:02:55,914 --> 00:02:59,081
+sometimes a great deal, and that shift is real to the person
+having it.
+
+48
+00:03:00,878 --> 00:03:02,450
+What they do not move is the disease.
+
+49
+00:03:02,450 --> 00:03:06,870
+The tumour is the same size afterwards and the fracture is
+not knitted and the infection is not cleared,
+
+50
+00:03:06,870 --> 00:03:09,122
+and nothing here should be heard as saying otherwise.
+
+51
+00:03:10,981 --> 00:03:15,812
+And the remarkable thing is that we are not correcting the
+chapter here. The chapter is about to say this itself,
+
+52
+00:03:15,812 --> 00:03:19,019
+in its own words, and it is going to say it rather harder than
+we just did.
+
+53
+00:03:20,793 --> 00:03:24,683
+In the old time, people lived among the birds and the
+beasts, and that is the whole setting.
+
+54
+00:03:24,683 --> 00:03:29,207
+No walls are mentioned and no granary and no physician,
+and the chapter does not think anything is missing.
+
+55
+00:03:30,613 --> 00:03:35,112
+They moved about in order to avoid the cold, and stayed in
+shaded places in order to avoid the heat.
+
+56
+00:03:35,112 --> 00:03:39,387
+Two clauses for an entire way of living, and both of them
+are about staying out of the weather.
+
+57
+00:03:41,018 --> 00:03:44,648
+Read it exactly as it is written. It is not a claim about virtue
+and it is not a claim about diet.
+
+58
+00:03:44,648 --> 00:03:48,982
+It is a claim about exposure to the weather, and about how
+much of that exposure these people could actually control.
+
+59
+00:03:50,711 --> 00:03:53,890
+So far this is a golden age, and every culture on earth has
+one of those.
+
+60
+00:03:53,890 --> 00:03:56,851
+What makes this chapter different arrives in the very next
+sentence,
+
+61
+00:03:56,851 --> 00:03:59,290
+and it is the reason the whole argument survives at all.
+
+62
+00:04:00,645 --> 00:04:03,535
+Within them there was no burden of longing and no weight of
+attachment.
+
+63
+00:04:03,535 --> 00:04:06,954
+Outside them there was no shape of striving after office.
+Those are the two clauses,
+
+64
+00:04:06,954 --> 00:04:09,356
+and everything the chapter claims afterwards rests on them.
+
+65
+00:04:10,845 --> 00:04:13,737
+That is a psychological claim, and it is doing all of the
+work.
+
+66
+00:04:13,737 --> 00:04:19,156
+The mechanism is not clean air and it is not a simple diet.
+It is the absence of wanting things, for a whole lifetime.
+
+67
+00:04:21,012 --> 00:04:25,517
+No longing and no ambition. Physician, you have described
+a man with nothing to hope for and no post to lose,
+
+68
+00:04:25,517 --> 00:04:28,988
+and held him up to me as the healthy one. I built my entire
+court from the opposite.
+
+69
+00:04:30,742 --> 00:04:31,919
+I have held nothing up to you.
+
+70
+00:04:31,919 --> 00:04:35,137
+I am describing the conditions under which a spoken
+sentence was enough treatment.
+
+71
+00:04:35,137 --> 00:04:39,258
+Whether those conditions were pleasant to live in is another
+question, and the chapter does not raise it.
+
+72
+00:04:40,973 --> 00:04:45,569
+This was an age of calm, the chapter says, and the evil
+could not enter deeply. That phrase is the hinge,
+
+73
+00:04:45,569 --> 00:04:49,028
+because it does not say the evil was absent, only that it
+could not get in far.
+
+74
+00:04:50,780 --> 00:04:55,334
+And so, the chapter says, poisons could not treat their
+inside and needles and stones could not treat their outside.
+
+75
+00:04:55,334 --> 00:04:59,220
+It was enough to shift the essence and speak to the origin.
+That is the whole ancient prescription.
+
+76
+00:05:00,348 --> 00:05:05,230
+Read that clause again, because almost everyone reads it
+wrong. It does not say the ancients had no drugs.
+
+77
+00:05:05,230 --> 00:05:09,652
+It says that drugs could not treat them, which is a different
+and a much stranger claim to make.
+
+78
+00:05:11,049 --> 00:05:15,678
+There was nothing deep enough in them for a drug to reach.
+The spell was sufficient because the illness was shallow,
+
+79
+00:05:15,678 --> 00:05:18,951
+and that is a mechanism with a real shape, which means
+that it can be argued with.
+
+80
+00:05:20,321 --> 00:05:21,899
+Second finding, and it is a real argument.
+
+81
+00:05:21,899 --> 00:05:26,071
+It has a mechanism and it makes a prediction and you could
+check it, which is more than most nostalgia manages.
+
+82
+00:05:26,071 --> 00:05:29,679
+I came in expecting to catch a man missing the old days,
+and he handed me something falsifiable.
+
+83
+00:05:30,435 --> 00:05:34,176
+The present age is not like this. Worry and grief wind
+around a man from the inside,
+
+84
+00:05:34,176 --> 00:05:39,566
+and hard labour and exhaustion injure him from the outside.
+Both arrive from the life he is living, not from the weather.
+
+85
+00:05:41,064 --> 00:05:44,941
+Two causes, one inside and one outside, and both of them
+are social. Nobody has mentioned a demon.
+
+86
+00:05:44,941 --> 00:05:48,936
+The chapter has moved the cause of illness out of the spirit
+world and into the conditions of a life.
+
+87
+00:05:50,488 --> 00:05:55,084
+They have also lost their compliance with the four seasons
+and gone against what is fitting for cold and heat.
+
+88
+00:05:55,084 --> 00:05:59,513
+Thief winds arrive again and again, and hollow evils come
+morning and evening, and no season escapes them.
+
+89
+00:06:00,872 --> 00:06:04,621
+The thief wind and the hollow evil are old words for an
+ordinary idea, which is exposure.
+
+90
+00:06:04,621 --> 00:06:09,128
+What changed is not the wind itself but how much of it
+reaches a person already worn through by their life.
+
+91
+00:06:10,663 --> 00:06:13,996
+Inside, it reaches as far as the five organs and the marrow
+of the bones,
+
+92
+00:06:13,996 --> 00:06:16,233
+and outside it damages the openings and the skin.
+
+93
+00:06:16,233 --> 00:06:19,338
+So a small illness becomes severe and a great illness ends
+in death.
+
+94
+00:06:20,834 --> 00:06:25,320
+And therefore the invocation cannot bring it to an end. That
+is the chapter speaking, not a later critic.
+
+95
+00:06:25,320 --> 00:06:29,166
+The tradition's own foundational text is retiring its own
+inheritance, in a single clause.
+
+96
+00:06:30,601 --> 00:06:35,365
+Six characters say that therefore the invocation cannot end
+it. That is the sentence this episode is named for,
+
+97
+00:06:35,365 --> 00:06:39,399
+and it was written by people who had every reason to keep
+the old method exactly where it was.
+
+98
+00:06:40,670 --> 00:06:43,918
+I asked why my physicians fail, and you have answered me
+with my own court.
+
+99
+00:06:43,918 --> 00:06:46,342
+The worry is mine and the striving after office is mine,
+
+100
+00:06:46,342 --> 00:06:49,330
+and the men who are worn out in my service are all on my
+own payroll.
+
+101
+00:06:50,555 --> 00:06:53,963
+Third finding, and now I am less impressed. Every age in
+this chapter looks back at a better one.
+
+102
+00:06:53,963 --> 00:06:57,899
+The present envies the middle age and the middle age
+envies high antiquity and high antiquity is too far back to
+
+103
+00:06:57,899 --> 00:06:59,446
+check. That is a ladder with no bottom rung.
+
+104
+00:07:00,373 --> 00:07:02,872
+He is half right, so score him in two separate halves.
+
+105
+00:07:02,872 --> 00:07:06,203
+Long-term worry really does affect immunity and the health
+of the heart,
+
+106
+00:07:06,203 --> 00:07:09,627
+and counting grief among the causes of illness is not at all
+a naive idea.
+
+107
+00:07:10,618 --> 00:07:13,467
+The other half fails. There was never an age without deep
+disease.
+
+108
+00:07:13,467 --> 00:07:16,878
+Bones from every period we can dig up carry infection and
+tumour and arthritis,
+
+109
+00:07:16,878 --> 00:07:19,382
+and the peaceful age of this chapter is a literary device.
+
+110
+00:07:20,881 --> 00:07:25,356
+So the chapter has just retired the method it inherited. The
+interesting question is what it reaches for instead,
+
+111
+00:07:25,356 --> 00:07:29,119
+and the answer turns out to be the single most important
+thing in the whole of this short text.
+
+112
+00:07:30,962 --> 00:07:34,515
+Then let us have it. I want to stand before a sick man and
+see whether he lives or dies,
+
+113
+00:07:34,515 --> 00:07:39,039
+and settle a doubt where two of my physicians disagree,
+and I want the essentials made as plain as the sunlight.
+
+114
+00:07:40,929 --> 00:07:44,761
+Colour and pulse are what the high sovereign valued and
+what the teachers before me handed down.
+
+115
+00:07:44,761 --> 00:07:49,072
+Two instruments, and the chapter names them in that order
+and never adds a third for the rest of its length.
+
+116
+00:07:50,816 --> 00:07:54,163
+Notice where the authority has moved. Not to a spirit and
+not to a revelation,
+
+117
+00:07:54,163 --> 00:07:59,184
+but to what the teachers before her handed down, which is a
+lineage of people who could each be named and questioned.
+
+118
+00:08:00,438 --> 00:08:05,757
+In high antiquity the sovereign set Jiu Dai-ji to the work.
+He put colour and pulse in order and so reached clarity,
+
+119
+00:08:05,757 --> 00:08:09,563
+matching them against wood and fire and earth and metal
+and water, and the seasons.
+
+120
+00:08:10,368 --> 00:08:14,278
+The canon almost never names anybody, and it names him
+here. That is not decoration.
+
+121
+00:08:14,278 --> 00:08:19,632
+A chapter about method is telling you that the method has a
+human teacher rather than a source somewhere in heaven.
+
+122
+00:08:20,768 --> 00:08:25,154
+Matched also to the four seasons and the eight winds and
+the six directions, never departing from their constants.
+
+123
+00:08:25,154 --> 00:08:29,232
+Then watch how the changes move against each other, so
+the small things are seen and the essentials known.
+
+124
+00:08:30,647 --> 00:08:34,372
+That list is a grid, and the grid is the point. A reading
+means nothing on its own.
+
+125
+00:08:34,372 --> 00:08:39,353
+It only means something against what it should have been
+at this particular season and at this particular hour.
+
+126
+00:08:40,461 --> 00:08:43,118
+Colour answers to the sun and the pulse answers to the
+moon.
+
+127
+00:08:43,118 --> 00:08:48,343
+Seek the essentials constantly and you will have them. The
+changes of colour answer to the pulses of the four seasons,
+
+128
+00:08:48,343 --> 00:08:49,539
+which the sovereign valued.
+
+129
+00:08:51,071 --> 00:08:55,397
+The image is better than it sounds. Colour is what you take
+in at a glance, whole and all at once.
+
+130
+00:08:55,397 --> 00:08:58,930
+Pulse moves in phases under your fingers, and you have to
+wait for it to arrive.
+
+131
+00:09:00,805 --> 00:09:03,183
+Fourth finding, and this one I like. Look where these
+instruments are.
+
+132
+00:09:03,183 --> 00:09:05,832
+They are on the patient and not in a bureau and not in a
+formula he inherited.
+
+133
+00:09:05,832 --> 00:09:09,195
+To use them he has to stand next to a sick person and look
+at him, which is a change of profession.
+
+134
+00:09:10,489 --> 00:09:15,111
+Score the colour claim first. A face carries real information,
+and every physician alive still reads it.
+
+135
+00:09:15,111 --> 00:09:19,512
+Pallor and jaundice and the blue of poor oxygen are the first
+things anyone looks for at a bedside.
+
+136
+00:09:20,526 --> 00:09:25,516
+That is a genuine hit, and it is worth being precise about
+why. The chapter is not claiming that the face is pretty.
+
+137
+00:09:25,516 --> 00:09:29,474
+It is claiming that the face is an instrument you can read
+from right across a crowded room.
+
+138
+00:09:30,790 --> 00:09:34,193
+Now the pulse, and here the score splits. Rate and rhythm
+and volume are real,
+
+139
+00:09:34,193 --> 00:09:39,210
+and are still taken on every ward several times a day. The
+correspondence with the moon is not real, and never was.
+
+140
+00:09:40,808 --> 00:09:44,823
+The verdict is right instrument and wrong grid. It has come
+up in almost every episode of this series,
+
+141
+00:09:44,823 --> 00:09:49,192
+and it is the honest shape of what this particular tradition
+actually managed to achieve, and where it stopped.
+
+142
+00:09:50,754 --> 00:09:53,204
+So you have taken away my invocation and given me a
+stare.
+
+143
+00:09:53,204 --> 00:09:55,739
+My grandfather's physician spoke to the illness and it left.
+
+144
+00:09:55,739 --> 00:09:59,247
+Mine is going to look at my face and hold my wrist and tell
+me the season is wrong.
+
+145
+00:10:00,566 --> 00:10:03,767
+An invocation asks the illness to leave. A sign asks it to
+declare itself.
+
+146
+00:10:03,767 --> 00:10:05,930
+Those are not two versions of the same profession,
+
+147
+00:10:05,930 --> 00:10:09,434
+and the difference between them is the only thing this
+chapter is actually about.
+
+148
+00:10:10,971 --> 00:10:12,686
+That is the transition, stated in one line.
+
+149
+00:10:12,686 --> 00:10:16,556
+From a physician who acts on the world to one who first
+requires the world to tell him something,
+
+150
+00:10:16,556 --> 00:10:19,030
+and everything in medicine since has been built on the
+second.
+
+151
+00:10:20,403 --> 00:10:23,055
+And the chapter, having just described its greatest
+advance,
+
+152
+00:10:23,055 --> 00:10:26,017
+immediately says that the profession has been losing it
+ever since.
+
+153
+00:10:26,017 --> 00:10:29,598
+The next passage is a whole history of medicine written as
+a decline, age by age.
+
+154
+00:10:30,588 --> 00:10:34,126
+In middle antiquity they treated an illness as it arrived.
+Decoctions for ten days,
+
+155
+00:10:34,126 --> 00:10:38,816
+to drive out the diseases of the eight winds and the five
+blockages. The treatment began when the illness did,
+
+156
+00:10:38,816 --> 00:10:39,413
+and not later.
+
+157
+00:10:40,728 --> 00:10:45,757
+If ten days did not end it, they went on to the stems and
+roots of herbs, using root and tip together as helpers.
+
+158
+00:10:45,757 --> 00:10:49,272
+The chapter says that once root and branch were grasped,
+the evil qi submitted.
+
+159
+00:10:50,747 --> 00:10:54,747
+Notice the shape rather than the pharmacy. Treat early and
+escalate only if that fails,
+
+160
+00:10:54,747 --> 00:10:59,253
+and know which is root and which is branch before acting,
+which is a modest and sensible protocol.
+
+161
+00:11:01,032 --> 00:11:05,729
+In the latter age it is not like this. They do not take the four
+seasons as their root or know the sun and the moon,
+
+162
+00:11:05,729 --> 00:11:08,969
+nor do they stop to examine whether a thing runs with the
+current or against it.
+
+163
+00:11:10,769 --> 00:11:12,835
+The shape of the disease has already formed by then.
+
+164
+00:11:12,835 --> 00:11:16,410
+Only then do they want a fine needle for the outside of it
+and a decoction for the inside.
+
+165
+00:11:16,410 --> 00:11:19,231
+They have waited until there was something large and
+visible to attack.
+
+166
+00:11:20,774 --> 00:11:22,524
+And here the chapter loses its composure.
+
+167
+00:11:22,524 --> 00:11:26,707
+It says the crude practitioner comes on fierce and hurried
+and believes the thing can be attacked,
+
+168
+00:11:26,707 --> 00:11:29,226
+two characters doubled for a man in far too much of a rush.
+
+169
+00:11:30,585 --> 00:11:34,002
+That is not a technical term. It is contempt, written into a
+medical classic,
+
+170
+00:11:34,002 --> 00:11:38,839
+and then copied out by hand for two thousand years by
+people who evidently agreed that it should stay exactly
+
+171
+00:11:38,839 --> 00:11:39,416
+where it was.
+
+172
+00:11:40,967 --> 00:11:44,365
+And therefore the illness is not finished before a new
+illness has already started.
+
+173
+00:11:44,365 --> 00:11:49,034
+That is the last clause of the passage and it is the one your
+physicians would least like read aloud in this room.
+
+174
+00:11:50,522 --> 00:11:55,344
+Read that clause once more, slowly. The treatment causes
+the next disease. That is harm done by medicine itself,
+
+175
+00:11:55,344 --> 00:11:59,478
+named and written down in the Han dynasty, long before
+anybody anywhere had tried to measure it.
+
+176
+00:12:00,655 --> 00:12:03,827
+Hold both halves at once. The chapter is right that hurry
+hurts patients.
+
+177
+00:12:03,827 --> 00:12:06,695
+It is also doing exactly what it accused the present age of
+doing,
+
+178
+00:12:06,695 --> 00:12:09,346
+which is preferring a past that nobody can go back and
+check.
+
+179
+00:12:10,483 --> 00:12:14,076
+Fifth finding, and my last complaint. Three ages have gone
+past and each was worse than the one before.
+
+180
+00:12:14,076 --> 00:12:17,250
+If that were true of every generation since then medicine
+would by now be entirely useless,
+
+181
+00:12:17,250 --> 00:12:19,517
+and I notice that it is not. Somebody here is grading on a
+curve.
+
+182
+00:12:20,772 --> 00:12:24,103
+There is one passage left, in which the Emperor asks for
+the essential method,
+
+183
+00:12:24,103 --> 00:12:29,058
+and what he gets back is four sentences that seem to have
+almost nothing to do with anything the chapter has said so
+
+184
+00:12:29,058 --> 00:12:29,228
+far.
+
+185
+00:12:31,076 --> 00:12:34,473
+That is enough history, since I already know you will say
+colour and pulse to me again,
+
+186
+00:12:34,473 --> 00:12:38,925
+because you have said very little else for a whole hour
+now, so give me the method itself and not the instruments.
+
+187
+00:12:40,770 --> 00:12:44,801
+The utmost of treatment is not to lose colour and pulse, and
+to use them without confusion.
+
+188
+00:12:44,801 --> 00:12:49,230
+Put root and branch the wrong way round, and the spirit is
+lost and the state is lost along with it.
+
+189
+00:12:50,399 --> 00:12:55,787
+Then eight characters that nobody expects here. Discard
+the old and take up the new, and so become a true person.
+
+190
+00:12:55,787 --> 00:12:59,601
+A chapter this nostalgic ends its method by telling you to
+let the old thing go.
+
+191
+00:13:01,043 --> 00:13:04,696
+That is still not a method. You have given me two
+instruments and a warning and a proverb.
+
+192
+00:13:04,696 --> 00:13:08,957
+If there is one single thing underneath all of it that a
+physician must do, then name it and I will stop.
+
+193
+00:13:10,404 --> 00:13:14,758
+Shut the door and close the window. Stay with the patient.
+Ask again and again after his condition,
+
+194
+00:13:14,758 --> 00:13:19,596
+and follow where his own account leads. The one who
+keeps his spirit flourishes and the one who loses it dies.
+
+195
+00:13:20,499 --> 00:13:24,215
+Stop there, because that is the oldest description of a
+clinical consultation anybody has.
+
+196
+00:13:24,215 --> 00:13:27,271
+A closed room and one patient and the same question asked
+again and again,
+
+197
+00:13:27,271 --> 00:13:29,501
+with instructions to follow the patient's own account.
+
+198
+00:13:30,926 --> 00:13:33,632
+Final finding, and then I put the tablet down. He told us the
+invocation stopped working,
+
+199
+00:13:33,632 --> 00:13:37,189
+and then he described a shut door and a shut window and a
+man asking the same question until the patient feels heard.
+
+200
+00:13:37,189 --> 00:13:39,075
+They did not stop doing that. They stopped calling it a
+spell.
+
+201
+00:13:41,059 --> 00:13:45,788
+He has the episode's argument, and it needs a guardrail.
+Attention is part of care and is studied as part of care.
+
+202
+00:13:45,788 --> 00:13:48,942
+It is not a treatment for disease, and this chapter was the
+first to say so.
+
+203
+00:13:50,884 --> 00:13:54,228
+A dramatized adaptation of a classical philosophical text.
+Not medical advice.
+
+204
+00:13:54,228 --> 00:13:58,044
+Here medicine did not stop being magic, it stopped
+pretending the magic was the medicine,
+
+205
+00:13:58,044 --> 00:13:59,117
+which is a smaller claim.

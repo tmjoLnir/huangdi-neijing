@@ -40,9 +40,9 @@ before generating anything.
 >   false` went from a cost saving to a correctness requirement — see
 >   [step 2](#2-clips).
 >
-> **Six cuts have been through this path end-to-end** since Suwen 1 trailer v5
-> (2026-08-04) first proved it: four trailers and two longforms (Lingshu 28 v3,
-> Suwen 8 v2), all on `seedance_2_0_mini` 480p. The [step 3](#3-voiceover) rates
+> **Seven cuts have been through this path end-to-end** since Suwen 1 trailer v5
+> (2026-08-04) first proved it: four trailers and three longforms (Lingshu 28 v3,
+> Suwen 8 v2, Suwen 13 v2), all on `seedance_2_0_mini` 480p. The [step 3](#3-voiceover) rates
 > are measured, not estimated; read the newest cut's record before the next run.
 >
 > **That cut's document was deleted from `output/` on 2026-08-08**, so this file is
@@ -66,7 +66,7 @@ eighty-one separately-numbered chapters, so the book is never optional — it go
 in the filename too. Folders are not consecutive and gaps are expected.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
-the form with the most runs behind it (two longforms have also rendered). For a
+the form with the most runs behind it (three longforms have also rendered). For a
 **11:30–20 minute longform episode**, read those steps for the mechanics, then read
 [Longform episodes](#longform-episodes), which overrides the aspect
 ratio, block count, voice handling and assembly strategy. **Step 0 is a hard gate
@@ -198,6 +198,11 @@ come in high — the Lingshu 28 v2 run did exactly that, at 103.4 actual against
 
 ## 0. Model + tier gate — cost it, then confirm
 
+> **⚠ Re-priced 2026-09-27: `seedance_2_0_mini` 480p/16:9/10s/audio-off was 5
+> credits/clip on live `get_cost`, not 10.** Every per-clip and per-cut figure
+> below that is derived from 10 is now roughly double the live price. Quote the
+> live `get_cost`, never this section's numbers (Suwen 13 longform v2 record).
+
 **Default: `seedance_2_0_mini` at 480p** — set by the user 2026-07-31, price
 re-verified 2026-08-12. 10 credits/clip, **~71 for a 6-block trailer** (~82.5 with
 the end-card block), and it takes the style key as a true `image_references`
@@ -233,8 +238,8 @@ Before generating anything on a new cut, do all five:
    makes this a confirmation, not an open question — but it is still a gate, and
    a chapter that wants a different model gets the shortlist below.
 
-**Most failure modes in this skill were learned on `gemini_omni`,** and six cuts have
-now run on `seedance_2_0_mini` (four trailers, two longforms) — read their
+**Most failure modes in this skill were learned on `gemini_omni`,** and seven cuts have
+now run on `seedance_2_0_mini` (four trailers, three longforms) — read their
 reproduction notes for which of the `gemini_omni` lessons held. On any
 cut using a model this repo has little history with: generate **one** clip, check
 the returned dimensions and the house look against the style key, and only then
@@ -1784,7 +1789,7 @@ block's cues **early by `(file − speech) / 2`** and the captions lead the voic
 
 **So correction 1 below is not the optional half of a pair any more — it is the
 house practice, and it is the only reason the shipped sidecars are correctly
-timed.** All six rendered cuts put the assembler's measured speech in their
+timed.** All seven rendered cuts put the assembler's measured speech in their
 voiceover line. Suwen 8's block-4 cue starts at **30.544s**, which is
 `30 + (10 − 8.913) / 2` — not the 30.000s a file-length record would have produced.
 
@@ -2097,6 +2102,16 @@ while scripting, not a trim to find in the edit.
   from `d2ol7oe51mr4n9.cloudfront.net`. Guessing wrong yields a 403 that looks
   exactly like the egress denial above. Take the URL from the tool result.
 
+- **⚠ 2026-09-27: `sandbox_exec` now refuses a command that embeds a base64 blob**
+  (*"file bytes are being relayed into the sandbox as text … Do not split bytes into
+  base64 parts across sandbox_exec calls"*), so the bzip2 channel below is closed.
+  **What worked instead:** zip the text files on the repo host, `media_upload` a
+  `.zip` slot, `curl -X PUT` it **from the repo host** (the S3 upload bucket
+  answered **200** from this host on this date, where earlier runs recorded a
+  policy denial), `media_confirm` as `type: "file"`, then `curl` the returned
+  `d2ol7oe51mr4n9` URL inside the sandbox. A bare `.srt` filename made
+  `media_upload` fail outright; the same bytes as a `.zip` went through. Suwen 13
+  longform v2 shipped its sidecar, card text and filter script this way.
 - **To get a text file into the sandbox, compress and base64 it into the command — and use `bzip2`, not `gzip`.**
   With the CDN and S3 both refused from this host there is no shared filesystem
   and no fetchable URL, but `sandbox_exec` takes a **16,000-character command** —
@@ -2197,6 +2212,13 @@ non-compliant clip is a paid re-render.
   on the first retry. **Watch the verb, not just the subject.** *Tipping*,
   *slumping*, *buckling*, *going down* all read as injury on a human figure, and a
   chapter about involuntary movement is full of them.
+
+- **`ip_detected` is a distinct rejection, and it hit a character action shot.**
+  Suwen 13 longform v2's block 41 — *Fan-di sets his white folding fan down on a
+  red lacquer table and walks out of frame* — came back `ip_detected`, not `nsfw`.
+  Re-cut as the object alone (the fan lying on the table, no figure), it cleared
+  first retry. If a cast member plus a signature prop plus an action trips it,
+  drop the character from the shot before rewording anything else.
 
 Then write the per-cut audit into the document's `## Compliance notes (YouTube)`
 section, one bullet per `CLAUDE.md` rule, so the reasoning survives with the cut.
