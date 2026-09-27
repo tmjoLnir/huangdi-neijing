@@ -7,6 +7,37 @@
 **Framing:** Intellectual and cultural history — *not* health or wellness guidance
 **Prepared for review by:** Joshua Chin
 
+> **Status note — 2026-09-27.** The ranking, scoring and publish sequence below are
+> unchanged from the 2026-08-07 original and remain the operative plan. Three
+> assumptions in this header have since been superseded by `CLAUDE.md`, which wins
+> where the two disagree:
+>
+> - **Runtime** is 11:30–20 min per longform, not 18:30+.
+> - **Cast** is Fan-di, Dr-Qi and **Lei-Gong** (not "Xiao-Lei") plus a voiced
+>   **Narrator** — four `seed_audio` voices, not a three-character cast.
+> - **Numbering** is book + chapter as the received text numbers it
+>   (`output/<book>/ch<N>/`), never a sequential episode index — see §9.
+>
+> **Production status of the twenty** (from the cut documents under `output/`):
+>
+> | Rank | Chapter | Slot | Status |
+> |---|---|---|---|
+> | 1 | Lingshu 28 | 1 | Trailer v2 RENDERED 2026-08-08; longform v3 RENDERED 2026-08-24 (draft tier) |
+> | 2 | Suwen 13 | 2 | Trailer v1 RENDERED 2026-08-10; longform v1 scripted, pre-render |
+> | 3 | Lingshu 12 | 7 | Trailer + longform v1 scripted, pre-render |
+> | 4 | Lingshu 8 | 3 | Trailer v1 RENDERED 2026-08-13; longform v1 scripted, pre-render |
+> | 5 | Lingshu 43 | 5 | Trailer + longform v1 scripted, pre-render |
+> | 7 | Suwen 67 | 4 | Trailer + longform v1 scripted, pre-render |
+> | 8 | Suwen 77 | 6 | Trailer + longform v1 scripted, pre-render |
+> | 9 | Suwen 12 | 9 | Trailer + longform v1 scripted, pre-render |
+> | 10 | Lingshu 50 | 8 | Trailer + longform v1 scripted, pre-render |
+> | 14 | Lingshu 77 | 10 | Trailer + longform v1 scripted, pre-render |
+> | 6, 11–13, 15–20 | — | — | Not started |
+>
+> Suwen 8, excluded from the twenty in §8, has also rendered: trailer v1
+> 2026-08-09 and longform v2 2026-08-26. **Every chapter in slots 1–10 has at least a
+> scripted document; the first slot with nothing yet is 11, Lingshu 64 (rank 6).**
+
 ---
 
 ## 1. How this slate was built
@@ -385,7 +416,7 @@ Ranked by composite score (compliance floor × Tier-1 RPM × narrative capacity)
 | 19 | Lingshu 46 | The Grain of the Wood | Hist. of Science | $6–11 | Low–Mod |
 | 20 | Suwen 39 | Nine Ways the Body Moves | Psychology | $5–10 | Moderate |
 
-**Weighted slate average: ~$7.60–13.10 RPM.** Pillar distribution: Psychology ×6, Cosmology ×4, History of Science ×3, Anatomy ×2, Ethics ×2, Curiosity ×2, Mathematics ×1. No two consecutive ranks share a pillar in the publish order below.
+**Weighted slate average: ~$7.60–13.10 RPM.** Pillar distribution: Psychology ×6, Cosmology ×4, History of Science ×3, Anatomy ×2, Ethics ×2, Curiosity ×2, Mathematics ×1. Consecutive slots in the publish order below mostly avoid sharing a pillar — the exceptions are slots 14–15 (Suwen 26 → Lingshu 71 §3, both Cosmology) and slots 19–20 (Suwen 39 → Suwen 81, both Psychology). *(Corrected 2026-09-27; the original claimed no repeats at all.)*
 
 ---
 
@@ -496,11 +527,11 @@ These would otherwise rank, and are noted so the slate is not read as a ranking 
 
 ## 9. Open items carried forward
 
-- **Guqin / guzheng recording licensing** — unresolved since Episode 2. All twenty above should be scored on the trailer model (no guqin) until cleared, or the licensing decision should be forced before Phase 1 renders.
-- **Chapter-numbering convention** — the episode-by-sequence, chapter-name-in-subtitle convention is applied to the working titles above but has not been retroactively applied to Episodes 1–6.
-- **Synthetic-content disclosure** — needs a decision and a template description block before slot 1 ships.
+- **Guqin / guzheng recording licensing** — unresolved since Episode 2. *Update 2026-09-27: partly moved. A guqin recording has been sourced and mixed into Suwen 8 longform v2, but it is CC BY-SA 3.0 and the share-alike question is still open — see that cut's* Music — sourced, mixed, licence UNRESOLVED *section. Still blocks publishing.* All twenty above should be scored on the trailer model (no guqin) until cleared, or the licensing decision should be forced before Phase 1 renders.
+- **Chapter-numbering convention** — *Superseded 2026-08-08: do not apply. `CLAUDE.md` § Suwen and Lingshu are numbered separately replaced episode-by-sequence numbering with book + chapter (`output/<book>/ch<N>/`), after sequence numbering filed two chapters under the wrong number. Original text follows for the record:* the episode-by-sequence, chapter-name-in-subtitle convention is applied to the working titles above but has not been retroactively applied to Episodes 1–6.
+- **Synthetic-content disclosure** — needs a decision and a template description block before slot 1 ships. *Update 2026-09-27: the decision is taken per cut (disclose in the description, tick the altered-or-synthetic-content box — see any rendered cut's compliance notes); the shared template block does not exist yet.*
 - **Structural form register** — the twenty forms above are all distinct from each other and from the forms already used (inquest, reverse chronology, inverted mystery, vigil, cast inversion). This register should be maintained as a single source of truth to prevent collision.
-- **The fourth-character constraint** — three episodes above (Suwen 75, 76, 77 material) feature Leigong as the student. Under the ink-wash-silhouette rule he can appear without breaching the three-character Soul-ID cast, but the treatment needs to be locked once and reused.
+- **The fourth-character constraint** — *Superseded: Lei-Gong is a full recurring cast member with his own style key and voice (`CLAUDE.md` § Core Cast), so the ink-wash-silhouette workaround is no longer needed. Original text follows for the record:* three episodes above (Suwen 75, 76, 77 material) feature Leigong as the student. Under the ink-wash-silhouette rule he can appear without breaching the three-character Soul-ID cast, but the treatment needs to be locked once and reused.
 
 ---
 

@@ -186,7 +186,7 @@ Each production document contains, in order:
   - Where a cut was re-timed off a source script, a **source-script mapping** table (source beat → blocks) plus any naming reconciliations made against this file.
   - A numbered **shot list** matching the narration blocks.
   - A **production record** with the generation-service (Higgsfield) job IDs for every asset — style key image, video clips, voiceover takes, final assembly — then **reproduction notes** on anything that went wrong and how it was resolved. Keep superseded job IDs, marked as superseded; they're evidence for the next cut.
-  - **Deliverables the assembler cannot produce** — on-screen text and credits, added by hand at edit time, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. **Model this section on a cut that actually shipped one** — `output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md` or `output/suwen/ch8/inner-canon-suwen8-trailer-v1.md`, whose finishing passes were executed rather than planned. Never model it on a pre-render document: those carry the section order but no real timings, so copying one reproduces the shape of the section and none of its content.
+  - **Deliverables the assembler cannot produce** — on-screen text and credits, burned in after assembly, plus music, which the assembler can mix in but never generate, closing with a **Finishing steps** subsection: the ordered procedure that turns the delivered render into an uploadable file. Write it with *this* cut's own timings, cue numbers and block boundaries, never as a generic recipe — those numbers differ between versions of the same chapter, and that is precisely where the mistakes happen. **Model this section on a cut that actually shipped one** — for a trailer, `output/lingshu/ch28/inner-canon-lingshu28-trailer-v2.md` or `output/suwen/ch8/inner-canon-suwen8-trailer-v1.md`; for a longform, `output/lingshu/ch28/inner-canon-lingshu28-longform-v3.md` or `output/suwen/ch8/inner-canon-suwen8-longform-v2.md` — whose finishing passes were executed rather than planned. Never model it on a pre-render document: those carry the section order but no real timings, so copying one reproduces the shape of the section and none of its content.
   - **Compliance notes (YouTube)** — the per-cut audit required below.
   - **Runtime levers** — which blocks to drop to cut shorter, which beats to add to stretch longer.
 
@@ -294,17 +294,20 @@ Measure any new voice on one take, and write the result into the skill's table, 
 - **Audit every storyboard, script, voice take and rendered clip against the rules above**, and summarise the issues and recommendations. Record the audit as a `## Compliance notes (YouTube)` section in the cut's own document, one bullet per rule, so the reasoning survives with the cut.
 - **Run that audit on the prompts *before* generating, not just on the output** — a non-compliant clip is a paid re-render. The skill's *Compliance gate* holds the prompt-stage procedure and the imagery that has actually tripped the safety filter.
 
-Four requirements the assembler cannot produce. **Three are hand-added at
-edit/upload time.** The fourth, music, it still cannot *generate* — but it can now
-*place* a bed you supply, so that one may be an assembly step instead:
+Four requirements the assembler cannot produce. **Three are on-screen text,
+added after assembly** — in practice by `drawtext` in the same ffmpeg pass that
+burns the captions, which is how every one of the six rendered cuts shipped them;
+only the description copy of the credit remains an upload-time step. The fourth,
+music, the assembler still cannot *generate* — but it can *place* a bed you
+supply, so that one may be an assembly step instead:
 
 - **History lower-third** — *"Presented as history & philosophy"*, small, on screen within the first 10 seconds.
 - **End disclaimer card** — the disclaimer above, on screen as the final card of
   every cut, held long enough to read comfortably. This one costs a block: the
   pipeline assembles in fixed 10s blocks, so plan a final card block into the
   block plan *and* the cost preflight rather than trying to fold it into the
-  title block. Render the block as a plain plate — the card's text is hand-added
-  at edit time like all other on-screen text, which also keeps the credit out of
+  title block. Render the block as a plain plate — the card's text is burned in
+  after assembly like all other on-screen text, which also keeps the credit out of
   a paid render. The card block still needs its one audio like any other; the
   narrator reading the disclaimer over it fills the slot and doubles the
   compliance signal, and it captions into the subtitle sidecar for free.
