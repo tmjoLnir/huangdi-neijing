@@ -183,8 +183,10 @@ or delete". Two of those are wrong:
 | `update_file` | retitles and reparents — **rename and move** |
 | `trash_file` | sends a file to Drive's trash — **delete** |
 
-Neither is in `.claude/settings.json`'s allow-list, so both stop and ask before
-touching anything. **Keep it that way, and go on treating snapshots as
+Neither is in `.claude/settings.json`'s allow-list, so both fall to the permission
+mode's default — which prompts in the default mode, but may not in an auto or bypass
+mode, so do not rely on the prompt alone. (The one Drive tool explicitly in `ask` is
+`read_file_content`, deliberately: it is the read path that corrupts a snapshot.) **Keep it that way, and go on treating snapshots as
 immutable** — that discipline is what keeps newest-wins legible, and a renamed
 snapshot is one that sorts somewhere new. What actually changes:
 
@@ -230,12 +232,12 @@ Snapshot written <ISO8601>. Newest file in this folder wins.
 ```
 
 **Renders themselves do not go through this tool.** `create_file` takes content
-inline as base64 — viable for a snapshot, not for a several-hundred-megabyte MP4.
+inline in the call — viable for a snapshot, not for a several-hundred-megabyte MP4.
 Archiving is therefore always a manual act, and **the index is the deliverable
 here; the media is not.**
 
-**Do not assume the archive is in Drive.** In practice it is not: both renders
-archived as of 2026-08-10 live on the operator's local drive, and the connected
+**Do not assume the archive is in Drive.** In practice it is not: the renders archived
+so far (as of the last check, 2026-08-10) live on the operator's local drive, and the connected
 Drive account holds no video at all. Two consequences worth carrying:
 
 - **Record a place, not a status.** A Drive file ID, or a machine and a path.
@@ -282,7 +284,7 @@ prefer writing less.
 
 A snapshot should say *where a thing is and what state it is in*, never reproduce
 it. The render-archive table is the model: it holds whether an MP4 was archived
-and its Drive file ID, and deliberately does not copy the CDN URLs, because those
+and where it is (a Drive file ID, or a machine and path), and deliberately does not copy the CDN URLs, because those
 are in the production record that git already tracks. Copying them would double
 the read cost of every future session to store something already durable.
 
@@ -305,7 +307,8 @@ wins — when either trigger fires:
   a month. The stable one is being rewritten, and re-read, for nothing.
 
 Splitting costs nothing at write time and saves on every subsequent read, but it
-multiplies the files in a folder that cannot be pruned from here — so let a
+multiplies the files in a folder that is pruned only by a deliberate, approved
+`trash_file` — so let a
 trigger fire rather than anticipating one. The `search_files` listing is cheap
 and returns every title at once; only `download_file_content` is priced by size.
 
@@ -314,8 +317,8 @@ and returns every title at once; only `download_file_content` is priced by size.
 - **Never echo a downloaded file back into the conversation** to inspect it.
   Decode to disk and use shell tools on it — `wc`, `grep`, `head` — so the window
   sees the answer, not the file.
-- **Renders never come through this path.** `create_file` takes content inline as
-  base64; a several-hundred-megabyte MP4 through a tool call is not a slow
+- **Renders never come through this path.** `create_file` takes content inline in
+  the call; a several-hundred-megabyte MP4 through a tool call is not a slow
   archive, it is an impossible one. Upload those through the Drive UI and record
   only the resulting file ID.
 - **Read one snapshot, not the folder.** Sort titles, download the newest of what

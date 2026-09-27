@@ -40,10 +40,10 @@ before generating anything.
 >   false` went from a cost saving to a correctness requirement — see
 >   [step 2](#2-clips).
 >
-> **One cut has been through this path end-to-end** — Suwen 1 trailer v5,
-> assembled 2026-08-04. The [step 3](#3-voiceover) rates are re-measured from that
-> run and are no longer estimates; the rest of this file is still only one run old,
-> so treat the second cut as confirmation rather than routine.
+> **Six cuts have been through this path end-to-end** since Suwen 1 trailer v5
+> (2026-08-04) first proved it: four trailers and two longforms (Lingshu 28 v3,
+> Suwen 8 v2), all on `seedance_2_0_mini` 480p. The [step 3](#3-voiceover) rates
+> are measured, not estimated; read the newest cut's record before the next run.
 >
 > **That cut's document was deleted from `output/` on 2026-08-08**, so this file is
 > now the only surviving record of what the run measured. Everything it taught is
@@ -66,7 +66,7 @@ eighty-one separately-numbered chapters, so the book is never optional — it go
 in the filename too. Folders are not consecutive and gaps are expected.
 
 **Two cut types.** Steps 0–5 are written for the **30-90 sec vertical trailer** —
-the only form produced so far, and the one whose numbers are battle-tested. For a
+the form with the most runs behind it (two longforms have also rendered). For a
 **11:30–20 minute longform episode**, read those steps for the mechanics, then read
 [Longform episodes](#longform-episodes), which overrides the aspect
 ratio, block count, voice handling and assembly strategy. **Step 0 is a hard gate
@@ -126,9 +126,9 @@ give the repo a second data point.
 > short ones, before a run with character voices in it.
 >
 > **⚠ The word windows moved under this table on 2026-08-13** — see the re-pooling
-> banner in [step 3](#3-voiceover). Arthur's window came *down* to 33–37, so a
-> narrator take now sits between the 1.3 and 1.5 rows rather than on the 1.5 row;
-> Zane's went *up* to 47–54, so his top edge is past the 50-word probe. **The
+> banner in [step 3](#3-voiceover). The windows have moved again since (2026-08-24 and
+> the Suwen 8 v2 banner) — take them from the step-3 table, not from here; Zane's
+> top edge (54) is still past the 50-word probe. **The
 > prices above are unchanged and were not re-measured with the windows** — 1.5/2.0
 > is now a ceiling rather than a midpoint, which is the safe direction to be wrong
 > in. Re-price at the new mid (35 words) and the new top (54) on the next run's
@@ -233,9 +233,9 @@ Before generating anything on a new cut, do all five:
    makes this a confirmation, not an open question — but it is still a gate, and
    a chapter that wants a different model gets the shortlist below.
 
-**Most failure modes in this skill were learned on `gemini_omni`,** and only one
-cut has run on `seedance_2_0_mini` so far — the aspect-ratio double declaration
-and the preset pre-decline both held on it, but nothing else is confirmed. On any
+**Most failure modes in this skill were learned on `gemini_omni`,** and six cuts have
+now run on `seedance_2_0_mini` (four trailers, two longforms) — read their
+reproduction notes for which of the `gemini_omni` lessons held. On any
 cut using a model this repo has little history with: generate **one** clip, check
 the returned dimensions and the house look against the style key, and only then
 generate the rest. Write what actually happened into that cut's reproduction
@@ -355,7 +355,7 @@ this file is stale: fix it before assembling.
 
 `speech_metrics.sh` is on the same list because [step 3](#3-voiceover) sends you to
 it to measure a take against the assembler's own trim. Without it, take durations
-are back to being eyeballed — and the window is 1.4s wide.
+are back to being eyeballed — and the window is 1.7s wide.
 
 #### When something is missing
 
@@ -576,8 +576,8 @@ attached to every clip, `generate_audio: false`.
 
 Everything below is model-independent unless it says otherwise. **Record which
 model and tier the cut used** in the production record: the notes here were
-learned on `gemini_omni`, and the default has moved off it, so treat each one as
-unconfirmed on `seedance_2_0_mini` until a cut proves it either way.
+learned on `gemini_omni`, and the default has moved off it, so check a note against the six
+`seedance_2_0_mini` cuts' reproduction notes before relying on it.
 
 **Declare the aspect ratio twice.** `gemini_omni` does not reliably inherit
 vertical framing from a 9:16 style key — a full set of clips has come back
@@ -698,16 +698,16 @@ approved run is issued; it does not move the gate.
 
 ## 3. Voiceover
 
-Model `seed_audio`, `voice_type: "preset"`, `speech_rate: 55` — that rate is
-what fits a line inside a fixed 10s block. **The full cast is cast permanently**
+Model `seed_audio`, `voice_type: "preset"`, `speech_rate: 55` — the house setting,
+and **not** a duration lever (see below); word count fits a take to its block. **The full cast is cast permanently**
 (CLAUDE.md, as of Suwen 1); all four are `preset` voices and none may be
 re-picked per chapter:
 
 | Role | Voice | `voice_id` | Measured rate | Draft to | Blocks in sample |
 |---|---|---|---|---|---|
-| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.70 words/sec** | **29–35 words** | 41 |
+| **Narrator (V.O.)** | **Arthur** | `30fc8796-ceb6-4a66-b3a7-4a145ef7f346` | **3.70 words/sec** ⚠ | **29–35 words** ⚠ ran short on Suwen 8 v2 — draft **36–38** | 41 |
 | **Fan-di** | **Xavier** | `43173c95-3ec8-446a-a162-6504332c578b` | **4.34 words/sec** | **34–41 words** | 13 |
-| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **3.91 words/sec** | **31–37 words** | 31 |
+| **Dr-Qi** | **Vesper** | `c3204739-4084-41a3-9dc5-c805b307ec18` | **3.91 words/sec** ⚠ | **31–37 words** ⚠ ran short on Suwen 8 v2 — draft **36–38** | 31 |
 | **Lei-Gong** | **Zane** | `9ddbff06-a984-4c0d-b641-4d8ca846bf60` | **5.71 words/sec** | **45–54 words** | 5 |
 
 > **Re-measured 2026-08-24 on the Lingshu 28 longform v3 run — 90 blocks in one
@@ -843,8 +843,8 @@ against the number, never eyeballed** — the gate does not round in your favour
 **Zane was measured at length on 2026-08-09 and the guess was badly wrong.** He
 had only ever been run on a 5-word line (2.3–2.6s), where pause overhead dominates
 and no words/sec can be derived; the repo had been writing him at ~35 words on no
-evidence. He is in fact **the fastest voice in the cast — 5.45 w/s pooled** — and
-needs **47–54 words**. A 35-word line came back at **6.23s — 2.4s under the
+evidence. He is in fact **the fastest voice in the cast** (5.45 w/s / 47–54 words then;
+**superseded — current figures are in the step-3 table**). A 35-word line came back at **6.23s — 2.4s under the
 floor**, a hard assembler error.
 
 > **⚠ Seven committed longform documents are sized to the old guess and will
@@ -862,8 +862,8 @@ floor**, a hard assembler error.
 > ```
 >
 > These are ~110-block cuts, so this is not a per-line fix at take time —
-> **re-size every Lei-Gong block to 47–54 words before any of them goes to
-> takes**, and correct the cast tables while doing it. Re-derive the list with
+> **re-size every Lei-Gong block to the step-3 table's Zane window before any of
+> them goes to takes**, and correct the cast tables while doing it. Re-derive the list with
 > `grep -l '34–39\|UNMEASURED' output/*/ch*/*longform*.md` rather than trusting
 > this one; it was wrong once already, naming two documents when seven qualified
 > and one of the two had been deleted.
@@ -934,19 +934,18 @@ for commas; do not re-render it at a different rate expecting a different
 duration. All four voices run at `speech_rate` 55.
 
 **Character lines are structurally short, and a block is structurally 10s.** At
-their measured rates every character voice needs **forty words or more** just to
+their measured rates every character voice needs **thirty-plus words** just to
 clear the 7.8s floor — which is a speech, not an interjection. Take the exact
 count from [the step-3 table](#3-voiceover), never from here. Zane is the sharpest
-case: the fastest voice in the cast cannot say anything shorter than about fifty
-words and still fill a block.
+case: the fastest voice in the cast needs about forty-five words to fill a block.
 
 **The old second way out is now closed.** Letting a take run short and centred —
 a 2.6s interjection sitting in ~3.7s of silence either side, used deliberately in
 Suwen 1's block 3 — is a **hard assembler error** under the new floor:
 `voice N carries 2.6s of speech; required 7.8–9.5s`. The assembler will not
 build the cut. There is no flag to permit it; `--clip-seconds` moves the whole
-window rather than widening it, because the window is always exactly 1.4s wide
-and its ceiling *is* the block length.
+window rather than widening it, because the window is always exactly 1.7s wide
+(`CLIP−2.2` to `CLIP−0.5`).
 
 So a short character beat now costs a structural decision, not a note in the
 record. The options, in the order worth trying:
@@ -1301,18 +1300,19 @@ sandbox_exec({ command:                              // foreground — see below
 > once with a `sleep 90` before planning a foreground assembly around 120s — it
 > costs nothing and it is the difference between a plan and a wish.
 
-**Run a trailer-scale assembly in the foreground.** A 7-block assembly finishes
-inside the 120s foreground budget comfortably — *with `timeout_seconds: 120`
-passed; the default 60 is not comfortable* — and the Suwen 1 v5 run proved
+**Run a trailer-scale assembly in the foreground only if it finishes under ~55s**
+— both longform runs measured the client cap at **60s regardless of
+`timeout_seconds`** (banner above), so the 120s budget this line once promised
+does not exist. Otherwise go background and poll. Why it matters: the Suwen 1 v5 run proved
 what the alternative costs: with `background: true` the transport call timed out,
 the sandbox was reclaimed, and the finished render was gone with it — clips and
 takes already paid for, nothing to export. The sandbox is discarded ~10 seconds
 after a call returns, so a background job that nobody is polling takes the render
 with it.
 
-**Reserve `background: true` for a job that genuinely cannot finish in 120s** —
-longform, where ~110 blocks means ~240 downloads before assembly even starts. When
-you do use it, poll the returned log with `tail` **at least every 60s**, or the
+**Use `background: true` for any job that cannot finish in ~55s** —
+always for longform (~90–96 blocks, ~200 downloads before assembly starts). When
+you do use it, poll the returned log with `tail` **every 45–50s**, or the
 sandbox dies under the job exactly as it did above.
 
 The rule of thumb: foreground up to the point where the call would time out;
@@ -1784,7 +1784,7 @@ block's cues **early by `(file − speech) / 2`** and the captions lead the voic
 
 **So correction 1 below is not the optional half of a pair any more — it is the
 house practice, and it is the only reason the shipped sidecars are correctly
-timed.** All four rendered cuts put the assembler's measured speech in their
+timed.** All six rendered cuts put the assembler's measured speech in their
 voiceover line. Suwen 8's block-4 cue starts at **30.544s**, which is
 `30 + (10 − 8.913) / 2` — not the 30.000s a file-length record would have produced.
 
@@ -1828,14 +1828,14 @@ Both scripts share their geometry, Anton metrics and narration-table parser via
 **11:30–20 min. Two longform cuts have now rendered** — Lingshu 28 v3
 (2026-08-24, 90 blocks) and Suwen 8 v2 (2026-08-26, 96 blocks) — so this path is
 no longer untested, but it is only two runs old. Read both records before the
-third. Re-derive the pre-render list rather than trusting a count written here. Re-derive the list rather than
+third. Re-derive the pre-render list rather than
 trusting a count written here — `ls output/*/ch*/*longform*.md` — because this
 line said *four* until 2026-08-16, and one of the four
 (`inner-canon-lingshu28-longform-v1.md`) had been deleted from the repo on
 2026-08-13. The
 mechanics below are derived from the tool constraints and the trailer
-runs, so treat the first episode as a pilot and write what actually happened into
-its reproduction notes. Where this section contradicts steps 0–5, this section
+runs, then corrected by the two rendered longforms; write what actually happens
+into each new cut's reproduction notes. Where this section contradicts steps 0–5, this section
 wins.
 
 ### What changes
@@ -1844,8 +1844,8 @@ wins.
 |---|---|---|
 | Runtime | 30-90 sec (70s and 80s cuts have rendered) | 11:30–20 min target (11:30 floor, 20 ceiling) |
 | Aspect | 9:16 vertical, 720×1280 | **16:9 landscape, 1280×720** |
-| Blocks | **7** — six narration plus the mandated end-card block | ~102–114 at 10s, end card included |
-| Voices | narrator only | narrator **+ speaking characters** |
+| Blocks | **7** typical (8 has rendered) — narration plus the mandated end-card block | ~102–114 at 10s, end card included |
+| Voices | narrator by default; characters allowed | narrator **+ speaking characters** |
 | Doc format | narration table + shot list | SOUND / VISUAL / CHARACTER blocks, timecodes per act |
 | File | `inner-canon-<book><N>-trailer-v<M>.md` | `inner-canon-<book><N>-longform-v<M>.md` |
 
@@ -1904,14 +1904,12 @@ then re-render only the clips at full tier, reusing every voice take.
 **The old 180-block (30 min) cap is gone.**
 `assemble_final.sh` declares no block limit. What replaces it is a *runtime*
 limit rather than a count: the sandbox is ephemeral, foreground calls cap at
-120s, and a background job dies with the sandbox if it is not polled at least
-every 60s. A 120-block episode means ~240 files to download before assembly even
+60s, and a background job dies with the sandbox if it is not polled every 45–50s. A 120-block episode means ~240 files to download before assembly even
 starts, inside one chained command.
 
-**This is the least-proven part of the new path.** Trailer-scale assembly is six
-pairs in one call; episode-scale is not, and nothing has been run through it. Do
-not plan a longform render against an assumed ceiling — assemble one act first
-and measure how long it actually takes.
+**Whole-episode assembly in one call is proven twice**: Lingshu 28 v3
+(`--blocks 90`, ~12 min, background, no retries) and Suwen 8 v2 (`--blocks 96`).
+Use it; act-by-act assembly and the concat join below are untested fallbacks.
 
 ### Style key — needs a landscape sibling
 
@@ -1968,8 +1966,8 @@ as on narration. (An earlier version of this section suggested 60–65 for
 character dialogue. It was wrong.)
 
 All four are measured (§3 table) — **and Zane's measurement is the one to check a
-longform script against before anything else.** He pools at 5.45 w/s, the fastest
-in the cast, needing **47–54 words** where the repo had been guessing ~35; **seven
+longform script against before anything else.** He is the fastest in the cast
+(take his rate and window from the step-3 table) where the repo had been guessing ~35; **seven
 committed longform documents are still written to the guess and will fail** — see
 the list in [§3](#3-voiceover). One mis-sized voice across a 19-minute episode is
 the most expensive version of the take-length mistake, and it is already sitting
@@ -1995,9 +1993,10 @@ other: a silent quotation card fails the narration-per-window assert
 (`blocks [..] have NO narration in their windows`). Narrate the quotation over its
 own card.
 
-Generate quotation cards as their **own blocks with the text in-frame**
-(`generate_image` for a still, or a held clip), styled off the chapter key.
-Everything else stays text-free. Note each card block in the record so it isn't
+Render quotation cards as their **own blocks, as plain plates** styled off the
+chapter key, and add the text — CJK included — at finishing (install Noto CJK
+first). Both rendered longforms did this: generated glyphs are unreliable and
+cannot be checked from this host. Everything else stays text-free too. Note each card block in the record so it isn't
 mistaken for a style violation later.
 
 ### Assemble in acts, then join
@@ -2011,17 +2010,17 @@ Do not attempt ~110 clips in one unbroken pass. Per act:
 3. Assemble the act as its own `assemble_final.sh` run to check pacing early,
    exporting each act's MP4 out of the sandbox before the call returns.
 
-**The join is the open problem.** `assemble_final.sh` takes clip/voice *pairs*
+**The join is only a problem if you split into acts.** `assemble_final.sh` takes clip/voice *pairs*
 against a declared block count and asserts a `N × 10s` output, so an assembled
 40-block act is not a valid input to it — act outputs cannot be fed back in the
 way they could before 2026-08-04. Joining
 acts means a plain `ffmpeg concat` of the act MP4s, which is exactly the
 hand-rolled ffmpeg the workflow's own rules forbid inside its pipeline.
 
-Two routes, neither yet run here:
+Two routes. The first is proven — both rendered longforms used it:
 
 - **Assemble the whole episode in one call** and skip the join entirely. Removes
-  the problem, but it is the ~240-file download discussed above.
+  the problem; the ~200-file download fits inside a polled background job.
 - **Concat the act outputs** with our own ffmpeg, outside the sandbox's rules.
   Defensible — the acts are already assembled correctly and a concat of equal-
   geometry MP4s is a lossless remux — but it puts the −16 LUFS normalisation per
@@ -2110,10 +2109,10 @@ while scripting, not a trim to find in the edit.
   between calls.
 
   ```
-  echo '<base64>' | base64 -d | gunzip > subs.srt
+  echo '<base64>' | base64 -d | bunzip2 > subs.srt
   ```
 
-  Verify the round trip locally first (`base64 -d | gunzip | cmp -`) and check the
+  Verify the round trip locally first (`base64 -d | bunzip2 | cmp -`) and check the
   byte count on the far side. This is the transfer channel for anything this host
   needs to put in front of the sandbox's `ffmpeg` — and it beats splitting a
   heredoc across calls, which risks the sandbox being reclaimed between them.

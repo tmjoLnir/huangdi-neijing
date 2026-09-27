@@ -2,6 +2,8 @@
 
 **論勇篇第五十 · Where Courage Lives**
 
+> **⛔ Stale sizing — re-time before generating (audit 2026-09-27).** This document was written to the retired **8.6–10.0s** speech window and to word budgets that predate the step-3 table in `.claude/skills/higgsfield-production/SKILL.md`. The assembler gates on **7.8–9.5s**, so lines sized here will over-run the ceiling or miss the floor and stop the assembly. Re-size every block to the current per-voice windows (and run `check_caption_fit.js`) before any take is recorded.
+
 **Not rendered.** Target `seedance_2_0_mini` @ 480p draft tier, **80 blocks × 10s =
 800s = 13:20**, **landscape 16:9**, target 1280×720. Record the delivered geometry
 here after assembly.
@@ -125,7 +127,7 @@ This matters more than it looks:
 | Zane (Lei-Gong) | 4 | **47–52** | 34–39 *(a guess, never measured)* |
 
 > **This document is written to the current budgets. Two other longform documents in
-> this repo are not.** `inner-canon-lingshu28-longform-v1.md`, its `v2`, and
+> this repo are not.** `inner-canon-lingshu28-longform-v1.md` (since deleted, 6b0942f), its `v2`, and
 > `inner-canon-suwen8-longform-v1.md` are all sized to superseded columns and carry
 > explicit do-not-generate banners. **Do not copy a word budget out of any of them.**
 > Arthur in particular moved from 31–34 to 38–44 — a legal 32-word line under the old
@@ -765,7 +767,7 @@ No style key, no clips, no takes, no assembly, no captions burned. The tables be
 are the shape the record must take, and the estimate the step-0 gate will be run
 against — **not** a record of work done.
 
-**No longform cut has ever been rendered in this repo.** Four longform documents
+**No longform cut has ever been rendered in this repo.** *(True when written, no longer: Lingshu 28 longform v3 and Suwen 8 longform v2 rendered on 2026-08-24 and 2026-08-26. Model longform work on those two records.)* Four longform documents
 exist and all four are pre-render. **Treat this as a pilot** and write what actually
 happened into the reproduction notes.
 
@@ -962,10 +964,8 @@ avoid.
 
 ### Reproduction notes
 
-Empty — nothing has been reproduced because nothing has been run. **This will be the
-repo's first longform render**, so this section matters more here than on any
-previous cut: `SKILL.md`'s longform section is derived from tool constraints and
-trailer runs, not from experience.
+Empty — nothing has been reproduced because nothing has been run. *(Written before any longform rendered. Two have since: Lingshu 28 longform v3 and
+Suwen 8 longform v2. Read their reproduction notes before this cut's first run.)*
 
 Five things this cut should expect, from the two most recent trailer runs:
 
