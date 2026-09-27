@@ -2,6 +2,8 @@
 
 **素問·疏五過論第七十七 · The Five Ways a Doctor Fails You**
 
+> **⛔ Stale sizing — re-time before generating (audit 2026-09-27).** This document was written to the retired **8.6–10.0s** speech window and to word budgets that predate the step-3 table in `.claude/skills/higgsfield-production/SKILL.md`. The assembler gates on **7.8–9.5s**, so lines sized here will over-run the ceiling or miss the floor and stop the assembly. Re-size every block to the current per-voice windows (and run `check_caption_fit.js`) before any take is recorded.
+
 **Not rendered. Script and production plan only — nothing generated, no credits
 spent, the step-0 gate has not been run.** Target on render: **16:9 landscape
 1280×720**, `seedance_2_0_mini`, 93 blocks × 10s = **930.0s (15:30)**, MP4.
@@ -1081,7 +1083,7 @@ Balance", which is the slate document's own working name for the channel.
 the step-0 model-and-tier gate has not been run. The tables below are the **plan**, and
 every figure in them is an estimate until a live `get_cost` replaces it.
 
-**No longform cut has ever been rendered in this repo.** Eight longform documents now
+**No longform cut has ever been rendered in this repo.** *(True when written, no longer: Lingshu 28 longform v3 and Suwen 8 longform v2 rendered on 2026-08-24 and 2026-08-26. Model longform work on those two records.)* Eight longform documents now
 exist and all eight are pre-render, so the scripting side has been exercised repeatedly
 and the pipeline side not at all. `SKILL.md`'s *Longform episodes* section is derived from tool
 constraints and trailer runs rather than from an episode. **Treat this as a pilot and

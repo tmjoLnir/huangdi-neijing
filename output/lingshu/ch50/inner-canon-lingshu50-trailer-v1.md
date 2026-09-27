@@ -2,6 +2,8 @@
 
 **論勇篇第五十 · The Organ of Courage**
 
+> **⛔ Stale sizing — re-time before generating (audit 2026-09-27).** This document was written to the retired **8.6–10.0s** speech window and to word budgets that predate the step-3 table in `.claude/skills/higgsfield-production/SKILL.md`. The assembler gates on **7.8–9.5s**, so lines sized here will over-run the ceiling or miss the floor and stop the assembly. Re-size every block to the current per-voice windows (and run `check_caption_fit.js`) before any take is recorded.
+
 **Not rendered.** Target `seedance_2_0_mini` @ 480p draft tier, **8 blocks × 10s =
 80s**, **vertical 9:16**. Record the delivered geometry here after assembly — the
 last two cuts delivered **496×864** and were scaled to 720×1280 before the caption
@@ -63,7 +65,7 @@ Cast: **Arthur**, **Xavier**, **Vesper** — `seed_audio` presets at `speech_rat
 The assembler gates on **8.6–10.0s of detected speech per block**, both edges hard
 errors. Budgets are `SKILL.md` step 3 **as re-measured 2026-08-10 on the Suwen 13
 trailer** — *not* the older columns still carried in
-`inner-canon-lingshu28-longform-v1.md` and `inner-canon-suwen8-longform-v1.md`,
+`inner-canon-lingshu28-longform-v1.md` (since deleted, 6b0942f) and `inner-canon-suwen8-longform-v1.md`,
 both of which are sized to superseded figures:
 
 | Voice | Blocks | Words | Budget | Measured rate |

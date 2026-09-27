@@ -1,6 +1,10 @@
-# The Emperor's Inner Canon — Chapter 28 Longform v2 (19 minutes)
+# The Emperor's Inner Canon — Lingshu 28 Longform v2 (19 minutes)
 
 **口問篇第二十八 · Twelve Small Rebellions**
+
+> **Superseded by `inner-canon-lingshu28-longform-v3.md`**, the re-sized 90-block cut of this script, rendered 2026-08-24. **Do not generate from this file**; it is kept as evidence per the git conventions.
+>
+> **⛔ Stale sizing — re-time before generating (audit 2026-09-27).** This document was written to the retired **8.6–10.0s** speech window and to word budgets that predate the step-3 table in `.claude/skills/higgsfield-production/SKILL.md`. The assembler gates on **7.8–9.5s**, so lines sized here will over-run the ceiling or miss the floor and stop the assembly. Re-size every block to the current per-voice windows (and run `check_caption_fit.js`) before any take is recorded.
 
 **Not rendered. Script and production plan only — nothing generated, no credits
 spent, the step-0 gate has not been run.** Target on render: **16:9 landscape
@@ -16,7 +20,7 @@ numbered separately, so a bare "Chapter 28" sends a checking viewer to the wrong
 text about half the time. See the numbering warning in
 `inner-canon-lingshu28-translation-v2.md`.
 
-Source translation: **`inner-canon-lingshu28-translation-v2.md`** — the v2 rendering,
+Source translation: **`inner-canon-lingshu28-translation-v2.md`** (deleted from the repo in b77cd86; read it with `git show b77cd86^:output/lingshu/ch28/inner-canon-lingshu28-translation-v2.md`) — the v2 rendering,
 not v1. The two differ in principle and must not be mixed inside one document; v2
 tracks the grammatical agent of every answer, which is this cut's entire spine.
 Companion trailer: `inner-canon-lingshu28-trailer-v2.md`.
@@ -30,8 +34,7 @@ assumption with margin.
 
 ## This is the second cut of this chapter, and it sells a different thesis
 
-`inner-canon-lingshu28-longform-v1.md` is **not superseded**. Both remain; the editor
-picks. The Chapter 1 folder already works this way across five trailers, and the
+`inner-canon-lingshu28-longform-v1.md` was **not superseded** by this file when it was written. It was since deleted from the repo in 6b0942f, and this file has itself been superseded by v3. The Chapter 1 folder already works this way across five trailers, and the
 rule there applies here: **no thesis is repeated.**
 
 | | Sells |
