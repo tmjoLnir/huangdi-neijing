@@ -93,6 +93,7 @@ output/
     ch13/inner-canon-suwen13-longform-v1.md         # superseded by v2; never rendered
     ch13/inner-canon-suwen13-longform-v2.md         # RENDERED 2026-09-27, draft tier
     ch13/inner-canon-suwen13-longform-v2.srt/.vtt   # sidecars, tracked
+    ch13/inner-canon-suwen13-longform-thumbnails-v1.md # 3 proposals; nothing generated
     ch67/inner-canon-suwen67-trailer-v1.md          # pre-render
     ch67/inner-canon-suwen67-longform-v1.md         # pre-render
     ch77/inner-canon-suwen77-trailer-v1.md          # pre-render
